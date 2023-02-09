@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\category;
 
 class CategorySeeder extends Seeder
 {
@@ -86,7 +87,7 @@ class CategorySeeder extends Seeder
         ];
 
         foreach($categories as $category){
-            Category::create($category)
+            Category::create($category);
         }
     }
 }
