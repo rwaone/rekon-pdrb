@@ -15,8 +15,10 @@ return new class extends Migration
     {
         Schema::create('periods', function (Blueprint $table) {
             $table->id();
-            $table->year();
+            $table->year('year');
             $table->char('quarter', 1);
+            $table->string('description');
+            $table->char('status');
             $table->date('started_at');
             $table->date('ended_at');
             $table->timestamps();
