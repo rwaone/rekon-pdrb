@@ -15,9 +15,7 @@ return new class extends Migration
     {
         Schema::create('pdrbs', function (Blueprint $table) {
             $table->id();
-            $table->year();
-            $table->tinyInteger('quarter');
-            $table->tinyInteger('round');
+            $table->foreignId('period_id');
             $table->foreignId('subsector_id');
             $table->foreignId('region_id');
             $table->timestamps();
