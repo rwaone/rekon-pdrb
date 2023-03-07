@@ -14,6 +14,15 @@ class SectorSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $sectors = [
+            [
+                'code' => 'A',
+                'name' => 'Pertanian, Kehutanan, dan Perikanan'
+            ],
+        ];
+
+        foreach($sectors as $sector){
+            Category::create($sector);
+        }
     }
 }
