@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('subsectors', function (Blueprint $table) {
             $table->id();
             $table->foreignId('sector_id');
-            $table->string('code');
+            $table->string('code', 3);
             $table->string('name');
             $table->timestamps();
         });

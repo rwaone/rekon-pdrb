@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('sectors', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id');
-            $table->char('code', );
+            $table->char('code', 3);
             $table->string('name');
             $table->timestamps();
         });
