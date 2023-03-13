@@ -143,12 +143,12 @@ class SectorSeeder extends Seeder
             ],
             [
                 'category_id' => 5,
-                'code' => '0',
+                'code' => NULL,
                 'name' => 'Pengadaan Air, Pengelolaan Sampah, Limbah dan Daur Ulang'
             ],
             [
                 'category_id' => 6,
-                'code' => '0',
+                'code' => NULL,
                 'name' => 'Konstruksi'
             ],
             [
@@ -203,7 +203,7 @@ class SectorSeeder extends Seeder
             ],
             [
                 'category_id' => 10,
-                'code' => '0',
+                'code' => NULL,
                 'name' => 'Informasi dan Komunikasi'
             ],
             [
@@ -228,32 +228,32 @@ class SectorSeeder extends Seeder
             ],
             [
                 'category_id' => 12,
-                'code' => '0',
+                'code' => NULL,
                 'name' => 'Real Estate'
             ],
             [
                 'category_id' => 13,
-                'code' => '0',
+                'code' => NULL,
                 'name' => 'Jasa Perusahaan'
             ],
             [
                 'category_id' => 14,
-                'code' => '0',
+                'code' => NULL,
                 'name' => 'Administrasi Pemerintahan, Pertahanan dan Jaminan Sosial Wajib'
             ],
             [
                 'category_id' => 15,
-                'code' => '0',
+                'code' => NULL,
                 'name' => 'Jasa Pendidikan'
             ],
             [
                 'category_id' => 16,
-                'code' => '0',
+                'code' => NULL,
                 'name' => 'Jasa Kesehatan dan Kegiatan Sosial'
             ],
             [
                 'category_id' => 17,
-                'code' => '0',
+                'code' => NULL,
                 'name' => 'Jasa Lainnya'
             ],
         ];

@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('subsectors', function (Blueprint $table) {
+        Schema::create('fenomenas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sector_id');
-            $table->string('code', 3)->nullable();
-            $table->string('name');
+            $table->foreignId('period_id');
+            $table->foreignId('region_id');
+            $table->foreignId('subsector_id');
+            $table->text('description');
+            $table->string('file');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subsectors');
+        Schema::dropIfExists('fenomenas');
     }
 };
