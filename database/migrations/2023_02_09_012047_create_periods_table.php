@@ -18,7 +18,7 @@ return new class extends Migration
             $table->year('year');
             $table->char('quarter', 1);
             $table->string('description');
-            $table->char('status');
+            $table->char('status', 25);
             $table->date('started_at');
             $table->date('ended_at');
             $table->timestamps();
