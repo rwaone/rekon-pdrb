@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class category extends Model
 {
     use HasFactory;
+
+    protected $guarded = ['id'];
+
+    protected $load = ['sector'];
+    
+    public function sector()
+    {
+        return $this->hasMany(Sector::class);
+    }
 }
