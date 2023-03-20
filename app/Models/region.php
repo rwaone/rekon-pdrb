@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class region extends Model
 {
     use HasFactory;
+
+    protected $guarded = ['id'];
+
+    protected $load = ['pdrb'];
+    
+    public function pdrb()
+    {
+        return $this->hasMany(Pdrb::class);
+    }
 }

@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class satker extends Model
 {
     use HasFactory;
+ 
+    protected $guarded = ['id'];
 }

@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class subsector extends Model
 {
     use HasFactory;
+ 
+    protected $guarded = ['id'];
     
     public function Sector()
     {
