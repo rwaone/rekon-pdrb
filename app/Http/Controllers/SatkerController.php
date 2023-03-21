@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\satker;
+use App\Models\Satker;
 use App\Http\Requests\StoresatkerRequest;
 use App\Http\Requests\UpdatesatkerRequest;
 

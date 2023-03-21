@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\region;
+use App\Models\Region;
 use App\Http\Requests\StoreregionRequest;
 use App\Http\Requests\UpdateregionRequest;
 

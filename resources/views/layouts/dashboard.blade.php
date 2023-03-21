@@ -19,12 +19,13 @@
 <body class="hold-transition layout-fixed">
     <!-- Site wrapper -->
     <div class="wrapper">
+        
         <!-- Navbar -->
-        @include("layouts.navbar")
+        @include('layouts.navbar')
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        @include("layouts.sidebar")
+        @include('layouts.sidebar')
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
@@ -48,14 +49,18 @@
             <!-- Main content -->
             <section class="content">
 
-                {{ $slot }}
+                <div class="container-fluid">
+
+                    {{ $slot }}
+
+                </div>
 
             </section>
             <!-- /.content -->
         </div>
         <!-- /.content-wrapper -->
 
-        @include("layouts.footer")
+        @include('layouts.footer')
 
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">

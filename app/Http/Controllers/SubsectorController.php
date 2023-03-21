@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\subsector;
+use App\Models\Subsector;
 use App\Http\Requests\StoresubsectorRequest;
 use App\Http\Requests\UpdatesubsectorRequest;
 

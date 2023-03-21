@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\fenomena;
+use App\Models\Fenomena;
 use App\Http\Requests\StorefenomenaRequest;
 use App\Http\Requests\UpdatefenomenaRequest;
 

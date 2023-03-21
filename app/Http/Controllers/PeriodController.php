@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\period;
+use App\Models\Period;
 use App\Http\Requests\StoreperiodRequest;
 use App\Http\Requests\UpdateperiodRequest;
 
