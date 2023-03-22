@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pdrb;
+use App\Models\Region;
+use App\Models\Satker;
 use App\Http\Requests\StorepdrbRequest;
 use App\Http\Requests\UpdatepdrbRequest;
 
@@ -15,7 +17,10 @@ class PdrbController extends Controller
      */
     public function index()
     {
-        return view('rekonsiliasi.view');
+        $regions = Region::all();
+        return view('rekonsiliasi.view',[
+            'regions' => $regions,
+        ]);
     }
 
     /**
