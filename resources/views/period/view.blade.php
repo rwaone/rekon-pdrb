@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
         <link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
         <link rel="stylesheet" href="../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+        <link rel="stylesheet" href="../../plugins/daterangepicker/daterangepicker.css">
         <script nonce="326d0a6f-467a-4c36-84e6-ac3d7ab6c268">
             (function(w, d) {
                 ! function(bv, bw, bx, by) {
@@ -126,22 +127,76 @@
 
         <div class="modal fade" id="modal-lg">
             <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Large Modal</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p>One fine body&hellip;</p>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success">Save</button>
-                    </div>
-                </div>
+                <form action="">
+                    @csrf
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Add New Period</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
 
+                            <div class="form-group">
+                                <label class="col-form-label" for="typeSelect">Jenis PDRB:</label>
+                                <select id="typeSelect" class="form-control select2bs4" style="width: 100%;"
+                                    name="type">
+                                    <option value="" disabled selected>Pilih Jenis PDRB</option>
+                                    <option value='Lapangan Usaha'>Lapangan Usaha</option>
+                                    <option value='Pengeluaran'>Pengeluaran</option>
+                                </select>
+                                <div class="help-block"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-form-label" for="tahunSelect">Tahun:</label>
+                                <select id="tahunSelect" class="form-control select2bs4" style="width: 100%;"
+                                    name="tahun">
+                                    <option value="" disabled selected>Pilih Tahun</option>
+                                    <option value='2023'>2023</option>
+                                    <option value='2022'>2022</option>
+                                </select>
+                                <div class="help-block"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-form-label" for="quarterSelect">Triwulan:</label>
+                                <select id="quarterSelect" class="form-control select2bs4" style="width: 100%;"
+                                    name="quarter">
+                                    <option value="" disabled selected>Pilih Triwulan</option>
+                                    <option value='1'>Triwulan 1</option>
+                                    <option value='2'>Triwulan 2</option>
+                                    <option value='3'>Triwulan 3</option>
+                                    <option value='4'>Triwulan 4</option>
+                                </select>
+                                <div class="help-block"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="description-text" class="col-form-label">Keterangan:</label>
+                                <input type="text" class="form-control" id="description-text" name="description" placeholder="Keterangan Putaran">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Jadwal:</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="far fa-calendar-alt"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" class="form-control float-right" id="jadwal">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-success">Save</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -152,7 +207,9 @@
             <script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
             <script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
             <script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-            <script src="../../plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+            <script src="../../plugins/moment/moment.min.js"></script>
+            <script src="../../plugins/daterangepicker/daterangepicker.js"></script>
+            <script src="../../plugins/moment/moment.min.js"></script>
             <script>
                 $(document).on('focus', '.select2-selection', function(e) {
                     $(this).closest(".select2-container").siblings('select:enabled').select2('open');
@@ -179,6 +236,22 @@
                         "autoWidth": false,
                     })
                 });
+
+                //Date range picker
+                $('#jadwal').daterangepicker({
+
+                    locale: {
+                        format: 'YYYY-MM-DD'
+                    }
+                })
+                //Date range picker with time picker
+                $('#reservationtime').daterangepicker({
+                    timePicker: true,
+                    timePickerIncrement: 30,
+                    locale: {
+                        format: 'MM/DD/YYYY hh:mm A'
+                    }
+                })
             </script>
         </x-slot>
 
