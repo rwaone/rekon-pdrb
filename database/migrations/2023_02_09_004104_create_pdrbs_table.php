@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('pdrbs', function (Blueprint $table) {
             $table->id();
-            $table->char('type', 25);
+            $table->char('type', 25)->nullable(true);
             $table->foreignId('period_id');
             $table->foreignId('region_id');
             $table->foreignId('subsector_id');

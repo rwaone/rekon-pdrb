@@ -73,12 +73,6 @@
                                 <p>DataTables</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="../tables/jsgrid.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>jsGrid</p>
-                            </a>
-                        </li>
                     </ul>
                 </li>
                 
@@ -92,7 +86,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="../widgets.html" class="nav-link">
+                    <a href="{{ url('period') }}" class="nav-link {{ Request::is('period*') ? 'active' : '' }}">
                         <i class="nav-icon far fa-calendar-alt"></i>
                         <p>
                             Jadwal
