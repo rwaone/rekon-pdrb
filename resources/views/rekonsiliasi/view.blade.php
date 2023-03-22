@@ -89,7 +89,7 @@
 
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label" for="region_id">Kabupaten/Kota:</label>
-                    <select id="regionSelect" class="form-control col-sm-10 select2bs4" name="region_id" required>
+                    <select id="regionSelect" class="form-control col-sm-10 select2bs4" name="region_id">
                         <option value="" disabled selected>Pilih Kabupaten/Kota</option>
                         @foreach ($regions as $region)
                             <option value="{{$region->id}}">{{$region->name}}</option>
@@ -100,7 +100,7 @@
 
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label" for="tahun">Tahun:</label>
-                    <select id="tahunSelect" class="form-control col-sm-10 select2bs4" name="tahun" required>
+                    <select id="tahunSelect" class="form-control col-sm-10 select2bs4" name="tahun">
                         <option value="" disabled selected>Pilih Tahun</option>
                         <option value='2023'>2023</option>
                         <option value='2022'>2022</option>
@@ -110,7 +110,7 @@
 
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label" for="pdrb_id">PDRB:</label>
-                    <select id="pdrbSelect" class="form-control col-sm-10 select2bs4" name="pdrb_id" required>
+                    <select id="pdrbSelect" class="form-control col-sm-10 select2bs4" name="pdrb_id">
                         <option value="" disabled selected>Pilih Jenis PDRB</option>
                     </select>
                     <div class="help-block"></div>
@@ -118,7 +118,7 @@
 
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label" for="period_id">Periode:</label>
-                    <select id="periodSelect" class="form-control col-sm-10 select2bs4" name="period_id" required>
+                    <select id="periodSelect" class="form-control col-sm-10 select2bs4" name="period_id">
                         <option value="" disabled selected>Pilih Periode</option>
                     </select>
                     <div class="help-block"></div>
