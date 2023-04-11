@@ -39,7 +39,23 @@ class PeriodController extends Controller
      */
     public function store(StoreperiodRequest $request)
     {
-        //
+        //$this->authorize('admin');
+        $range = explode(" - ",$request['date_range']);
+        $validatedData = $request->validate([
+            'type' => 'required',
+            'year' => 'required',
+            'quarter' => 'required',
+            'description' => 'required',
+        ]);
+
+        $validatedData['started_at'] = $range[0];
+        $validatedData['ended_at'] = $range[1];
+        $validatedData['status'] = 'Aktif';
+        
+        //dd($validatedData);
+        
+        Period::create($validatedData);
+        return redirect('/period')->with('notif',  'Data telah berhasil disimpan!');
     }
 
     /**
