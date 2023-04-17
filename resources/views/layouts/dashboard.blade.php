@@ -14,12 +14,13 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
     {{ $head }}
+    @vite(['resources/js/app.js'])
 </head>
 
 <body class="hold-transition layout-fixed">
     <!-- Site wrapper -->
     <div class="wrapper">
-        
+
         <!-- Navbar -->
         @include('layouts.navbar')
         <!-- /.navbar -->
