@@ -36,7 +36,7 @@
                         <th>PDRB</th>
                         <th>Tahun</th>
                         <th>Triwulan</th>
-                        <th>Periode</th>
+                        <th>Keterangan</th>
                         <th>Tanggal Mulai</th>
                         <th>Tanggal Selesai</th>
                         <th>Status</th>
