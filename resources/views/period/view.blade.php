@@ -32,27 +32,45 @@
             <table id="periodTable" class="table">
                 <thead>
                     <tr>
-                        <th>No.</th>
-                        <th>PDRB</th>
-                        <th>Tahun</th>
-                        <th>Triwulan</th>
-                        <th>Keterangan</th>
-                        <th>Tanggal Mulai</th>
-                        <th>Tanggal Selesai</th>
-                        <th>Status</th>
+                        <th class="text-center">No.</th>
+                        <th class="text-center">PDRB</th>
+                        <th class="text-center">Tahun</th>
+                        <th class="text-center">Triwulan</th>
+                        <th class="text-center">Keterangan</th>
+                        <th class="text-center">Tanggal Mulai</th>
+                        <th class="text-center">Tanggal Selesai</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($periods as $period)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $period->type }}</td>
-                            <td>{{ $period->year }}</td>
-                            <td>{{ $period->quarter }}</td>
-                            <td>{{ $period->description }}</td>
-                            <td>{{ $period->started_at }}</td>
-                            <td>{{ $period->ended_at }}</td>
-                            <td>{{ $period->status }}</td>
+                            <td class="text-center">{{ $loop->iteration }}</td>
+                            <td class="text-center">{{ $period->year }}</td>
+                            <td class="text-center">{{ $period->type }}</td>
+                            <td class="text-center">{{ $period->quarter }}</td>
+                            <td class="text-center">{{ $period->description }}</td>
+                            <td class="text-center">{{ $period->started_at }}</td>
+                            <td class="text-center">{{ $period->ended_at }}</td>
+                            <td class="text-center">{{ $period->status }}</td>
+                            <td class="project-actions text-right">
+                                <a class="btn btn-primary btn-sm" href="#">
+                                    <i class="fas fa-folder">
+                                    </i>
+                                    View
+                                </a>
+                                <a class="btn btn-info btn-sm" href="#">
+                                    <i class="fas fa-pencil-alt">
+                                    </i>
+                                    Edit
+                                </a>
+                                <a class="btn btn-danger btn-sm" href="#">
+                                    <i class="fas fa-trash">
+                                    </i>
+                                    Delete
+                                </a>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -109,7 +127,8 @@
 
                             <div class="form-group">
                                 <label for="description-text" class="col-form-label">Keterangan:</label>
-                                <input type="text" class="form-control" id="description-text" name="description" placeholder="Keterangan Putaran">
+                                <input type="text" class="form-control" id="description-text" name="description"
+                                    placeholder="Keterangan Putaran">
                             </div>
 
                             <div class="form-group">
@@ -120,7 +139,8 @@
                                             <i class="far fa-calendar-alt"></i>
                                         </span>
                                     </div>
-                                    <input type="text" class="form-control float-right" id="jadwal" name="date_range">
+                                    <input type="text" class="form-control float-right" id="jadwal"
+                                        name="date_range">
                                 </div>
                             </div>
 
