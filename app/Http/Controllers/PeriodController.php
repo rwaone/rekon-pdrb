@@ -54,8 +54,9 @@ class PeriodController extends Controller
         
         //dd($validatedData);
         
-        Period::create($validatedData);
-        return redirect('/period')->with('notif',  'Data telah berhasil disimpan!');
+        if(Period::create($validatedData)){
+            return redirect('/period')->with('notif',  'Data telah berhasil disimpan!');
+        }
     }
 
     /**
@@ -77,7 +78,9 @@ class PeriodController extends Controller
      */
     public function edit(period $period)
     {
-        //
+        return view('period.edit', [
+            'period' => $period,
+        ]);
     }
 
     /**
@@ -89,7 +92,22 @@ class PeriodController extends Controller
      */
     public function update(UpdateperiodRequest $request, period $period)
     {
-        //
+        $range = explode(" - ",$request['date_range']);
+        $validatedData = $request->validate([
+            'type' => 'required',
+            'year' => 'required',
+            'quarter' => 'required',
+            'description' => 'required',
+        ]);
+
+        $validatedData['started_at'] = $range[0];
+        $validatedData['ended_at'] = $range[1];
+        $validatedData['status'] = 'Aktif';
+        
+        //dd($validatedData);
+        
+        Period::where('id', $period->id)->update($validatedData);
+        return redirect('/period')->with('notif',  'Data telah berhasil disimpan!');
     }
 
     /**
@@ -100,6 +118,7 @@ class PeriodController extends Controller
      */
     public function destroy(period $period)
     {
-        //
+        Period::destroy($period->id);
+        return redirect('period')->with('notif', 'Data berhasil dihapus!');
     }
 }

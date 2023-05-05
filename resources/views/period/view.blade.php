@@ -12,6 +12,8 @@
         <link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
         <link rel="stylesheet" href="../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
         <link rel="stylesheet" href="../../plugins/daterangepicker/daterangepicker.css">
+        <!-- SweetAlert2 -->
+        <link rel="stylesheet" href="../../plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
     </x-slot>
 
     <x-slot name="breadcrumb">
@@ -47,8 +49,8 @@
                     @foreach ($periods as $period)
                         <tr>
                             <td class="text-center">{{ $loop->iteration }}</td>
-                            <td class="text-center">{{ $period->year }}</td>
                             <td class="text-center">{{ $period->type }}</td>
+                            <td class="text-center">{{ $period->year }}</td>
                             <td class="text-center">{{ $period->quarter }}</td>
                             <td class="text-center">{{ $period->description }}</td>
                             <td class="text-center">{{ $period->started_at }}</td>
@@ -60,12 +62,13 @@
                                     </i>
                                     View
                                 </a>
-                                <a class="btn btn-info btn-sm" href="#">
+                                <a class="btn btn-info btn-sm" href="/period/{{ $period->id }}/edit">
                                     <i class="fas fa-pencil-alt">
                                     </i>
                                     Edit
                                 </a>
-                                <a class="btn btn-danger btn-sm" href="#">
+                                <a onclick="deleteConfirm('/period/{{ $period->id }}')" class="btn btn-danger btn-sm"
+                                    href="#">
                                     <i class="fas fa-trash">
                                     </i>
                                     Delete
@@ -146,12 +149,39 @@
 
                         </div>
                         <div class="modal-footer justify-content-between">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                            <button type="submit" class="btn btn-success">Simpan</button>
                         </div>
                     </div>
                 </form>
             </div>
+        </div>
+
+
+        <div class="modal fade" id="deleteModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Konfirmasi</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Apakah Anda Benar-Benar Ingin Menghapusnya?</p>
+                    </div>
+                    <form action="" method="post" id="btn-delete">
+                        <div class="modal-footer justify-content-between">
+                            @method('delete')
+                            @csrf
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
         </div>
 
         <x-slot name="script">
@@ -164,7 +194,39 @@
             <script src="../../plugins/moment/moment.min.js"></script>
             <script src="../../plugins/daterangepicker/daterangepicker.js"></script>
             <script src="../../plugins/moment/moment.min.js"></script>
+            <!-- SweetAlert2 -->
+            <script src="../../plugins/sweetalert2/sweetalert2.min.js"></script>
             <script>
+                function deleteConfirm(url) {
+                    $('#btn-delete').attr('action', url);
+                    $('#deleteModal').modal();
+                }
+
+                $(function() {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+
+                    var notif = "{{ Session::get('notif') }}";
+
+                    if (notif != '') {
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: notif
+                        })
+                    } else if (notif == '2') {
+                        Toast.fire({
+                            icon: 'danger',
+                            title: 'Gagal',
+                            text: notif
+                        })
+                    }
+                });
+
                 $(document).on('focus', '.select2-selection', function(e) {
                     $(this).closest(".select2-container").siblings('select:enabled').select2('open');
                 })
