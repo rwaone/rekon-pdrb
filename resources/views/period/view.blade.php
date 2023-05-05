@@ -49,8 +49,8 @@
                     @foreach ($periods as $period)
                         <tr>
                             <td class="text-center">{{ $loop->iteration }}</td>
-                            <td class="text-center">{{ $period->year }}</td>
                             <td class="text-center">{{ $period->type }}</td>
+                            <td class="text-center">{{ $period->year }}</td>
                             <td class="text-center">{{ $period->quarter }}</td>
                             <td class="text-center">{{ $period->description }}</td>
                             <td class="text-center">{{ $period->started_at }}</td>

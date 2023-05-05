@@ -19,70 +19,82 @@
     </x-slot>
 
     <div class="card">
-
-        <div class="card-header">
-            <a href="{{ url()->previous() }}">
-                <button type="button" class="btn btn-warning"> {{ _('< Kembali') }} </button>
-            </a>
-        </div>
-
-        <div class="card-body">
-            <div class="form-group">
-                <label class="col-form-label" for="typeSelect">Jenis PDRB:</label>
-                <select id="typeSelect" class="form-control select2bs4" style="width: 100%;" name="type">
-                    <option value="" disabled selected>Pilih Jenis PDRB</option>
-                    <option {{ old('type', $period->type) == 'Lapangan Usaha' ? 'selected' : '' }} value='Lapangan Usaha'>Lapangan Usaha</option>
-                    <option {{ old('type', $period->type) == 'Pengeluaran' ? 'selected' : ''}} value='Pengeluaran'>Pengeluaran</option>
-                </select>
-                <div class="help-block"></div>
+        <form action="/period/{{ $period->id }}" method="post">
+            @csrf
+            @method('put')
+            <div class="card-header">
+                <a href="{{ url()->previous() }}">
+                    <button type="button" class="btn btn-warning"> {{ _('< Kembali') }} </button>
+                </a>
             </div>
 
-            <div class="form-group">
-                <label class="col-form-label" for="tahunSelect">Tahun:</label>
-                <select id="tahunSelect" class="form-control select2bs4" style="width: 100%;" name="year">
-                    <option value="" disabled selected>Pilih Tahun</option>
-                    <option {{ old('type', $period->year) == '2023' ? 'selected' : ''}} value='2023'>2023</option>
-                    <option {{ old('type', $period->year) == '2022' ? 'selected' : ''}} value='2022'>2022</option>
-                </select>
-                <div class="help-block"></div>
-            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label class="col-form-label" for="typeSelect">Jenis PDRB:</label>
+                    <select id="typeSelect" class="form-control select2bs4" style="width: 100%;" name="type">
+                        <option value="" disabled selected>Pilih Jenis PDRB</option>
+                        <option {{ old('type', $period->type) == 'Lapangan Usaha' ? 'selected' : '' }}
+                            value='Lapangan Usaha'>Lapangan Usaha</option>
+                        <option {{ old('type', $period->type) == 'Pengeluaran' ? 'selected' : '' }} value='Pengeluaran'>
+                            Pengeluaran</option>
+                    </select>
+                    <div class="help-block"></div>
+                </div>
 
-            <div class="form-group">
-                <label class="col-form-label" for="quarterSelect">Triwulan:</label>
-                <select id="quarterSelect" class="form-control select2bs4" style="width: 100%;" name="quarter">
-                    <option value="" disabled selected>Pilih Triwulan</option>
-                    <option {{ old('type', $period->quarter) == '1' ? 'selected' : ''}} value='1'>Triwulan 1</option>
-                    <option {{ old('type', $period->quarter) == '2' ? 'selected' : ''}} value='2'>Triwulan 2</option>
-                    <option {{ old('type', $period->quarter) == '3' ? 'selected' : ''}} value='3'>Triwulan 3</option>
-                    <option {{ old('type', $period->quarter) == '4' ? 'selected' : ''}} value='4'>Triwulan 4</option>
-                </select>
-                <div class="help-block"></div>
-            </div>
+                <div class="form-group">
+                    <label class="col-form-label" for="tahunSelect">Tahun:</label>
+                    <select id="tahunSelect" class="form-control select2bs4" style="width: 100%;" name="year">
+                        <option value="" disabled selected>Pilih Tahun</option>
+                        <option {{ old('type', $period->year) == '2023' ? 'selected' : '' }} value='2023'>2023
+                        </option>
+                        <option {{ old('type', $period->year) == '2022' ? 'selected' : '' }} value='2022'>2022
+                        </option>
+                    </select>
+                    <div class="help-block"></div>
+                </div>
 
-            <div class="form-group">
-                <label for="description-text" class="col-form-label">Keterangan:</label>
-                <input type="text" class="form-control" id="description-text" name="description"
-                value="{{ old('description', $period->description) }}" placeholder="Keterangan Putaran">
-            </div>
+                <div class="form-group">
+                    <label class="col-form-label" for="quarterSelect">Triwulan:</label>
+                    <select id="quarterSelect" class="form-control select2bs4" style="width: 100%;" name="quarter">
+                        <option value="" disabled selected>Pilih Triwulan</option>
+                        <option {{ old('type', $period->quarter) == '1' ? 'selected' : '' }} value='1'>Triwulan 1
+                        </option>
+                        <option {{ old('type', $period->quarter) == '2' ? 'selected' : '' }} value='2'>Triwulan 2
+                        </option>
+                        <option {{ old('type', $period->quarter) == '3' ? 'selected' : '' }} value='3'>Triwulan 3
+                        </option>
+                        <option {{ old('type', $period->quarter) == '4' ? 'selected' : '' }} value='4'>Triwulan 4
+                        </option>
+                    </select>
+                    <div class="help-block"></div>
+                </div>
 
-            <div class="form-group">
-                <label>Jadwal:</label>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">
-                            <i class="far fa-calendar-alt"></i>
-                        </span>
+                <div class="form-group">
+                    <label for="description-text" class="col-form-label">Keterangan:</label>
+                    <input type="text" class="form-control" id="description-text" name="description"
+                        value="{{ old('description', $period->description) }}" placeholder="Keterangan Putaran">
+                </div>
+
+                <div class="form-group">
+                    <label>Jadwal:</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="far fa-calendar-alt"></i>
+                            </span>
+                        </div>
+                        <input type="text" class="form-control float-right" id="jadwal" name="date_range"
+                            value="{{ old('date_range', $period->started_at . ' - ' . $period->ended_at) }}">
                     </div>
-                    <input type="text" class="form-control float-right" id="jadwal" name="date_range" value="{{ old('date_range', $period->started_at.' - '.$period->ended_at)}}">
                 </div>
             </div>
-        </div>
 
-        <div class="card-footer">
-            <div class="float-right">
-                <button type="submit" class="btn btn-success">Simpan</button>
+            <div class="card-footer">
+                <div class="float-right">
+                    <button type="submit" class="btn btn-success">Simpan</button>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 
     <x-slot name="script">
