@@ -73,7 +73,7 @@
                             <i class="far fa-calendar-alt"></i>
                         </span>
                     </div>
-                    <input type="text" class="form-control float-right" id="jadwal" name="date_range">
+                    <input type="text" class="form-control float-right" id="jadwal" name="date_range" value="{{ old('date_range', $period->started_at.' - '.$period->ended_at)}}">
                 </div>
             </div>
         </div>
