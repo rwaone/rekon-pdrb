@@ -175,7 +175,7 @@
                             @method('delete')
                             @csrf
                             <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-                            <button type="submit" class="btn btn-danger">Delete</button>
+                            <button type="submit" class="btn btn-danger">Hapus</button>
                         </div>
                     </form>
                 </div>
