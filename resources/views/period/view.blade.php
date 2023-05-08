@@ -12,71 +12,8 @@
         <link rel="stylesheet" href="{{ url('') }}/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
         <link rel="stylesheet" href="{{ url('') }}/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
         <link rel="stylesheet" href="{{ url('') }}/plugins/daterangepicker/daterangepicker.css">
-        <script nonce="326d0a6f-467a-4c36-84e6-ac3d7ab6c268">
-            (function(w, d) {
-                ! function(bv, bw, bx, by) {
-                    bv[bx] = bv[bx] || {};
-                    bv[bx].executed = [];
-                    bv.zaraz = {
-                        deferred: [],
-                        listeners: []
-                    };
-                    bv.zaraz.q = [];
-                    bv.zaraz._f = function(bz) {
-                        return function() {
-                            var bA = Array.prototype.slice.call(arguments);
-                            bv.zaraz.q.push({
-                                m: bz,
-                                a: bA
-                            })
-                        }
-                    };
-                    for (const bB of ["track", "set", "debug"]) bv.zaraz[bB] = bv.zaraz._f(bB);
-                    bv.zaraz.init = () => {
-                        var bC = bw.getElementsByTagName(by)[0],
-                            bD = bw.createElement(by),
-                            bE = bw.getElementsByTagName("title")[0];
-                        bE && (bv[bx].t = bw.getElementsByTagName("title")[0].text);
-                        bv[bx].x = Math.random();
-                        bv[bx].w = bv.screen.width;
-                        bv[bx].h = bv.screen.height;
-                        bv[bx].j = bv.innerHeight;
-                        bv[bx].e = bv.innerWidth;
-                        bv[bx].l = bv.location.href;
-                        bv[bx].r = bw.referrer;
-                        bv[bx].k = bv.screen.colorDepth;
-                        bv[bx].n = bw.characterSet;
-                        bv[bx].o = (new Date).getTimezoneOffset();
-                        if (bv.dataLayer)
-                            for (const bI of Object.entries(Object.entries(dataLayer).reduce(((bJ, bK) => ({
-                                    ...bJ[1],
-                                    ...bK[1]
-                                }))))) zaraz.set(bI[0], bI[1], {
-                                scope: "page"
-                            });
-                        bv[bx].q = [];
-                        for (; bv.zaraz.q.length;) {
-                            const bL = bv.zaraz.q.shift();
-                            bv[bx].q.push(bL)
-                        }
-                        bD.defer = !0;
-                        for (const bM of [localStorage, sessionStorage]) Object.keys(bM || {}).filter((bO => bO
-                            .startsWith("_zaraz_"))).forEach((bN => {
-                            try {
-                                bv[bx]["z_" + bN.slice(7)] = JSON.parse(bM.getItem(bN))
-                            } catch {
-                                bv[bx]["z_" + bN.slice(7)] = bM.getItem(bN)
-                            }
-                        }));
-                        bD.referrerPolicy = "origin";
-                        bD.src = "/cdn-cgi/zaraz/s.js?z=" + btoa(encodeURIComponent(JSON.stringify(bv[bx])));
-                        bC.parentNode.insertBefore(bD, bC)
-                    };
-                    ["complete", "interactive"].includes(bw.readyState) ? zaraz.init() : bv.addEventListener(
-                        "DOMContentLoaded", zaraz.init)
-                }(w, d, "zarazData", "script");
-            })(window, document);
-        </script>
+        <!-- SweetAlert2 -->
+        <link rel="stylesheet" href="{{ url('') }}/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
     </x-slot>
 
     <x-slot name="breadcrumb">
@@ -105,6 +42,7 @@
                         <th class="text-center">Tanggal Mulai</th>
                         <th class="text-center">Tanggal Selesai</th>
                         <th class="text-center">Status</th>
+                        <th class="text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -115,7 +53,6 @@
                             <td class="text-center">{{ $period->year }}</td>
                             <td class="text-center">{{ $period->quarter }}</td>
                             <td class="text-center">{{ $period->description }}</td>
-                            <td class="text-center">{{ $period->year }}</td>
                             <td class="text-center">{{ $period->started_at }}</td>
                             <td class="text-center">{{ $period->ended_at }}</td>
                             <td class="text-center">{{ $period->status }}</td>
@@ -125,12 +62,13 @@
                                     </i>
                                     View
                                 </a>
-                                <a class="btn btn-info btn-sm" href="#">
+                                <a class="btn btn-info btn-sm" href="/period/{{ $period->id }}/edit">
                                     <i class="fas fa-pencil-alt">
                                     </i>
                                     Edit
                                 </a>
-                                <a class="btn btn-danger btn-sm" href="#">
+                                <a onclick="deleteConfirm('/period/{{ $period->id }}')" class="btn btn-danger btn-sm"
+                                    href="#">
                                     <i class="fas fa-trash">
                                     </i>
                                     Delete
@@ -144,7 +82,7 @@
 
         <div class="modal fade" id="modal-lg">
             <div class="modal-dialog modal-lg">
-                <form action="">
+                <form action="/period" method="post">
                     @csrf
                     <div class="modal-content">
                         <div class="modal-header">
@@ -169,7 +107,7 @@
                             <div class="form-group">
                                 <label class="col-form-label" for="tahunSelect">Tahun:</label>
                                 <select id="tahunSelect" class="form-control select2bs4" style="width: 100%;"
-                                    name="tahun">
+                                    name="year">
                                     <option value="" disabled selected>Pilih Tahun</option>
                                     <option value='2023'>2023</option>
                                     <option value='2022'>2022</option>
@@ -192,7 +130,8 @@
 
                             <div class="form-group">
                                 <label for="description-text" class="col-form-label">Keterangan:</label>
-                                <input type="text" class="form-control" id="description-text" name="description" placeholder="Keterangan Putaran">
+                                <input type="text" class="form-control" id="description-text" name="description"
+                                    placeholder="Keterangan Putaran">
                             </div>
 
                             <div class="form-group">
@@ -203,18 +142,45 @@
                                             <i class="far fa-calendar-alt"></i>
                                         </span>
                                     </div>
-                                    <input type="text" class="form-control float-right" id="jadwal" name="date_range">
+                                    <input type="text" class="form-control float-right" id="jadwal"
+                                        name="date_range">
                                 </div>
                             </div>
 
                         </div>
                         <div class="modal-footer justify-content-between">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                            <button type="submit" class="btn btn-success">Simpan</button>
                         </div>
                     </div>
                 </form>
             </div>
+        </div>
+
+        <div class="modal fade" id="deleteModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Konfirmasi</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Apakah Anda Benar-Benar Ingin Menghapusnya?</p>
+                    </div>
+                    <form action="" method="post" id="btn-delete">
+                        <div class="modal-footer justify-content-between">
+                            @method('delete')
+                            @csrf
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                            <button type="submit" class="btn btn-danger">Hapus</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
         </div>
 
         <x-slot name="script">
@@ -227,7 +193,38 @@
             <script src="{{ url('') }}/plugins/moment/moment.min.js"></script>
             <script src="{{ url('') }}/plugins/daterangepicker/daterangepicker.js"></script>
             <script src="{{ url('') }}/plugins/moment/moment.min.js"></script>
+            <script src="{{ url('') }}/plugins/sweetalert2/sweetalert2.min.js"></script>
             <script>
+                function deleteConfirm(url) {
+                    $('#btn-delete').attr('action', url);
+                    $('#deleteModal').modal();
+                }
+
+                $(function() {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+
+                    var notif = "{{ Session::get('notif') }}";
+
+                    if (notif != '') {
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: notif
+                        })
+                    } else if (notif == '2') {
+                        Toast.fire({
+                            icon: 'danger',
+                            title: 'Gagal',
+                            text: notif
+                        })
+                    }
+                });
+                
                 $(document).on('focus', '.select2-selection', function(e) {
                     $(this).closest(".select2-container").siblings('select:enabled').select2('open');
                 })
