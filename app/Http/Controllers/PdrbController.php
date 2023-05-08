@@ -7,6 +7,9 @@ use App\Models\Region;
 use App\Models\Satker;
 use App\Http\Requests\StorepdrbRequest;
 use App\Http\Requests\UpdatepdrbRequest;
+use App\Models\Category;
+use App\Models\Sector;
+use App\Models\Subsector;
 
 class PdrbController extends Controller
 {
@@ -18,8 +21,15 @@ class PdrbController extends Controller
     public function index()
     {
         $regions = Region::all();
+        $category = Category::all();
+        $sector = Sector::all();
+        $subsector = Subsector ::all();
+
         return view('rekonsiliasi.view',[
             'regions' => $regions,
+            'category' => $category,
+            'sector' => $sector,
+            'subsector' => $subsector,
         ]);
     }
 
