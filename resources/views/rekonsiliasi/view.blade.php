@@ -3,14 +3,13 @@
     <x-slot name="title">
         {{ __('Rekonsiliasi') }}
     </x-slot>
-
     <x-slot name="head">
         <!-- Additional resources here -->
-        <link rel="stylesheet" href="../../plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-        <link rel="stylesheet" href="../../plugins/select2/css/select2.min.css">
-        <link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-        <link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-        <link rel="stylesheet" href="../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+        <link rel="stylesheet" href="{{ url('') }}/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+        <link rel="stylesheet" href="{{ url('') }}/plugins/select2/css/select2.min.css">
+        <link rel="stylesheet" href="{{ url('') }}/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+        <link rel="stylesheet" href="{{ url('') }}/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+        <link rel="stylesheet" href="{{ url('') }}/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
         <script nonce="326d0a6f-467a-4c36-84e6-ac3d7ab6c268">
             (function(w, d) {
                 ! function(bv, bw, bx, by) {
@@ -76,6 +75,15 @@
                 }(w, d, "zarazData", "script");
             })(window, document);
         </script>
+        <style type="text/css">
+        .table td { 
+            vertical-align: middle;
+            padding: 0.25rem;
+        }
+        .table tr:nth-child(even) {
+            background-color: ; 
+        }
+        </style>
     </x-slot>
 
     <x-slot name="breadcrumb">
@@ -129,116 +137,88 @@
     </div>
 
     <div class="card">
-
-        <div class="card-body">
-            <table id="pdrbTable" class="table">
-                <thead>
-                    <tr>
-                        <th>Rendering engine</th>
-                        <th>Browser</th>
-                        <th>Platform(s)</th>
-                        <th>Engine version</th>
-                        <th>CSS grade</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Tasman</td>
-                        <td>Internet Explorer 4.5</td>
-                        <td>Mac OS 8-9</td>
-                        <td>-</td>
-                        <td>X</td>
-                    </tr>
-                    <tr>
-                        <td>Tasman</td>
-                        <td>Internet Explorer 5.1</td>
-                        <td>Mac OS 7.6-9</td>
-                        <td>1</td>
-                        <td>C</td>
-                    </tr>
-                    <tr>
-                        <td>Tasman</td>
-                        <td>Internet Explorer 5.2</td>
-                        <td>Mac OS 8-X</td>
-                        <td>1</td>
-                        <td>C</td>
-                    </tr>
-                    <tr>
-                        <td>Misc</td>
-                        <td>NetFront 3.1</td>
-                        <td>Embedded devices</td>
-                        <td>-</td>
-                        <td>C</td>
-                    </tr>
-                    <tr>
-                        <td>Misc</td>
-                        <td>NetFront 3.4</td>
-                        <td>Embedded devices</td>
-                        <td>-</td>
-                        <td>A</td>
-                    </tr>
-                    <tr>
-                        <td>Misc</td>
-                        <td>Dillo 0.8</td>
-                        <td>Embedded devices</td>
-                        <td>-</td>
-                        <td>X</td>
-                    </tr>
-                    <tr>
-                        <td>Misc</td>
-                        <td>Links</td>
-                        <td>Text only</td>
-                        <td>-</td>
-                        <td>X</td>
-                    </tr>
-                    <tr>
-                        <td>Misc</td>
-                        <td>Lynx</td>
-                        <td>Text only</td>
-                        <td>-</td>
-                        <td>X</td>
-                    </tr>
-                    <tr>
-                        <td>Misc</td>
-                        <td>IE Mobile</td>
-                        <td>Windows Mobile 6</td>
-                        <td>-</td>
-                        <td>C</td>
-                    </tr>
-                    <tr>
-                        <td>Misc</td>
-                        <td>PSP browser</td>
-                        <td>PSP</td>
-                        <td>-</td>
-                        <td>C</td>
-                    </tr>
-                    <tr>
-                        <td>Other browsers</td>
-                        <td>All others</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>U</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
+        <form class="form-horizontal">
+            <div class="card-body p-3">
+                <table class="table table-striped table-bordered" id="rekonsiliasi-table">
+                    <thead class="text-center" style="background-color: steelblue; color:aliceblue;">
+                        <tr>
+                            <th>Komponen</th>
+                            <th>Nilai</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($category as $category)
+                        <tr>
+                            <td>
+                                <label class="col" style="margin-bottom:0rem;" for="{{ $category->name }}_{{ $category->code }}">{{ $category->code.". ".$category->name }}</label>
+                            </td>
+                            <td>
+                                <input type="text" name="" id="" class="form-control" aria-required="true">
+                            </td>
+                        </tr>
+                            @foreach ($sector as $sect)
+                            @if ($sect->category_id == $category->id && $sect->code != NULL)
+                                <tr>
+                                    <td>
+                                        <p class="col ml-4" style="margin-bottom:0rem;" for="{{ $sect->code }}_{{ $sect->name }}">{{ $sect->code.". ".$sect->name }}</p>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="" id="" class="form-control" aria-required="true">
+                                    </td>
+                                </tr>
+                            @foreach ($subsector as $subsect)
+                                @if ($subsect->sector_id == $sect->id && $subsect->code != NULL)
+                                    <tr>
+                                        <td>
+                                            <p class="col ml-5" style="margin-bottom:0rem;" for="{{ $subsect->code }}_{{ $subsect->name }}">{{ $subsect->code.". ".$subsect->name }}</p>
+                                        </td>
+                                        <td>
+                                            <input type="text" name="" id="" class="form-control" aria-required="true">
+                                        </td>
+                                    </tr>
+                                @endif
+                            @endforeach
+                            @endif
+                            @endforeach
+                        @endforeach
+                    </tbody>
+                </table>
+                {{-- @foreach ($category as $category)
+                    <label class="col" for="{{ $category->name }}_{{ $category->code }}">{{ $category->code.". ".$category->name }}</label>
+                    @foreach ($sector as $sect)
+                    @if ($sect->category_id == $category->id && $sect->code != NULL)
+                        <p class="col ml-4" for="{{ $sect->code }}_{{ $sect->name }}">{{ $sect->code.". ".$sect->name }}</p>
+                    @foreach ($subsector as $subsect)
+                        @if ($subsect->sector_id == $sect->id && $subsect->code != NULL)
+                                <p class="col ml-5" for="{{ $subsect->code }}_{{ $subsect->name }}">{{ $subsect->code.". ".$subsect->name }}</p>
+                        @endif
+                    @endforeach
+                    @endif
+                    @endforeach
+                @endforeach --}}
+            </div>
+            <div class="card-footer d-flex pr-3">
+                <div class="ml-auto">
+                    <button type="button" class="btn btn-info">Simpan</button>
+                </div>
+            </div>
+        </form>
     </div>
 
     <x-slot name="script">
         <!-- Additional JS resources -->
-        <script src="../../plugins/select2/js/select2.full.min.js"></script>
-        <script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
-        <script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-        <script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-        <script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-        <script src="../../plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-        <script src="../../plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-        <script src="../../plugins/jszip/jszip.min.js"></script>
-        <script src="../../plugins/pdfmake/pdfmake.min.js"></script>
-        <script src="../../plugins/pdfmake/vfs_fonts.js"></script>
-        <script src="../../plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-        <script src="../../plugins/datatables-buttons/js/buttons.print.min.js"></script>
+        <script src="{{ url('') }}/plugins/select2/js/select2.full.min.js"></script>
+        <script src="{{ url('') }}/plugins/datatables/jquery.dataTables.min.js"></script>
+        <script src="{{ url('') }}/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+        <script src="{{ url('') }}/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+        <script src="{{ url('') }}/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+        <script src="{{ url('') }}/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+        <script src="{{ url('') }}/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+        <script src="{{ url('') }}/plugins/jszip/jszip.min.js"></script>
+        <script src="{{ url('') }}/plugins/pdfmake/pdfmake.min.js"></script>
+        <script src="{{ url('') }}/plugins/pdfmake/vfs_fonts.js"></script>
+        <script src="{{ url('') }}/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+        <script src="{{ url('') }}/plugins/datatables-buttons/js/buttons.print.min.js"></script>
         <script>
             $(document).on('focus', '.select2-selection', function(e) {
                 $(this).closest(".select2-container").siblings('select:enabled').select2('open');

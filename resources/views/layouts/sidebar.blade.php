@@ -1,7 +1,7 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="../../index3.html" class="brand-link">
-        <img src="../../dist/img/AdminLTELogo.png" alt="AdminLTE Logo"
+    <a href="{{ url('') }}/index3.html" class="brand-link">
+        <img src="{{ url('') }}/dist/img/AdminLTELogo.png" alt="AdminLTE Logo"
             class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">{{ config('app.name', 'Laravel') }}</span>
     </a>
@@ -33,7 +33,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ url('pdrb/rekonsiliasi') }}" class="nav-link {{ Request::is('pdrb/rekonsiliasi') ? 'active' : '' }}">
+                            <a href="{{ url('rekonsiliasi') }}" class="nav-link {{ Request::is('rekonsiliasi') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Rekonsiliasi</p>
                             </a>
