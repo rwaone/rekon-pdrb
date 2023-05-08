@@ -6,12 +6,12 @@
 
     <x-slot name="head">
         <!-- Additional resources here -->
-        <link rel="stylesheet" href="../../plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-        <link rel="stylesheet" href="../../plugins/select2/css/select2.min.css">
-        <link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-        <link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-        <link rel="stylesheet" href="../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-        <link rel="stylesheet" href="../../plugins/daterangepicker/daterangepicker.css">
+        <link rel="stylesheet" href="{{ url('') }}/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+        <link rel="stylesheet" href="{{ url('') }}/plugins/select2/css/select2.min.css">
+        <link rel="stylesheet" href="{{ url('') }}/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+        <link rel="stylesheet" href="{{ url('') }}/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+        <link rel="stylesheet" href="{{ url('') }}/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+        <link rel="stylesheet" href="{{ url('') }}/plugins/daterangepicker/daterangepicker.css">
     </x-slot>
 
     <x-slot name="breadcrumb">
@@ -99,14 +99,14 @@
 
     <x-slot name="script">
         <!-- Additional JS resources -->
-        <script src="../../plugins/select2/js/select2.full.min.js"></script>
-        <script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
-        <script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-        <script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-        <script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-        <script src="../../plugins/moment/moment.min.js"></script>
-        <script src="../../plugins/daterangepicker/daterangepicker.js"></script>
-        <script src="../../plugins/moment/moment.min.js"></script>
+        <script src="{{ url('') }}/plugins/select2/js/select2.full.min.js"></script>
+        <script src="{{ url('') }}/plugins/datatables/jquery.dataTables.min.js"></script>
+        <script src="{{ url('') }}/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+        <script src="{{ url('') }}/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+        <script src="{{ url('') }}/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+        <script src="{{ url('') }}/plugins/moment/moment.min.js"></script>
+        <script src="{{ url('') }}/plugins/daterangepicker/daterangepicker.js"></script>
+        <script src="{{ url('') }}/plugins/moment/moment.min.js"></script>
         <script>
             $(document).on('focus', '.select2-selection', function(e) {
                 $(this).closest(".select2-container").siblings('select:enabled').select2('open');
