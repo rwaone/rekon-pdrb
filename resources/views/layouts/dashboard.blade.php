@@ -14,6 +14,8 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ url('') }}/dist/css/adminlte.min.css">
     {{ $head }}
+    
+    @vite(['resources/js/app.js'])
 </head>
 
 <body class="hold-transition layout-fixed">
