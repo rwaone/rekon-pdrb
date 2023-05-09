@@ -20,17 +20,7 @@ class PdrbController extends Controller
      */
     public function index()
     {
-        $regions = Region::all();
-        $category = Category::all();
-        $sector = Sector::all();
-        $subsector = Subsector ::all();
-
-        return view('rekonsiliasi.view',[
-            'regions' => $regions,
-            'category' => $category,
-            'sector' => $sector,
-            'subsector' => $subsector,
-        ]);
+        return view('rekonsiliasi.view');
     }
 
     /**
