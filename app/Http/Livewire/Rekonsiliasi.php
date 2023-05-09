@@ -23,7 +23,7 @@ class Rekonsiliasi extends Component
             'regions' => $regions,
             'categories' => $categories,
             'sectors' => $sectors,
-            'subsectors' => $subsectors,
+            'subsector' => $subsectors,
             'periods' => $periods
         ]);
     }
