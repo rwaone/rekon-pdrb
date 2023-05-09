@@ -16,6 +16,7 @@
     {{ $head }}
     
     @vite(['resources/js/app.js'])
+    @livewireStyles
 </head>
 
 <body class="hold-transition layout-fixed">
@@ -79,6 +80,7 @@
     <!-- AdminLTE App -->
     <script src="{{ url('') }}/dist/js/adminlte.min.js"></script>
     {{ $script }}
+    @livewireScripts
 </body>
 
 </html>
