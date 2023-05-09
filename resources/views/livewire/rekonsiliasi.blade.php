@@ -84,57 +84,91 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($categories as $category)
-                        <tr>
-                            <td>
-                                <label class="col" style="margin-bottom:0rem;"
-                                    for="{{ $category->name }}_{{ $category->code }}">{{ $category->code . '. ' . $category->name }}</label>
-                            </td>
-                            <td>
-                                <input type="text" name="" id="" class="form-control"
-                                    aria-required="true">
-                            </td>
-                        </tr>
-                        @foreach ($sectors as $sector)
-                            @if ($sector->category_id == $category->id && $sector->code != null)
+                    {{-- @foreach ($category as $category) --}}
+                    {{-- <tr>
+                        <td>
+                            <label class="col" style="margin-bottom:0rem;" for="{{ $category->name }}_{{ $category->code }}">{{ $category->code.". ".$category->name }}</label>
+                        </td>
+                        <td>
+                            <input type="text" name="" id="" class="form-control" aria-required="true">
+                        </td>
+                    </tr> --}}
+                        {{-- @foreach ($sector as $sect)
+                        @if ($sect->category_id == $category->id && $sect->code != NULL) --}}
+                            {{-- <tr>
+                                <td>
+                                    <p class="col ml-4" style="margin-bottom:0rem;" for="{{ $sect->code }}_{{ $sect->name }}">{{ $sect->code.". ".$sect->name }}</p>
+                                </td>
+                                <td>
+                                    <input type="text" name="" id="" class="form-control" aria-required="true">
+                                </td>
+                            </tr> --}}
+                        @foreach ($subsector as $subsect)
+                            {{-- @if ($subsect->sector_id == $sect->id) --}}
+                            @if (($subsect->code != NULL && $subsect->code == "a" && $subsect->sector->code == "1") || ($subsect->code == NULL && $subsect->sector->code == "1"))
                                 <tr>
                                     <td>
-                                        <p class="col ml-4" style="margin-bottom:0rem;"
-                                            for="{{ $sector->code }}_{{ $sector->name }}">
-                                            {{ $sector->code . '. ' . $sector->name }}</p>
+                                        <label class="col" style="margin-bottom:0rem;" for="">{{ $subsect->sector->category->code.". ".$subsect->sector->category->name }}</label>
                                     </td>
                                     <td>
-                                        <input type="text" name="" id="" class="form-control"
-                                            aria-required="true">
+                                        <input disabled type="text" name="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" id="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" class="form-control" aria-required="true">
                                     </td>
                                 </tr>
-                                @foreach ($subsectors as $subsector)
-                                    @if ($subsector->sector_id == $sector->id && $subsector->code != null)
-                                        <tr>
-                                            <td>
-                                                <p class="col ml-5" style="margin-bottom:0rem;"
-                                                    for="{{ $subsector->code }}_{{ $subsector->name }}">
-                                                    {{ $subsector->code . '. ' . $subsector->name }}</p>
-                                            </td>
-                                            <td>
-                                                <input type="text" name="" id=""
-                                                    class="form-control" aria-required="true">
-                                            </td>
-                                        </tr>
-                                    @endif
-                                @endforeach
                             @endif
+                            @if ($subsect->code != NULL && $subsect->code == "a")
+                                <tr>
+                                    <td>
+                                        <p class="col ml-4" style="margin-bottom:0rem;" for="">{{ $subsect->sector->code.". ".$subsect->sector->name }}</p>
+                                    </td>
+                                    <td>
+                                        <input disabled type="text" name="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" id="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" class="form-control" aria-required="true">
+                                    </td>
+                                </tr>
+                            @endif
+                            @if ($subsect->code != NULL)
+                                <tr>
+                                    <td>
+                                        <p class="col ml-5" style="margin-bottom:0rem;" 
+                                            for="{{ $subsect->code }}_{{ $subsect->name }}">{{ $subsect->code.". ".$subsect->name }}</p>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" id="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" class="form-control" aria-required="true">
+                                    </td>
+                                </tr>    
+                            @elseif ($subsect->code == NULL && $subsect->sector->code != NULL)
+                                <tr>
+                                    <td>
+                                        <p class="col ml-4" style="margin-bottom:0rem;" 
+                                            for="{{ $subsect->sector->code."_".$subsect->sector->name }}">{{ $subsect->sector->code.". ".$subsect->sector->name }}</p>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" id="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" class="form-control" aria-required="true">
+                                    </td>
+                                </tr>
+                            @elseif ($subsect->code == NULL && $subsect->sector->code == NULL)
+                                <tr>
+                                    <td>
+                                        <label class="col" style="margin-bottom:0rem;" for="{{ $subsect->sector->category->code."_".$subsect->name }}">{{ $subsect->sector->category->code.". ".$subsect->name }}</label>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" id="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" class="form-control" aria-required="true">
+                                    </td>
+                                </tr>
+                            @endif
+                            {{-- @endif --}}
                         @endforeach
-                    @endforeach
+                        {{-- @endif
+                        @endforeach --}}
+                    {{-- @endforeach --}}
                 </tbody>
             </table>
             {{-- @foreach ($category as $category)
                 <label class="col" for="{{ $category->name }}_{{ $category->code }}">{{ $category->code.". ".$category->name }}</label>
                 @foreach ($sector as $sect)
-                @if ($sect->category_id == $category->id && $sect->code != null)
+                @if ($sect->category_id == $category->id && $sect->code != NULL)
                     <p class="col ml-4" for="{{ $sect->code }}_{{ $sect->name }}">{{ $sect->code.". ".$sect->name }}</p>
                 @foreach ($subsector as $subsect)
-                    @if ($subsect->sector_id == $sect->id && $subsect->code != null)
+                    @if ($subsect->sector_id == $sect->id && $subsect->code != NULL)
                             <p class="col ml-5" for="{{ $subsect->code }}_{{ $subsect->name }}">{{ $subsect->code.". ".$subsect->name }}</p>
                     @endif
                 @endforeach
