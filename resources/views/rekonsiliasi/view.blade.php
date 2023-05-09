@@ -91,7 +91,7 @@
         <li class="breadcrumb-item active">Rekonsiliasi</li>
     </x-slot>
 
-    <livewire:rekonsiliasi/>
+    @livewire('rekonsiliasi')
 
     <x-slot name="script">
         <!-- Additional JS resources -->
