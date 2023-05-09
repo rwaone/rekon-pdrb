@@ -84,27 +84,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {{-- @foreach ($category as $category) --}}
-                    {{-- <tr>
-                        <td>
-                            <label class="col" style="margin-bottom:0rem;" for="{{ $category->name }}_{{ $category->code }}">{{ $category->code.". ".$category->name }}</label>
-                        </td>
-                        <td>
-                            <input type="text" name="" id="" class="form-control" aria-required="true">
-                        </td>
-                    </tr> --}}
-                        {{-- @foreach ($sector as $sect)
-                        @if ($sect->category_id == $category->id && $sect->code != NULL) --}}
-                            {{-- <tr>
-                                <td>
-                                    <p class="col ml-4" style="margin-bottom:0rem;" for="{{ $sect->code }}_{{ $sect->name }}">{{ $sect->code.". ".$sect->name }}</p>
-                                </td>
-                                <td>
-                                    <input type="text" name="" id="" class="form-control" aria-required="true">
-                                </td>
-                            </tr> --}}
-                        @foreach ($subsector as $subsect)
-                            {{-- @if ($subsect->sector_id == $sect->id) --}}
+                        @foreach ($subsectors as $subsect)
                             @if (($subsect->code != NULL && $subsect->code == "a" && $subsect->sector->code == "1") || ($subsect->code == NULL && $subsect->sector->code == "1"))
                                 <tr>
                                     <td>
@@ -155,26 +135,9 @@
                                     </td>
                                 </tr>
                             @endif
-                            {{-- @endif --}}
                         @endforeach
-                        {{-- @endif
-                        @endforeach --}}
-                    {{-- @endforeach --}}
                 </tbody>
             </table>
-            {{-- @foreach ($category as $category)
-                <label class="col" for="{{ $category->name }}_{{ $category->code }}">{{ $category->code.". ".$category->name }}</label>
-                @foreach ($sector as $sect)
-                @if ($sect->category_id == $category->id && $sect->code != NULL)
-                    <p class="col ml-4" for="{{ $sect->code }}_{{ $sect->name }}">{{ $sect->code.". ".$sect->name }}</p>
-                @foreach ($subsector as $subsect)
-                    @if ($subsect->sector_id == $sect->id && $subsect->code != NULL)
-                            <p class="col ml-5" for="{{ $subsect->code }}_{{ $subsect->name }}">{{ $subsect->code.". ".$subsect->name }}</p>
-                    @endif
-                @endforeach
-                @endif
-                @endforeach
-            @endforeach --}}
         </div>
         <div class="card-footer d-flex pr-3">
             <div class="ml-auto">
