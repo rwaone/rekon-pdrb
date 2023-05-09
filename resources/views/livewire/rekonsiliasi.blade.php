@@ -17,12 +17,12 @@
 
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label" for="quarter">Triwulan:</label>
-                <select id="tahunSelect" class="form-control col-sm-10 select2bs4" name="quarter">
+                <select id="quarterSelect" class="form-control col-sm-10 select2bs4" name="quarter">
                     <option value="" disabled selected>Pilih Triwulan</option>
                     <option value='1'>Triwulan 1</option>
                     <option value='2'>Triwulan 2</option>
                     <option value='3'>Triwulan 3</option>
-                    <option value='4'>Triwulan 4</option>
+                    <option value='4'>Triwulan 4</option> hutang rozan 25k
                 </select>
                 <div class="help-block"></div>
             </div>
