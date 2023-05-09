@@ -1,5 +1,4 @@
 <x-dashboard-Layout>
-
     <x-slot name="title">
         {{ __('Rekonsiliasi') }}
     </x-slot>
@@ -10,71 +9,7 @@
         <link rel="stylesheet" href="{{ url('') }}/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
         <link rel="stylesheet" href="{{ url('') }}/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
         <link rel="stylesheet" href="{{ url('') }}/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-        <script nonce="326d0a6f-467a-4c36-84e6-ac3d7ab6c268">
-            (function(w, d) {
-                ! function(bv, bw, bx, by) {
-                    bv[bx] = bv[bx] || {};
-                    bv[bx].executed = [];
-                    bv.zaraz = {
-                        deferred: [],
-                        listeners: []
-                    };
-                    bv.zaraz.q = [];
-                    bv.zaraz._f = function(bz) {
-                        return function() {
-                            var bA = Array.prototype.slice.call(arguments);
-                            bv.zaraz.q.push({
-                                m: bz,
-                                a: bA
-                            })
-                        }
-                    };
-                    for (const bB of ["track", "set", "debug"]) bv.zaraz[bB] = bv.zaraz._f(bB);
-                    bv.zaraz.init = () => {
-                        var bC = bw.getElementsByTagName(by)[0],
-                            bD = bw.createElement(by),
-                            bE = bw.getElementsByTagName("title")[0];
-                        bE && (bv[bx].t = bw.getElementsByTagName("title")[0].text);
-                        bv[bx].x = Math.random();
-                        bv[bx].w = bv.screen.width;
-                        bv[bx].h = bv.screen.height;
-                        bv[bx].j = bv.innerHeight;
-                        bv[bx].e = bv.innerWidth;
-                        bv[bx].l = bv.location.href;
-                        bv[bx].r = bw.referrer;
-                        bv[bx].k = bv.screen.colorDepth;
-                        bv[bx].n = bw.characterSet;
-                        bv[bx].o = (new Date).getTimezoneOffset();
-                        if (bv.dataLayer)
-                            for (const bI of Object.entries(Object.entries(dataLayer).reduce(((bJ, bK) => ({
-                                    ...bJ[1],
-                                    ...bK[1]
-                                }))))) zaraz.set(bI[0], bI[1], {
-                                scope: "page"
-                            });
-                        bv[bx].q = [];
-                        for (; bv.zaraz.q.length;) {
-                            const bL = bv.zaraz.q.shift();
-                            bv[bx].q.push(bL)
-                        }
-                        bD.defer = !0;
-                        for (const bM of [localStorage, sessionStorage]) Object.keys(bM || {}).filter((bO => bO
-                            .startsWith("_zaraz_"))).forEach((bN => {
-                            try {
-                                bv[bx]["z_" + bN.slice(7)] = JSON.parse(bM.getItem(bN))
-                            } catch {
-                                bv[bx]["z_" + bN.slice(7)] = bM.getItem(bN)
-                            }
-                        }));
-                        bD.referrerPolicy = "origin";
-                        bD.src = "/cdn-cgi/zaraz/s.js?z=" + btoa(encodeURIComponent(JSON.stringify(bv[bx])));
-                        bC.parentNode.insertBefore(bD, bC)
-                    };
-                    ["complete", "interactive"].includes(bw.readyState) ? zaraz.init() : bv.addEventListener(
-                        "DOMContentLoaded", zaraz.init)
-                }(w, d, "zarazData", "script");
-            })(window, document);
-        </script>
+        <script></script>
         <style type="text/css">
         .table td { 
             vertical-align: middle;
@@ -147,40 +82,82 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($category as $category)
-                        <tr>
+                        {{-- @foreach ($category as $category) --}}
+                        {{-- <tr>
                             <td>
                                 <label class="col" style="margin-bottom:0rem;" for="{{ $category->name }}_{{ $category->code }}">{{ $category->code.". ".$category->name }}</label>
                             </td>
                             <td>
                                 <input type="text" name="" id="" class="form-control" aria-required="true">
                             </td>
-                        </tr>
-                            @foreach ($sector as $sect)
-                            @if ($sect->category_id == $category->id && $sect->code != NULL)
-                                <tr>
+                        </tr> --}}
+                            {{-- @foreach ($sector as $sect)
+                            @if ($sect->category_id == $category->id && $sect->code != NULL) --}}
+                                {{-- <tr>
                                     <td>
                                         <p class="col ml-4" style="margin-bottom:0rem;" for="{{ $sect->code }}_{{ $sect->name }}">{{ $sect->code.". ".$sect->name }}</p>
                                     </td>
                                     <td>
                                         <input type="text" name="" id="" class="form-control" aria-required="true">
                                     </td>
-                                </tr>
+                                </tr> --}}
                             @foreach ($subsector as $subsect)
-                                @if ($subsect->sector_id == $sect->id && $subsect->code != NULL)
+                                {{-- @if ($subsect->sector_id == $sect->id) --}}
+                                @if (($subsect->code != NULL && $subsect->code == "a" && $subsect->sector->code == "1") || ($subsect->code == NULL && $subsect->sector->code == "1"))
                                     <tr>
                                         <td>
-                                            <p class="col ml-5" style="margin-bottom:0rem;" for="{{ $subsect->code }}_{{ $subsect->name }}">{{ $subsect->code.". ".$subsect->name }}</p>
+                                            <label class="col" style="margin-bottom:0rem;" for="">{{ $subsect->sector->category->code.". ".$subsect->sector->category->name }}</label>
                                         </td>
                                         <td>
-                                            <input type="text" name="" id="" class="form-control" aria-required="true">
+                                            <input disabled type="text" name="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" id="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" class="form-control" aria-required="true">
                                         </td>
                                     </tr>
                                 @endif
+                                @if ($subsect->code != NULL && $subsect->code == "a")
+                                    <tr>
+                                        <td>
+                                            <p class="col ml-4" style="margin-bottom:0rem;" for="">{{ $subsect->sector->code.". ".$subsect->sector->name }}</p>
+                                        </td>
+                                        <td>
+                                            <input disabled type="text" name="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" id="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" class="form-control" aria-required="true">
+                                        </td>
+                                    </tr>
+                                @endif
+                                @if ($subsect->code != NULL)
+                                    <tr>
+                                        <td>
+                                            <p class="col ml-5" style="margin-bottom:0rem;" 
+                                                for="{{ $subsect->code }}_{{ $subsect->name }}">{{ $subsect->code.". ".$subsect->name }}</p>
+                                        </td>
+                                        <td>
+                                            <input type="text" name="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" id="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" class="form-control" aria-required="true">
+                                        </td>
+                                    </tr>    
+                                @elseif ($subsect->code == NULL && $subsect->sector->code != NULL)
+                                    <tr>
+                                        <td>
+                                            <p class="col ml-4" style="margin-bottom:0rem;" 
+                                                for="{{ $subsect->sector->code."_".$subsect->sector->name }}">{{ $subsect->sector->code.". ".$subsect->sector->name }}</p>
+                                        </td>
+                                        <td>
+                                            <input type="text" name="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" id="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" class="form-control" aria-required="true">
+                                        </td>
+                                    </tr>
+                                @elseif ($subsect->code == NULL && $subsect->sector->code == NULL)
+                                    <tr>
+                                        <td>
+                                            <label class="col" style="margin-bottom:0rem;" for="{{ $subsect->sector->category->code."_".$subsect->name }}">{{ $subsect->sector->category->code.". ".$subsect->name }}</label>
+                                        </td>
+                                        <td>
+                                            <input type="text" name="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" id="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" class="form-control" aria-required="true">
+                                        </td>
+                                    </tr>
+                                @endif
+                                {{-- @endif --}}
                             @endforeach
-                            @endif
-                            @endforeach
-                        @endforeach
+                            {{-- @endif
+                            @endforeach --}}
+                        {{-- @endforeach --}}
                     </tbody>
                 </table>
                 {{-- @foreach ($category as $category)
@@ -248,5 +225,4 @@
             });
         </script>
     </x-slot>
-
 </x-dashboard-Layout>
