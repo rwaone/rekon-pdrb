@@ -11,17 +11,16 @@ use App\Models\Subsector;
 
 class Rekonsiliasi extends Component
 {
-    public $message;
+    public $years;
+    public $quarters;
+    public $periods;
+    public $region_id;
+    public $price_base;
     public $selectedPdrb = NULL;
     public $selectedYear = NULL;
     public $selectedQuarter = NULL;
     public $selectedPeriod = NULL;
-    public $quarters;
-    public $type;
-    public $periods;
-    public $region_id;
-    public $price_base;
-    public $years;
+    public $formType;
 
     public function mount()
     {
@@ -34,14 +33,14 @@ class Rekonsiliasi extends Component
     {
         $this->mount();
         $regions = Region::all();
-        $categories = Category::all();
-        $sectors = Sector::all();
-        $subsectors = Subsector::all();
         return view('livewire.rekonsiliasi', [
             'regions' => $regions,
-            'categories' => $categories,
-            'sectors' => $sectors,
-            'subsectors' => $subsectors,
         ]);
+    }
+
+    public function showForm()
+    {
+        $this->formType = $this->selectedQuarter;
+        dd($this->formType);
     }
 }

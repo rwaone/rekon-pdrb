@@ -25,7 +25,7 @@
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label" for="year">Tahun:</label>
                 <select wire:model="selectedYear" class="form-control col-sm-10">
-                    <option value="" >Pilih Tahun</option>
+                    <option value="">Pilih Tahun</option>
                     @foreach ($years as $year)
                         <option value="{{ $year->year }}">{{ $year->year }}</option>
                     @endforeach
@@ -61,8 +61,8 @@
 
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label" for="region_id">Kabupaten/Kota:</label>
-                <select id="regionSelect" class="form-control col-sm-10 select2bs4" name="region_id">
-                    <option value="" disabled selected>Pilih Kabupaten/Kota</option>
+                <select wire:model="region_id" id="regionSelect" class="form-control col-sm-10" name="region_id">
+                    <option value="">Pilih Kabupaten/Kota</option>
                     @foreach ($regions as $region)
                         <option value="{{ $region->id }}">{{ $region->name }}</option>
                     @endforeach
@@ -72,110 +72,26 @@
 
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label" for="price_base">Basis Harga:</label>
-                <select id="priceSelect" class="form-control col-sm-10 select2bs4" name="price_base">
-                    <option value="" disabled selected>Pilih Basis Harga</option>
+                <select wire:model="price_base" class="form-control col-sm-10" name="price_base">
+                    <option value="">Pilih Basis Harga</option>
                     <option value='adhk'>Atas Dasar Harga Konstan</option>
                     <option value='adhb'>Atas Dasar Harga Berlaku</option>
                 </select>
                 <div class="help-block"></div>
             </div>
             <!-- /.card-body -->
+            <button wire:click="showForm" type="button" class="btn btn-info float-right">Tampilkan</button>
         </div>
     </form>
 </div>
 
-<div class="card">
-    <form class="form-horizontal">
-        <div class="card-body p-3">
-            <table class="table table-striped table-bordered" id="rekonsiliasi-table">
-                <thead class="text-center" style="background-color: steelblue; color:aliceblue;">
-                    <tr>
-                        <th>Komponen</th>
-                        <th>Nilai</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($subsectors as $subsector)
-                        @if (
-                            ($subsector->code != null && $subsector->code == 'a' && $subsector->sector->code == '1') ||
-                                ($subsector->code == null && $subsector->sector->code == '1'))
-                            <tr>
-                                <td>
-                                    <label class="col" style="margin-bottom:0rem;"
-                                        for="">{{ $subsector->sector->category->code . '. ' . $subsector->sector->category->name }}</label>
-                                </td>
-                                <td>
-                                    <input disabled type="text"
-                                        name="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
-                                        id="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
-                                        class="form-control" aria-required="true">
-                                </td>
-                            </tr>
-                        @endif
-                        @if ($subsector->code != null && $subsector->code == 'a')
-                            <tr>
-                                <td>
-                                    <p class="col ml-4" style="margin-bottom:0rem;" for="">
-                                        {{ $subsector->sector->code . '. ' . $subsector->sector->name }}</p>
-                                </td>
-                                <td>
-                                    <input disabled type="text"
-                                        name="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
-                                        id="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
-                                        class="form-control" aria-required="true">
-                                </td>
-                            </tr>
-                        @endif
-                        @if ($subsector->code != null)
-                            <tr>
-                                <td>
-                                    <p class="col ml-5" style="margin-bottom:0rem;"
-                                        for="{{ $subsector->code }}_{{ $subsector->name }}">
-                                        {{ $subsector->code . '. ' . $subsector->name }}</p>
-                                </td>
-                                <td>
-                                    <input type="text"
-                                        name="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
-                                        id="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
-                                        class="form-control" aria-required="true">
-                                </td>
-                            </tr>
-                        @elseif ($subsector->code == null && $subsector->sector->code != null)
-                            <tr>
-                                <td>
-                                    <p class="col ml-4" style="margin-bottom:0rem;"
-                                        for="{{ $subsector->sector->code . '_' . $subsector->sector->name }}">
-                                        {{ $subsector->sector->code . '. ' . $subsector->sector->name }}</p>
-                                </td>
-                                <td>
-                                    <input type="text"
-                                        name="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
-                                        id="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
-                                        class="form-control" aria-required="true">
-                                </td>
-                            </tr>
-                        @elseif ($subsector->code == null && $subsector->sector->code == null)
-                            <tr>
-                                <td>
-                                    <label class="col" style="margin-bottom:0rem;"
-                                        for="{{ $subsector->sector->category->code . '_' . $subsector->name }}">{{ $subsector->sector->category->code . '. ' . $subsector->name }}</label>
-                                </td>
-                                <td>
-                                    <input type="text"
-                                        name="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
-                                        id="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
-                                        class="form-control" aria-required="true">
-                                </td>
-                            </tr>
-                        @endif
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-        <div class="card-footer d-flex pr-3">
-            <div class="ml-auto">
-                <button type="button" class="btn btn-info">Simpan</button>
-            </div>
-        </div>
-    </form>
-</div>
+{{-- @livewire('rekon-form', ['formType' => $selectedQuarter]) --}}
+
+
+@if ($formType == 'F')
+    <livewire:full-form />
+@endif
+
+@if ($formType != 'F')
+    <livewire:single-form />
+@endif
