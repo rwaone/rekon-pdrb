@@ -1,23 +1,32 @@
 
 
 <div class="card">
+
     <!-- form start -->
-    <form class="form-horizontal">
+    <form action="" method="post" class="form-horizontal">
+        @csrf
         <div class="card-body">
+{{-- 
+            <div class="form-group">
+                <label for="description-text" class="col-form-label">Keterangan:</label>
+                <input wire:model="message" type="text" class="form-control" placeholder="Keterangan Putaran">
+            </div>
+
+            {{ $message }} --}}
 
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label" for="year">Tahun:</label>
-                <select id="tahunSelect" class="form-control col-sm-10 select2bs4" name="year">
+                <select wire:model="selectedYear" class="form-control col-sm-10">
                     <option value="" disabled selected>Pilih Tahun</option>
                     <option value='2023'>2023</option>
                     <option value='2022'>2022</option>
                 </select>
-                <div class="help-block"></div>
+                <div class="help-block">{{ $selectedYear }}</div>
             </div>
 
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label" for="quarter">Triwulan:</label>
-                <select id="quarterSelect" class="form-control col-sm-10 select2bs4" name="quarter">
+                <select id="quarterSelect" class="form-control col-sm-10" name="quarter">
                     <option value="" disabled selected>Pilih Triwulan</option>
                     <option value='1'>Triwulan 1</option>
                     <option value='2'>Triwulan 2</option>
@@ -29,7 +38,7 @@
 
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label" for="pdrb_type">PDRB:</label>
-                <select id="typeSelect" class="form-control col-sm-10 select2bs4" name="pdrb_type">
+                <select id="typeSelect" class="form-control col-sm-10" name="pdrb_type">
                     <option value="" disabled selected>Pilih Jenis PDRB</option>
                     <option value='Lapangan Usaha'>Lapangan Usaha</option>
                     <option value='Pengeluaran'>Pengeluaran</option>
