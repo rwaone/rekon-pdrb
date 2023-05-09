@@ -22,7 +22,7 @@ class PdrbController extends Controller
     {
         return view('rekonsiliasi.view');
     }
-
+    
     /**
      * Show the form for creating a new resource.
      *

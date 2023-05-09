@@ -19,6 +19,10 @@
             .table tr:nth-child(even) {
                 background-color: ;
             }
+
+            #rekonsiliasi-table td {
+                word-wrap:break-word;
+            }
         </style>
     </x-slot>
 
@@ -43,9 +47,38 @@
         <script src="{{ url('') }}/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
         <script src="{{ url('') }}/plugins/datatables-buttons/js/buttons.print.min.js"></script>
         <script>
+            
             $(document).on('focus', '.select2-selection', function(e) {
                 $(this).closest(".select2-container").siblings('select:enabled').select2('open');
             })
+            
+           function calculateSector(sector) {
+            let sum = 0;
+            $(`.${sector}`).each(function(index){
+                sum += $(this).val()>0 ? Number($(this).val()) :0;
+            });
+            return sum;
+           }
+            $(document).ready(function() {
+			// Your jQuery code goes here
+                for (let i = 1; i < 5; i++) {
+                    $(`.sector-Q${i}-1`).keyup(function(e) {
+                        let jumlah = calculateSector(`sector-Q${i}-1`);
+                        $(`#adhk_1_A_Q${i}`).val(jumlah)
+                    });
+
+                    $(`.category-Q${i}-1`).keyup(function(e) {
+                        let jumlah = calculateSector(`category-Q${i}-1`);
+                        $(`#adhk_A_Q${i}`).val(jumlah)
+                    });
+                    
+                    $(`.sector-Q${i}-1`).keypress(function(e) {
+                        var charCode = (e.which) ? e.which : event.keyCode
+                        if (String.fromCharCode(charCode).match(/[^0-9]/g))    
+                        return false;
+                    })
+                }
+            });
 
             $(document).on('select2:open', () => {
                 document.querySelector('.select2-search__field').focus();

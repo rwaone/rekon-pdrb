@@ -31,7 +31,7 @@ class Rekonsiliasi extends Component
         $sectors = Sector::all();
         $subsectors = Subsector ::all();
         $periods = Period::all();
-        return view('livewire.rekonsiliasi',[
+        return view('livewire.rekonsiliasifull',[
             'regions' => $regions,
             'categories' => $categories,
             'sectors' => $sectors,
