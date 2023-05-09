@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Fenomena;
 use App\Http\Requests\StorefenomenaRequest;
 use App\Http\Requests\UpdatefenomenaRequest;
+use App\Models\Category;
+use App\Models\Region;
+use App\Models\Sector;
+use App\Models\Subsector;
 
 class FenomenaController extends Controller
 {
@@ -15,7 +19,17 @@ class FenomenaController extends Controller
      */
     public function index()
     {
-        //
+        $regions = Region::all();
+        $category = Category::all();
+        $sector = Sector::all();
+        $subsector = Subsector::all();
+
+        return view('fenomena.view',[
+            'regions' => $regions,
+            'category' => $category,
+            'sector' => $sector,
+            'subsector' => $subsector,
+        ]);
     }
 
     /**

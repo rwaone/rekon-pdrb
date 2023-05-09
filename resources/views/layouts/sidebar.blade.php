@@ -39,7 +39,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../tables/jsgrid.html" class="nav-link">
+                            <a href="{{ url('fenomena') }}" class="nav-link {{ Request::is('fenomena') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Fenomena</p>
                             </a>

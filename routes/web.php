@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FenomenaController;
 use App\Http\Controllers\PdrbController;
 use App\Http\Controllers\PeriodController;
 use App\Http\Controllers\ProfileController;
@@ -31,6 +32,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('pdrb/rekonsiliasi', PdrbController::class)->middleware(['auth', 'verified']);
+Route::resource('fenomena', FenomenaController::class)->middleware(['auth', 'verified']);
 Route::resource('period', PeriodController::class)->middleware(['auth', 'verified']);
 
 require __DIR__.'/auth.php';
