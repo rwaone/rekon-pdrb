@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Period;
 use App\Models\Region;
 use App\Models\Sector;
 use Livewire\Component;
@@ -17,11 +18,13 @@ class Rekonsiliasi extends Component
         $categories = Category::all();
         $sectors = Sector::all();
         $subsectors = Subsector ::all();
+        $periods = Period::all();
         return view('livewire.rekonsiliasi',[
             'regions' => $regions,
             'categories' => $categories,
             'sectors' => $sectors,
             'subsectors' => $subsectors,
+            'periods' => $periods
         ]);
     }
 }
