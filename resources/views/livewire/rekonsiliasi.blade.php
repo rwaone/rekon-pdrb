@@ -1,12 +1,10 @@
-
-
 <div class="card">
 
     <!-- form start -->
     <form action="" method="post" class="form-horizontal">
         @csrf
         <div class="card-body">
-{{-- 
+            {{-- 
             <div class="form-group">
                 <label for="description-text" class="col-form-label">Keterangan:</label>
                 <input wire:model="message" type="text" class="form-control" placeholder="Keterangan Putaran">
@@ -15,31 +13,9 @@
             {{ $message }} --}}
 
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label" for="year">Tahun:</label>
-                <select wire:model="selectedYear" class="form-control col-sm-10">
-                    <option value="" disabled selected>Pilih Tahun</option>
-                    <option value='2023'>2023</option>
-                    <option value='2022'>2022</option>
-                </select>
-                <div class="help-block">{{ $selectedYear }}</div>
-            </div>
-
-            <div class="form-group row">
-                <label class="col-sm-2 col-form-label" for="quarter">Triwulan:</label>
-                <select id="quarterSelect" class="form-control col-sm-10" name="quarter">
-                    <option value="" disabled selected>Pilih Triwulan</option>
-                    <option value='1'>Triwulan 1</option>
-                    <option value='2'>Triwulan 2</option>
-                    <option value='3'>Triwulan 3</option>
-                    <option value='4'>Triwulan 4</option>
-                </select>
-                <div class="help-block"></div>
-            </div>
-
-            <div class="form-group row">
                 <label class="col-sm-2 col-form-label" for="pdrb_type">PDRB:</label>
-                <select id="typeSelect" class="form-control col-sm-10" name="pdrb_type">
-                    <option value="" disabled selected>Pilih Jenis PDRB</option>
+                <select wire:model="selectedPdrb" class="form-control col-sm-10">
+                    <option value="">Pilih Jenis PDRB</option>
                     <option value='Lapangan Usaha'>Lapangan Usaha</option>
                     <option value='Pengeluaran'>Pengeluaran</option>
                 </select>
@@ -47,9 +23,35 @@
             </div>
 
             <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="year">Tahun:</label>
+                <select wire:model="selectedYear" class="form-control col-sm-10">
+                    <option value="" >Pilih Tahun</option>
+                    @foreach ($years as $year)
+                        <option value="{{ $year->year }}">{{ $year->year }}</option>
+                    @endforeach
+                </select>
+                <div class="help-block"></div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="quarter">Triwulan:</label>
+                <select wire:model="selectedQuarter" class="form-control col-sm-10">
+                    <option value="">Pilih Triwulan</option>
+                    @foreach ($quarters as $quarter)
+                        <option value="{{ $quarter->quarter }}">{{ $quarter->quarter }}</option>
+                    @endforeach
+                    {{-- <option value='1'>Triwulan 1</option>
+                    <option value='2'>Triwulan 2</option>
+                    <option value='3'>Triwulan 3</option>
+                    <option value='4'>Triwulan 4</option> --}}
+                </select>
+                <div class="help-block"></div>
+            </div>
+
+            <div class="form-group row">
                 <label class="col-sm-2 col-form-label" for="period_id">Periode:</label>
-                <select id="periodSelect" class="form-control col-sm-10 select2bs4" name="period_id">
-                    <option value="" disabled selected>Pilih Periode</option>
+                <select wire:model="selectedPeriod" class="form-control col-sm-10">
+                    <option value="">Pilih Periode</option>
                     @foreach ($periods as $period)
                         <option value="{{ $period->id }}">{{ $period->description }}</option>
                     @endforeach
@@ -93,58 +95,80 @@
                     </tr>
                 </thead>
                 <tbody>
-                        @foreach ($subsectors as $subsect)
-                            @if (($subsect->code != NULL && $subsect->code == "a" && $subsect->sector->code == "1") || ($subsect->code == NULL && $subsect->sector->code == "1"))
-                                <tr>
-                                    <td>
-                                        <label class="col" style="margin-bottom:0rem;" for="">{{ $subsect->sector->category->code.". ".$subsect->sector->category->name }}</label>
-                                    </td>
-                                    <td>
-                                        <input disabled type="text" name="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" id="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" class="form-control" aria-required="true">
-                                    </td>
-                                </tr>
-                            @endif
-                            @if ($subsect->code != NULL && $subsect->code == "a")
-                                <tr>
-                                    <td>
-                                        <p class="col ml-4" style="margin-bottom:0rem;" for="">{{ $subsect->sector->code.". ".$subsect->sector->name }}</p>
-                                    </td>
-                                    <td>
-                                        <input disabled type="text" name="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" id="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" class="form-control" aria-required="true">
-                                    </td>
-                                </tr>
-                            @endif
-                            @if ($subsect->code != NULL)
-                                <tr>
-                                    <td>
-                                        <p class="col ml-5" style="margin-bottom:0rem;" 
-                                            for="{{ $subsect->code }}_{{ $subsect->name }}">{{ $subsect->code.". ".$subsect->name }}</p>
-                                    </td>
-                                    <td>
-                                        <input type="text" name="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" id="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" class="form-control" aria-required="true">
-                                    </td>
-                                </tr>    
-                            @elseif ($subsect->code == NULL && $subsect->sector->code != NULL)
-                                <tr>
-                                    <td>
-                                        <p class="col ml-4" style="margin-bottom:0rem;" 
-                                            for="{{ $subsect->sector->code."_".$subsect->sector->name }}">{{ $subsect->sector->code.". ".$subsect->sector->name }}</p>
-                                    </td>
-                                    <td>
-                                        <input type="text" name="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" id="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" class="form-control" aria-required="true">
-                                    </td>
-                                </tr>
-                            @elseif ($subsect->code == NULL && $subsect->sector->code == NULL)
-                                <tr>
-                                    <td>
-                                        <label class="col" style="margin-bottom:0rem;" for="{{ $subsect->sector->category->code."_".$subsect->name }}">{{ $subsect->sector->category->code.". ".$subsect->name }}</label>
-                                    </td>
-                                    <td>
-                                        <input type="text" name="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" id="adhk_{{ $subsect->id."_".$subsect->sector->id."_".$subsect->sector->category->id }}" class="form-control" aria-required="true">
-                                    </td>
-                                </tr>
-                            @endif
-                        @endforeach
+                    @foreach ($subsectors as $subsector)
+                        @if (
+                            ($subsector->code != null && $subsector->code == 'a' && $subsector->sector->code == '1') ||
+                                ($subsector->code == null && $subsector->sector->code == '1'))
+                            <tr>
+                                <td>
+                                    <label class="col" style="margin-bottom:0rem;"
+                                        for="">{{ $subsector->sector->category->code . '. ' . $subsector->sector->category->name }}</label>
+                                </td>
+                                <td>
+                                    <input disabled type="text"
+                                        name="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
+                                        id="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
+                                        class="form-control" aria-required="true">
+                                </td>
+                            </tr>
+                        @endif
+                        @if ($subsector->code != null && $subsector->code == 'a')
+                            <tr>
+                                <td>
+                                    <p class="col ml-4" style="margin-bottom:0rem;" for="">
+                                        {{ $subsector->sector->code . '. ' . $subsector->sector->name }}</p>
+                                </td>
+                                <td>
+                                    <input disabled type="text"
+                                        name="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
+                                        id="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
+                                        class="form-control" aria-required="true">
+                                </td>
+                            </tr>
+                        @endif
+                        @if ($subsector->code != null)
+                            <tr>
+                                <td>
+                                    <p class="col ml-5" style="margin-bottom:0rem;"
+                                        for="{{ $subsector->code }}_{{ $subsector->name }}">
+                                        {{ $subsector->code . '. ' . $subsector->name }}</p>
+                                </td>
+                                <td>
+                                    <input type="text"
+                                        name="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
+                                        id="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
+                                        class="form-control" aria-required="true">
+                                </td>
+                            </tr>
+                        @elseif ($subsector->code == null && $subsector->sector->code != null)
+                            <tr>
+                                <td>
+                                    <p class="col ml-4" style="margin-bottom:0rem;"
+                                        for="{{ $subsector->sector->code . '_' . $subsector->sector->name }}">
+                                        {{ $subsector->sector->code . '. ' . $subsector->sector->name }}</p>
+                                </td>
+                                <td>
+                                    <input type="text"
+                                        name="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
+                                        id="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
+                                        class="form-control" aria-required="true">
+                                </td>
+                            </tr>
+                        @elseif ($subsector->code == null && $subsector->sector->code == null)
+                            <tr>
+                                <td>
+                                    <label class="col" style="margin-bottom:0rem;"
+                                        for="{{ $subsector->sector->category->code . '_' . $subsector->name }}">{{ $subsector->sector->category->code . '. ' . $subsector->name }}</label>
+                                </td>
+                                <td>
+                                    <input type="text"
+                                        name="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
+                                        id="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
+                                        class="form-control" aria-required="true">
+                                </td>
+                            </tr>
+                        @endif
+                    @endforeach
                 </tbody>
             </table>
         </div>

@@ -14,7 +14,13 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ url('') }}/dist/css/adminlte.min.css">
     {{ $head }}
-    
+    <style>
+        .card {
+            padding: .5em .5em .5em;
+            border-radius: .75em;
+            /* box-shadow: 0 3px 3px rgba(0, 0, 0, .2); */
+        }
+    </style>
     @vite(['resources/js/app.js'])
     @livewireStyles
 </head>
@@ -22,7 +28,7 @@
 <body class="hold-transition layout-fixed">
     <!-- Site wrapper -->
     <div class="wrapper">
-        
+
         <!-- Navbar -->
         @include('layouts.navbar')
         <!-- /.navbar -->
