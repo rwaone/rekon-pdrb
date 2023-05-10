@@ -46,6 +46,21 @@ class Rekonsiliasi extends Component
         ]);
     }
 
+    // public function render()
+    // {
+    //     $this->mount();
+    //     $regions = Region::all();
+    //     $categories = Category::all();
+    //     $sectors = Sector::all();
+    //     $subsectors = Subsector::all();
+    //     return view('livewire.rekonsiliasifull', [
+    //         'regions' => $regions,
+    //         'categories' => $categories,
+    //         'sectors' => $sectors,
+    //         'subsectors' => $subsectors,
+    //     ]);
+    // }
+
     public function showForm()
     {   
         if($this->selectedQuarter == 'F'){

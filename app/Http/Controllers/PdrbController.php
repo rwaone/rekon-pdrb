@@ -20,7 +20,11 @@ class PdrbController extends Controller
      */
     public function index()
     {
-        return view('rekonsiliasi.view');
+        $cat = Category::pluck('code')->toArray();
+        $catString = implode(", ", $cat);
+        return view('rekonsiliasi.view', [
+            'cat' => $catString,
+        ]);
     }
     
     /**
