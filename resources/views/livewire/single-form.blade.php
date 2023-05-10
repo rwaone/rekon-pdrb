@@ -1,136 +1,94 @@
 <div class="card">
     <form class="form-horizontal">
         <div class="card-body p-3">
-            <table class="table table-bordered" id="rekonsiliasi-table">
+            <table class="table table-striped table-bordered" id="rekonsiliasi-table">
                 <thead class="text-center" style="background-color: steelblue; color:aliceblue;">
                     <tr>
                         <th>Komponen</th>
-                        <th>Triwulan I</th>
-                        <th>Triwulan II</th>
-                        <th>Triwulan III</th>
-                        <th>Triwulan IV</th>
-                        <th>Tahunan</th>
+                        <th>Nilai</th>
                     </tr>
                 </thead>
                 <tbody>
-                        @foreach ($subsectors as $subsect)
-                            @if (($subsect->code != NULL && $subsect->code == "a" && $subsect->sector->code == "1") || ($subsect->code == NULL && $subsect->sector->code == "1"))
-                                <tr>
-                                    <td>
-                                        <label class="col" style="margin-bottom:0rem;" for="">{{ $subsect->sector->category->code.". ".$subsect->sector->category->name }}</label>
-                                    </td>
-                                    <td>
-                                        <input disabled type="text" name="adhk_{{ $subsect->sector->category->code."_Q1" }}" id="adhk_{{ $subsect->sector->category->code."_Q1" }}" class="form-control" aria-required="true">
-                                    </td>
-                                    <td>
-                                        <input disabled type="text" name="adhk_{{ $subsect->sector->category->code."_Q2" }}" id="adhk_{{ $subsect->sector->category->code."_Q2" }}" class="form-control" aria-required="true">
-                                    </td>
-                                    <td>
-                                        <input disabled type="text" name="adhk_{{ $subsect->sector->category->code."_Q3" }}" id="adhk_{{ $subsect->sector->category->code."_Q3" }}" class="form-control" aria-required="true">
-                                    </td>
-                                    <td>
-                                        <input disabled type="text" name="adhk_{{ $subsect->sector->category->code."_Q4" }}" id="adhk_{{ $subsect->sector->category->code."_Q4" }}" class="form-control" aria-required="true">
-                                    </td>
-                                    <td>
-                                        <input disabled type="text" name="adhk_{{ $subsect->sector->category->code."_Y" }}" id="adhk_{{ $subsect->sector->category->code."_Y" }}" class="form-control" aria-required="true">
-                                    </td>
-                                </tr>
-                            @endif
-                            @if ($subsect->code != NULL && $subsect->code == "a")
-                                <tr>
-                                    <td>
-                                        <p class="col ml-4" style="margin-bottom:0rem;" for="">{{ $subsect->sector->code.". ".$subsect->sector->name }}</p>
-                                    </td>
-                                    <td>
-                                        <input disabled type="text" name="adhk_{{ $subsect->sector->code."_".$subsect->sector->category->code."_Q1" }}" id="adhk_{{ $subsect->sector->code."_".$subsect->sector->category->code."_Q1" }}" class="form-control {{ "category-Q1-".$subsect->sector->category->code }}" aria-required="true">
-                                    </td>
-                                    <td>
-                                        <input disabled type="text" name="adhk_{{ $subsect->sector->code."_".$subsect->sector->category->code."_Q2" }}" id="adhk_{{ $subsect->sector->code."_".$subsect->sector->category->code."_Q2" }}" class="form-control {{ "category-Q2-".$subsect->sector->category->code }}" aria-required="true">
-                                    </td>
-                                    <td>
-                                        <input disabled type="text" name="adhk_{{ $subsect->sector->code."_".$subsect->sector->category->code."_Q3" }}" id="adhk_{{ $subsect->sector->code."_".$subsect->sector->category->code."_Q3" }}" class="form-control {{ "category-Q3-".$subsect->sector->category->code }}" aria-required="true">
-                                    </td>
-                                    <td>
-                                        <input disabled type="text" name="adhk_{{ $subsect->sector->code."_".$subsect->sector->category->code."_Q4" }}" id="adhk_{{ $subsect->sector->code."_".$subsect->sector->category->code."_Q4" }}" class="form-control {{ "category-Q4-".$subsect->sector->category->code }}" aria-required="true">
-                                    </td>
-                                    <td>
-                                        <input disabled type="text" name="adhk_{{ $subsect->sector->code."_".$subsect->sector->category->code."_Y" }}" id="adhk_{{ $subsect->sector->code."_".$subsect->sector->category->code."_Y" }}" class="form-control {{ "category-Y-".$subsect->sector->category->code }}" aria-required="true">
-                                    </td>
-                                </tr>
-                            @endif
-                            @if ($subsect->code != NULL)
-                                <tr>
-                                    <td>
-                                        <p class="col ml-5 mr-4" style="margin-bottom:0rem;" 
-                                            for="{{ $subsect->code }}_{{ $subsect->name }}">{{ $subsect->code.". ".$subsect->name }}</p>
-                                    </td>
-                                    <td>
-                                        <input type="text" name="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Q1" }}" id="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Q1" }}" class="form-control {{ "sector-Q1-".$subsect->sector_id }} {{ "category-Q1-".$subsect->sector->category_id }} " aria-required="true" tabindex="{{ $subsect->id }}">
-                                    </td>
-                                    <td>
-                                        <input type="text" name="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Q2" }}" id="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Q2" }}" class="form-control {{ "sector-Q2-".$subsect->sector_id }} {{ "category-Q1-".$subsect->sector->category_id }}" aria-required="true" tabindex="{{ $subsect->id+55 }}">
-                                    </td>
-                                    <td>
-                                        <input type="text" name="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Q3" }}" id="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Q3" }}" class="form-control {{ "sector-Q3-".$subsect->sector_id }} {{ "category-Q1-".$subsect->sector->category_id }}" aria-required="true" tabindex="{{ $subsect->id+110 }}">
-                                    </td>
-                                    <td>
-                                        <input type="text" name="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Q4" }}" id="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Q4" }}" class="form-control {{ "sector-Q4-".$subsect->sector_id }} {{ "category-Q1-".$subsect->sector->category_id }}" aria-required="true" tabindex="{{ $subsect->id+165 }}">
-                                    </td>
-                                    <td>
-                                        <input disabled type="text" name="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Y" }}" id="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Y" }}" class="form-control {{ "sector-Y-".$subsect->sector_id }} {{ "category-Q1-".$subsect->sector->category_id }}" aria-required="true" tabindex="{{ $subsect->id+220 }}">
-                                    </td>
-                                </tr>    
-                            @elseif ($subsect->code == NULL && $subsect->sector->code != NULL)
-                                <tr>
-                                    <td>
-                                        <p class="col ml-4 mr-4" style="margin-bottom:0rem;" 
-                                            for="{{ $subsect->sector->code."_".$subsect->sector->name }}">{{ $subsect->sector->code.". ".$subsect->sector->name }}</p>
-                                    </td>
-                                    <td>
-                                        <input type="text" name="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Q1" }}" id="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Q1" }}" class="form-control {{ "sector-Q1-".$subsect->sector_id }} {{ "category-Q1-".$subsect->sector->category_id }}" aria-required="true" tabindex="{{ $subsect->id }}">
-                                    </td>
-                                    <td>
-                                        <input type="text" name="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Q2" }}" id="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Q2" }}" class="form-control {{ "sector-Q2-".$subsect->sector_id }} {{ "category-Q1-".$subsect->sector->category_id }}" aria-required="true" tabindex="{{ $subsect->id+55 }}">
-                                    </td>
-                                    <td>
-                                        <input type="text" name="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Q3" }}" id="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Q3" }}" class="form-control {{ "sector-Q3-".$subsect->sector_id }} {{ "category-Q1-".$subsect->sector->category_id }}" aria-required="true" tabindex="{{ $subsect->id+110 }}">
-                                    </td>
-                                    <td>
-                                        <input type="text" name="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Q4" }}" id="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Q4" }}" class="form-control {{ "sector-Q4-".$subsect->sector_id }} {{ "category-Q1-".$subsect->sector->category_id }}" aria-required="true" tabindex="{{ $subsect->id+165 }}">
-                                    </td>
-                                    <td>
-                                        <input disabled type="text" name="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Y" }}" id="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Y" }}" class="form-control {{ "sector-Y-".$subsect->sector_id }} {{ "category-Q1-".$subsect->sector->category_id }}" aria-required="true" tabindex="{{ $subsect->id+220 }}">
-                                    </td>
-                                </tr>
-                            @elseif ($subsect->code == NULL && $subsect->sector->code == NULL)
-                                <tr>
-                                    <td>
-                                        <label class="col" style="margin-bottom:0rem;" for="{{ $subsect->sector->category->code."_".$subsect->name }}">{{ $subsect->sector->category->code.". ".$subsect->name }}</label>
-                                    </td>
-                                    <td>
-                                        <input type="text" name="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Q1" }}" id="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Q1" }}" class="form-control {{ "sector-Q1-".$subsect->sector_id }} {{ "category-Q1-".$subsect->sector->category_id }}" aria-required="true" tabindex="{{ $subsect->id }}">
-                                    </td>
-                                    <td>
-                                        <input type="text" name="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Q2" }}" id="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Q2" }}" class="form-control {{ "sector-Q2-".$subsect->sector_id }} {{ "category-Q1-".$subsect->sector->category_id }}" aria-required="true" tabindex="{{ $subsect->id+55 }}">
-                                    </td>
-                                    <td>
-                                        <input type="text" name="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Q3" }}" id="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Q3" }}" class="form-control {{ "sector-Q3-".$subsect->sector_id }} {{ "category-Q1-".$subsect->sector->category_id }}" aria-required="true" tabindex="{{ $subsect->id+110 }}">
-                                    </td>
-                                    <td>
-                                        <input type="text" name="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Q4" }}" id="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Q4" }}" class="form-control {{ "sector-Q4-".$subsect->sector_id }} {{ "category-Q1-".$subsect->sector->category_id }}" aria-required="true" tabindex="{{ $subsect->id+165 }}">
-                                    </td>
-                                    <td>
-                                        <input disabled type="text" name="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Y" }}" id="adhk_{{ $subsect->code."_".$subsect->sector->code."_".$subsect->sector->category->code."_Y" }}" class="form-control {{ "sector-Y-".$subsect->sector->id }}" aria-required="true" tabindex="{{ $subsect->id+220 }}">
-                                    </td>
-                                </tr>
-                            @endif
-                        @endforeach
+                    @foreach ($subsectors as $subsector)
+                        @if (
+                            ($subsector->code != null && $subsector->code == 'a' && $subsector->sector->code == '1') ||
+                                ($subsector->code == null && $subsector->sector->code == '1'))
+                            <tr>
+                                <td>
+                                    <label class="col" style="margin-bottom:0rem;"
+                                        for="">{{ $subsector->sector->category->code . '. ' . $subsector->sector->category->name }}</label>
+                                </td>
+                                <td>
+                                    <input disabled type="text"
+                                        name="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
+                                        id="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
+                                        class="form-control" aria-required="true">
+                                </td>
+                            </tr>
+                        @endif
+                        @if ($subsector->code != null && $subsector->code == 'a')
+                            <tr>
+                                <td>
+                                    <p class="col ml-4" style="margin-bottom:0rem;" for="">
+                                        {{ $subsector->sector->code . '. ' . $subsector->sector->name }}</p>
+                                </td>
+                                <td>
+                                    <input disabled type="text"
+                                        name="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
+                                        id="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
+                                        class="form-control" aria-required="true">
+                                </td>
+                            </tr>
+                        @endif
+                        @if ($subsector->code != null)
+                            <tr>
+                                <td>
+                                    <p class="col ml-5" style="margin-bottom:0rem;"
+                                        for="{{ $subsector->code }}_{{ $subsector->name }}">
+                                        {{ $subsector->code . '. ' . $subsector->name }}</p>
+                                </td>
+                                <td>
+                                    <input type="text"
+                                        name="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
+                                        id="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
+                                        class="form-control" aria-required="true">
+                                </td>
+                            </tr>
+                        @elseif ($subsector->code == null && $subsector->sector->code != null)
+                            <tr>
+                                <td>
+                                    <p class="col ml-4" style="margin-bottom:0rem;"
+                                        for="{{ $subsector->sector->code . '_' . $subsector->sector->name }}">
+                                        {{ $subsector->sector->code . '. ' . $subsector->sector->name }}</p>
+                                </td>
+                                <td>
+                                    <input type="text"
+                                        name="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
+                                        id="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
+                                        class="form-control" aria-required="true">
+                                </td>
+                            </tr>
+                        @elseif ($subsector->code == null && $subsector->sector->code == null)
+                            <tr>
+                                <td>
+                                    <label class="col" style="margin-bottom:0rem;"
+                                        for="{{ $subsector->sector->category->code . '_' . $subsector->name }}">{{ $subsector->sector->category->code . '. ' . $subsector->name }}</label>
+                                </td>
+                                <td>
+                                    <input type="text"
+                                        name="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
+                                        id="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
+                                        class="form-control" aria-required="true">
+                                </td>
+                            </tr>
+                        @endif
+                    @endforeach
                 </tbody>
             </table>
         </div>
         <div class="card-footer d-flex pr-3">
             <div class="ml-auto">
-                <button type="button" class="btn btn-info">Simpan</button>
+                <button type="button" class="btn btn-success">Simpan</button>
             </div>
         </div>
     </form>

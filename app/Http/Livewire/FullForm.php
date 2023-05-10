@@ -9,6 +9,9 @@ use App\Models\Subsector;
 
 class FullForm extends Component
 {
+    public bool $fullForm = false;
+    protected $listeners = ['showFull'];
+
     public function render()
     {
         $categories = Category::all();
@@ -19,5 +22,10 @@ class FullForm extends Component
             'sectors' => $sectors,
             'subsectors' => $subsectors,
         ]);
+    }
+
+    public function showFull()
+    {
+        $this->fullForm = true;
     }
 }

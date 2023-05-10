@@ -1,8 +1,7 @@
-<div class="card">
+<div>
+    <div class="card">
 
-    <!-- form start -->
-    <form action="" method="post" class="form-horizontal">
-        @csrf
+        <!-- form start -->
         <div class="card-body">
             {{-- 
             <div class="form-group">
@@ -80,18 +79,22 @@
                 <div class="help-block"></div>
             </div>
             <!-- /.card-body -->
-            <button wire:click="showForm" type="button" class="btn btn-info float-right">Tampilkan</button>
+            {{$showFormComponent}}
+            <button wire:click="showForm" class="btn btn-info float-right">Tampilkan</button>
         </div>
-    </form>
+    </div>
+
+    @if ($showFormComponent == 'showFull')
+        <div>
+            @include('livewire.full-form')
+        </div>
+    @endif
+
+    @if ($showFormComponent == 'showSingle')
+        <div>
+            @include('livewire.single-form')
+        </div>
+    @endif
+
+
 </div>
-
-{{-- @livewire('rekon-form', ['formType' => $selectedQuarter]) --}}
-
-
-@if ($formType == 'F')
-    <livewire:full-form />
-@endif
-
-@if ($formType != 'F')
-    <livewire:single-form />
-@endif

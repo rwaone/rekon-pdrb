@@ -9,6 +9,9 @@ use App\Models\Subsector;
 
 class SingleForm extends Component
 {
+    public bool $singleForm = false;
+    protected $listeners = ['showSingle'];
+
     public function render()
     {
         $categories = Category::all();
@@ -19,5 +22,10 @@ class SingleForm extends Component
             'sectors' => $sectors,
             'subsectors' => $subsectors,
         ]);
+    }
+    
+    public function showSingle()
+    {
+        $this->singleForm = true;
     }
 }
