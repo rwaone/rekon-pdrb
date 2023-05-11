@@ -13,15 +13,15 @@
                 padding: 0.25rem;
             }
 
-            .table tr:nth-child(even) {
-                background-color: ;
-            }
-
             #rekonsiliasi-table td {
                 word-wrap:break-word;
             }
+            
+            #rekonsiliasi-table .PDRB-footer td p {
+                text-align: center !important;
+            }
 
-            #rekonsiliasi-table td:not(:first-child) {
+            #rekonsiliasi-table tr:not(:last-child):not(:nth-last-child(2)) td:not(:first-child) {
                 text-align: right;
             }
         </style>
@@ -86,10 +86,11 @@
 
             $(document).ready(function() {
 			// Your jQuery code goes here
-                // let cat = JSON.parse($("#my-cat").data('cat'))
-                // let catArray = cat.split(", ")
-                let cat = "A,B,C,D,G,H,I,K"
-                let catArray = cat.split(",")
+                let cat = JSON.parse($("#my-cat").data('cat'))
+                let catArray = cat.split(", ")
+                let catB = "A,B,C,D,G,H,I,K"
+                let catSpecific = catB.split(",")
+                let catLast = catArray.filter(value => !catSpecific.includes(value))
                 let sum = 0
 
                 let table = $('#rekonsiliasi-table');
@@ -108,7 +109,7 @@
                     let sumRp = String(sum).replaceAll(/[.]/g, ',');
                     $lastCol.find('input').val(formatRupiah(sumRp, 'Rp '));
 
-                    for (let index of catArray) {
+                    for (let index of catSpecific) {
                         let darksum = 0
                         let lightsum = 0
 
@@ -131,12 +132,46 @@
                             }
                         })
                         
-                        let lightsumRp = String(darksum).replaceAll(/[.]/g, ','); 
+                        let lightsumRp = String(lightsum).replaceAll(/[.]/g, ','); 
                         let darksumRp = String(darksum).replaceAll(/[.]/g, ',');
                         $(`#adhk_1_${index}_Y`).val(formatRupiah(lightsumRp, 'Rp '))
                         $(`#adhk_${index}_Y`).val(formatRupiah(darksumRp, 'Rp '))
                     }   
 
+                    let numRows = tr.length - 2
+                    for (let col = 1; col < $('#rekonsiliasi-table tr:first-child td').length ; col++){
+                        let sum = 0
+                        let pdrb = 0
+                        let nonmigas = 0
+                        for (let row = 0; row < numRows; row++){
+                            let cell = $('#rekonsiliasi-table tr').eq(row + 1).find('td').eq(col)
+                            if (cell.hasClass('categories')) {
+                                let X = cell.find('input').val().replaceAll(/[A-Za-z.]/g,'')
+                                let Y = X.replaceAll(/[,]/g, '.')
+                                sum += Y > 0 ? Number(Y) : 0
+                            }
+                            for (let index of catLast) {
+                                if (cell.find(`input[id^='adhk___${index}_']`).length > 0){
+                                    let X = cell.find(`input[id^='adhk___${index}_']`).val().replaceAll(/[A-Za-z.]/g,'')
+                                    let Y = X.replaceAll(/[,]/g, '.')
+                                    pdrb += Y > 0 ? Number(Y) : 0
+                                }
+                            }
+                            if  (cell.find('input').attr('id').includes('adhk__1_B_')  || cell.find('input').attr('id').includes('adhk_b_1_C_') ){
+                                let X = cell.find('input').val().replaceAll(/[A-Za-z.]/g,'')
+                                let Y = X.replaceAll(/[,]/g, '.')
+                                nonmigas += Y > 0 ? Number(Y) : 0
+                            }
+                        }
+                        let pdrbs = sum + pdrb
+                        let PdrbNonmigas = pdrbs - nonmigas
+                        let sumPDRB = String(pdrbs).replaceAll(/[.]/g, ',')
+                        let sumPDRBnm = String(PdrbNonmigas).replaceAll(/[.]/g, ',')
+                        let totalnm = $('#rekonsiliasi-table tr').last().prev().find('td').eq(col)
+                        let totalCell = $('#rekonsiliasi-table tr').last().find('td').eq(col)
+                        totalnm.text(formatRupiah(sumPDRBnm, 'Rp '))
+                        totalCell.text(formatRupiah(sumPDRB, 'Rp '))
+                    }
                 });
                 
                 for (let i = 1; i < 5; i++) {

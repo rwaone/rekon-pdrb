@@ -94,19 +94,19 @@
                             <td>
                                 <label class="col" style="margin-bottom:0rem;" for="">{{ $subsect->sector->category->code.". ".$subsect->sector->category->name }}</label>
                             </td>
-                            <td>
+                            <td class="categories">
                                 <input disabled type="text" name="adhk_{{ $subsect->sector->category->code."_Q1" }}" id="adhk_{{ $subsect->sector->category->code."_Q1" }}" class="form-control text-right" aria-required="true">
                             </td>
-                            <td>
+                            <td class="categories">
                                 <input disabled type="text" name="adhk_{{ $subsect->sector->category->code."_Q2" }}" id="adhk_{{ $subsect->sector->category->code."_Q2" }}" class="form-control text-right" aria-required="true">
                             </td>
-                            <td>
+                            <td class="categories">
                                 <input disabled type="text" name="adhk_{{ $subsect->sector->category->code."_Q3" }}" id="adhk_{{ $subsect->sector->category->code."_Q3" }}" class="form-control text-right" aria-required="true">
                             </td>
-                            <td>
+                            <td class="categories">
                                 <input disabled type="text" name="adhk_{{ $subsect->sector->category->code."_Q4" }}" id="adhk_{{ $subsect->sector->category->code."_Q4" }}" class="form-control text-right" aria-required="true">
                             </td>
-                            <td>
+                            <td class="categories">
                                 <input disabled type="text" name="adhk_{{ $subsect->sector->category->code."_Y" }}" id="adhk_{{ $subsect->sector->category->code."_Y" }}" class="form-control text-right" aria-required="true">
                             </td>
                         </tr>
@@ -200,6 +200,46 @@
                         </tr>
                     @endif
                     @endforeach
+                    <tr class = "PDRB-footer text-center" style="background-color: steelblue; color:aliceblue; font-weight: bold;">
+                        <td>
+                            <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto (PDRB) Nonmigas </p>
+                        </td>
+                        <td>
+                            <p class="col mt-1 mb-1" id="total-nonmigas-Q1" style="margin-bottom:0rem;"></p>
+                        </td>
+                        <td>
+                            <p class="col mt-1 mb-1" id="total-nonmigas-Q2" style="margin-bottom:0rem;"></p>
+                        </td>
+                        <td>
+                            <p class="col mt-1 mb-1" id="total-nonmigas-Q3" style="margin-bottom:0rem;"></p>
+                        </td>
+                        <td>
+                            <p class="col mt-1 mb-1" id="total-nonmigas-Q4" style="margin-bottom:0rem;"></p>
+                        </td>
+                        <td>
+                            <p class="col mt-1 mb-1" id="total-nonmigas-Y" style="margin-bottom:0rem;"></p>
+                        </td>
+                    </tr>
+                    <tr class = "PDRB-footer text-center" style="background-color: steelblue; color:aliceblue; font-weight: bold;">
+                        <td>
+                            <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto (PDRB) </p>
+                        </td>
+                        <td>
+                            <p class="col mt-1 mb-1" id="total-Q1" style="margin-bottom:0rem;"></p>
+                        </td>
+                        <td>
+                            <p class="col mt-1 mb-1" id="total-Q2" style="margin-bottom:0rem;"></p>
+                        </td>
+                        <td>
+                            <p class="col mt-1 mb-1" id="total-Q3" style="margin-bottom:0rem;"></p>
+                        </td>
+                        <td>
+                            <p class="col mt-1 mb-1" id="total-Q4" style="margin-bottom:0rem;"></p>
+                        </td>
+                        <td>
+                            <p class="col mt-1 mb-1" id="total-Y" style="margin-bottom:0rem;"></p>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>

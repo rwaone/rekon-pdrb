@@ -31,21 +31,6 @@ class Rekonsiliasi extends Component
         $this->formType = null;
     }
 
-    public function render()
-    {
-        $this->mount();
-        $regions = Region::all();
-        $categories = Category::all();
-        $sectors = Sector::all();
-        $subsectors = Subsector::all();
-        return view('livewire.rekonsiliasi', [
-            'regions' => $regions,
-            'categories' => $categories,
-            'sectors' => $sectors,
-            'subsectors' => $subsectors,
-        ]);
-    }
-
     // public function render()
     // {
     //     $this->mount();
@@ -53,13 +38,28 @@ class Rekonsiliasi extends Component
     //     $categories = Category::all();
     //     $sectors = Sector::all();
     //     $subsectors = Subsector::all();
-    //     return view('livewire.rekonsiliasifull', [
+    //     return view('livewire.rekonsiliasi', [
     //         'regions' => $regions,
     //         'categories' => $categories,
     //         'sectors' => $sectors,
     //         'subsectors' => $subsectors,
     //     ]);
     // }
+
+    public function render()
+    {
+        $this->mount();
+        $regions = Region::all();
+        $categories = Category::all();
+        $sectors = Sector::all();
+        $subsectors = Subsector::all();
+        return view('livewire.rekonsiliasifull', [
+            'regions' => $regions,
+            'categories' => $categories,
+            'sectors' => $sectors,
+            'subsectors' => $subsectors,
+        ]);
+    }
 
     public function showForm()
     {   
