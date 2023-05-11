@@ -109,8 +109,9 @@
                                 <select id="tahunSelect" class="form-control select2bs4" style="width: 100%;"
                                     name="year">
                                     <option value="" disabled selected>Pilih Tahun</option>
-                                    <option value='2023'>2023</option>
-                                    <option value='2022'>2022</option>
+                                    @foreach ($years as $year)
+                                        <option value='{{$year}}'>{{$year}}</option>
+                                    @endforeach
                                 </select>
                                 <div class="help-block"></div>
                             </div>
