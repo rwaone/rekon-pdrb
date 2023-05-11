@@ -18,6 +18,7 @@ class PeriodController extends Controller
         $periods = Period::all();
         return view('period.view', [
             'periods' => $periods,
+            'years' => range(date('Y'), 2010),
         ]);
     }
 
