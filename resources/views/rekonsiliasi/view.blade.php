@@ -14,9 +14,9 @@
             }
 
             #rekonsiliasi-table td {
-                word-wrap:break-word;
+                word-wrap: break-word;
             }
-            
+
             #rekonsiliasi-table .PDRB-footer td p {
                 text-align: center !important;
             }
@@ -30,20 +30,27 @@
     <x-slot name="breadcrumb">
         <li class="breadcrumb-item active">Rekonsiliasi</li>
     </x-slot>
-    <div id = "my-cat" data-cat = "{{ json_encode($cat) }}"></div>
+    <div id="my-cat" data-cat="{{ json_encode($cat) }}"></div>
+    {{$formType}}
     @livewire('rekonsiliasi')
+    @if ($formType != null)
+        @if ($formType == 'F')
+            @include('livewire.full-form')
+        @else
+            @include('livewire.single-form')
+        @endif
+    @endif
 
     <x-slot name="script">
         <!-- Additional JS resources -->
         <script src="{{ url('') }}/plugins/select2/js/select2.full.min.js"></script>
         <script>
-            
             $(document).on('focus', '.select2-selection', function(e) {
                 $(this).closest(".select2-container").siblings('select:enabled').select2('open');
             })
-            
-            function inputToCurrency(num){
-                const val = num.replaceAll(",","");
+
+            function inputToCurrency(num) {
+                const val = num.replaceAll(",", "");
                 const return_ = Number(val).toLocaleString('en-US');
                 console.log(return_);
                 return val.toLocaleString('en-US');
@@ -52,40 +59,39 @@
             function calculateSector(sector) {
                 let sum = 0;
                 // let sector = sector.replaceAll(",","");
-                $(`.${sector}`).each(function(index){
-                    let X = $(this).val().replaceAll(/[A-Za-z.]/g,'');
+                $(`.${sector}`).each(function(index) {
+                    let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
                     let Y = X.replaceAll(/[,]/g, '.')
-                    sum += Y > 0 ? Number(Y) :0;
+                    sum += Y > 0 ? Number(Y) : 0;
                 });
                 return sum;
             }
-            
+
             function calculateRow(row) {
                 let sum = 0;
 
             }
 
-            function formatRupiah(angka, prefix)
-            {
+            function formatRupiah(angka, prefix) {
                 var number_string = String(angka).replace(/[^,\d]/g, '').toString(),
-                    split    = number_string.split(','),
-                    sisa     = split[0].length % 3,
-                    rupiah     = split[0].substr(0, sisa),
-                    ribuan     = split[0].substr(sisa).match(/\d{3}/gi);
-                    
+                    split = number_string.split(','),
+                    sisa = split[0].length % 3,
+                    rupiah = split[0].substr(0, sisa),
+                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
                 if (ribuan) {
                     separator = sisa ? '.' : '';
                     rupiah += separator + ribuan.join('.');
                 }
-                
+
                 rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
                 return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
             }
 
-                      
+
 
             $(document).ready(function() {
-			// Your jQuery code goes here
+                // Your jQuery code goes here
                 let cat = JSON.parse($("#my-cat").data('cat'))
                 let catArray = cat.split(", ")
                 let catB = "A,B,C,D,G,H,I,K"
@@ -101,8 +107,8 @@
                     let sum = 0;
                     let $currentRow = $(this).closest('tr');
                     let $lastCol = $currentRow.find('td:last');
-                    $currentRow.find('td:not(:last-child) input').each(function () {
-                        let X = $(this).val().replaceAll(/[A-Za-z.]/g,'');
+                    $currentRow.find('td:not(:last-child) input').each(function() {
+                        let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
                         let Y = X.replaceAll(/[,]/g, '.');
                         sum += Y > 0 ? Number(Y) : 0;
                     });
@@ -115,50 +121,52 @@
 
                         let row = $(`#adhk_${index}_Y`).closest('tr')
                         let subsection = $(`#adhk_1_${index}_Y`).closest('tr')
-                        
-                        row.find('td input:not(#adhk_'+index+'_Y)').each(function (){
+
+                        row.find('td input:not(#adhk_' + index + '_Y)').each(function() {
                             if (!$(this).hasClass(`adhk_${index}_Y`)) {
-                                let X = $(this).val().replaceAll(/[A-Za-z.]/g,'');
+                                let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
                                 let Y = X.replaceAll(/[,]/g, '.');
                                 darksum += Y > 0 ? Number(Y) : 0;
                             }
                         })
 
-                        subsection.find('td input:not(#adhk_1_'+index+'_Y)').each(function (){
+                        subsection.find('td input:not(#adhk_1_' + index + '_Y)').each(function() {
                             if (!$(this).hasClass(`adhk_${index}_Y`)) {
-                                let X = $(this).val().replaceAll(/[A-Za-z.]/g,'');
+                                let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
                                 let Y = X.replaceAll(/[,]/g, '.');
                                 lightsum += Y > 0 ? Number(Y) : 0;
                             }
                         })
-                        
-                        let lightsumRp = String(lightsum).replaceAll(/[.]/g, ','); 
+
+                        let lightsumRp = String(lightsum).replaceAll(/[.]/g, ',');
                         let darksumRp = String(darksum).replaceAll(/[.]/g, ',');
                         $(`#adhk_1_${index}_Y`).val(formatRupiah(lightsumRp, 'Rp '))
                         $(`#adhk_${index}_Y`).val(formatRupiah(darksumRp, 'Rp '))
-                    }   
+                    }
 
                     let numRows = tr.length - 2
-                    for (let col = 1; col < $('#rekonsiliasi-table tr:first-child td').length ; col++){
+                    for (let col = 1; col < $('#rekonsiliasi-table tr:first-child td').length; col++) {
                         let sum = 0
                         let pdrb = 0
                         let nonmigas = 0
-                        for (let row = 0; row < numRows; row++){
+                        for (let row = 0; row < numRows; row++) {
                             let cell = $('#rekonsiliasi-table tr').eq(row + 1).find('td').eq(col)
                             if (cell.hasClass('categories')) {
-                                let X = cell.find('input').val().replaceAll(/[A-Za-z.]/g,'')
+                                let X = cell.find('input').val().replaceAll(/[A-Za-z.]/g, '')
                                 let Y = X.replaceAll(/[,]/g, '.')
                                 sum += Y > 0 ? Number(Y) : 0
                             }
                             for (let index of catLast) {
-                                if (cell.find(`input[id^='adhk___${index}_']`).length > 0){
-                                    let X = cell.find(`input[id^='adhk___${index}_']`).val().replaceAll(/[A-Za-z.]/g,'')
+                                if (cell.find(`input[id^='adhk___${index}_']`).length > 0) {
+                                    let X = cell.find(`input[id^='adhk___${index}_']`).val().replaceAll(
+                                        /[A-Za-z.]/g, '')
                                     let Y = X.replaceAll(/[,]/g, '.')
                                     pdrb += Y > 0 ? Number(Y) : 0
                                 }
                             }
-                            if  (cell.find('input').attr('id').includes('adhk__1_B_')  || cell.find('input').attr('id').includes('adhk_b_1_C_') ){
-                                let X = cell.find('input').val().replaceAll(/[A-Za-z.]/g,'')
+                            if (cell.find('input').attr('id').includes('adhk__1_B_') || cell.find('input').attr(
+                                    'id').includes('adhk_b_1_C_')) {
+                                let X = cell.find('input').val().replaceAll(/[A-Za-z.]/g, '')
                                 let Y = X.replaceAll(/[,]/g, '.')
                                 nonmigas += Y > 0 ? Number(Y) : 0
                             }
@@ -173,7 +181,7 @@
                         totalCell.text(formatRupiah(sumPDRB, 'Rp '))
                     }
                 });
-                
+
                 for (let i = 1; i < 5; i++) {
                     $(`.sector-Q${i}-1`).keyup(function(e) {
                         // $(this).val(inputToCurrency(e.currentTarget.value));
@@ -197,8 +205,8 @@
                         $(`.sector-Q${i}-${j}`).keyup(function(e) {
                             $(this).val(formatRupiah($(this).val(), 'Rp '))
                             var charCode = (e.which) ? e.which : event.keyCode
-                            if (String.fromCharCode(charCode).match(/[^0-9.,]/g))    
-                            return false;
+                            if (String.fromCharCode(charCode).match(/[^0-9.,]/g))
+                                return false;
                         })
                     }
                 }

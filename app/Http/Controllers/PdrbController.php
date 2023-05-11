@@ -10,6 +10,7 @@ use App\Http\Requests\UpdatepdrbRequest;
 use App\Models\Category;
 use App\Models\Sector;
 use App\Models\Subsector;
+use Illuminate\Http\Request;
 
 class PdrbController extends Controller
 {
@@ -18,12 +19,27 @@ class PdrbController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        if ($request){
+            $request->quarter == 'F' ? $formType = 'full-form' : $formType = 'single-form';
+        }else {
+            $formType = NULL;
+        }
+
         $cat = Category::pluck('code')->toArray();
         $catString = implode(", ", $cat);
+        $regions = Region::all();
+        $categories = Category::all();
+        $sectors = Sector::all();
+        $subsectors = Subsector::all();
         return view('rekonsiliasi.view', [
             'cat' => $catString,
+            'regions' => $regions,
+            'categories' => $categories,
+            'sectors' => $sectors,
+            'subsectors' => $subsectors,
+            'formType' => $formType,
         ]);
     }
     
@@ -91,5 +107,11 @@ class PdrbController extends Controller
     public function destroy(pdrb $pdrb)
     {
         //
+    }
+
+    public function rekonsiliasi(Request $request)
+    {        
+        return view('livewire.rekonsiliasi', [
+        ]);
     }
 }
