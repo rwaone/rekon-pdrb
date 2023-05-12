@@ -31,8 +31,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('pdrb/rekonsiliasi', PdrbController::class)->middleware(['auth', 'verified']);
+Route::get('pdrb/rekonsiliasi/', [PdrbController::class, 'rekonsiliasi'])->middleware(['auth', 'verified']);
+Route::post('pdrb/rekonsiliasi/', [PdrbController::class, 'rekonsiliasi'])->middleware(['auth', 'verified']);
+Route::resource('pdrb', PdrbController::class)->middleware(['auth', 'verified']);
 Route::resource('fenomena', FenomenaController::class)->middleware(['auth', 'verified']);
 Route::resource('period', PeriodController::class)->middleware(['auth', 'verified']);
+
 
 require __DIR__.'/auth.php';

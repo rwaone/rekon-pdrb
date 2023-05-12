@@ -50,14 +50,8 @@ class Rekonsiliasi extends Component
     {
         $this->mount();
         $regions = Region::all();
-        $categories = Category::all();
-        $sectors = Sector::all();
-        $subsectors = Subsector::all();
         return view('livewire.rekonsiliasi', [
             'regions' => $regions,
-            'categories' => $categories,
-            'sectors' => $sectors,
-            'subsectors' => $subsectors,
         ]);
     }
 

@@ -19,28 +19,9 @@ class PdrbController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        if ($request){
-            $request->quarter == 'F' ? $formType = 'full-form' : $formType = 'single-form';
-        }else {
-            $formType = NULL;
-        }
-
-        $cat = Category::pluck('code')->toArray();
-        $catString = implode(", ", $cat);
-        $regions = Region::all();
-        $categories = Category::all();
-        $sectors = Sector::all();
-        $subsectors = Subsector::all();
-        return view('rekonsiliasi.view', [
-            'cat' => $catString,
-            'regions' => $regions,
-            'categories' => $categories,
-            'sectors' => $sectors,
-            'subsectors' => $subsectors,
-            'formType' => $formType,
-        ]);
+        //
     }
     
     /**
@@ -111,7 +92,25 @@ class PdrbController extends Controller
 
     public function rekonsiliasi(Request $request)
     {        
-        return view('livewire.rekonsiliasi', [
+        if ($request->quarter) {
+            $request->quarter == 'F' ? $formType = 'full-form' : $formType = 'single-form';
+        }else {
+            $formType = NULL;
+        }
+
+        $cat = Category::pluck('code')->toArray();
+        $catString = implode(", ", $cat);
+        $regions = Region::all();
+        $categories = Category::all();
+        $sectors = Sector::all();
+        $subsectors = Subsector::all();
+        return view('rekonsiliasi.view', [
+            'cat' => $catString,
+            'regions' => $regions,
+            'categories' => $categories,
+            'sectors' => $sectors,
+            'subsectors' => $subsectors,
+            'formType' => $formType,
         ]);
     }
 }

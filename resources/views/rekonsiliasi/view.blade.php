@@ -34,7 +34,7 @@
     {{$formType}}
     @livewire('rekonsiliasi')
     @if ($formType != null)
-        @if ($formType == 'F')
+        @if ($formType == 'full-form')
             @include('livewire.full-form')
         @else
             @include('livewire.single-form')
