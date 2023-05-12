@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pdrb;
+use App\Models\Period;
 use App\Models\Region;
 use App\Models\Satker;
-use App\Http\Requests\StorepdrbRequest;
-use App\Http\Requests\UpdatepdrbRequest;
-use App\Models\Category;
 use App\Models\Sector;
+use App\Models\Category;
 use App\Models\Subsector;
 use Illuminate\Http\Request;
+use App\Http\Requests\StorepdrbRequest;
+use App\Http\Requests\UpdatepdrbRequest;
 
 class PdrbController extends Controller
 {
@@ -92,10 +93,28 @@ class PdrbController extends Controller
 
     public function rekonsiliasi(Request $request)
     {        
+        $years = Period::groupBy('year')->get('year');        
+        $quarters = Period::groupBy('quarter')->get('quarter');
+        $periods = Period::get();
+        $filter = [
+            'type' => '',
+            'year' => '',
+            'quarter' => '',
+            'period_id' => '',
+            'region_id' => '',
+            'price_base' => '',
+        ];
+        
         if ($request->quarter) {
-            $request->quarter == 'F' ? $formType = 'full-form' : $formType = 'single-form';
-        }else {
-            $formType = NULL;
+            // $request->quarter == 'F' ? $formType = 'full-form' : $formType = 'single-form';
+            $filter = $request->validate([
+                'type' => 'required',
+                'year' => 'required',
+                'quarter' => 'required',
+                'period_id' => 'required',
+                'region_id' => 'required',
+                'price_base' => 'required',
+            ]);
         }
 
         $cat = Category::pluck('code')->toArray();
@@ -110,7 +129,10 @@ class PdrbController extends Controller
             'categories' => $categories,
             'sectors' => $sectors,
             'subsectors' => $subsectors,
-            'formType' => $formType,
+            'years' => $years,
+            'quarters'  => $quarters,
+            'periods' => $periods,
+            'filter' => $filter
         ]);
     }
 }

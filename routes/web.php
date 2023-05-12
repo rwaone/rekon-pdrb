@@ -36,6 +36,7 @@ Route::post('pdrb/rekonsiliasi/', [PdrbController::class, 'rekonsiliasi'])->midd
 Route::resource('pdrb', PdrbController::class)->middleware(['auth', 'verified']);
 Route::resource('fenomena', FenomenaController::class)->middleware(['auth', 'verified']);
 Route::resource('period', PeriodController::class)->middleware(['auth', 'verified']);
+Route::post('/getperiod', PeriodController::class, 'getperiod')->name('getperiod');
 
 
 require __DIR__.'/auth.php';

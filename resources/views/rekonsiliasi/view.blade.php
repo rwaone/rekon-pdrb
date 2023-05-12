@@ -31,14 +31,13 @@
         <li class="breadcrumb-item active">Rekonsiliasi</li>
     </x-slot>
     <div id="my-cat" data-cat="{{ json_encode($cat) }}"></div>
-    
-    @livewire('rekonsiliasi')
-    @if ($formType != null)
-        @if ($formType == 'full-form')
-            @include('livewire.full-form')
-        @else
-            @include('livewire.single-form')
-        @endif
+
+    @include('livewire.rekonsiliasi')
+
+    @if ($filter['quarter'] == 'F')
+        @include('livewire.full-form')
+    @else
+        @include('livewire.single-form')
     @endif
 
     <x-slot name="script">
@@ -81,7 +80,7 @@
             //
 
 
-            
+
             $(document).ready(function() {
                 // Your jQuery code goes here
                 let cat = JSON.parse($("#my-cat").data('cat'))
@@ -218,7 +217,7 @@
                     totalCell.text(formatRupiah(sumPDRB, 'Rp '))
                 })
                 //
-                
+
                 //single and full, sum for every category and sector
                 for (let i = 1; i < 5; i++) {
                     $(`.sector-Q${i}-1`).keyup(function(e) {
@@ -264,7 +263,7 @@
                     let que = String(jumlah).replaceAll(/[.]/g, ',');
                     $('#adhk_1_A').val(formatRupiah(que, 'Rp '));
                 })
-                
+
                 $('.sector-8').keyup(function(e) {
                     let jumlah = calculateSector('sector-8');
                     let que = String(jumlah).replaceAll(/[.]/g, ',');
@@ -273,7 +272,7 @@
 
             })
             //
-            
+
 
 
             $(document).on('select2:open', () => {
@@ -288,6 +287,30 @@
                     theme: 'bootstrap4'
                 })
             });
+
+            $(function() {
+                $('#type').on('change', function() {
+                    let pdrb_type = $('#type').val();
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ route('getperiod') }}',
+                        data: {
+                            pdrb_type: pdrb_type
+                        },
+                        cache: false,
+
+                        success:: function($msg) {
+                            $('#year').html(msg);
+                            $('#quarter').html('');
+                            $('#period_id').html('');
+                        },
+                        error: function(data){
+                            console.log('error:',data)
+                        },
+                    })
+                })
+            })
         </script>
     </x-slot>
 </x-dashboard-Layout>

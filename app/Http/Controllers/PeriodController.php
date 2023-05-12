@@ -122,4 +122,13 @@ class PeriodController extends Controller
         Period::destroy($period->id);
         return redirect('period')->with('notif', 'Data berhasil dihapus!');
     }
+
+    public function getyear(Request $request)
+    {
+        $type = $request->type;
+        $year = Period::where('type', $type)->groupBy('year')->get('year');
+        foreach ($period as $period){
+            echo "<option {{ old('year', "$filter['year']) == "$year->year ? 'selected' : '' }} value='{{ $year->year }}'>{{ $year->year }}</option>";
+        }
+    }
 }
