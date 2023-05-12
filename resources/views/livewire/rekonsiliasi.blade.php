@@ -1,16 +1,9 @@
 <div>
     <div class="card">
-        <form action="/pdrb/rekonsiliasi" action="post">
+        <form action="/pdrb/rekonsiliasi" action="post" enctype="multipart/form-data">
             @csrf
             <!-- form start -->
             <div class="card-body">
-                {{-- 
-            <div class="form-group">
-                <label for="description-text" class="col-form-label">Keterangan:</label>
-                <input wire:model="message" type="text" class="form-control" placeholder="Keterangan Putaran">
-            </div>
-
-            {{ $message }} --}}
 
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label" for="pdrb_type">PDRB:</label>

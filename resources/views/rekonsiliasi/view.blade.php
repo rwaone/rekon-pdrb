@@ -31,7 +31,7 @@
         <li class="breadcrumb-item active">Rekonsiliasi</li>
     </x-slot>
     <div id="my-cat" data-cat="{{ json_encode($cat) }}"></div>
-    {{$formType}}
+    
     @livewire('rekonsiliasi')
     @if ($formType != null)
         @if ($formType == 'full-form')
