@@ -1,7 +1,7 @@
 <div class="card">
     <form class="form-horizontal">
         <div class="card-body p-3">
-            <table class="table table-striped table-bordered" id="rekonsiliasi-table">
+            <table class="table table-striped table-bordered" id="rekonsiliasi-table-single">
                 <thead class="text-center" style="background-color: steelblue; color:aliceblue;">
                     <tr>
                         <th>Komponen</th>
@@ -18,10 +18,10 @@
                                     <label class="col" style="margin-bottom:0rem;"
                                         for="">{{ $subsector->sector->category->code . '. ' . $subsector->sector->category->name }}</label>
                                 </td>
-                                <td>
+                                <td class="categories">
                                     <input disabled type="text"
-                                        name="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
-                                        id="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
+                                        name="adhk_{{ $subsector->sector->category->code }}"
+                                        id="adhk_{{ $subsector->sector->category->code }}"
                                         class="form-control" aria-required="true">
                                 </td>
                             </tr>
@@ -34,9 +34,9 @@
                                 </td>
                                 <td>
                                     <input disabled type="text"
-                                        name="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
-                                        id="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
-                                        class="form-control" aria-required="true">
+                                        name="adhk_{{ $subsector->sector->code . '_' . $subsector->sector->category->code }}"
+                                        id="adhk_{{ $subsector->sector->code . '_' . $subsector->sector->category->code }}"
+                                        class="form-control {{ "category-".$subsector->sector->category->code }}" aria-required="true">
                                 </td>
                             </tr>
                         @endif
@@ -49,9 +49,9 @@
                                 </td>
                                 <td>
                                     <input type="text"
-                                        name="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
-                                        id="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
-                                        class="form-control" aria-required="true">
+                                        name="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
+                                        id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
+                                        class="form-control {{ "sector-".$subsector->sector_id }} {{ "category-".$subsector->sector->category_id }}" aria-required="true">
                                 </td>
                             </tr>
                         @elseif ($subsector->code == null && $subsector->sector->code != null)
@@ -63,9 +63,9 @@
                                 </td>
                                 <td>
                                     <input type="text"
-                                        name="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
-                                        id="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
-                                        class="form-control" aria-required="true">
+                                        name="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
+                                        id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
+                                        class="form-control {{ "sector-".$subsector->sector_id }} {{ "category-".$subsector->sector->category_id }}" aria-required="true">
                                 </td>
                             </tr>
                         @elseif ($subsector->code == null && $subsector->sector->code == null)
@@ -76,13 +76,30 @@
                                 </td>
                                 <td>
                                     <input type="text"
-                                        name="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
-                                        id="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id }}"
-                                        class="form-control" aria-required="true">
+                                        name="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
+                                        id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
+                                        class="form-control {{ "sector-".$subsector->sector_id }} {{ "category-".$subsector->sector->category_id }}" aria-required="true">
                                 </td>
                             </tr>
                         @endif
                     @endforeach
+                    <tr class = "PDRB-footer text-center" style="background-color: steelblue; color:aliceblue; font-weight: bold;">
+                        <td>
+                            <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto (PDRB) Nonmigas </p>
+                        </td>
+                        <td>
+                            <p class="col mt-1 mb-1" id="total-nonmigas" style="margin-bottom:0rem;"></p>
+                        </td>
+                        </td>
+                    </tr>
+                    <tr class = "PDRB-footer text-center" style="background-color: steelblue; color:aliceblue; font-weight: bold;">
+                        <td>
+                            <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto (PDRB) </p>
+                        </td>
+                        <td>
+                            <p class="col mt-1 mb-1" id="total" style="margin-bottom:0rem;"></p>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>

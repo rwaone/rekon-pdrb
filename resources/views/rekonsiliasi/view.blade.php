@@ -49,13 +49,7 @@
                 $(this).closest(".select2-container").siblings('select:enabled').select2('open');
             })
 
-            function inputToCurrency(num) {
-                const val = num.replaceAll(",", "");
-                const return_ = Number(val).toLocaleString('en-US');
-                console.log(return_);
-                return val.toLocaleString('en-US');
-            }
-
+            //sum of each value in sector and category
             function calculateSector(sector) {
                 let sum = 0;
                 // let sector = sector.replaceAll(",","");
@@ -66,12 +60,9 @@
                 });
                 return sum;
             }
+            //
 
-            function calculateRow(row) {
-                let sum = 0;
-
-            }
-
+            //change the value of inputed number to Rupiah 
             function formatRupiah(angka, prefix) {
                 var number_string = String(angka).replace(/[^,\d]/g, '').toString(),
                     split = number_string.split(','),
@@ -87,9 +78,10 @@
                 rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
                 return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
             }
+            //
 
 
-
+            
             $(document).ready(function() {
                 // Your jQuery code goes here
                 let cat = JSON.parse($("#my-cat").data('cat'))
@@ -99,6 +91,7 @@
                 let catLast = catArray.filter(value => !catSpecific.includes(value))
                 let sum = 0
 
+                //full-form last column sum
                 let table = $('#rekonsiliasi-table');
                 let tbody = table.find('tbody');
                 let tr = tbody.find('tr');
@@ -181,10 +174,54 @@
                         totalCell.text(formatRupiah(sumPDRB, 'Rp '))
                     }
                 });
+                //
 
+                //Single-Form Sum Last Column
+                let tableSingle = $('#rekonsiliasi-table-single')
+                let tbodySingle = tableSingle.find('tbody')
+                let trSingle = tbodySingle.find('tr')
+
+                trSingle.on('blur', 'td input', function(e) {
+                    let numRows = trSingle.length - 2
+                    let sum = 0
+                    let pdrb = 0
+                    let nonmigas = 0
+                    for (let row = 0; row < numRows; row++) {
+                        let cell = $('#rekonsiliasi-table-single tr').eq(row + 1).find('td').eq(1)
+                        if (cell.hasClass('categories')) {
+                            let X = cell.find('input').val().replaceAll(/[A-Za-z.]/g, '')
+                            let Y = X.replaceAll(/[,]/g, '.')
+                            sum += Y > 0 ? Number(Y) : 0
+                        }
+                        for (let index of catLast) {
+                            if (cell.find(`input[id^='adhk___${index}']`).length > 0) {
+                                let X = cell.find(`input[id^='adhk___${index}']`).val().replaceAll(
+                                    /[A-Za-z.]/g, '')
+                                let Y = X.replaceAll(/[,]/g, '.')
+                                pdrb += Y > 0 ? Number(Y) : 0
+                            }
+                        }
+                        if (cell.find('input').attr('id').includes('adhk__1_B') || cell.find('input').attr(
+                                'id').includes('adhk_b_1_C')) {
+                            let X = cell.find('input').val().replaceAll(/[A-Za-z.]/g, '')
+                            let Y = X.replaceAll(/[,]/g, '.')
+                            nonmigas += Y > 0 ? Number(Y) : 0
+                        }
+                    }
+                    let pdrbs = sum + pdrb
+                    let PdrbNonmigas = pdrbs - nonmigas
+                    let sumPDRB = String(pdrbs).replaceAll(/[.]/g, ',')
+                    let sumPDRBnm = String(PdrbNonmigas).replaceAll(/[.]/g, ',')
+                    let totalnm = $('#rekonsiliasi-table-single tr').last().prev().find('td').eq(1)
+                    let totalCell = $('#rekonsiliasi-table-single tr').last().find('td').eq(1)
+                    totalnm.text(formatRupiah(sumPDRBnm, 'Rp '))
+                    totalCell.text(formatRupiah(sumPDRB, 'Rp '))
+                })
+                //
+                
+                //single and full, sum for every category and sector
                 for (let i = 1; i < 5; i++) {
                     $(`.sector-Q${i}-1`).keyup(function(e) {
-                        // $(this).val(inputToCurrency(e.currentTarget.value));
                         let jumlah = calculateSector(`sector-Q${i}-1`);
                         let que = String(jumlah).replaceAll(/[.]/g, ',');
                         $(`#adhk_1_A_Q${i}`).val(formatRupiah(que, 'Rp '));
@@ -200,6 +237,11 @@
                             let que = String(jumlah).replaceAll(/[.]/g, ',');
                             $(`#adhk_${catArray[j-1]}_Q${i}`).val(formatRupiah(que, 'Rp '))
                         });
+                        $(`.category-${j}`).keyup(function(e) {
+                            let jumlah = calculateSector(`category-${j}`);
+                            let que = String(jumlah).replaceAll(/[.]/g, ',');
+                            $(`#adhk_${catArray[j-1]}`).val(formatRupiah(que, 'Rp '))
+                        });
                     }
                     for (let j = 1; j < 49; j++) {
                         $(`.sector-Q${i}-${j}`).keyup(function(e) {
@@ -208,9 +250,31 @@
                             if (String.fromCharCode(charCode).match(/[^0-9.,]/g))
                                 return false;
                         })
+                        $(`.sector-${j}`).keyup(function(e) {
+                            $(this).val(formatRupiah($(this).val(), 'Rp '))
+                            var charCode = (e.which) ? e.which : event.keyCode
+                            if (String.fromCharCode(charCode).match(/[^0-9.,]/g))
+                                return false;
+                        })
                     }
                 }
-            });
+
+                $('.sector-1').keyup(function(e) {
+                    let jumlah = calculateSector('sector-1');
+                    let que = String(jumlah).replaceAll(/[.]/g, ',');
+                    $('#adhk_1_A').val(formatRupiah(que, 'Rp '));
+                })
+                
+                $('.sector-8').keyup(function(e) {
+                    let jumlah = calculateSector('sector-8');
+                    let que = String(jumlah).replaceAll(/[.]/g, ',');
+                    $('#adhk_1_C').val(formatRupiah(que, 'Rp '));
+                })
+
+            })
+            //
+            
+
 
             $(document).on('select2:open', () => {
                 document.querySelector('.select2-search__field').focus();
@@ -223,16 +287,6 @@
                 $('.select2bs4').select2({
                     theme: 'bootstrap4'
                 })
-
-                $("#pdrbTable").DataTable({
-                    "scrollX": true,
-                    "ordering": false,
-                    "searching": true,
-                    "responsive": true,
-                    "lengthChange": false,
-                    "autoWidth": false,
-                    "buttons": ["copy", "csv", "excel", "pdf"]
-                }).buttons().container().appendTo('#pdrbTable_wrapper .col-md-6:eq(0)');
             });
         </script>
     </x-slot>
