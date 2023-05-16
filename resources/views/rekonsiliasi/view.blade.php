@@ -4,6 +4,8 @@
     </x-slot>
     <x-slot name="head">
         <!-- Additional resources here -->
+        <meta name="csrf-token" content="content">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <link rel="stylesheet" href="{{ url('') }}/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
         <link rel="stylesheet" href="{{ url('') }}/plugins/select2/css/select2.min.css">
         <script></script>
@@ -273,11 +275,10 @@
             })
             //
 
-
-
             $(document).on('select2:open', () => {
                 document.querySelector('.select2-search__field').focus();
             });
+
             $(function() {
                 //Initialize Select2 Elements
                 $('.select2').select2()
@@ -288,29 +289,83 @@
                 })
             });
 
-            $(function() {
+            $(document).ready(function() {
                 $('#type').on('change', function() {
-                    let pdrb_type = $('#type').val();
+                    var pdrb_type = this.value;
+                    $("#year").html('');
 
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route('getperiod') }}',
+                        url: '{{ route('fetchYear') }}',
                         data: {
-                            pdrb_type: pdrb_type
+                            type: pdrb_type,
+                            _token: '{{csrf_token()}}',
                         },
-                        cache: false,
+                        dataType: 'json',
 
-                        success:: function($msg) {
-                            $('#year').html(msg);
-                            $('#quarter').html('');
-                            $('#period_id').html('');
-                        },
-                        error: function(data){
-                            console.log('error:',data)
+                        success: function(result) {
+                            $('#year').html('<option value=""> Pilih Tahun </option>');
+                            $.each(result.years, function(key, value) {
+                                $('#year').append('<option value="' + value.year + '">' + value.year + '</option>');
+                            });
+                            $('#quarter').append('<option value="" disabled selected> Pilih Triwulan </option>');
                         },
                     })
-                })
-            })
+                });
+
+                $('#year').on('change', function() {
+                    var pdrb_type = $('#type').val();
+                    var pdrb_year = this.value;
+                    $("#quarter").html('');
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ route('fetchQuarter') }}',
+                        data: {
+                            type: pdrb_type,
+                            year: pdrb_year,
+                            _token: '{{csrf_token()}}',
+                        },
+                        dataType: 'json',
+
+                        success: function(result) {
+                            $('#quarter').html('<option value="" selected> Pilih Triwulan </option>');
+                            $.each(result.quarters, function(key, value) {
+                                var description = (value.quarter == 'F') ? 'Lengkap' : ((value.quarter == 'T') ? 'Tahunan' : 'Triwulan ' + value.quarter);
+                                $('#quarter').append('<option value="' + value.quarter + '">' + description + '</option>');
+                            });
+                            $('#period').append('<option value="" selected> Pilih Periode </option>');
+                        },
+                    })
+                });
+
+                $('#quarter').on('change', function() {
+                    var pdrb_type = $('#type').val();
+                    var pdrb_year = $('#year').val();
+                    var pdrb_quarter = this.value;
+                    $("#period").html('');
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ route('fetchPeriod') }}',
+                        data: {
+                            type: pdrb_type,
+                            year: pdrb_year,
+                            quarter: pdrb_quarter,
+                            _token: '{{csrf_token()}}',
+                        },
+                        dataType: 'json',
+
+                        success: function(result) {
+                            $('#period').html('<option value="" selected> Pilih Periode </option>');
+                            $.each(result.periods, function(key, value) {
+                                $('#period').append('<option value="' + value.id + '">' + value.description + '</option>');
+                            });
+                        },
+                    })
+                });
+            });
+
         </script>
     </x-slot>
 </x-dashboard-Layout>

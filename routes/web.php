@@ -35,8 +35,11 @@ Route::get('pdrb/rekonsiliasi/', [PdrbController::class, 'rekonsiliasi'])->middl
 Route::post('pdrb/rekonsiliasi/', [PdrbController::class, 'rekonsiliasi'])->middleware(['auth', 'verified']);
 Route::resource('pdrb', PdrbController::class)->middleware(['auth', 'verified']);
 Route::resource('fenomena', FenomenaController::class)->middleware(['auth', 'verified']);
+
+Route::post('fetch/year', [PeriodController::class, 'fetchYear'])->name('fetchYear');
+Route::post('fetch/quarter', [PeriodController::class, 'fetchQuarter'])->name('fetchQuarter');
+Route::post('fetch/period', [PeriodController::class, 'fetchPeriod'])->name('fetchPeriod');
 Route::resource('period', PeriodController::class)->middleware(['auth', 'verified']);
-Route::post('/getperiod', PeriodController::class, 'getperiod')->name('getperiod');
 
 
 require __DIR__.'/auth.php';

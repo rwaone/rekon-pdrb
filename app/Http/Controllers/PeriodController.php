@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Period;
 use App\Http\Requests\StoreperiodRequest;
 use App\Http\Requests\UpdateperiodRequest;
@@ -123,12 +124,21 @@ class PeriodController extends Controller
         return redirect('period')->with('notif', 'Data berhasil dihapus!');
     }
 
-    public function getyear(Request $request)
+    public function fetchYear(Request $request)
     {
-        $type = $request->type;
-        $year = Period::where('type', $type)->groupBy('year')->get('year');
-        foreach ($period as $period){
-            echo "<option {{ old('year', "$filter['year']) == "$year->year ? 'selected' : '' }} value='{{ $year->year }}'>{{ $year->year }}</option>";
-        }
+        $data['years'] = Period::where('type',$request->type)->groupBy('year')->get('year');
+        return response()->json($data);
+    }
+
+    public function fetchQuarter(Request $request)
+    {
+        $data['quarters'] = Period::where('type', $request->type)->where('year',$request->year)->groupBy('quarter')->get('quarter');
+        return response()->json($data);
+    }
+    
+    public function fetchPeriod(Request $request)
+    {
+        $data['periods'] = Period::where('type', $request->type)->where('year',$request->year)->where('quarter', $request->quarter)->get();
+        return response()->json($data);
     }
 }
