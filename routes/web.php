@@ -31,8 +31,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('pdrb/rekonsiliasi/', [PdrbController::class, 'rekonsiliasi'])->middleware(['auth', 'verified']);
-Route::post('pdrb/rekonsiliasi/', [PdrbController::class, 'rekonsiliasi'])->middleware(['auth', 'verified']);
+Route::get('rekonsiliasi', [PdrbController::class, 'rekonsiliasi'])->middleware(['auth', 'verified']);
+Route::post('rekonsiliasi', [PdrbController::class, 'rekonsiliasi'])->middleware(['auth', 'verified']);
 Route::resource('pdrb', PdrbController::class)->middleware(['auth', 'verified']);
 Route::resource('fenomena', FenomenaController::class)->middleware(['auth', 'verified']);
 

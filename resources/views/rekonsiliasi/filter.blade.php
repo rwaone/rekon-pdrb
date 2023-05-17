@@ -1,6 +1,6 @@
 <div>
     <div class="card">
-        <form action="/pdrb/rekonsiliasi" method="post" enctype="multipart/form-data">
+        <form action="rekonsiliasi" method="post" enctype="multipart/form-data">
             @csrf
             <!-- form start -->
             <div class="card-body">
@@ -37,7 +37,9 @@
                         @if ($quarters)
                             @foreach ($quarters as $quarter)
                                 <option {{ old('quarter', $filter['quarter']) == $quarter->quarter ? 'selected' : '' }}
-                                    value="{{ $quarter->quarter }}">{{ $quarter->quarter == 'F' ? 'Lengkap' : ($quarter->quarter == 'T' ? 'Tahunan': 'Triwulan '.$quarter->quarter) }}</option>
+                                    value="{{ $quarter->quarter }}">
+                                    {{ $quarter->quarter == 'F' ? 'Lengkap' : ($quarter->quarter == 'T' ? 'Tahunan' : 'Triwulan ' . $quarter->quarter) }}
+                                </option>
                             @endforeach
                         @endif
                     </select>

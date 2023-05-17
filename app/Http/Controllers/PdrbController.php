@@ -93,6 +93,15 @@ class PdrbController extends Controller
 
     public function rekonsiliasi(Request $request)
     {       
+        $filter = [
+            'type' => '',
+            'year' => '',
+            'quarter' => '',
+            'period_id' => '',
+            'region_id' => '',
+            'price_base' => '',
+        ];
+
         if ($request->filter) {
             $filter = [
                 'type' => $request->filter['type'],
@@ -102,7 +111,7 @@ class PdrbController extends Controller
                 'region_id' => $request->filter['region_id'],
                 'price_base' => $request->filter['price_base'],
             ];
-            $years = Period::where('type', $filter['type'])->groupBy('year')->get('year');        
+            $years = Period::where('type', $filter['type'])->groupBy('year')->get('year');
             $quarters = Period::where('year', $filter['year'])->groupBy('quarter')->get('quarter');
             $periods = Period::where('type', $filter['type'])->where('year', $filter['year'])->where('quarter', $filter['quarter'])->get();
         }
@@ -119,10 +128,14 @@ class PdrbController extends Controller
             'categories' => $categories,
             'sectors' => $sectors,
             'subsectors' => $subsectors,
-            'years' => $years,
-            'quarters'  => $quarters,
-            'periods' => $periods,
-            'filter' => $filter
+            'years' => isset($years) ? $years : NULL,
+            'quarters'  => isset($quarters) ? $quarters : NULL,
+            'periods' => isset($periods) ? $periods : NULL,
+            'filter' => isset($filter) ? $filter : ['type' => ''],
         ]);
+    }
+
+    public function getFullData($filter) {
+        
     }
 }
