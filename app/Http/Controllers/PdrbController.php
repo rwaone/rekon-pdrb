@@ -91,6 +91,19 @@ class PdrbController extends Controller
         //
     }
 
+    public function konserda(){
+        $pdrb = Pdrb::all();
+        $cat = Category::pluck('code')->toArray();
+        $subsectors = Subsector::all();
+        $test = count($subsectors);
+        return view('rekonsiliasi.konserda', [
+            'pdrb' => $pdrb,
+            'subsectors' => $subsectors,
+            'test' => $test,
+            'cat' => $cat,
+        ]);
+    }
+
     public function rekonsiliasi(Request $request)
     {       
         $filter = [
