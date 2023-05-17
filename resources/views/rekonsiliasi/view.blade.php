@@ -37,9 +37,9 @@
     @include('rekonsiliasi.filter')
 
     @if ($filter['quarter'] == 'F')
-        @include('livewire.full-form')
+        @include('rekonsiliasi.full-form')
     @else
-        @include('livewire.single-form')
+        @include('rekonsiliasi.single-form')
     @endif
 
     <x-slot name="script">
