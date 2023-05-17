@@ -92,29 +92,19 @@ class PdrbController extends Controller
     }
 
     public function rekonsiliasi(Request $request)
-    {        
-        $years = Period::groupBy('year')->get('year');        
-        $quarters = Period::groupBy('quarter')->get('quarter');
-        $periods = Period::get();
-        $filter = [
-            'type' => '',
-            'year' => '',
-            'quarter' => '',
-            'period_id' => '',
-            'region_id' => '',
-            'price_base' => '',
-        ];
-        
-        if ($request->quarter) {
-            // $request->quarter == 'F' ? $formType = 'full-form' : $formType = 'single-form';
-            $filter = $request->validate([
-                'type' => 'required',
-                'year' => 'required',
-                'quarter' => 'required',
-                'period_id' => 'required',
-                'region_id' => 'required',
-                'price_base' => 'required',
-            ]);
+    {       
+        if ($request->filter) {
+            $filter = [
+                'type' => $request->filter['type'],
+                'year' => $request->filter['year'],
+                'quarter' => $request->filter['quarter'],
+                'period_id' => $request->filter['period_id'],
+                'region_id' => $request->filter['region_id'],
+                'price_base' => $request->filter['price_base'],
+            ];
+            $years = Period::where('type', $filter['type'])->groupBy('year')->get('year');        
+            $quarters = Period::where('year', $filter['year'])->groupBy('quarter')->get('quarter');
+            $periods = Period::where('type', $filter['type'])->where('year', $filter['year'])->where('quarter', $filter['quarter'])->get();
         }
 
         $cat = Category::pluck('code')->toArray();

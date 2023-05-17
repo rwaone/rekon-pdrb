@@ -34,7 +34,7 @@
     </x-slot>
     <div id="my-cat" data-cat="{{ json_encode($cat) }}"></div>
 
-    @include('livewire.rekonsiliasi')
+    @include('rekonsiliasi.filter')
 
     @if ($filter['quarter'] == 'F')
         @include('livewire.full-form')
