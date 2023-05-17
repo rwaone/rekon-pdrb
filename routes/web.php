@@ -36,6 +36,10 @@ Route::post('pdrb/rekonsiliasi/', [PdrbController::class, 'rekonsiliasi'])->midd
 Route::resource('pdrb', PdrbController::class)->middleware(['auth', 'verified']);
 Route::resource('fenomena', FenomenaController::class)->middleware(['auth', 'verified']);
 
+//view PDRB list
+Route::get('konserda', [PdrbController::class, 'konserda'])->middleware(['auth', 'verified']);
+
+
 Route::post('fetch/year', [PeriodController::class, 'fetchYear'])->name('fetchYear');
 Route::post('fetch/quarter', [PeriodController::class, 'fetchQuarter'])->name('fetchQuarter');
 Route::post('fetch/period', [PeriodController::class, 'fetchPeriod'])->name('fetchPeriod');
