@@ -30,6 +30,9 @@
             #rekon-view tr:not(:last-child):not(:nth-last-child(2)) td:not(:first-child) {
                 text-align: right;
             }
+            a.nav-item {
+                color: black !important;
+            }
         </style>
     </x-slot>
 
@@ -70,6 +73,16 @@
         </div>
         <div class="card mb-3">
             <div class="card-body">
+                <nav class="navbar">
+                    <ul class="nav nav-tabs">
+                        <a class="nav-item nav-link" id = "nav-pdrb" href="#">PDRB</a>
+                        <a class="nav-item nav-link" id = "nav-distribusi" href="#">Distribusi</a>
+                        <a class="nav-item nav-link" id = "nav-pertumbuhan" href="#">Pertumbuhan</a>
+                        <a class="nav-item nav-link" id = "nav-indeks" href="#">Indeks Implisit</a>
+                        <a class="nav-item nav-link" id = "nav-laju" href="#">Laju Implisit</a>
+                        <a class="nav-item nav-link" id = "nav-sumber" href="#">Sumber Pertumbuhan</a>
+                    </ul>
+                </nav>
                 <table class="table table-bordered" id="rekon-view">
                     <thead class="text-center" style="background-color: steelblue; color:aliceblue;">
                         <tr>
@@ -167,7 +180,6 @@
                 });
                 return sum;
             }
-            //
 
             //change the value of inputed number to Rupiah 
             function formatRupiah(angka, prefix) {
@@ -193,9 +205,50 @@
                 return Number(Y)
             }
 
+            function distribusi(values){
+                let X = simpleSum(values)
+                let Y = simpleSum('#total')
+                let score = X > 0 ? X/Y * 100 : 0 
+                return score > 0 ? score.toFixed(2) : 0
+            }
+            function getDist(){
+                $('.view-distribusi').each(function(){
+                    let id = '#' + $(this).attr('id')
+                    let y = distribusi(id)
+                    $(this).text(y)
+                })
+                $('#total-nonmigas').text(distribusi('#total-nonmigas'))
+                $('#total').text(distribusi('#total'))
+            }
+
+            //change
+            $(document).ready(function() {
+                let tbody = $('#rekon-view').find('tbody')
+                $('#nav-distribusi').on('click', function(){
+                    $('tbody td:nth-child(2)').removeClass(function(index, className) {
+                        return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
+                    })
+                    $('tbody tr:not(:last-child):not(:nth-last-child(2)) td:nth-child(2)').addClass('view-distribusi')
+                    getDist()
+                    localStorage.setItem('navClassApplied', 'true')
+                })
+                $('#nav-pdrb').on('click', function(){
+                    $('tbody td:nth-child(2)').removeClass(function(index, className) {
+                        return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
+                    })
+                    $('tbody td:nth-child(2)').addClass('view-pdrb')
+                })
+                $('#nav-pertumbuhan').on('click', function(){
+                    $('tbody td:nth-child(2)').removeClass(function(index, className) {
+                        return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
+                    })
+                    $('tbody td:nth-child(2)').addClass('view-pertumbuhan')
+                })
+            })
+
+            //summarise
             $(document).ready(function() {
                 // Your jQuery code goes here
-                // 
                 let sum = 0
                 $('.values').each(function () {
                     $(this).text(formatRupiah($(this).text(), 'Rp '))
@@ -227,19 +280,14 @@
                 
                 let pdrbNonmigas = pdrb - nonmigas
                 $('#total-nonmigas').text(formatRupiah(String(pdrbNonmigas), 'Rp '))
-                
-                
+            })
 
-                //filter
-                // $('#tahun').on('change', function(){
-                //     var tahun = $(this).val()
-                //     if (tahun){
-                //         $.ajax({
-                //             type: 'POST',
-                //             url: 
-                //         })
-                //     }
-                // })
+            $(document).ready(function() {
+                var isNavClassApplied = localStorage.getItem('navClassApplied')
+                if (isNavClassApplied == 'true') {
+                    $('tbody tr:not(:last-child):not(:nth-last-child(2)) td:nth-child(2)').addClass('view-distribusi')
+                    getDist()
+                }
             })
                 $(document).on('select2:open', () => {
                     document.querySelector('.select2-search__field').focus();
