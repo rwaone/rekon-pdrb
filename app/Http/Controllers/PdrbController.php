@@ -12,6 +12,7 @@ use App\Models\Subsector;
 use Illuminate\Http\Request;
 use App\Http\Requests\StorepdrbRequest;
 use App\Http\Requests\UpdatepdrbRequest;
+use App\Http\Requests\StoreFilterRequest;
 
 class PdrbController extends Controller
 {
@@ -91,16 +92,28 @@ class PdrbController extends Controller
         //
     }
 
-    public function konserda(){
+    public function konserda(Request $request){
+        $filter = [
+            'type' => '',
+            'year' => '',
+            'quarter' => '',
+            'period_id' => '',
+            'region_id' => '',
+            'price_base' => '',
+        ];
+        
         $pdrb = Pdrb::all();
+        $year = Period::select('year')->distinct()->get();
         $cat = Category::pluck('code')->toArray();
+        $catString = implode(", ", $cat);
         $subsectors = Subsector::all();
         $test = count($subsectors);
         return view('rekonsiliasi.konserda', [
+            'years' => $year,
             'pdrb' => $pdrb,
             'subsectors' => $subsectors,
             'test' => $test,
-            'cat' => $cat,
+            'cat' => $catString,
         ]);
     }
 

@@ -41,22 +41,27 @@
             <div class="card-body">
                 <form>
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
+                            <select class="form-control select2bs4" id="type" name="type">
+                                <option value="" disabled selected>-- Pilih PDRB --</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
                             <select class="form-control select2bs4" id="tahun" name="tahun">
-                                <option value="" disabled selected>-- Pilih Tahun Konserda --</option>
+                                <option value="" disabled selected>-- Pilih Tahun --</option>
                             </select>
                         </div>
-                        <div class="col-md-3">
-                            <select class="form-control select2bs4" id="tahunpdrb" name="tahunpdrb">
-                                <option value="" disabled selected>-- Pilih Tahun PDRB --</option>
+                        <div class="col-md-2">
+                            <select class="form-control select2bs4" id="triwulan" name="triwulan">
+                                <option value="" disabled selected>-- Pilih Triwulan --</option>
                             </select>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <select class="form-control select2bs4" id="putaran" name="putaran">
                                 <option value="" disabled selected>-- Pilih Putaran --</option>
                             </select>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <button class="btn btn-info col" id="showData">Tampilkan Data</button>
                         </div>
                     </div>
@@ -80,7 +85,7 @@
                                         <label class="col" style="margin-bottom:0rem;"
                                             for="">{{ $item->sector->category->code . '. ' . $item->sector->category->name }}</label>
                                     </td>
-                                    <td id="categories-{{ $index+1 }}" class="categories values"></td>
+                                    <td id="categories-{{ $item->sector->category->code }}" class="categories values"></td>
                                 </tr>
                             @endif
                             @if ($item->code != null && $item->code == 'a')
@@ -99,7 +104,7 @@
                                         for="{{ $item->code }}_{{ $item->name }}">
                                         {{ $item->code . '. ' . $item->name }}</p>
                                 </td>
-                                <td id="{{ "value-".$item->id }}" class ="values">{{ $pdrb[$index]->adhk }}</td>
+                                <td id="{{ "value-".$item->id }}" class ="values {{ 'categories-'.$item->sector->category->code }}">{{ $pdrb[$index]->adhk }}</td>
                             </tr>
                         @elseif ($item->code == null && $item->sector->code != null)
                             <tr>
@@ -108,7 +113,7 @@
                                         for="{{ $item->sector->code . '_' . $item->sector->name }}">
                                         {{ $item->sector->code . '. ' . $item->sector->name }}</p>
                                 </td>
-                                <td id="{{ "value-".$item->id }}" class ="values">{{ $pdrb[$index]->adhk }}</td>
+                                <td id="{{ "value-".$item->id }}" class ="values {{ 'categories-'.$item->sector->category->code }}">{{ $pdrb[$index]->adhk }}</td>
                             </tr>
                         @elseif ($item->code == null && $item->sector->code == null)
                             <tr>
@@ -116,10 +121,27 @@
                                     <label class="col" style="margin-bottom:0rem;"
                                         for="{{ $item->sector->category->code . '_' . $item->name }}">{{ $item->sector->category->code . '. ' . $item->name }}</label>
                                 </td>
-                                <td id="{{ "value-".$item->id }}" class = "values">{{ $pdrb[$index]->adhk }}</td>
+                                <td id="{{ "value-".$item->id }}" class = "values {{ 'categories-'.$item->sector->category->code }} text-bold pdrb-total">{{ $pdrb[$index]->adhk }}</td>
                             </tr>
                         @endif
                         @endforeach
+                        <tr class = "PDRB-footer text-center" style="background-color: steelblue; color:aliceblue; font-weight: bold;">
+                        <td>
+                            <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto (PDRB) Nonmigas </p>
+                        </td>
+                        <td>
+                            <p class="col mt-1 mb-1" id="total-nonmigas" style="margin-bottom:0rem;"></p>
+                        </td>
+                        </td>
+                    </tr>
+                    <tr class = "PDRB-footer text-center" style="background-color: steelblue; color:aliceblue; font-weight: bold;">
+                        <td>
+                            <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto (PDRB) </p>
+                        </td>
+                        <td>
+                            <p class="col mt-1 mb-1" id="total" style="margin-bottom:0rem;"></p>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -131,14 +153,15 @@
             $(document).on('focus', '.select2-selection', function(e) {
                 $(this).closest(".select2-container").siblings('select:enabled').select2('open');
             })
-           
+            let cat = JSON.parse($("#my-cat").data('cat'))
+            let catArray = cat.split(", ")
 
             //sum of each value in sector and category
             function calculateSector(sector) {
                 let sum = 0;
                 // let sector = sector.replaceAll(",","");
                 $(`.${sector}`).each(function(index) {
-                    let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
+                    let X = $(this).text().replaceAll(/[A-Za-z.]/g, '');
                     let Y = X.replaceAll(/[,]/g, '.')
                     sum += Y > 0 ? Number(Y) : 0;
                 });
@@ -164,7 +187,11 @@
             }
             //
 
-
+            function simpleSum(atri) {
+                let X = $(`${atri}`).text().replaceAll(/[A-Za-z.]/g,'')
+                let Y = X.replaceAll(/[,]/g, '.')
+                return Number(Y)
+            }
 
             $(document).ready(function() {
                 // Your jQuery code goes here
@@ -187,6 +214,32 @@
                     sum += Y > 0 ? Number(Y) : 0
                 }
                 $('#sector-14').text(formatRupiah(String(sum).replaceAll(/[.]/g, ','), 'Rp '))
+                sum = sum - sum
+                for (let index of catArray){    
+                    let jumlah = calculateSector(`categories-${index}`)
+                    let que = String(jumlah).replaceAll(/[.]/g, ',')
+                    $(`#categories-${index}`).text(formatRupiah(que, 'Rp '))
+                    $(`#categories-${index}`).addClass('text-bold pdrb-total')
+                }
+                let pdrb = calculateSector('pdrb-total')
+                let nonmigas = simpleSum('#value-10') + simpleSum('#value-15')
+                $('#total').text(formatRupiah(String(pdrb), 'Rp '))
+                
+                let pdrbNonmigas = pdrb - nonmigas
+                $('#total-nonmigas').text(formatRupiah(String(pdrbNonmigas), 'Rp '))
+                
+                
+
+                //filter
+                // $('#tahun').on('change', function(){
+                //     var tahun = $(this).val()
+                //     if (tahun){
+                //         $.ajax({
+                //             type: 'POST',
+                //             url: 
+                //         })
+                //     }
+                // })
             })
                 $(document).on('select2:open', () => {
                     document.querySelector('.select2-search__field').focus();

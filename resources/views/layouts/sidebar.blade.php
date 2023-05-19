@@ -33,7 +33,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ url('pdrb/rekonsiliasi') }}" class="nav-link {{ Request::is('pdrb/rekonsiliasi') ? 'active' : '' }}">
+                            <a href="{{ url('rekonsiliasi') }}" class="nav-link {{ Request::is('pdrb/rekonsiliasi') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Rekonsiliasi</p>
                             </a>
