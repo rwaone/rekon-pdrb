@@ -23,8 +23,8 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item {{ Request::is('pdrb*') ? 'menu-open' : '' }}">
-                    <a href="../widgets.html" class="nav-link {{ Request::is('pdrb*') ? 'active' : '' }}">
+                <li class="nav-item {{ Request::is('rekonsiliasi', 'fenomena') ? 'menu-open' : '' }}">
+                    <a href="../widgets.html" class="nav-link {{ Request::is('rekonsiliasi', 'fenomena') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             PDRB
@@ -33,7 +33,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ url('rekonsiliasi') }}" class="nav-link {{ Request::is('pdrb/rekonsiliasi') ? 'active' : '' }}">
+                            <a href="{{ url('rekonsiliasi') }}" class="nav-link {{ Request::is('rekonsiliasi') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Rekonsiliasi</p>
                             </a>
