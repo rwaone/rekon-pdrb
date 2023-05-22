@@ -44,7 +44,7 @@ class PdrbController extends Controller
      */
     public function store(StorepdrbRequest $request)
     {
-        //
+        dd($request);
     }
 
     /**
@@ -141,9 +141,20 @@ class PdrbController extends Controller
             $quarters = Period::where('year', $filter['year'])->groupBy('quarter')->get('quarter');
             $periods = Period::where('type', $filter['type'])->where('year', $filter['year'])->where('quarter', $filter['quarter'])->get();
             $data = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->get();
-        }
+        }else {
 
-        dd($data);
+            $filter = [
+                'type' => '',
+                'year' => '',
+                'quarter' => '',
+                'period_id' => '',
+                'region_id' => '',
+                'price_base' => '',
+            ];
+            $years = NULL;
+            $quarters = NULL;
+            $periods = NULL;
+        }
 
         $cat = Category::pluck('code')->toArray();
         $catString = implode(", ", $cat);
@@ -157,10 +168,10 @@ class PdrbController extends Controller
             'categories' => $categories,
             'sectors' => $sectors,
             'subsectors' => $subsectors,
-            'years' => isset($years) ? $years : NULL,
-            'quarters'  => isset($quarters) ? $quarters : NULL,
-            'periods' => isset($periods) ? $periods : NULL,
-            'filter' => isset($filter) ? $filter : ['type' => ''],
+            'years' => $years,
+            'quarters'  => $quarters,
+            'periods' => $periods,
+            'filter' => $filter,
         ]);
     }
 
@@ -169,6 +180,14 @@ class PdrbController extends Controller
     }
 
     public function getSingleData($filter) {
+        //
+    }
+
+    public function saveSingleData($filter){
+        //
+    }
+
+    public function saveFullData($filter){
         //
     }
 }
