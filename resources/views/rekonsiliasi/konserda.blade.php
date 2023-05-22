@@ -34,6 +34,7 @@
                 color: black !important;
             }
         </style>
+        @vite(['resources/css/app.css'])
     </x-slot>
 
     <x-slot name="breadcrumb">
@@ -43,39 +44,67 @@
         <div class="card mb-3 p-0">
             <div class="card-body">
                 <form>
+                    @csrf
                     <div class="row">
                         <div class="col-md-2">
                             <select class="form-control select2bs4" id="type" name="type">
-                                <option value="" disabled selected>-- Pilih PDRB --</option>
+                                <option value="" selected>-- Pilih Jenis PDRB --</option>
+                                <option {{ old('type', $filter['type']) == 'Lapangan Usaha' ? 'selected' : '' }}
+                                    value='Lapangan Usaha'>Lapangan Usaha</option>
+                                <option {{ old('type', $filter['type']) == 'Pengeluaran' ? 'selected' : '' }}
+                                    value='Pengeluaran'>Pengeluaran</option>
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <select class="form-control select2bs4" id="tahun" name="tahun">
-                                <option value="" disabled selected>-- Pilih Tahun --</option>
+                            <select class="form-control select2bs4" id="year" name="year">
+                                <option value="" selected>-- Pilih Tahun --</option>
+                                @if ($years)
+                                    @foreach ($years as $year)
+                                        <option {{ old('year', $filter['year']) == $year->year ? 'selected' : '' }}
+                                            value="{{ $year->year }}">{{ $year->year }}</option>
+                                    @endforeach
+                                @endif
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <select class="form-control select2bs4" id="triwulan" name="triwulan">
-                                <option value="" disabled selected>-- Pilih Triwulan --</option>
+                            <select class="form-control select2bs4" id="quarter" name="quarter">
+                                <option value="" selected>-- Pilih Triwulan --</option>
+                                @if ($quarters)
+                                    @foreach ($quarters as $quarter)
+                                        <option {{ old('quarter', $filter['quarter']) == $quarter->quarter ? 'selected' : '' }}
+                                            value="{{ $quarter->quarter }}">
+                                            {{ $quarter->quarter == 'F' ? 'Lengkap' : ($quarter->quarter == 'T' ? 'Tahunan' : 'Triwulan ' . $quarter->quarter) }}
+                                        </option>
+                                    @endforeach
+                                @endif
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <select class="form-control select2bs4" id="putaran" name="putaran">
-                                <option value="" disabled selected>-- Pilih Putaran --</option>
+                            <select class="form-control select2bs4" id="period" name="period">
+                                <option value="" selected>-- Pilih Putaran --</option>
+                                @if ($periods)
+                                    @foreach ($periods as $period)
+                                        <option {{ old('period', $filter['period_id']) == $period->id ? 'selected' : '' }}
+                                            value="{{ $period->id }}">{{ $period->description }}</option>
+                                    @endforeach
+                                @endif
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <button class="btn btn-info col" id="showData">Tampilkan Data</button>
+                            <button class="btn btn-info col-md-10" id="showData">Tampilkan Data</button>
+                            <div class="btn btn-danger col-md-1" id = "refresh"><i class="bi bi-x-lg"></i></div>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
-        <div class="card mb-3">
+        <span class="loader d-none"></span>
+        <div class="card mb-3 d-none" id="view-body">
             <div class="card-body">
                 <nav class="navbar">
-                    <ul class="nav nav-tabs">
-                        <a class="nav-item nav-link" id = "nav-pdrb" href="#">PDRB</a>
+                    <ul class="nav nav-tabs d-flex">
+                        <a class="nav-item nav-link" id = "nav-adhb" href="#">ADHB</a>
+                        <a class="nav-item nav-link" id = "nav-adhk" href="#">ADHK</a>
                         <a class="nav-item nav-link" id = "nav-distribusi" href="#">Distribusi</a>
                         <a class="nav-item nav-link" id = "nav-pertumbuhan" href="#">Pertumbuhan</a>
                         <a class="nav-item nav-link" id = "nav-indeks" href="#">Indeks Implisit</a>
@@ -117,7 +146,7 @@
                                         for="{{ $item->code }}_{{ $item->name }}">
                                         {{ $item->code . '. ' . $item->name }}</p>
                                 </td>
-                                <td id="{{ "value-".$item->id }}" class ="values {{ 'categories-'.$item->sector->category->code }}">{{ $pdrb[$index]->adhk }}</td>
+                                <td id="{{ "value-".$item->id }}" class ="values {{ 'categories-'.$item->sector->category->code }}"></td>
                             </tr>
                         @elseif ($item->code == null && $item->sector->code != null)
                             <tr>
@@ -126,7 +155,7 @@
                                         for="{{ $item->sector->code . '_' . $item->sector->name }}">
                                         {{ $item->sector->code . '. ' . $item->sector->name }}</p>
                                 </td>
-                                <td id="{{ "value-".$item->id }}" class ="values {{ 'categories-'.$item->sector->category->code }}">{{ $pdrb[$index]->adhk }}</td>
+                                <td id="{{ "value-".$item->id }}" class ="values {{ 'categories-'.$item->sector->category->code }}"></td>
                             </tr>
                         @elseif ($item->code == null && $item->sector->code == null)
                             <tr>
@@ -134,7 +163,7 @@
                                     <label class="col" style="margin-bottom:0rem;"
                                         for="{{ $item->sector->category->code . '_' . $item->name }}">{{ $item->sector->category->code . '. ' . $item->name }}</label>
                                 </td>
-                                <td id="{{ "value-".$item->id }}" class = "values {{ 'categories-'.$item->sector->category->code }} text-bold pdrb-total">{{ $pdrb[$index]->adhk }}</td>
+                                <td id="{{ "value-".$item->id }}" class = "values {{ 'categories-'.$item->sector->category->code }} text-bold pdrb-total"></td>
                             </tr>
                         @endif
                         @endforeach
@@ -142,18 +171,14 @@
                         <td>
                             <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto (PDRB) Nonmigas </p>
                         </td>
-                        <td>
-                            <p class="col mt-1 mb-1" id="total-nonmigas" style="margin-bottom:0rem;"></p>
-                        </td>
+                        <td id="total-nonmigas" style="margin-bottom:0rem;"></td>
                         </td>
                     </tr>
                     <tr class = "PDRB-footer text-center" style="background-color: steelblue; color:aliceblue; font-weight: bold;">
                         <td>
                             <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto (PDRB) </p>
                         </td>
-                        <td>
-                            <p class="col mt-1 mb-1" id="total" style="margin-bottom:0rem;"></p>
-                        </td>
+                        <td id="total" style="margin-bottom:0rem;"></td>
                     </tr>
                     </tbody>
                 </table>
@@ -211,6 +236,7 @@
                 let score = X > 0 ? X/Y * 100 : 0 
                 return score > 0 ? score.toFixed(2) : 0
             }
+
             function getDist(){
                 $('.view-distribusi').each(function(){
                     let id = '#' + $(this).attr('id')
@@ -221,6 +247,22 @@
                 $('#total').text(distribusi('#total'))
             }
 
+            function getIdx(adhb, adhk) {
+                let result = adhb > 0 ? adhb/adhk * 100 : ''
+                return result > 0 ? result.toFixed(2) : ''
+            }
+            function getFilter() {
+                const dataStored = localStorage.getItem('dataStored')
+                if (dataStored){
+                    let data = JSON.parse(dataStored)
+                    for (let i = 0; i < data.length; i++) {
+                            $(`#value-${i+1}`).text(data[i].adhb)
+                        }
+                    getSummarise()
+                    $('#view-body').removeClass('d-none')
+                }
+            }
+
             //change
             $(document).ready(function() {
                 let tbody = $('#rekon-view').find('tbody')
@@ -228,27 +270,93 @@
                     $('tbody td:nth-child(2)').removeClass(function(index, className) {
                         return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
                     })
+                    getFilter()
                     $('tbody tr:not(:last-child):not(:nth-last-child(2)) td:nth-child(2)').addClass('view-distribusi')
                     getDist()
-                    localStorage.setItem('navClassApplied', 'true')
                 })
-                $('#nav-pdrb').on('click', function(){
+            
+                $('#nav-adhb').on('click', function(){
                     $('tbody td:nth-child(2)').removeClass(function(index, className) {
                         return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
                     })
-                    $('tbody td:nth-child(2)').addClass('view-pdrb')
+                    $('tbody td:nth-child(2)').addClass('view-adhb')
+                    getFilter()
                 })
-                $('#nav-pertumbuhan').on('click', function(){
+
+                $('#nav-adhk').on('click', function(){
                     $('tbody td:nth-child(2)').removeClass(function(index, className) {
                         return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
                     })
-                    $('tbody td:nth-child(2)').addClass('view-pertumbuhan')
+                    $('tbody td:nth-child(2)').addClass('view-adhk')
+                    getFilter()
+                    const period_id = $('#period').val()
+                    $.ajax({
+                        type: 'GET',
+                        url: '/getData/' + period_id,
+                        dataType: 'json',
+                        success: function (data) {
+                            for (let i = 0; i < data.length; i++) {
+                                $(`#value-${i+1}`).text(data[i].adhk)
+                            }
+                            getSummarise()
+                        }  
+                    })
+                })
+                
+                //belum tau gimana
+                // $('#nav-pertumbuhan').on('click', function(){
+                //     $('tbody td:nth-child(2)').removeClass(function(index, className) {
+                //         return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
+                //     })
+                //     $('tbody td:nth-child(2)').addClass('view-pertumbuhan')
+                // })
+
+                //indeks implisit adhb/adhk
+                $('#nav-indeks').on('click', function(){
+                    $('tbody td:nth-child(2)').removeClass(function(index, className) {
+                        return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
+                    })
+                    $('tbody td:nth-child(2)').addClass('view-indeks')
+                    const period_id = $('#period').val()
+                    $.ajax({
+                        type: 'GET',
+                        url: '/getData/' + period_id,
+                        dataType: 'json',
+                        success: function (data) {
+                            for (let i = 0; i < data.length; i++) {
+                                $(`#value-${i+1}`).text(data[i].adhb)
+                            }
+                            getSummarise()
+                            let adhb = []
+                            $('tbody td:not(:first-child)').each(function() {
+                                let X = $(this).text().replaceAll(/[A-Za-z.]/g,'')
+                                let Y = X.replaceAll(/[,]/g, '.')
+                                adhb.push(Number(Y))
+                            })
+                            for (let i = 0; i < data.length; i++) {
+                                $(`#value-${i+1}`).text(data[i].adhk)
+                            }
+                            getSummarise()
+                            let adhk = []
+                            $('tbody td:not(:first-child)').each(function() {
+                                let X = $(this).text().replaceAll(/[A-Za-z.]/g,'')
+                                let Y = X.replaceAll(/[,]/g, '.')
+                                adhk.push(Number(Y))
+                            })
+                            let idx = []
+                            for (let i = 0; i < adhb.length; i++){
+                                idx.push(getIdx(adhb[i], adhk[i]))
+                            }
+                            $('tbody td:not(:first-child)').each(function(index) {
+                                $(this).text(idx[index])
+                            })
+                        }  
+                    })
                 })
             })
 
             //summarise
-            $(document).ready(function() {
-                // Your jQuery code goes here
+            function getSummarise(){
                 let sum = 0
                 $('.values').each(function () {
                     $(this).text(formatRupiah($(this).text(), 'Rp '))
@@ -280,17 +388,145 @@
                 
                 let pdrbNonmigas = pdrb - nonmigas
                 $('#total-nonmigas').text(formatRupiah(String(pdrbNonmigas), 'Rp '))
+            }
+
+            //filter
+            $(document).ready(function() {
+                $('#type').on('change', function() {
+                    let pdrb_type = $(this).val()
+                    if(pdrb_type){
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{ route('fetchYear') }}",
+                            data: {
+                                type: pdrb_type,
+                                _token: '{{csrf_token()}}',
+                            },
+                            dataType: 'json',
+    
+                            success: function(result) {
+                                $('#year').empty()
+                                $('#year').append('<option value="">-- Pilih Tahun --</option>')
+                                $.each(result.years, function(key, value) {
+                                    $('#year').append('<option value="' + value.year + '">' + value.year + '</option>')
+                                })
+                            },
+                        })
+                    } else {
+                        $('#year').empty()
+                        $('#year').append('<option value="">-- Pilih Tahun --</option>')
+                        $('#quarter').empty()
+                        $('#quarter').append('<option value="" selected>-- Pilih Triwulan --</option>')
+                        $('#period').empty()
+                        $('#period').append('<option value="" selected>-- Pilih Putaran --</option>')
+                    }
+                })
+
+                $('#year').on('change', function() {
+                    var pdrb_type = $('#type').val()
+                    var pdrb_year = this.value
+                    if(pdrb_year){
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{ route('fetchQuarter') }}",
+                            data: {
+                                type: pdrb_type,
+                                year: pdrb_year,
+                                _token: '{{csrf_token()}}',
+                            },
+                            dataType: 'json',
+    
+                            success: function(result) {
+                                $('#quarter').empty()
+                                $('#quarter').append('<option value="" selected>-- Pilih Triwulan --</option>')
+                                $.each(result.quarters, function(key, value) {
+                                    var description = (value.quarter == 'F') ? 'Lengkap' : ((value.quarter == 'T') ? 'Tahunan' : 'Triwulan ' + value.quarter)
+                                    $('#quarter').append('<option value="' + value.quarter + '">' + description + '</option>')
+                                })
+                            },
+                        })
+                    } else {
+                        $('#quarter').empty()
+                        $('#quarter').append('<option value="" selected>-- Pilih Triwulan --</option>')
+                        $('#period').empty()
+                        $('#period').append('<option value="" selected>-- Pilih Putaran --</option>')
+                    }
+                })
+
+                $('#quarter').on('change', function() {
+                    var pdrb_type = $('#type').val()
+                    var pdrb_year = $('#year').val()
+                    var pdrb_quarter = this.value
+                    if(pdrb_quarter){
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{ route('fetchPeriod') }}",
+                            data: {
+                                type: pdrb_type,
+                                year: pdrb_year,
+                                quarter: pdrb_quarter,
+                                _token: '{{csrf_token()}}',
+                            },
+                            dataType: 'json',
+    
+                            success: function(result) {
+                                $('#period').empty()
+                                $('#period').append('<option value="" selected>-- Pilih Putaran --</option>')
+                                $.each(result.periods, function(key, value) {
+                                    $('#period').append('<option value="' + value.id + '">' + value.description + '</option>')
+                                })
+                            },
+                        })
+                    } else {
+                        $('#period').empty()
+                        $('#period').append('<option value="" selected>-- Pilih Putaran --</option>')
+                    }
+                })
             })
 
+            //get the data
             $(document).ready(function() {
-                var isNavClassApplied = localStorage.getItem('navClassApplied')
-                if (isNavClassApplied == 'true') {
-                    $('tbody tr:not(:last-child):not(:nth-last-child(2)) td:nth-child(2)').addClass('view-distribusi')
-                    getDist()
-                }
+                $('#showData').click(function(e){
+                    e.preventDefault()
+                    const period_id = $('#period').val()
+                    $.ajax({
+                        beforeSend: function(){
+                          $('.loader').removeClass('d-none')  
+                        },
+                        type: 'GET',
+                        url: '/getData/' + period_id,
+                        dataType: 'json',
+                        success: function (data) {
+                            for (let i = 0; i < data.length; i++) {
+                                $(`#value-${i+1}`).text(data[i].adhb)
+                            }
+                            getSummarise()
+                            setTimeout(function() {
+                                $('.loader').addClass('d-none')
+                                $('#view-body').removeClass('d-none')
+                            }, 1000)
+                            localStorage.setItem('dataStored', JSON.stringify(data))
+                        },
+                        error: function (jqXHR, textStatus, errorThrown){
+                            $('.loader').addClass('d-none')
+                            localStorage.clear()
+                            alert('Error : Pilihan Error')
+                        },
+                    })
+                })
+
+                $('#refresh').click(function(){
+                    $('#view-body').addClass('d-none')
+                })
             })
-                $(document).on('select2:open', () => {
-                    document.querySelector('.select2-search__field').focus();
+
+            //get localized storage data
+            $(document).ready(function(){
+                getFilter()
+            })
+
+            $(document).on('select2:open', () => {
+                document.querySelector('.select2-search__field').focus();
             });
 
             $(function() {

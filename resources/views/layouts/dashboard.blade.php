@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="{{ url('') }}/plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ url('') }}/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     {{ $head }}
     <style>
         .card {
@@ -21,7 +22,7 @@
             /* box-shadow: 0 3px 3px rgba(0, 0, 0, .2); */
         }
     </style>
-    @vite(['resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
 
@@ -58,11 +59,10 @@
 
             <!-- Main content -->
             <section class="content">
-
+            
                 <div class="container-fluid">
-
+                <div></div><div></div><div></div><div></div>
                     {{ $slot }}
-
                 </div>
 
             </section>

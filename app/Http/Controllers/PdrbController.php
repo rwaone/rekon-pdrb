@@ -92,7 +92,13 @@ class PdrbController extends Controller
         //
     }
 
+    public function getData(Request $request, $period_id){
+        $pdrb = Pdrb::select('subsector_id','adhk','adhb')->where('period_id', $period_id)->orderBy('subsector_id')->get();
+        return response()->json($pdrb);
+    }
+
     public function konserda(Request $request){
+        
         $filter = [
             'type' => '',
             'year' => '',
@@ -101,19 +107,35 @@ class PdrbController extends Controller
             'region_id' => '',
             'price_base' => '',
         ];
+
+        if ($request->filter) {
+            $filter = [
+                'type' => $request->filter['type'],
+                'year' => $request->filter['year'],
+                'quarter' => $request->filter['quarter'],
+                'period_id' => $request->filter['period_id'],
+                'region_id' => $request->filter['region_id'],
+                'price_base' => $request->filter['price_base'],
+            ];
+            $years = Period::where('type', $filter['type'])->groupBy('year')->get('year');
+            $quarters = Period::where('year', $filter['year'])->groupBy('quarter')->get('quarter');
+            $periods = Period::where('type', $filter['type'])->where('year', $filter['year'])->where('quarter', $filter['quarter'])->get();
+            // $data = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->get();
+        }
         
         $pdrb = Pdrb::all();
         $year = Period::select('year')->distinct()->get();
         $cat = Category::pluck('code')->toArray();
         $catString = implode(", ", $cat);
         $subsectors = Subsector::all();
-        $test = count($subsectors);
         return view('rekonsiliasi.konserda', [
-            'years' => $year,
             'pdrb' => $pdrb,
             'subsectors' => $subsectors,
-            'test' => $test,
             'cat' => $catString,
+            'years' => isset($years) ? $years : NULL,
+            'quarters'  => isset($quarters) ? $quarters : NULL,
+            'periods' => isset($periods) ? $periods : NULL,
+            'filter' => isset($filter) ? $filter : ['type' => ''],
         ]);
     }
 
