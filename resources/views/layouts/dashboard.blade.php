@@ -15,15 +15,7 @@
     <link rel="stylesheet" href="{{ url('') }}/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     {{ $head }}
-    <style>
-        .card {
-            padding: .5em .5em .5em;
-            border-radius: .75em;
-            /* box-shadow: 0 3px 3px rgba(0, 0, 0, .2); */
-        }
-    </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @livewireStyles
 </head>
 
 <body class="hold-transition layout-fixed">
@@ -87,7 +79,6 @@
     <!-- AdminLTE App -->
     <script src="{{ url('') }}/dist/js/adminlte.min.js"></script>
     {{ $script }}
-    @livewireScripts
 </body>
 
 </html>
