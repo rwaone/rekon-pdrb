@@ -292,7 +292,7 @@
                     const period_id = $('#period').val()
                     $.ajax({
                         type: 'GET',
-                        url: '/getData/' + period_id,
+                        url: '/getKonserda/' + period_id,
                         dataType: 'json',
                         success: function (data) {
                             for (let i = 0; i < data.length; i++) {
@@ -320,7 +320,7 @@
                     const period_id = $('#period').val()
                     $.ajax({
                         type: 'GET',
-                        url: '/getData/' + period_id,
+                        url: '/getKonserda/' + period_id,
                         dataType: 'json',
                         success: function (data) {
                             for (let i = 0; i < data.length; i++) {
@@ -494,7 +494,7 @@
                           $('.loader').removeClass('d-none')  
                         },
                         type: 'GET',
-                        url: '/getData/' + period_id,
+                        url: '/getKonserda/' + period_id,
                         dataType: 'json',
                         success: function (data) {
                             for (let i = 0; i < data.length; i++) {

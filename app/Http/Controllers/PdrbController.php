@@ -92,11 +92,20 @@ class PdrbController extends Controller
         //
     }
 
-    public function getData(Request $request, $period_id){
+    public function getKonserda(Request $request, $period_id){
         $pdrb = Pdrb::select('subsector_id','adhk','adhb')->where('period_id', $period_id)->orderBy('subsector_id')->get();
         return response()->json($pdrb);
     }
 
+    public function daftarPokok(){
+        $daftar = Pdrb::select('region_id', 'period_id')->groupBy('region_id','period_id')->get();
+        $json_daftar = json_encode($daftar);
+        return view('rekonsiliasi.tabelpokok', [
+            'daftar' => $daftar,
+            'json' => $json_daftar,
+        ]);
+    }
+    
     public function konserda(Request $request){
         
         $filter = [
@@ -120,7 +129,6 @@ class PdrbController extends Controller
             $years = Period::where('type', $filter['type'])->groupBy('year')->get('year');
             $quarters = Period::where('year', $filter['year'])->groupBy('quarter')->get('quarter');
             $periods = Period::where('type', $filter['type'])->where('year', $filter['year'])->where('quarter', $filter['quarter'])->get();
-            // $data = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->get();
         }
         
         $pdrb = Pdrb::all();
@@ -139,8 +147,7 @@ class PdrbController extends Controller
         ]);
     }
 
-    public function rekonsiliasi(Request $request)
-    {       
+    public function rekonsiliasi(Request $request){       
         $filter = [
             'type' => '',
             'year' => '',
@@ -165,7 +172,7 @@ class PdrbController extends Controller
             $data = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->get();
         }
 
-        dd($data);
+        // dd($data);
 
         $cat = Category::pluck('code')->toArray();
         $catString = implode(", ", $cat);
