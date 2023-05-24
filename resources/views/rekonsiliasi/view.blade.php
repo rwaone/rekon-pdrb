@@ -38,7 +38,7 @@
 
     @if ($filter['quarter'] == 'F')
         @include('rekonsiliasi.full-form')
-    @else
+    @elseif($filter['quarter'] != NULL)
         @include('rekonsiliasi.single-form')
     @endif
 
