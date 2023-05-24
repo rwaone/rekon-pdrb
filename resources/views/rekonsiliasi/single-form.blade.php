@@ -1,5 +1,5 @@
 <div class="card">
-    <form class="form-horizontal">
+    <form class="form-horizontal" id="singleForm">
         <div class="card-body p-3">
             <table class="table table-striped table-bordered" id="rekonsiliasi-table-single">
                 <thead class="text-center" style="background-color: steelblue; color:aliceblue;">
@@ -19,10 +19,9 @@
                                         for="">{{ $subsector->sector->category->code . '. ' . $subsector->sector->category->name }}</label>
                                 </td>
                                 <td class="categories">
-                                    <input disabled type="text"
-                                        name="adhk_{{ $subsector->sector->category->code }}"
-                                        id="adhk_{{ $subsector->sector->category->code }}"
-                                        class="form-control" aria-required="true">
+                                    <input disabled type="text" name="adhk_{{ $subsector->sector->category->code }}"
+                                        id="adhk_{{ $subsector->sector->category->code }}" class="form-control"
+                                        aria-required="true">
                                 </td>
                             </tr>
                         @endif
@@ -36,7 +35,8 @@
                                     <input disabled type="text"
                                         name="adhk_{{ $subsector->sector->code . '_' . $subsector->sector->category->code }}"
                                         id="adhk_{{ $subsector->sector->code . '_' . $subsector->sector->category->code }}"
-                                        class="form-control {{ "category-".$subsector->sector->category->code }}" aria-required="true">
+                                        class="form-control {{ 'category-' . $subsector->sector->category->code }}"
+                                        aria-required="true">
                                 </td>
                             </tr>
                         @endif
@@ -51,7 +51,8 @@
                                     <input type="text"
                                         name="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
                                         id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
-                                        class="form-control {{ "sector-".$subsector->sector_id }} {{ "category-".$subsector->sector->category_id }}" aria-required="true">
+                                        class="form-control {{ 'sector-' . $subsector->sector_id }} {{ 'category-' . $subsector->sector->category_id }}"
+                                        aria-required="true">
                                 </td>
                             </tr>
                         @elseif ($subsector->code == null && $subsector->sector->code != null)
@@ -65,7 +66,8 @@
                                     <input type="text"
                                         name="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
                                         id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
-                                        class="form-control {{ "sector-".$subsector->sector_id }} {{ "category-".$subsector->sector->category_id }}" aria-required="true">
+                                        class="form-control {{ 'sector-' . $subsector->sector_id }} {{ 'category-' . $subsector->sector->category_id }}"
+                                        aria-required="true">
                                 </td>
                             </tr>
                         @elseif ($subsector->code == null && $subsector->sector->code == null)
@@ -78,23 +80,28 @@
                                     <input type="text"
                                         name="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
                                         id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
-                                        class="form-control {{ "sector-".$subsector->sector_id }} {{ "category-".$subsector->sector->category_id }}" aria-required="true">
+                                        class="form-control {{ 'sector-' . $subsector->sector_id }} {{ 'category-' . $subsector->sector->category_id }}"
+                                        aria-required="true">
                                 </td>
                             </tr>
                         @endif
                     @endforeach
-                    <tr class = "PDRB-footer text-center" style="background-color: steelblue; color:aliceblue; font-weight: bold;">
+                    <tr class="PDRB-footer text-center"
+                        style="background-color: steelblue; color:aliceblue; font-weight: bold;">
                         <td>
-                            <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto (PDRB) Nonmigas </p>
+                            <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto (PDRB)
+                                Nonmigas </p>
                         </td>
                         <td>
                             <p class="col mt-1 mb-1" id="total-nonmigas" style="margin-bottom:0rem;"></p>
                         </td>
                         </td>
                     </tr>
-                    <tr class = "PDRB-footer text-center" style="background-color: steelblue; color:aliceblue; font-weight: bold;">
+                    <tr class="PDRB-footer text-center"
+                        style="background-color: steelblue; color:aliceblue; font-weight: bold;">
                         <td>
-                            <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto (PDRB) </p>
+                            <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto (PDRB)
+                            </p>
                         </td>
                         <td>
                             <p class="col mt-1 mb-1" id="total" style="margin-bottom:0rem;"></p>
@@ -105,8 +112,24 @@
         </div>
         <div class="card-footer d-flex pr-3">
             <div class="ml-auto">
-                <button type="button" class="btn btn-success">Simpan</button>
+                <button id="singleFormSave" type="button" class="btn btn-success">Simpan</button>
             </div>
         </div>
     </form>
 </div>
+
+<script>
+    $(document).ready(function() {
+        $("#singleFormSave").click(function() {
+            var data = $("#singleForm").serialize();
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('fetchYear') }}',
+                data: {
+                    type: pdrb_type,
+                    _token: '{{ csrf_token() }}',
+                },
+            });
+        })
+    });
+</script>
