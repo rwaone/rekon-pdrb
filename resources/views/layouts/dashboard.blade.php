@@ -14,6 +14,8 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ url('') }}/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="{{ url('') }}/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
     {{ $head }}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -78,6 +80,7 @@
     <script src="{{ url('') }}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
     <script src="{{ url('') }}/dist/js/adminlte.min.js"></script>
+    <script src="{{ url('') }}/plugins/sweetalert2/sweetalert2.min.js"></script>
     {{ $script }}
 </body>
 

@@ -12,8 +12,6 @@
         <link rel="stylesheet" href="{{ url('') }}/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
         <link rel="stylesheet" href="{{ url('') }}/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
         <link rel="stylesheet" href="{{ url('') }}/plugins/daterangepicker/daterangepicker.css">
-        <!-- SweetAlert2 -->
-        <link rel="stylesheet" href="{{ url('') }}/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
     </x-slot>
 
     <x-slot name="breadcrumb">
@@ -196,7 +194,6 @@
             <script src="{{ url('') }}/plugins/moment/moment.min.js"></script>
             <script src="{{ url('') }}/plugins/daterangepicker/daterangepicker.js"></script>
             <script src="{{ url('') }}/plugins/moment/moment.min.js"></script>
-            <script src="{{ url('') }}/plugins/sweetalert2/sweetalert2.min.js"></script>
             <script>
                 function deleteConfirm(url) {
                     $('#btn-delete').attr('action', url);

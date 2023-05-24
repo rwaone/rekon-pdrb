@@ -7,7 +7,7 @@
 
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label" for="type">PDRB:</label>
-                    <select id="type" class="form-control col-sm-10 select2bs4" name="filter[type]">
+                    <select id="type" class="form-control col-sm-10 select2bs4" name="filter[type]" required>
                         <option value="" selected>Pilih Jenis PDRB</option>
                         <option {{ old('type', $filter['type']) == 'Lapangan Usaha' ? 'selected' : '' }}
                             value='Lapangan Usaha'>Lapangan Usaha</option>
@@ -19,7 +19,7 @@
 
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label" for="year">Tahun:</label>
-                    <select id="year" class="form-control col-sm-10 select2bs4" name="filter[year]">
+                    <select id="year" class="form-control col-sm-10 select2bs4" name="filter[year]" required>
                         <option value="">Pilih Tahun</option>
                         @if ($years)
                             @foreach ($years as $year)
@@ -33,7 +33,7 @@
 
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label" for="quarter">Triwulan:</label>
-                    <select id="quarter" class="form-control col-sm-10 select2bs4" name="filter[quarter]">
+                    <select id="quarter" class="form-control col-sm-10 select2bs4" name="filter[quarter]" required>
                         @if ($quarters)
                             @foreach ($quarters as $quarter)
                                 <option {{ old('quarter', $filter['quarter']) == $quarter->quarter ? 'selected' : '' }}
@@ -48,7 +48,7 @@
 
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label" for="period_id">Periode:</label>
-                    <select id="period" class="form-control col-sm-10 select2bs4" name="filter[period_id]">
+                    <select id="period" class="form-control col-sm-10 select2bs4" name="filter[period_id]" required>
                         @if ($periods)
                             @foreach ($periods as $period)
                                 <option {{ old('period', $filter['period_id']) == $period->id ? 'selected' : '' }}
@@ -61,7 +61,7 @@
 
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label" for="region_id">Kabupaten/Kota:</label>
-                    <select id="region_id" class="form-control col-sm-10 select2bs4" name="filter[region_id]">
+                    <select id="region_id" class="form-control col-sm-10 select2bs4" name="filter[region_id]" required>
                         <option value="">Pilih Kabupaten/Kota</option>
                         @foreach ($regions as $region)
                             <option {{ old('region_id', $filter['region_id']) == $region->id ? 'selected' : '' }}
@@ -73,7 +73,7 @@
 
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label" for="price_base">Basis Harga:</label>
-                    <select class="form-control col-sm-10 select2bs4" name="filter[price_base]">
+                    <select class="form-control col-sm-10 select2bs4" name="filter[price_base]" required>
                         <option value="">Pilih Basis Harga</option>
                         <option {{ old('price_base', $filter['price_base']) == 'adhk' ? 'selected' : '' }}
                             value='adhk'>Atas Dasar Harga Konstan</option>

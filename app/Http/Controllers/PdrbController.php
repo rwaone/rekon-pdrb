@@ -25,7 +25,7 @@ class PdrbController extends Controller
     {
         //
     }
-    
+
     /**
      * Show the form for creating a new resource.
      *
@@ -92,22 +92,25 @@ class PdrbController extends Controller
         //
     }
 
-    public function getKonserda(Request $request, $period_id){
-        $pdrb = Pdrb::select('subsector_id','adhk','adhb')->where('period_id', $period_id)->orderBy('subsector_id')->get();
+    public function getKonserda(Request $request, $period_id)
+    {
+        $pdrb = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_id)->orderBy('subsector_id')->get();
         return response()->json($pdrb);
     }
 
-    public function daftarPokok(){
-        $daftar = Pdrb::select('region_id', 'period_id')->groupBy('region_id','period_id')->get();
+    public function daftarPokok()
+    {
+        $daftar = Pdrb::select('region_id', 'period_id')->groupBy('region_id', 'period_id')->get();
         $json_daftar = json_encode($daftar);
         return view('rekonsiliasi.tabelpokok', [
             'daftar' => $daftar,
             'json' => $json_daftar,
         ]);
     }
-    
-    public function konserda(Request $request){
-        
+
+    public function konserda(Request $request)
+    {
+
         $filter = [
             'type' => '',
             'year' => '',
@@ -130,7 +133,7 @@ class PdrbController extends Controller
             $quarters = Period::where('year', $filter['year'])->groupBy('quarter')->get('quarter');
             $periods = Period::where('type', $filter['type'])->where('year', $filter['year'])->where('quarter', $filter['quarter'])->get();
         }
-        
+
         $pdrb = Pdrb::all();
         $year = Period::select('year')->distinct()->get();
         $cat = Category::pluck('code')->toArray();
@@ -147,7 +150,8 @@ class PdrbController extends Controller
         ]);
     }
 
-    public function rekonsiliasi(Request $request){       
+    public function rekonsiliasi(Request $request)
+    {
         $filter = [
             'type' => '',
             'year' => '',
@@ -170,7 +174,7 @@ class PdrbController extends Controller
             $quarters = Period::where('year', $filter['year'])->groupBy('quarter')->get('quarter');
             $periods = Period::where('type', $filter['type'])->where('year', $filter['year'])->where('quarter', $filter['quarter'])->get();
             $data = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->get();
-        }else {
+        } else {
 
             $filter = [
                 'type' => '',
@@ -204,19 +208,26 @@ class PdrbController extends Controller
         ]);
     }
 
-    public function getFullData($filter) {
+    public function getFullData($filter)
+    {
         //
     }
 
-    public function getSingleData($filter) {
+    public function getSingleData($filter)
+    {
         //
     }
 
-    public function saveSingleData($filter){
-        //
+    public function saveSingleData(Request $request)
+    {
+        $formData = $request;
+        // $data = $formData['a_1_A'];
+
+        return response()->json($formData);
     }
 
-    public function saveFullData($filter){
+    public function saveFullData(Request $request)
+    {
         //
     }
 }

@@ -1,5 +1,6 @@
 <div class="card">
-    <form class="form-horizontal" id="singleForm">
+    <form action="/pdrb" method="post" class="form-horizontal" id="singleForm">
+        @csrf
         <div class="card-body p-3">
             <table class="table table-striped table-bordered" id="rekonsiliasi-table-single">
                 <thead class="text-center" style="background-color: steelblue; color:aliceblue;">
@@ -19,7 +20,7 @@
                                         for="">{{ $subsector->sector->category->code . '. ' . $subsector->sector->category->name }}</label>
                                 </td>
                                 <td class="categories">
-                                    <input disabled type="text" name="adhk_{{ $subsector->sector->category->code }}"
+                                    <input disabled type="text" name="{{ $subsector->sector->category->code }}"
                                         id="adhk_{{ $subsector->sector->category->code }}" class="form-control"
                                         aria-required="true">
                                 </td>
@@ -33,7 +34,7 @@
                                 </td>
                                 <td>
                                     <input disabled type="text"
-                                        name="adhk_{{ $subsector->sector->code . '_' . $subsector->sector->category->code }}"
+                                        name="{{ $subsector->sector->code . '_' . $subsector->sector->category->code }}"
                                         id="adhk_{{ $subsector->sector->code . '_' . $subsector->sector->category->code }}"
                                         class="form-control {{ 'category-' . $subsector->sector->category->code }}"
                                         aria-required="true">
@@ -49,7 +50,7 @@
                                 </td>
                                 <td>
                                     <input type="text"
-                                        name="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
+                                        name="{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
                                         id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
                                         class="form-control {{ 'sector-' . $subsector->sector_id }} {{ 'category-' . $subsector->sector->category_id }}"
                                         aria-required="true">
@@ -64,7 +65,7 @@
                                 </td>
                                 <td>
                                     <input type="text"
-                                        name="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
+                                        name="{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
                                         id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
                                         class="form-control {{ 'sector-' . $subsector->sector_id }} {{ 'category-' . $subsector->sector->category_id }}"
                                         aria-required="true">
@@ -78,7 +79,7 @@
                                 </td>
                                 <td>
                                     <input type="text"
-                                        name="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
+                                        name="{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
                                         id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
                                         class="form-control {{ 'sector-' . $subsector->sector_id }} {{ 'category-' . $subsector->sector->category_id }}"
                                         aria-required="true">
@@ -117,19 +118,3 @@
         </div>
     </form>
 </div>
-
-<script>
-    $(document).ready(function() {
-        $("#singleFormSave").click(function() {
-            var data = $("#singleForm").serialize();
-            $.ajax({
-                type: 'POST',
-                url: '{{ route('fetchYear') }}',
-                data: {
-                    type: pdrb_type,
-                    _token: '{{ csrf_token() }}',
-                },
-            });
-        })
-    });
-</script>

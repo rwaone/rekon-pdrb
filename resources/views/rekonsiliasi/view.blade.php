@@ -38,7 +38,7 @@
 
     @if ($filter['quarter'] == 'F')
         @include('rekonsiliasi.full-form')
-    @elseif($filter['quarter'] != NULL)
+    @elseif($filter['quarter'] != null)
         @include('rekonsiliasi.single-form')
     @endif
 
@@ -80,8 +80,6 @@
                 return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
             }
             //
-
-
 
             $(document).ready(function() {
                 // Your jQuery code goes here
@@ -299,16 +297,18 @@
                         url: '{{ route('fetchYear') }}',
                         data: {
                             type: pdrb_type,
-                            _token: '{{csrf_token()}}',
+                            _token: '{{ csrf_token() }}',
                         },
                         dataType: 'json',
 
                         success: function(result) {
                             $('#year').html('<option value=""> Pilih Tahun </option>');
                             $.each(result.years, function(key, value) {
-                                $('#year').append('<option value="' + value.year + '">' + value.year + '</option>');
+                                $('#year').append('<option value="' + value.year + '">' +
+                                    value.year + '</option>');
                             });
-                            $('#quarter').append('<option value="" disabled selected> Pilih Triwulan </option>');
+                            $('#quarter').append(
+                                '<option value="" disabled selected> Pilih Triwulan </option>');
                         },
                     })
                 });
@@ -324,17 +324,22 @@
                         data: {
                             type: pdrb_type,
                             year: pdrb_year,
-                            _token: '{{csrf_token()}}',
+                            _token: '{{ csrf_token() }}',
                         },
                         dataType: 'json',
 
                         success: function(result) {
-                            $('#quarter').html('<option value="" selected> Pilih Triwulan </option>');
+                            $('#quarter').html(
+                                '<option value="" selected> Pilih Triwulan </option>');
                             $.each(result.quarters, function(key, value) {
-                                var description = (value.quarter == 'F') ? 'Lengkap' : ((value.quarter == 'T') ? 'Tahunan' : 'Triwulan ' + value.quarter);
-                                $('#quarter').append('<option value="' + value.quarter + '">' + description + '</option>');
+                                var description = (value.quarter == 'F') ? 'Lengkap' : ((
+                                        value.quarter == 'T') ? 'Tahunan' :
+                                    'Triwulan ' + value.quarter);
+                                $('#quarter').append('<option value="' + value.quarter +
+                                    '">' + description + '</option>');
                             });
-                            $('#period').append('<option value="" selected> Pilih Periode </option>');
+                            $('#period').append(
+                                '<option value="" selected> Pilih Periode </option>');
                         },
                     })
                 });
@@ -352,20 +357,47 @@
                             type: pdrb_type,
                             year: pdrb_year,
                             quarter: pdrb_quarter,
-                            _token: '{{csrf_token()}}',
+                            _token: '{{ csrf_token() }}',
                         },
                         dataType: 'json',
 
                         success: function(result) {
                             $('#period').html('<option value="" selected> Pilih Periode </option>');
                             $.each(result.periods, function(key, value) {
-                                $('#period').append('<option value="' + value.id + '">' + value.description + '</option>');
+                                $('#period').append('<option value="' + value.id + '">' +
+                                    value.description + '</option>');
                             });
                         },
                     })
                 });
-            });
 
+                $("#singleFormSave").on('click', function() {
+                    var data = $("#singleForm").serializeArray();
+                    // console.log(data);
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ route('saveSingleData') }}',
+                        data: $("#singleForm").serializeArray(),
+
+                        success: function(result) {
+
+                            console.log(result);
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Berhasil',
+                                text: 'Data berhasil disimpan.'
+                            })
+                        },
+                    });
+                });
+            });
         </script>
     </x-slot>
 </x-dashboard-Layout>

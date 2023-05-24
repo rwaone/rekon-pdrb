@@ -13,7 +13,7 @@ class StorepdrbRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
