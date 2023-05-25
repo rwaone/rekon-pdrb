@@ -42,6 +42,7 @@ Route::resource('fenomena', FenomenaController::class)->middleware(['auth', 'ver
 Route::get('konserda', [PdrbController::class, 'konserda'])->middleware(['auth', 'verified']);
 Route::get('getKonserda/{period_id}', [PdrbController::class, 'getKonserda'])->middleware(['auth', 'verified']);
 Route::get('daftarPokok', [PdrbController::class, 'daftarPokok'])->middleware(['auth', 'verified']);
+Route::get('detailPokok/{period_id}', [PdrbController::class, 'detailPokok'])->middleware(['auth', 'verified']);
 
 Route::post('fetch/year', [PeriodController::class, 'fetchYear'])->name('fetchYear');
 Route::post('fetch/quarter', [PeriodController::class, 'fetchQuarter'])->name('fetchQuarter');

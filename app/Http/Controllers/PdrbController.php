@@ -102,9 +102,64 @@ class PdrbController extends Controller
     {
         $daftar = Pdrb::select('region_id', 'period_id')->groupBy('region_id', 'period_id')->get();
         $json_daftar = json_encode($daftar);
-        return view('rekonsiliasi.tabelpokok', [
+        return view('rekonsiliasi.tabel-pokok', [
             'daftar' => $daftar,
             'json' => $json_daftar,
+        ]);
+    }
+
+    public function detailPokok(Request $request, $period_id){
+        $subsectors = Subsector::all();
+        $period = Period::where('id', $period_id)->first();
+        if ($period->quarter === 'Y'){
+            $year_ = $period->year;
+            $years = [];
+            array_push($years, $year_);
+            for($i = 1; $i <= 4; $i++){
+                array_push($years, $year_ - $i);
+            }
+            $periods = [];
+            foreach($years as $item){
+                $per = Period::select('id')->where('quarter', 'Y')->where('year', $item)->get();
+                foreach($per as $p){
+                    array_push($periods, $p->id);
+                }
+            }
+            $pdrb_1 = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $periods[4])->orderBy('subsector_id')->get();
+            $pdrb_2 = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $periods[3])->orderBy('subsector_id')->get();
+            $pdrb_3 = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $periods[2])->orderBy('subsector_id')->get();
+            $pdrb_4 = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $periods[1])->orderBy('subsector_id')->get();
+            $pdrb = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_id)->orderBy('subsector_id')->get();
+
+            $adhks = [
+              'pdrb-1' => $pdrb_1,  
+              'pdrb-2' => $pdrb_2,
+              'pdrb-3' => $pdrb_3,
+              'pdrb-4' => $pdrb_4,
+              'pdrb-5' => $pdrb,  
+            ];
+            $adhk = [];
+            $adhb = [];
+            foreach($adhks as $key => $item){
+                $adhk[$key] = $item->pluck('adhk')->toArray();
+                $adhb[$key] = $item->pluck('adhb')->toArray();
+            }
+        }
+        $adhk = json_encode($adhk);
+        $adhb = json_encode($adhb);
+        $cat = Category::pluck('code')->toArray();
+        $catString = implode(", ", $cat);
+        return view('rekonsiliasi.detail-pokok', [
+            'subsectors' => $subsectors,
+            'cat' => $catString,
+            'adhk' => $adhk,
+            'adhb' => $adhb,
+            'pdrb_1' => $pdrb_1,
+            'pdrb_2' => $pdrb_2,
+            'pdrb_3' => $pdrb_3,
+            'pdrb_4' => $pdrb_4,
+            'years' => $years,
+            'pdrb' => $pdrb,
         ]);
     }
 
