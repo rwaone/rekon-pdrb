@@ -36,11 +36,8 @@
 
     @include('rekonsiliasi.filter')
 
-    @if ($filter['quarter'] == 'F')
-        @include('rekonsiliasi.full-form')
-    @elseif($filter['quarter'] != null)
-        @include('rekonsiliasi.single-form')
-    @endif
+    <div id="fullFormContainer" class="card d-none">@include('rekonsiliasi.full-form')</div>
+    <div id="singleFormContainer" class="card d-none">@include('rekonsiliasi.single-form')</div>
 
     <x-slot name="script">
         <!-- Additional JS resources -->
@@ -372,12 +369,21 @@
                 });
 
                 $("#singleFormSave").on('click', function() {
-                    var data = $("#singleForm").serializeArray();
                     // console.log(data);
                     $.ajax({
                         type: 'POST',
                         url: '{{ route('saveSingleData') }}',
-                        data: $("#singleForm").serializeArray(),
+                        data: {
+                            filter: $('#filterForm').serializeArray().reduce(function(obj, item) {
+                                obj[item.name] = item.value;
+                                return obj;
+                            }, {}),
+                            input: $('#singleForm').serializeArray().reduce(function(obj, item) {
+                                obj[item.name] = item.value;
+                                return obj;
+                            }, {}),
+                            _token: '{{ csrf_token() }}',
+                        },
 
                         success: function(result) {
 
@@ -396,6 +402,20 @@
                             })
                         },
                     });
+                });
+
+                $('#filterSubmit').on('click', function() {
+                    var quarter = $('#quarter').val();
+                    if (quarter == 'F') {
+                        $('#fullFormContainer').removeClass('d-none');
+                        $('#singleFormContainer').addClass('d-none');
+                    } else if (quarter != null) {
+                        $('#fullFormContainer').addClass('d-none');
+                        $('#singleFormContainer').removeClass('d-none');
+                    } else {
+                        $('#fullFormContainer').addClass('d-none');
+                        $('#singleFormContainer').addClass('d-none');
+                    }
                 });
             });
         </script>

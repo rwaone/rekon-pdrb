@@ -108,20 +108,21 @@ class PdrbController extends Controller
         ]);
     }
 
-    public function detailPokok(Request $request, $period_id){
+    public function detailPokok(Request $request, $period_id)
+    {
         $subsectors = Subsector::all();
         $period = Period::where('id', $period_id)->first();
-        if ($period->quarter === 'Y'){
+        if ($period->quarter === 'Y') {
             $year_ = $period->year;
             $years = [];
             array_push($years, $year_);
-            for($i = 1; $i <= 4; $i++){
+            for ($i = 1; $i <= 4; $i++) {
                 array_push($years, $year_ - $i);
             }
             $periods = [];
-            foreach($years as $item){
+            foreach ($years as $item) {
                 $per = Period::select('id')->where('quarter', 'Y')->where('year', $item)->get();
-                foreach($per as $p){
+                foreach ($per as $p) {
                     array_push($periods, $p->id);
                 }
             }
@@ -132,15 +133,15 @@ class PdrbController extends Controller
             $pdrb = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_id)->orderBy('subsector_id')->get();
 
             $adhks = [
-              'pdrb-1' => $pdrb_1,  
-              'pdrb-2' => $pdrb_2,
-              'pdrb-3' => $pdrb_3,
-              'pdrb-4' => $pdrb_4,
-              'pdrb-5' => $pdrb,  
+                'pdrb-1' => $pdrb_1,
+                'pdrb-2' => $pdrb_2,
+                'pdrb-3' => $pdrb_3,
+                'pdrb-4' => $pdrb_4,
+                'pdrb-5' => $pdrb,
             ];
             $adhk = [];
             $adhb = [];
-            foreach($adhks as $key => $item){
+            foreach ($adhks as $key => $item) {
                 $adhk[$key] = $item->pluck('adhk')->toArray();
                 $adhb[$key] = $item->pluck('adhb')->toArray();
             }
@@ -218,12 +219,12 @@ class PdrbController extends Controller
 
         if ($request->filter) {
             $filter = [
-                'type' => $request->filter['type'],
-                'year' => $request->filter['year'],
-                'quarter' => $request->filter['quarter'],
-                'period_id' => $request->filter['period_id'],
-                'region_id' => $request->filter['region_id'],
-                'price_base' => $request->filter['price_base'],
+                'type' => $request->type,
+                'year' => $request->year,
+                'quarter' => $request->quarter,
+                'period_id' => $request->period_id,
+                'region_id' => $request->region_id,
+                'price_base' => $request->price_base,
             ];
             $years = Period::where('type', $filter['type'])->groupBy('year')->get('year');
             $quarters = Period::where('year', $filter['year'])->groupBy('quarter')->get('quarter');
@@ -263,22 +264,37 @@ class PdrbController extends Controller
         ]);
     }
 
-    public function getFullData($filter)
+    public function getFullData(Request $request)
     {
         //
     }
 
-    public function getSingleData($filter)
+    public function getSingleData(Request $request)
     {
-        //
+        $filter = $request->filter;
+        $subsectors = Subsector::all();
+        $data = Pdrb::where('year', $filter['year'])->where('quarter', $filter['quarter'])->where('period_id', $filter['period_id'])->get();
+        if(!empty($data)){
+            return response()->json($data);
+        } else {
+            //
+        }
     }
 
     public function saveSingleData(Request $request)
     {
-        $formData = $request;
-        // $data = $formData['a_1_A'];
+        $filter = $request->filter;
+        $input = json_decode(json_encode($request->input), true);
+        $data = [];
 
-        return response()->json($formData);
+        for ($x = 1; $x <= 55; $x++) {
+            $inputData['subsector_id'] = $input['subsector_' . $x];
+            $inputData[$filter['price_base']] = $input['value_' . $x];
+            array_push($data, $inputData);
+        }
+        
+
+        return response()->json($data);
     }
 
     public function saveFullData(Request $request)

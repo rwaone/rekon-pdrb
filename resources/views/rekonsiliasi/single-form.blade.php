@@ -1,6 +1,4 @@
-<div class="card">
     <form action="/pdrb" method="post" class="form-horizontal" id="singleForm">
-        @csrf
         <div class="card-body p-3">
             <table class="table table-striped table-bordered" id="rekonsiliasi-table-single">
                 <thead class="text-center" style="background-color: steelblue; color:aliceblue;">
@@ -48,9 +46,10 @@
                                         for="{{ $subsector->code }}_{{ $subsector->name }}">
                                         {{ $subsector->code . '. ' . $subsector->name }}</p>
                                 </td>
+                                <input type="hidden" name="subsector_{{ $subsector->id }}"
+                                    value="{{ $subsector->id }}">
                                 <td>
-                                    <input type="text"
-                                        name="{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
+                                    <input type="text" name="value_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
                                         class="form-control {{ 'sector-' . $subsector->sector_id }} {{ 'category-' . $subsector->sector->category_id }}"
                                         aria-required="true">
@@ -63,9 +62,10 @@
                                         for="{{ $subsector->sector->code . '_' . $subsector->sector->name }}">
                                         {{ $subsector->sector->code . '. ' . $subsector->sector->name }}</p>
                                 </td>
+                                <input type="hidden" name="subsector_{{ $subsector->id }}"
+                                    value="{{ $subsector->id }}">
                                 <td>
-                                    <input type="text"
-                                        name="{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
+                                    <input type="text" name="value_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
                                         class="form-control {{ 'sector-' . $subsector->sector_id }} {{ 'category-' . $subsector->sector->category_id }}"
                                         aria-required="true">
@@ -77,9 +77,10 @@
                                     <label class="col" style="margin-bottom:0rem;"
                                         for="{{ $subsector->sector->category->code . '_' . $subsector->name }}">{{ $subsector->sector->category->code . '. ' . $subsector->name }}</label>
                                 </td>
+                                <input type="hidden" name="subsector_{{ $subsector->id }}"
+                                    value="{{ $subsector->id }}">
                                 <td>
-                                    <input type="text"
-                                        name="{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
+                                    <input type="text" name="value_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
                                         class="form-control {{ 'sector-' . $subsector->sector_id }} {{ 'category-' . $subsector->sector->category_id }}"
                                         aria-required="true">
@@ -117,4 +118,3 @@
             </div>
         </div>
     </form>
-</div>
