@@ -121,9 +121,11 @@ class PdrbController extends Controller
             }
             $periods = [];
             foreach ($years as $item) {
-                $per = Period::select('id')->where('quarter', 'Y')->where('year', $item)->get();
-                foreach ($per as $p) {
-                    array_push($periods, $p->id);
+                $per = Period::select('id')->where('quarter', 'Y')->where('year', $item)->first();
+                if($per){
+                    array_push($periods, $per->id);
+                } else {
+                    array_push($periods, 0);
                 }
             }
             $pdrb_1 = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $periods[4])->orderBy('subsector_id')->get();

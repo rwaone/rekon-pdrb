@@ -33,6 +33,9 @@
             a.nav-item {
                 color: black !important;
             }
+            tbody td:not(:first-child) {
+                width: 200px;
+            }
         </style>
         @vite(['resources/css/app.css'])
     </x-slot>
@@ -45,7 +48,7 @@
     </x-slot>
     <div class="card mb-3" id="view-body">
             <div class="card-body">
-                <nav class="navbar">
+                <nav class="navbar d-flex justify-content-center">
                     <ul class="nav nav-tabs d-flex">
                         <a class="nav-item nav-link" id = "nav-adhb" href="#">ADHB</a>
                         <a class="nav-item nav-link" id = "nav-adhk" href="#">ADHK</a>
@@ -53,7 +56,6 @@
                         <a class="nav-item nav-link" id = "nav-pertumbuhan" href="#">Pertumbuhan</a>
                         <a class="nav-item nav-link" id = "nav-indeks" href="#">Indeks Implisit</a>
                         <a class="nav-item nav-link" id = "nav-laju" href="#">Laju Implisit</a>
-                        <a class="nav-item nav-link" id = "nav-sumber" href="#">Sumber Pertumbuhan</a>
                     </ul>
                 </nav>
                 <span class="loader d-none"></span>
@@ -163,6 +165,7 @@
     <x-slot name="script">
         <!-- Additional JS resources -->
         <script src="{{ url('') }}/plugins/select2/js/select2.full.min.js"></script>
+        <script src="{{ asset('js/konserda.js') }}"></script>
         <script>
             $(document).on('focus', '.select2-selection', function(e) {
                 $(this).closest(".select2-container").siblings('select:enabled').select2('open');
@@ -201,62 +204,6 @@
                 return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
             }
             //
-
-            function simpleSum(atri) {
-                let X = $(`${atri}`).text().replaceAll(/[A-Za-z.]/g,'')
-                let Y = X.replaceAll(/[,]/g, '.')
-                return Number(Y)
-            }
-
-            function distribusi(values, index){
-                let X = simpleSum(values)
-                let Y = simpleSum(`#total-${index}`)
-                let score = X > 0 ? X/Y * 100 : 0 
-                return score > 0 ? score.toFixed(2) : 0
-            }
-
-            function getDist(){
-                for (let q = 1; q <= 5; q++){
-                    $(`.view-distribusi-${q}`).each(function(){
-                        let id = '#' + $(this).attr('id')
-                        let y = distribusi(id, q)
-                        $(this).text(y)
-                    })
-                    $(`#total-nonmigas-${q}`).text(distribusi(`#total-nonmigas-${q}`,q))
-                    $(`#total-${q}`).text(distribusi(`#total-${q}`,q))
-                }
-            }
-
-            function getIdx(adhb, adhk) {
-                let result = adhb > 0 ? adhb/adhk * 100 : ''
-                return result > 0 ? result.toFixed(2) : ''
-            }
-            function getFilter() {
-                const dataStored = localStorage.getItem('dataStored')
-                if (dataStored){
-                    let data = JSON.parse(dataStored)
-                    for (let i = 0; i < data.length; i++) {
-                            $(`#value-${i+1}`).text(data[i].adhb)
-                        }
-                    getSummarise()
-                    $('#view-body').removeClass('d-none')
-                }
-            }
-            function getAdhb() {
-                $('tbody td:nth-child(n+2):nth-child(-n+6)').removeClass(function(index, className) {
-                    return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
-                })
-                $('tbody td:nth-child(n+2):nth-child(-n+6)').addClass('view-adhb')
-                for(let q = 1; q <= 5;q++) {
-                    for(let i = 1; i <= 55; i++) {
-                        let X = adhb_data[`pdrb-${q}`][i-1]
-                        let Y = String(X).replaceAll(/[.]/g,',')
-                        $(`#value-${i}-${q}`).text(Y)
-                    }
-                }
-                getSummarise()
-            }
-
             //change
             $(document).ready(function() {
                 let tbody = $('#rekon-view').find('tbody')
@@ -292,119 +239,42 @@
                 $('#nav-adhk').on('click', function(){
                     $('.loader').removeClass('d-none')
                     setTimeout(function(){
-                        $('tbody td:nth-child(n+2):nth-child(-n+6)').removeClass(function(index, className) {
-                            return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
-                        })
-                        $('tbody td:nth-child(n+2):nth-child(-n+6)').addClass('view-adhk')
-                        for(let q = 1; q <= 5;q++) {
-                            for(let i = 1; i <= 55; i++) {
-                                let X = adhk_data[`pdrb-${q}`][i-1]
-                                let Y = String(X).replaceAll(/[.]/g,',')
-                                $(`#value-${i}-${q}`).text(Y)
-                            }
-                        }
-                        getSummarise()
+                        getAdhk()
                         $('.loader').addClass('d-none')
-                    }, 500)
-                    
+                    }, 500)  
                 })
                 
                 //belum tau gimana
-                // $('#nav-pertumbuhan').on('click', function(){
-                //     $('tbody td:nth-child(2)').removeClass(function(index, className) {
-                //         return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
-                //     })
-                //     $('tbody td:nth-child(2)').addClass('view-pertumbuhan')
-                // })
+                $('#nav-pertumbuhan').on('click', function(){
+                    $('.loader').removeClass('d-none')
+                    setTimeout(function(){
+                        getGrowth()
+                        $('.loader').addClass('d-none')
+                    }, 500)
+                })
 
                 //indeks implisit adhb/adhk
                 $('#nav-indeks').on('click', function(){
                     $('.loader').removeClass('d-none')
                     setTimeout(function(){
-                        $('tbody td:nth-child(n+2):nth-child(-n+6)').removeClass(function(index, className) {
-                            return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
-                        })
-                        $('tbody td:nth-child(n+2):nth-child(-n+6)').addClass('view-indeks')
-                        let idx_adhb = []
-                        let idx_adhk = []
-                        let idx = []
-                        for(let q = 1; q <= 5;q++) {
-                            for(let i = 1; i <= 55; i++) {
-                                $(`#value-${i}-${q}`).text(adhb_data[`pdrb-${q}`][i-1])
-                            }
-                        }
-                        getSummarise()
-                        $('tbody td:not(:first-child)').each(function() {
-                            let X = $(this).text().replaceAll(/[A-Za-z.]/g,'')
-                            let Y = X.replaceAll(/[,]/g, '.')
-                            idx_adhb.push(Number(Y))
-                        })
-                        for(let q = 1; q <= 5;q++) {
-                            for(let i = 1; i <= 55; i++) {
-                                $(`#value-${i}-${q}`).text(adhk_data[`pdrb-${q}`][i-1])
-                            }
-                        }
-                        getSummarise()
-                        $('tbody td:not(:first-child)').each(function() {
-                            let X = $(this).text().replaceAll(/[A-Za-z.]/g,'')
-                            let Y = X.replaceAll(/[,]/g, '.')
-                            idx_adhk.push(Number(Y))
-                        })
-                        for (let i = 0; i < idx_adhb.length; i++){
-                            idx.push(getIdx(idx_adhb[i], idx_adhk[i]))
-                        }
-                        $('tbody td:not(:first-child)').each(function(index) {
-                            $(this).text(idx[index])
-                        })
+                        getIndex()
+                        $('.loader').addClass('d-none')
+                    }, 500)
+                })
+
+                //laju index
+                $('#nav-laju').on('click', function(){
+                    $('.loader').removeClass('d-none')
+                    setTimeout(function(){
+                        let laju = getIndex()
+                        getLaju(laju)
                         $('.loader').addClass('d-none')
                     }, 500)
                 })
             })
 
             //summarise
-            function getSummarise(){
-                let sum = 0
-                $('.values').each(function () {
-                    $(this).text(formatRupiah($(this).text(), 'Rp '))
-                })
-                for (let q = 1; q <= 5; q++) {
-                    for (let i = 1; i <= 7; i++) {
-                        let X = $(`#value-${i}-${q}`).text().replaceAll(/[A-Za-z.]/g,'')
-                        // let X = $(`#value-${i}`).text()
-                        let Y = X.replaceAll(/[,]/g, '.')
-                        sum += Y > 0 ? Number(Y) : 0
-                    }
-                    $(`#sector-1-${q}`).text(formatRupiah(String(sum.toFixed(2)).replaceAll(/[.]/g, ','), 'Rp '))
-                    sum = sum - sum
-                }
-                sum = sum - sum
-                for (let q = 1; q <= 5; q++) {
-                    for (let i = 14; i <= 15; i++) {
-                        let X = $(`#value-${i}-${q}`).text().replaceAll(/[A-Za-z.]/g,'')
-                        let Y = X.replaceAll(/[,]/g, '.')
-                        sum += Y > 0 ? Number(Y) : 0
-                    }
-                    
-                    $(`#sector-14-${q}`).text(formatRupiah(String(sum.toFixed(2)).replaceAll(/[.]/g, ','), 'Rp '))
-                    sum = sum - sum
-                }
-                sum = sum - sum
-                for (let q = 1; q <= 5; q++) {
-                    for (let index of catArray){    
-                        let jumlah = calculateSector(`categories-${index}-${q}`).toFixed(2)
-                        let que = String(jumlah).replaceAll(/[.]/g, ',')
-                        $(`#categories-${index}-${q}`).text(formatRupiah(que, 'Rp '))
-                        $(`#categories-${index}-${q}`).addClass(`text-bold pdrb-total-${q}`)
-                    }
-                }
-                for (let q = 1; q <= 5; q++) {
-                    let pdrb = calculateSector(`pdrb-total-${q}`).toFixed(2)
-                    let nonmigas = simpleSum(`#value-10-${q}`) + simpleSum(`#value-15-${q}`)
-                    $(`#total-${q}`).text(formatRupiah(String(pdrb).replaceAll(/[.]/g, ','), 'Rp '))
-                    let pdrbNonmigas = (pdrb - nonmigas).toFixed(2)
-                    $(`#total-nonmigas-${q}`).text(formatRupiah(String(pdrbNonmigas).replaceAll(/[.]/g, ','), 'Rp '))
-                }
-            }
+            
 
             $(document).ready(function(){
                 getAdhb()

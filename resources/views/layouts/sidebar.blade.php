@@ -45,9 +45,9 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../tables/data.html" class="nav-link">
+                            <a href="{{ url('daftarPokok') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Pemeriksaan</p>
+                                <p>Daftar Tabel Pokok</p>
                             </a>
                         </li>
                     </ul>

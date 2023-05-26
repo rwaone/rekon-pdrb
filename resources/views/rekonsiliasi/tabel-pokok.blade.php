@@ -64,14 +64,16 @@
                         </thead>
                         <tbody>
                             @foreach($daftar as $item)
-                            <td class="text-center"></td>
-                            <td>{{ $item->region->name }}</td>
-                            <td class="text-center">{{ $item->period->year }}</td>
-                            <td class="text-center">
-                                <a href="{{ url('detailPokok').'/'.$item->period->id }}" class="btn btn-primary">
-                                    <span class="bi bi-check2-square"></span>
-                                </a>
-                            </td>
+                            <tr>
+                                <td class="text-center"></td>
+                                <td>{{ $item->region->name }}</td>
+                                <td class="text-center">{{ $item->period->year }}</td>
+                                <td class="text-center">
+                                    <a href="{{ url('detailPokok').'/'.$item->period->id }}" class="btn btn-primary">
+                                        <span class="bi bi-check2-square"></span>
+                                    </a>
+                                </td>
+                            </tr>
                             @endforeach
                         </tbody>
                     </table>
