@@ -416,6 +416,35 @@
                         $('#fullFormContainer').addClass('d-none');
                         $('#singleFormContainer').addClass('d-none');
                     }
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ route('getSingleData') }}',
+                        data: {
+                            filter: $('#filterForm').serializeArray().reduce(function(obj, item) {
+                                obj[item.name] = item.value;
+                                return obj;
+                            }, {}),
+                            _token: '{{ csrf_token() }}',
+                        },
+
+                        success: function(result) {
+
+                            console.log(result);
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Berhasil',
+                                text: 'Data berhasil disimpan.'
+                            })
+                        },
+                    });
                 });
             });
         </script>

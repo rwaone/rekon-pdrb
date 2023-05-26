@@ -275,11 +275,22 @@ class PdrbController extends Controller
     {
         $filter = $request->filter;
         $subsectors = Subsector::all();
-        $data = Pdrb::where('year', $filter['year'])->where('quarter', $filter['quarter'])->where('period_id', $filter['period_id'])->get();
+        $data = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->get();
+       return response()->json($data);
         if(!empty($data)){
             return response()->json($data);
         } else {
-            //
+            $inputData = [];
+            $subsectors = Subsector::where('type', $filter['type'])->get();
+            foreach($subsectors as $subsector){
+                $singleData['subsector_id'] = $subsector['id'];
+                $singleData['type'] = $filter['type'];
+                $singleData['period_id'] = $filter['period_id'];
+                $singleData['region_id'] = $filter['region_id'];
+                push_array($inputData, $singleData);
+            }
+            return response()->json($data);
+            Pdrb::insert($inputData);
         }
     }
 

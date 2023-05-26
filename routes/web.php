@@ -35,6 +35,7 @@ Route::get('rekonsiliasi', [PdrbController::class, 'rekonsiliasi'])->middleware(
 Route::post('rekonsiliasi', [PdrbController::class, 'rekonsiliasi'])->middleware(['auth', 'verified']);
 Route::post('rekonsiliasi/save-single', [PdrbController::class, 'saveSingleData'])->name('saveSingleData');
 Route::post('rekonsiliasi/save-full', [PdrbController::class, 'saveFullData'])->name('saveFullData');
+Route::post('rekonsiliasi/get-single', [PdrbController::class, 'getSingleData'])->name('getSingleData');
 Route::resource('pdrb', PdrbController::class)->middleware(['auth', 'verified']);
 Route::resource('fenomena', FenomenaController::class)->middleware(['auth', 'verified']);
 
