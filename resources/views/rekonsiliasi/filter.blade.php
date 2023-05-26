@@ -37,7 +37,7 @@
                             @foreach ($quarters as $quarter)
                                 <option {{ old('quarter', $filter['quarter']) == $quarter->quarter ? 'selected' : '' }}
                                     value="{{ $quarter->quarter }}">
-                                    {{ $quarter->quarter == 'F' ? 'Lengkap' : ($quarter->quarter == 'T' ? 'Tahunan' : 'Triwulan ' . $quarter->quarter) }}
+                                    {{ $quarter->quarter == 'F' ? 'Lengkap' : ($quarter->quarter == 'Y' ? 'Tahunan' : 'Triwulan ' . $quarter->quarter) }}
                                 </option>
                             @endforeach
                         @endif
