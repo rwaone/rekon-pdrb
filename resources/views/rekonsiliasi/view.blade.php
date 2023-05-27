@@ -412,11 +412,16 @@
                     } else if (quarter != null) {
                         $('#fullFormContainer').addClass('d-none');
                         $('#singleFormContainer').removeClass('d-none');
+                        getSingleData();
                     } else {
                         $('#fullFormContainer').addClass('d-none');
                         $('#singleFormContainer').addClass('d-none');
                     }
 
+                    
+                });
+
+                function getSingleData() {
                     $.ajax({
                         type: 'POST',
                         url: '{{ route('getSingleData') }}',
@@ -431,17 +436,22 @@
                         success: function(result) {
 
                             console.log(result);
-
+                            $('#singleForm')[0].reset();
                             if ($('#price_base').val() == 'adhk') {
-                                $price_base = 'adhk';
-                            } else {
-                                $price_base = 'adhb';
-                            }
+                                $.each(result, function(key, value) {
+                                    $('input[name=value_' + value.subsector_id + ']').val(
+                                        formatRupiah(value.adhk.replace('.', ','),
+                                            'Rp. '));
+                                });
 
-                            $.each(result, function(key, value) {
-                                console.log(value.adhb);
-                                $('input[name=value_' + value.subsector_id + ']').val(formatRupiah(value.adhb.replace('.', ','), 'Rp. '));
-                            });
+                            } else {
+
+                                $.each(result, function(key, value) {
+                                    $('input[name=value_' + value.subsector_id + ']').val(
+                                        formatRupiah(value.adhb.replace('.', ','),
+                                            'Rp. '));
+                                });
+                            }
 
                             const Toast = Swal.mixin({
                                 toast: true,
@@ -457,7 +467,7 @@
                             })
                         },
                     });
-                });
+                }
             });
         </script>
     </x-slot>
