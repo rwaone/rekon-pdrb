@@ -1,4 +1,4 @@
-    <form id="fullForm" class="form-horizontal">
+    <form id="fullForm" method="post"  class="form-horizontal">
         <div class="card-body p-3">
             <table class="table table-bordered" id="rekonsiliasi-table">
                 <thead class="text-center" style="background-color: steelblue; color:aliceblue;">
@@ -275,7 +275,7 @@
         </div>
         <div class="card-footer d-flex pr-3">
             <div class="ml-auto">
-                <button type="button" class="btn btn-info">Simpan</button>
+                <button id="fullFormSave" type="button" class="btn btn-info">Simpan</button>
             </div>
         </div>
     </form>
