@@ -418,7 +418,6 @@
                         $('#singleFormContainer').addClass('d-none');
                     }
 
-                    
                 });
 
                 function getSingleData() {
@@ -439,17 +438,27 @@
                             $('#singleForm')[0].reset();
                             if ($('#price_base').val() == 'adhk') {
                                 $.each(result, function(key, value) {
+                                    pdrbValue = ((value.adhk != null) ? formatRupiah(value.adhk
+                                        .replace('.', ','),
+                                        'Rp. ') : formatRupiah(0,
+                                        'Rp. '));
                                     $('input[name=value_' + value.subsector_id + ']').val(
-                                        formatRupiah(value.adhk.replace('.', ','),
-                                            'Rp. '));
+                                        pdrbValue);
+                                    $('input[name=id_' + value.subsector_id + ']').val(
+                                        value.id);
                                 });
 
                             } else {
 
                                 $.each(result, function(key, value) {
+                                    pdrbValue = ((value.adhb != null) ? formatRupiah(value.adhb
+                                        .replace('.', ','),
+                                        'Rp. ') : formatRupiah(0,
+                                        'Rp. '));
                                     $('input[name=value_' + value.subsector_id + ']').val(
-                                        formatRupiah(value.adhb.replace('.', ','),
-                                            'Rp. '));
+                                        pdrbValue);
+                                    $('input[name=id_' + value.subsector_id + ']').val(
+                                        value.id);
                                 });
                             }
 

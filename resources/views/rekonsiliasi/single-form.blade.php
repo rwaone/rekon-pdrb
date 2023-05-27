@@ -46,6 +46,7 @@
                                         for="{{ $subsector->code }}_{{ $subsector->name }}">
                                         {{ $subsector->code . '. ' . $subsector->name }}</p>
                                 </td>
+                                <input type="hidden" name="id_{{ $subsector->id }}">
                                 <input type="hidden" name="subsector_{{ $subsector->id }}"
                                     value="{{ $subsector->id }}">
                                 <td>
@@ -62,6 +63,7 @@
                                         for="{{ $subsector->sector->code . '_' . $subsector->sector->name }}">
                                         {{ $subsector->sector->code . '. ' . $subsector->sector->name }}</p>
                                 </td>
+                                <input type="hidden" name="id_{{ $subsector->id }}">
                                 <input type="hidden" name="subsector_{{ $subsector->id }}"
                                     value="{{ $subsector->id }}">
                                 <td>
@@ -77,6 +79,7 @@
                                     <label class="col" style="margin-bottom:0rem;"
                                         for="{{ $subsector->sector->category->code . '_' . $subsector->name }}">{{ $subsector->sector->category->code . '. ' . $subsector->name }}</label>
                                 </td>
+                                <input type="hidden" name="id_{{ $subsector->id }}">
                                 <input type="hidden" name="subsector_{{ $subsector->id }}"
                                     value="{{ $subsector->id }}">
                                 <td>

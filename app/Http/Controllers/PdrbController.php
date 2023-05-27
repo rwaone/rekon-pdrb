@@ -304,17 +304,17 @@ class PdrbController extends Controller
     public function saveSingleData(Request $request)
     {
         $filter = $request->filter;
-        $input = json_decode(json_encode($request->input), true);
+        $input = $request->input;
         $data = [];
 
         for ($x = 1; $x <= 55; $x++) {
-            $inputData['subsector_id'] = $input['subsector_' . $x];
-            $inputData[$filter['price_base']] = $input['value_' . $x];
-            array_push($data, $inputData);
+            $inputData = (float) str_replace(',','.',str_replace('.','',str_replace('Rp. ','',$input['value_' . $x])));
+            // return response()->json($inputData);
+            Pdrb::where('id', $input['id_'.$x])->update([$filter['price_base'] => $inputData]);
+            // $inputData['id'] = $input['id_'.$x];
+            // array_push($data, $inputData);
         }
-
-
-        return response()->json($data);
+        return response()->json();
     }
 
     public function saveFullData(Request $request)
