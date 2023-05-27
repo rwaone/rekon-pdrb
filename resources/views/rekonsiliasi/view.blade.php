@@ -380,7 +380,7 @@
                 });
 
                 $('#price_base').on('change', function() {
-                    if ($('#price_base').val() != '') {
+                    if (this.value != '') {
                         showForm();
                     } else {
                         $('#fullFormContainer').addClass('d-none');
