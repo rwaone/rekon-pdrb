@@ -319,6 +319,8 @@ class PdrbController extends Controller
 
     public function saveFullData(Request $request)
     {
-        //
+        $filter = $request->filter;
+        $input = $request->input;
+        return response()->json($input);
     }
 }
