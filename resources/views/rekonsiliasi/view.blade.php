@@ -431,6 +431,18 @@
                         success: function(result) {
 
                             console.log(result);
+
+                            if ($('#price_base').val() == 'adhk') {
+                                $price_base = 'adhk';
+                            } else {
+                                $price_base = 'adhb';
+                            }
+
+                            $.each(result, function(key, value) {
+                                console.log(value.adhb);
+                                $('input[name=value_' + value.subsector_id + ']').val(formatRupiah(value.adhb.replace('.', ','), 'Rp. '));
+                            });
+
                             const Toast = Swal.mixin({
                                 toast: true,
                                 position: 'top-end',
