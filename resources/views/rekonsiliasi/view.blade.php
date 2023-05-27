@@ -370,16 +370,16 @@
                     })
                 });
 
-                $('#period').on('change', function() {
+                $('#period').change(function() {
                     $('#region_id').val('').change();
                     $('#price_base').val('').change();
                 });
 
-                $('#region_id').on('change', function() {
+                $('#region_id').change(function() {
                     $('#price_base').val('').change();
                 });
 
-                $('#price_base').on('change', function() {
+                $('#price_base').change(function() {
                     if (this.value != '') {
                         showForm();
                     } else {
