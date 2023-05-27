@@ -463,7 +463,7 @@
                             Toast.fire({
                                 icon: 'success',
                                 title: 'Berhasil',
-                                text: 'Data berhasil disimpan.'
+                                text: 'Data berhasil ditampilkan.'
                             })
                         },
                     });
