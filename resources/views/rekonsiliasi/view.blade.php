@@ -306,6 +306,8 @@
                             });
                             $('#quarter').append(
                                 '<option value="" disabled selected> Pilih Triwulan </option>');
+                            $('#period').append(
+                                '<option value="" selected> Pilih Periode </option>');
                         },
                     })
                 });
@@ -368,43 +370,27 @@
                     })
                 });
 
-                $("#singleFormSave").on('click', function() {
-                    // console.log(data);
-                    $.ajax({
-                        type: 'POST',
-                        url: '{{ route('saveSingleData') }}',
-                        data: {
-                            filter: $('#filterForm').serializeArray().reduce(function(obj, item) {
-                                obj[item.name] = item.value;
-                                return obj;
-                            }, {}),
-                            input: $('#singleForm').serializeArray().reduce(function(obj, item) {
-                                obj[item.name] = item.value;
-                                return obj;
-                            }, {}),
-                            _token: '{{ csrf_token() }}',
-                        },
-
-                        success: function(result) {
-
-                            console.log(result);
-                            const Toast = Swal.mixin({
-                                toast: true,
-                                position: 'top-end',
-                                showConfirmButton: false,
-                                timer: 3000
-                            });
-
-                            Toast.fire({
-                                icon: 'success',
-                                title: 'Berhasil',
-                                text: 'Data berhasil disimpan.'
-                            })
-                        },
-                    });
+                $('#period').on('change', function() {
+                    $('#region_id').val('').change();
+                    $('#price_base').val('').change();
                 });
 
-                $('#filterSubmit').on('click', function() {
+                $('#region_id').on('change', function() {
+                    $('#price_base').val('').change();
+                });
+
+                $('#price_base').on('change', function() {
+                    if ($('#price_base').val() != '') {
+                        showForm();
+                    } else {
+                        $('#fullFormContainer').addClass('d-none');
+                        $('#fullForm')[0].reset();
+                        $('#singleFormContainer').addClass('d-none');
+                        $('#singleForm')[0].reset();
+                    }
+                });
+
+                function showForm() {
                     var quarter = $('#quarter').val();
                     if (quarter == 'F') {
                         $('#fullFormContainer').removeClass('d-none');
@@ -418,7 +404,7 @@
                         $('#singleFormContainer').addClass('d-none');
                     }
 
-                });
+                };
 
                 function getSingleData() {
                     $.ajax({
@@ -434,7 +420,7 @@
 
                         success: function(result) {
 
-                            console.log(result);
+                            // console.log(result);
                             $('#singleForm')[0].reset();
                             if ($('#price_base').val() == 'adhk') {
                                 $.each(result, function(key, value) {
@@ -475,6 +461,42 @@
                                 text: 'Data berhasil ditampilkan.'
                             })
                         },
+                    });
+
+                    $("#singleFormSave").on('click', function() {
+                        // console.log(data);
+                        $.ajax({
+                            type: 'POST',
+                            url: '{{ route('saveSingleData') }}',
+                            data: {
+                                filter: $('#filterForm').serializeArray().reduce(function(obj, item) {
+                                    obj[item.name] = item.value;
+                                    return obj;
+                                }, {}),
+                                input: $('#singleForm').serializeArray().reduce(function(obj, item) {
+                                    obj[item.name] = item.value;
+                                    return obj;
+                                }, {}),
+                                _token: '{{ csrf_token() }}',
+                            },
+
+                            success: function(result) {
+
+                                console.log(result);
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 3000
+                                });
+
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil',
+                                    text: 'Data berhasil disimpan.'
+                                })
+                            },
+                        });
                     });
                 }
             });

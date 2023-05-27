@@ -33,6 +33,7 @@
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label" for="quarter">Triwulan:</label>
                     <select id="quarter" class="form-control col-sm-10 select2bs4" name="quarter" required>
+                        <option value="">Pilih Triwulan</option>
                         @if ($quarters)
                             @foreach ($quarters as $quarter)
                                 <option {{ old('quarter', $filter['quarter']) == $quarter->quarter ? 'selected' : '' }}
@@ -48,6 +49,7 @@
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label" for="period_id">Periode:</label>
                     <select id="period" class="form-control col-sm-10 select2bs4" name="period_id" required>
+                        <option value="">Pilih Putaran</option>
                         @if ($periods)
                             @foreach ($periods as $period)
                                 <option {{ old('period', $filter['period_id']) == $period->id ? 'selected' : '' }}
@@ -82,7 +84,7 @@
                     <div class="help-block"></div>
                 </div>
                 <!-- /.card-body -->
-                <button id="filterSubmit" type="button" class="btn btn-info float-right">Tampilkan</button>
+                {{-- <button id="filterSubmit" type="button" class="btn btn-info float-right">Tampilkan</button> --}}
             </div>
         </form>
     </div>
