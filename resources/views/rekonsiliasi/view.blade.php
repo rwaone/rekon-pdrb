@@ -395,6 +395,7 @@
                     if (quarter == 'F') {
                         $('#fullFormContainer').removeClass('d-none');
                         $('#singleFormContainer').addClass('d-none');
+                        getFullData()
                     } else if (quarter != null) {
                         $('#fullFormContainer').addClass('d-none');
                         $('#singleFormContainer').removeClass('d-none');
@@ -403,8 +404,8 @@
                         $('#fullFormContainer').addClass('d-none');
                         $('#singleFormContainer').addClass('d-none');
                     }
-
                 };
+
 
                 function getSingleData() {
                     $.ajax({
@@ -462,83 +463,138 @@
                             })
                         },
                     });
+                }
+              
+                function getFullData() {
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ route('getFullData') }}',
+                        data: {
+                            filter: $('#filterForm').serializeArray().reduce(function(obj, item) {
+                                obj[item.name] = item.value;
+                                return obj;
+                            }, {}),
+                            _token: '{{ csrf_token() }}',
+                        },
 
-                    $("#singleFormSave").on('click', function() {
-                        // console.log(data);
-                        $.ajax({
-                            type: 'POST',
-                            url: '{{ route('saveSingleData') }}',
-                            data: {
-                                filter: $('#filterForm').serializeArray().reduce(function(obj, item) {
-                                    obj[item.name] = item.value;
-                                    return obj;
-                                }, {}),
-                                input: $('#singleForm').serializeArray().reduce(function(obj, item) {
-                                    obj[item.name] = item.value;
-                                    return obj;
-                                }, {}),
-                                _token: '{{ csrf_token() }}',
-                            },
+                        success: function(result) {
 
-                            success: function(result) {
-
-                                console.log(result);
-                                const Toast = Swal.mixin({
-                                    toast: true,
-                                    position: 'top-end',
-                                    showConfirmButton: false,
-                                    timer: 3000
+                            console.log(result);
+                            $('#fullForm')[0].reset();
+                            if ($('#price_base').val() == 'adhk') {
+                                $.each(result, function(quarter, value) {
+                                    $.each(value, function(key, value) {
+                                    pdrbValue = ((value.adhk != null) ? formatRupiah(value.adhk
+                                        .replace('.', ','),
+                                        'Rp. ') : formatRupiah(0,
+                                        'Rp. '));
+                                    $('input[name=value_'+ quarter + '_' + value.subsector_id + ']').val(
+                                        pdrbValue);
+                                    // $('input[name=id_' + value.subsector_id + ']').val(
+                                    //     value.id);
+                                    });
                                 });
 
-                                Toast.fire({
-                                    icon: 'success',
-                                    title: 'Berhasil',
-                                    text: 'Data berhasil disimpan.'
-                                })
-                            },
-                        });
-                    });
+                            } else {
 
-                    $("#fullFormSave").on('click', function() {
-                        console.log('Haloooooooooooooooo');
-                        filter = $('#filterForm').serializeArray().reduce(function(obj, item) {
-                                    obj[item.name] = item.value;
-                                    return obj;
-                                }, {}),
-                        $.ajax({
-                            type: 'POST',
-                            url: '{{ route('saveFullData') }}',
-                            data: {
-                                filter: $('#filterForm').serializeArray().reduce(function(obj, item) {
-                                    obj[item.name] = item.value;
-                                    return obj;
-                                }, {}),
-                                input: $('#fullForm').serializeArray().reduce(function(obj, item) {
-                                    obj[item.name] = item.value;
-                                    return obj;
-                                }, {}),
-                                _token: '{{ csrf_token() }}',
-                            },
-
-                            success: function(result) {
-
-                                console.log(result);
-                                const Toast = Swal.mixin({
-                                    toast: true,
-                                    position: 'top-end',
-                                    showConfirmButton: false,
-                                    timer: 3000
+                                $.each(result, function(key, value) {
+                                    pdrbValue = ((value.adhb != null) ? formatRupiah(value.adhb
+                                        .replace('.', ','),
+                                        'Rp. ') : formatRupiah(0,
+                                        'Rp. '));
+                                    $('input[name=value_' + value.subsector_id + ']').val(
+                                        pdrbValue);
+                                    // $('input[name=id_' + value.subsector_id + ']').val(
+                                    //     value.id);
                                 });
+                            }
 
-                                Toast.fire({
-                                    icon: 'success',
-                                    title: 'Berhasil',
-                                    text: 'Data berhasil disimpan.'
-                                })
-                            },
-                        });
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Berhasil',
+                                text: 'Data berhasil ditampilkan.'
+                            })
+                        },
                     });
                 }
+
+                $("#singleFormSave").on('click', function() {
+                    // console.log(data);
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ route('saveSingleData') }}',
+                        data: {
+                            filter: $('#filterForm').serializeArray().reduce(function(obj, item) {
+                                obj[item.name] = item.value;
+                                return obj;
+                            }, {}),
+                            input: $('#singleForm').serializeArray().reduce(function(obj, item) {
+                                obj[item.name] = item.value;
+                                return obj;
+                            }, {}),
+                            _token: '{{ csrf_token() }}',
+                        },
+
+                        success: function(result) {
+
+                            console.log(result);
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Berhasil',
+                                text: 'Data berhasil disimpan.'
+                            })
+                        },
+                    });
+                });
+
+                $("#fullFormSave").click(function() {
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ route('saveFullData') }}',
+                        data: {
+                            filter: $('#filterForm').serializeArray().reduce(function(obj, item) {
+                                obj[item.name] = item.value;
+                                return obj;
+                            }, {}),
+                            input: $('#fullForm').serializeArray().reduce(function(obj, item) {
+                                obj[item.name] = item.value;
+                                return obj;
+                            }, {}),
+                            _token: '{{ csrf_token() }}',
+                        },
+
+                        success: function(result) {
+
+                            console.log(result);
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Berhasil',
+                                text: 'Data berhasil disimpan.'
+                            })
+                        },
+                    });
+                });
             });
         </script>
     </x-slot>

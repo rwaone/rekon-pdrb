@@ -268,7 +268,41 @@ class PdrbController extends Controller
 
     public function getFullData(Request $request)
     {
-        //
+        $filter = $request->filter;
+        $subsectors = Subsector::all();
+        $dataSeries['1'] = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->where('quarter', 1)->orderBy('subsector_id')->get();
+        $dataSeries['2'] = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->where('quarter', 2)->orderBy('subsector_id')->get();
+        $dataSeries['3'] = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->where('quarter', 3)->orderBy('subsector_id')->get();
+        $dataSeries['4'] = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->where('quarter', 4)->orderBy('subsector_id')->get();
+        $dataSeries['Y'] = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->where('quarter', 'Y')->orderBy('subsector_id')->get();
+
+        $fullData = [];
+
+        foreach ($dataSeries as $key => $data) {
+            if (sizeof($data) == 0){
+                $inputData = [];
+                $timestamp = date('Y-m-d H:i:s');
+                foreach ($subsectors as $subsector) {
+                    $singleData = [
+                        'subsector_id' => $subsector->id,
+                        'type' => $filter['type'],
+                        'year' => $filter['year'],
+                        'quarter' => $key,
+                        'period_id' => $filter['period_id'],
+                        'region_id' => $filter['region_id'],
+                        'created_at' => $timestamp,
+                        'updated_at' => $timestamp,
+                    ];
+                    array_push($inputData, $singleData);
+                }
+                Pdrb::insert($inputData);
+                $fullData[$key] = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->where('quarter', $key)->orderBy('subsector_id')->get();
+            }else {
+                $fullData[$key] = $data;
+            }
+        }
+
+        return response()->json($fullData);
     }
 
     public function getSingleData(Request $request)
