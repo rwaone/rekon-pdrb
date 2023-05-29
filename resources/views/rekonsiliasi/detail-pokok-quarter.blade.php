@@ -64,9 +64,10 @@
                         <thead class="text-center" style="background-color: steelblue; color:aliceblue;">
                             <tr>
                                 <th>Komponen</th>
-                                @foreach(array_reverse($years) as $item)
-                                <th>{{$item}}</th>
-                                @endforeach
+                                <th>Triwulan I</th>
+                                <th>Triwulan II</th>
+                                <th>Triwulan III</th>
+                                <th>Triwulan IV</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -81,7 +82,6 @@
                                         <td id="categories-{{ $item->sector->category->code }}-2" class="categories values"></td>
                                         <td id="categories-{{ $item->sector->category->code }}-3" class="categories values"></td>
                                         <td id="categories-{{ $item->sector->category->code }}-4" class="categories values"></td>
-                                        <td id="categories-{{ $item->sector->category->code }}-5" class="categories values"></td>
                                     </tr>
                                 @endif
                                 @if ($item->code != null && $item->code == 'a')
@@ -94,7 +94,6 @@
                                     <td id="sector-{{ $index+1 }}-2" class="values"></td>
                                     <td id="sector-{{ $index+1 }}-3" class="values"></td>
                                     <td id="sector-{{ $index+1 }}-4" class="values"></td>
-                                    <td id="sector-{{ $index+1 }}-5" class="values"></td>
                                 </tr>
                             @endif
                             @if ($item->code != null)
@@ -108,7 +107,6 @@
                                     <td id="{{ 'value-'.$item->id.'-2' }}" class ="values {{ 'categories-'.$item->sector->category->code }}-2 {{ 'sector-Q2-'.$item->sector_id }} {{ 'category-Q2-'.$item->sector->category_id}}"></td>
                                     <td id="{{ 'value-'.$item->id.'-3' }}" class ="values {{ 'categories-'.$item->sector->category->code }}-3 {{ 'sector-Q3-'.$item->sector_id }} {{ 'category-Q3-'.$item->sector->category_id}}"></td>
                                     <td id="{{ 'value-'.$item->id.'-4' }}" class ="values {{ 'categories-'.$item->sector->category->code }}-4 {{ 'sector-Q4-'.$item->sector_id }} {{ 'category-Q4-'.$item->sector->category_id}}"></td>
-                                    <td id="{{ 'value-'.$item->id.'-5' }}" class ="values {{ 'categories-'.$item->sector->category->code }}-5 {{ 'sector-Y1-'.$item->sector_id }} {{ 'category-Y1-'.$item->sector->category_id}}"></td>
                                 </tr>
                             @elseif ($item->code == null && $item->sector->code != null)
                                 <tr>
@@ -121,7 +119,6 @@
                                     <td id="{{ 'value-'.$item->id.'-2' }}" class ="values {{ 'categories-'.$item->sector->category->code }}-2 {{ 'sector-Q2-'.$item->sector_id }} {{ 'category-Q2-'.$item->sector->category_id}}"></td>
                                     <td id="{{ 'value-'.$item->id.'-3' }}" class ="values {{ 'categories-'.$item->sector->category->code }}-3 {{ 'sector-Q3-'.$item->sector_id }} {{ 'category-Q3-'.$item->sector->category_id}}"></td>
                                     <td id="{{ 'value-'.$item->id.'-4' }}" class ="values {{ 'categories-'.$item->sector->category->code }}-4 {{ 'sector-Q4-'.$item->sector_id }} {{ 'category-Q4-'.$item->sector->category_id}}"></td>
-                                    <td id="{{ 'value-'.$item->id.'-5' }}" class ="values {{ 'categories-'.$item->sector->category->code }}-5 {{ 'sector-Y1-'.$item->sector_id }} {{ 'category-Y1-'.$item->sector->category_id}}"></td>
                                 </tr>
                             @elseif ($item->code == null && $item->sector->code == null)
                                 <tr>
@@ -133,7 +130,6 @@
                                     <td id="{{ 'value-'.$item->id.'-2' }}" class = "values {{ 'categories-'.$item->sector->category->code }}-2 {{'sector-Q2'.$item->sector_id }} {{'category-Q2'.$item->sector->category_id}} text-bold pdrb-total"></td>
                                     <td id="{{ 'value-'.$item->id.'-3' }}" class = "values {{ 'categories-'.$item->sector->category->code }}-3 {{'sector-Q3'.$item->sector_id }} {{'category-Q3'.$item->sector->category_id}} text-bold pdrb-total"></td>
                                     <td id="{{ 'value-'.$item->id.'-4' }}" class = "values {{ 'categories-'.$item->sector->category->code }}-4 {{'sector-Q4'.$item->sector_id }} {{'category-Q4'.$item->sector->category_id}} text-bold pdrb-total"></td>
-                                    <td id="{{ 'value-'.$item->id.'-5' }}" class = "values {{ 'categories-'.$item->sector->category->code }}-5 {{'sector-Y1'.$item->sector_id }} {{'category-Y1'.$item->sector->category_id}} text-bold pdrb-total"></td>
                                 </tr>
                             @endif
                             @endforeach
@@ -145,7 +141,6 @@
                             <td id="total-nonmigas-2" style="margin-bottom:0rem;"></td>
                             <td id="total-nonmigas-3" style="margin-bottom:0rem;"></td>
                             <td id="total-nonmigas-4" style="margin-bottom:0rem;"></td>
-                            <td id="total-nonmigas-5" style="margin-bottom:0rem;"></td>
                         </tr>
                         <tr class = "PDRB-footer text-center" style="background-color: steelblue; color:aliceblue; font-weight: bold;">
                             <td>
@@ -155,7 +150,6 @@
                             <td id="total-2" style="margin-bottom:0rem;"></td>
                             <td id="total-3" style="margin-bottom:0rem;"></td>
                             <td id="total-4" style="margin-bottom:0rem;"></td>
-                            <td id="total-5" style="margin-bottom:0rem;"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -165,7 +159,7 @@
     <x-slot name="script">
         <!-- Additional JS resources -->
         <script src="{{ url('') }}/plugins/select2/js/select2.full.min.js"></script>
-        <script src="{{ asset('js/detail-pokok.js') }}"></script>
+        <script src="{{ asset('js/detail-pokok-quarter.js') }}"></script>
         <script>
             $(document).on('focus', '.select2-selection', function(e) {
                 $(this).closest(".select2-container").siblings('select:enabled').select2('open');

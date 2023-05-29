@@ -291,7 +291,7 @@
 
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route('fetchYear') }}',
+                        url: '{{ route("fetchYear") }}',
                         data: {
                             type: pdrb_type,
                             _token: '{{ csrf_token() }}',
@@ -319,7 +319,7 @@
 
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route('fetchQuarter') }}',
+                        url: '{{ route("fetchQuarter") }}',
                         data: {
                             type: pdrb_type,
                             year: pdrb_year,
@@ -351,7 +351,7 @@
 
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route('fetchPeriod') }}',
+                        url: '{{ route("fetchPeriod") }}',
                         data: {
                             type: pdrb_type,
                             year: pdrb_year,
@@ -410,7 +410,7 @@
                 function getSingleData() {
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route('getSingleData') }}',
+                        url: '{{ route("getSingleData") }}',
                         data: {
                             filter: $('#filterForm').serializeArray().reduce(function(obj, item) {
                                 obj[item.name] = item.value;
@@ -468,7 +468,7 @@
                 function getFullData() {
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route('getFullData') }}',
+                        url: '{{ route("getFullData") }}',
                         data: {
                             filter: $('#filterForm').serializeArray().reduce(function(obj, item) {
                                 obj[item.name] = item.value;
@@ -530,7 +530,7 @@
                     // console.log(data);
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route('saveSingleData') }}',
+                        url: '{{ route("saveSingleData") }}',
                         data: {
                             filter: $('#filterForm').serializeArray().reduce(function(obj, item) {
                                 obj[item.name] = item.value;
@@ -565,7 +565,7 @@
                 $("#fullFormSave").click(function() {
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route('saveFullData') }}',
+                        url: '{{ route("saveFullData") }}',
                         data: {
                             filter: $('#filterForm').serializeArray().reduce(function(obj, item) {
                                 obj[item.name] = item.value;

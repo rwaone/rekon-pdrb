@@ -25,6 +25,12 @@
                 color: aliceblue;
                 text-align: center;
             }
+
+            #view-quarter-table thead th{
+                background-color: steelblue;
+                color: aliceblue;
+                text-align: center;
+            }
             
             #view-main-table th {
                 padding:0.25rem;
@@ -63,7 +69,7 @@
                             <th>Liat</th>
                         </thead>
                         <tbody>
-                            @foreach($daftar as $item)
+                            @foreach($daftar_1 as $item)
                             <tr>
                                 <td class="text-center"></td>
                                 <td>{{ $item->region->name }}</td>
@@ -82,7 +88,36 @@
         </div>
         <div class="col-md-6">
             <div class="card">
-                    
+                <div class="card-body">
+                    <table class="table table-bordered" id="view-quarter-table">
+                        <thead>
+                            <th>No.</th>
+                            <th>Kabupaten/Kota</th>
+                            <th>Tahun</th>
+                            <th>Triwulan</th>
+                            <th>Liat</th>
+                        </thead>
+                        <tbody>
+                            <form>
+                                @csrf
+                                @foreach($daftar_2 as $item)
+                                <tr>
+                                    <td class="text-center"></td>
+                                    <td>{{ $item->region->name }}</td>
+                                    <td class="text-center">{{ $item->period->year }}</td>
+                                    <td class="text-center">{{ $item->period->quarter }}</td>
+                                    <td class="text-center">
+                                        <input value="{{ $item->period->id.'-'.$item->quarter }}" class="hiddenInput" hidden>
+                                        <a href="{{ url('detailPokok').'/'.$item->period->id.'/'.$item->quarter }}" class="btn btn-primary">
+                                            <span class="bi bi-check2-square"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </form>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -114,6 +149,10 @@
             $(document).ready(function() {
                 $('#view-main-table').DataTable()
                 $('#view-main-table tbody tr').each(function(index) {
+                    $(this).find('td:first').text(index + 1);
+                });
+                $('#view-quarter-table').DataTable()
+                $('#view-quarter-table tbody tr').each(function(index) {
                     $(this).find('td:first').text(index + 1);
                 });
             })
