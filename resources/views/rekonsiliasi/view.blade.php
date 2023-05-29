@@ -490,8 +490,8 @@
                                         'Rp. '));
                                     $('input[name=value_'+ quarter + '_' + value.subsector_id + ']').val(
                                         pdrbValue);
-                                    // $('input[name=id_' + value.subsector_id + ']').val(
-                                    //     value.id);
+                                    $('input[name=id_' + quarter + '_' + value.subsector_id + ']').val(
+                                        value.id);
                                     });
                                 });
 
@@ -504,8 +504,8 @@
                                         'Rp. '));
                                     $('input[name=value_'+ quarter + '_' + value.subsector_id + ']').val(
                                         pdrbValue);
-                                    // $('input[name=id_' + value.subsector_id + ']').val(
-                                    //     value.id);
+                                    $('input[name=id_' + quarter + '_' + value.subsector_id + ']').val(
+                                        value.id);
                                     });
                                 });
                             }

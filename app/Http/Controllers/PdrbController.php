@@ -395,6 +395,26 @@ class PdrbController extends Controller
     {
         $filter = $request->filter;
         $input = $request->input;
-        return response()->json($input);
+        $data = [];
+        $dataSeries = [
+            '1',
+            '2',
+            '3',
+            '4',
+        ];
+
+        foreach ($dataSeries as $key){
+            for ($x = 1; $x <= 55; $x++) {
+                $inputData = (float) str_replace(',','.',str_replace('.','',str_replace('Rp. ','',$input['value_'. $key .'_' . $x])));
+                // return response()->json($inputData);
+                
+                Pdrb::where('id', $input['id_'. $key .'_'.$x])->update([$filter['price_base'] => $inputData]);
+                // $inputData['id'] = $input['id_'.$x];
+                array_push($data, $inputData);
+            }
+
+        }
+
+        return response()->json($data);
     }
 }

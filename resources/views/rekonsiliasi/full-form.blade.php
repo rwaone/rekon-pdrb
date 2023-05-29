@@ -104,7 +104,7 @@
                                         {{ $subsect->code . '. ' . $subsect->name }}</p>
                                 </td>
                                 <td>
-                                    <input type="hidden" name="id_{{ $subsect->id . '_Q1' }}">
+                                    <input type="hidden" name="id_1_{{ $subsect->id }}">
                                     <input type="text"
                                         name="value_1_{{ $subsect->id }}"
                                         id="adhk_{{ $subsect->code . '_' . $subsect->sector->code . '_' . $subsect->sector->category->code . '_Q1' }}"
@@ -112,7 +112,7 @@
                                         aria-required="true" tabindex="{{ $subsect->id }}">
                                 </td>
                                 <td>
-                                    <input type="hidden" name="id_{{ $subsect->id . '_Q2' }}">
+                                    <input type="hidden" name="id_2_{{ $subsect->id }}">
                                     <input type="text"
                                         name="value_2_{{ $subsect->id }}"
                                         id="adhk_{{ $subsect->code . '_' . $subsect->sector->code . '_' . $subsect->sector->category->code . '_Q2' }}"
@@ -120,7 +120,7 @@
                                         aria-required="true" tabindex="{{ $subsect->id + 55 }}">
                                 </td>
                                 <td>
-                                    <input type="hidden" name="id_{{ $subsect->id . '_Q3' }}">
+                                    <input type="hidden" name="id_3_{{ $subsect->id }}">
                                     <input type="text"
                                         name="value_3_{{ $subsect->id }}"
                                         id="adhk_{{ $subsect->code . '_' . $subsect->sector->code . '_' . $subsect->sector->category->code . '_Q3' }}"
@@ -128,7 +128,7 @@
                                         aria-required="true" tabindex="{{ $subsect->id + 110 }}">
                                 </td>
                                 <td>
-                                    <input type="hidden" name="id_{{ $subsect->id . '_Q4' }}">
+                                    <input type="hidden" name="id_4_{{ $subsect->id }}">
                                     <input type="text"
                                         name="value_4_{{ $subsect->id }}"
                                         id="adhk_{{ $subsect->code . '_' . $subsect->sector->code . '_' . $subsect->sector->category->code . '_Q4' }}"
@@ -136,7 +136,7 @@
                                         aria-required="true" tabindex="{{ $subsect->id + 165 }}">
                                 </td>
                                 <td>
-                                    <input type="hidden" name="id_{{ $subsect->id . '_Y' }}">
+                                    <input type="hidden" name="id_Y_{{ $subsect->id }}">
                                     <input disabled type="text"
                                         name="value_Y_{{ $subsect->id }}"
                                         id="adhk_{{ $subsect->code . '_' . $subsect->sector->code . '_' . $subsect->sector->category->code . '_Y' }}"
@@ -152,7 +152,7 @@
                                         {{ $subsect->sector->code . '. ' . $subsect->sector->name }}</p>
                                 </td>
                                 <td>
-                                    <input type="hidden" name="id_{{ $subsect->id . '_Q1' }}">
+                                    <input type="hidden" name="id_1_{{ $subsect->id }}">
                                     <input type="text"
                                         name="value_1_{{ $subsect->id }}"
                                         id="adhk_{{ $subsect->code . '_' . $subsect->sector->code . '_' . $subsect->sector->category->code . '_Q1' }}"
@@ -160,7 +160,7 @@
                                         aria-required="true" tabindex="{{ $subsect->id }}">
                                 </td>
                                 <td>
-                                    <input type="hidden" name="id_{{ $subsect->id . '_Q2' }}">
+                                    <input type="hidden" name="id_2_{{ $subsect->id }}">
                                     <input type="text"
                                         name="value_2_{{ $subsect->id }}"
                                         id="adhk_{{ $subsect->code . '_' . $subsect->sector->code . '_' . $subsect->sector->category->code . '_Q2' }}"
@@ -168,7 +168,7 @@
                                         aria-required="true" tabindex="{{ $subsect->id + 55 }}">
                                 </td>
                                 <td>
-                                    <input type="hidden" name="id_{{ $subsect->id . '_Q3' }}">
+                                    <input type="hidden" name="id_3_{{ $subsect->id }}">
                                     <input type="text"
                                         name="value_3_{{ $subsect->id }}"
                                         id="adhk_{{ $subsect->code . '_' . $subsect->sector->code . '_' . $subsect->sector->category->code . '_Q3' }}"
@@ -176,7 +176,7 @@
                                         aria-required="true" tabindex="{{ $subsect->id + 110 }}">
                                 </td>
                                 <td>
-                                    <input type="hidden" name="id_{{ $subsect->id . '_Q4' }}">
+                                    <input type="hidden" name="id_4_{{ $subsect->id }}">
                                     <input type="text"
                                         name="value_4_{{ $subsect->id }}"
                                         id="adhk_{{ $subsect->code . '_' . $subsect->sector->code . '_' . $subsect->sector->category->code . '_Q4' }}"
@@ -184,7 +184,7 @@
                                         aria-required="true" tabindex="{{ $subsect->id + 165 }}">
                                 </td>
                                 <td>
-                                    <input type="hidden" name="id_{{ $subsect->id . '_Y' }}">
+                                    <input type="hidden" name="id_Y_{{ $subsect->id }}">
                                     <input disabled type="text"
                                         name="value_Y_{{ $subsect->id }}"
                                         id="adhk_{{ $subsect->code . '_' . $subsect->sector->code . '_' . $subsect->sector->category->code . '_Y' }}"
@@ -199,7 +199,7 @@
                                         for="{{ $subsect->sector->category->code . '_' . $subsect->name }}">{{ $subsect->sector->category->code . '. ' . $subsect->name }}</label>
                                 </td>
                                 <td>
-                                    <input type="hidden" name="id_{{ $subsect->id . '_Q1' }}">
+                                    <input type="hidden" name="id_1_{{ $subsect->id }}">
                                     <input type="text"
                                         name="value_1_{{ $subsect->id }}"
                                         id="adhk_{{ $subsect->code . '_' . $subsect->sector->code . '_' . $subsect->sector->category->code . '_Q1' }}"
@@ -207,7 +207,7 @@
                                         aria-required="true" tabindex="{{ $subsect->id }}">
                                 </td>
                                 <td>
-                                    <input type="hidden" name="id_{{ $subsect->id . '_Q2' }}">
+                                    <input type="hidden" name="id_2_{{ $subsect->id }}">
                                     <input type="text"
                                         name="value_2_{{ $subsect->id }}"
                                         id="adhk_{{ $subsect->code . '_' . $subsect->sector->code . '_' . $subsect->sector->category->code . '_Q2' }}"
@@ -215,7 +215,7 @@
                                         aria-required="true" tabindex="{{ $subsect->id + 55 }}">
                                 </td>
                                 <td>
-                                    <input type="hidden" name="id_{{ $subsect->id . '_Q3' }}">
+                                    <input type="hidden" name="id_3_{{ $subsect->id }}">
                                     <input type="text"
                                         name="value_3_{{ $subsect->id }}"
                                         id="adhk_{{ $subsect->code . '_' . $subsect->sector->code . '_' . $subsect->sector->category->code . '_Q3' }}"
@@ -223,7 +223,7 @@
                                         aria-required="true" tabindex="{{ $subsect->id + 110 }}">
                                 </td>
                                 <td>
-                                    <input type="hidden" name="id_{{ $subsect->id . '_Q4' }}">
+                                    <input type="hidden" name="id_4_{{ $subsect->id }}">
                                     <input type="text"
                                         name="value_4_{{ $subsect->id }}"
                                         id="adhk_{{ $subsect->code . '_' . $subsect->sector->code . '_' . $subsect->sector->category->code . '_Q4' }}"
@@ -231,7 +231,7 @@
                                         aria-required="true" tabindex="{{ $subsect->id + 165 }}">
                                 </td>
                                 <td>
-                                    <input type="hidden" name="id_{{ $subsect->id . '_Y' }}">
+                                    <input type="hidden" name="id_Y_{{ $subsect->id }}">
                                     <input disabled type="text"
                                         name="value_Y_{{ $subsect->id }}"
                                         id="adhk_{{ $subsect->code . '_' . $subsect->sector->code . '_' . $subsect->sector->category->code . '_Y' }}"
