@@ -496,16 +496,17 @@
                                 });
 
                             } else {
-
-                                $.each(result, function(key, value) {
+                                $.each(result, function(quarter, value) {
+                                    $.each(value, function(key, value) {
                                     pdrbValue = ((value.adhb != null) ? formatRupiah(value.adhb
                                         .replace('.', ','),
                                         'Rp. ') : formatRupiah(0,
                                         'Rp. '));
-                                    $('input[name=value_' + value.subsector_id + ']').val(
+                                    $('input[name=value_'+ quarter + '_' + value.subsector_id + ']').val(
                                         pdrbValue);
                                     // $('input[name=id_' + value.subsector_id + ']').val(
                                     //     value.id);
+                                    });
                                 });
                             }
 
