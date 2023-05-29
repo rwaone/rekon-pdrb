@@ -597,6 +597,7 @@
                     });
                 });
             });
+            
         </script>
     </x-slot>
 </x-dashboard-Layout>
