@@ -126,7 +126,7 @@ class PeriodController extends Controller
 
     public function fetchYear(Request $request)
     {
-        $data['years'] = Period::where('type',$request->type)->groupBy('year')->get('year');
+        $data['years'] = Period::where('type',$request->type)->groupBy('year')->orderBy('year','DESC')->get('year');
         return response()->json($data);
     }
 
