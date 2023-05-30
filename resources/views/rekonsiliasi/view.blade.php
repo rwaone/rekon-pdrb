@@ -91,13 +91,16 @@
             });
 
             $(document).ready(function() {
+                
                 $('#type').on('change', function() {
                     var pdrb_type = this.value;
                     $("#year").html('');
+                    $('#region_id').val('').change();
+                    $('#price_base').val('').change();
 
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route("fetchYear") }}',
+                        url: '{{ route('fetchYear') }}',
                         data: {
                             type: pdrb_type,
                             _token: '{{ csrf_token() }}',
@@ -122,10 +125,12 @@
                     var pdrb_type = $('#type').val();
                     var pdrb_year = this.value;
                     $("#quarter").html('');
+                    $('#region_id').val('').change();
+                    $('#price_base').val('').change();
 
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route("fetchQuarter") }}',
+                        url: '{{ route('fetchQuarter') }}',
                         data: {
                             type: pdrb_type,
                             year: pdrb_year,
@@ -154,10 +159,12 @@
                     var pdrb_year = $('#year').val();
                     var pdrb_quarter = this.value;
                     $("#period").html('');
+                    $('#region_id').val('').change();
+                    $('#price_base').val('').change();
 
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route("fetchPeriod") }}',
+                        url: '{{ route('fetchPeriod') }}',
                         data: {
                             type: pdrb_type,
                             year: pdrb_year,
@@ -199,12 +206,8 @@
                 function showForm() {
                     var quarter = $('#quarter').val();
                     if (quarter == 'F') {
-                        $('#fullFormContainer').removeClass('d-none');
-                        $('#singleFormContainer').addClass('d-none');
                         getFullData()
                     } else if (quarter != null) {
-                        $('#fullFormContainer').addClass('d-none');
-                        $('#singleFormContainer').removeClass('d-none');
                         getSingleData();
                     } else {
                         $('#fullFormContainer').addClass('d-none');
@@ -214,9 +217,11 @@
 
 
                 function getSingleData() {
+                    $('#fullFormContainer').addClass('d-none');
+                    $('#singleFormContainer').removeClass('d-none');
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route("getSingleData") }}',
+                        url: '{{ route('getSingleData') }}',
                         data: {
                             filter: $('#filterForm').serializeArray().reduce(function(obj, item) {
                                 obj[item.name] = item.value;
@@ -270,11 +275,13 @@
                         },
                     });
                 }
-              
+
                 function getFullData() {
+                    $('#fullFormContainer').removeClass('d-none');
+                    $('#singleFormContainer').addClass('d-none');
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route("getFullData") }}',
+                        url: '{{ route('getFullData') }}',
                         data: {
                             filter: $('#filterForm').serializeArray().reduce(function(obj, item) {
                                 obj[item.name] = item.value;
@@ -290,28 +297,34 @@
                             if ($('#price_base').val() == 'adhk') {
                                 $.each(result, function(quarter, value) {
                                     $.each(value, function(key, value) {
-                                    pdrbValue = ((value.adhk != null) ? formatRupiah(value.adhk
-                                        .replace('.', ','),
-                                        'Rp. ') : formatRupiah(0,
-                                        'Rp. '));
-                                    $('input[name=value_'+ quarter + '_' + value.subsector_id + ']').val(
-                                        pdrbValue);
-                                    $('input[name=id_' + quarter + '_' + value.subsector_id + ']').val(
-                                        value.id);
+                                        pdrbValue = ((value.adhk != null) ? formatRupiah(
+                                            value.adhk
+                                            .replace('.', ','),
+                                            'Rp. ') : formatRupiah(0,
+                                            'Rp. '));
+                                        $('input[name=value_' + quarter + '_' + value
+                                            .subsector_id + ']').val(
+                                            pdrbValue);
+                                        $('input[name=id_' + quarter + '_' + value
+                                            .subsector_id + ']').val(
+                                            value.id);
                                     });
                                 });
 
                             } else {
                                 $.each(result, function(quarter, value) {
                                     $.each(value, function(key, value) {
-                                    pdrbValue = ((value.adhb != null) ? formatRupiah(value.adhb
-                                        .replace('.', ','),
-                                        'Rp. ') : formatRupiah(0,
-                                        'Rp. '));
-                                    $('input[name=value_'+ quarter + '_' + value.subsector_id + ']').val(
-                                        pdrbValue);
-                                    $('input[name=id_' + quarter + '_' + value.subsector_id + ']').val(
-                                        value.id);
+                                        pdrbValue = ((value.adhb != null) ? formatRupiah(
+                                            value.adhb
+                                            .replace('.', ','),
+                                            'Rp. ') : formatRupiah(0,
+                                            'Rp. '));
+                                        $('input[name=value_' + quarter + '_' + value
+                                            .subsector_id + ']').val(
+                                            pdrbValue);
+                                        $('input[name=id_' + quarter + '_' + value
+                                            .subsector_id + ']').val(
+                                            value.id);
                                     });
                                 });
                             }
@@ -333,14 +346,14 @@
                 }
 
                 $("#singleFormSave").on('click', function() {
-                    // console.log(data);
-                    $('#filterForm').serializeArray().reduce(function(obj, item) {
-                                obj[item.name] = item.value;
-                                console.log(obj)
-                            },{})
+                    // // console.log(data);
+                    // $('#filterForm').serializeArray().reduce(function(obj, item) {
+                    //             obj[item.name] = item.value;
+                    //             console.log(obj)
+                    //         },{})
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route("saveSingleData") }}',
+                        url: '{{ route('saveSingleData') }}',
                         data: {
                             filter: $('#filterForm').serializeArray().reduce(function(obj, item) {
                                 obj[item.name] = item.value;
@@ -375,7 +388,7 @@
                 $("#fullFormSave").click(function() {
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route("saveFullData") }}',
+                        url: '{{ route('saveFullData') }}',
                         data: {
                             filter: $('#filterForm').serializeArray().reduce(function(obj, item) {
                                 obj[item.name] = item.value;
@@ -407,7 +420,6 @@
                     });
                 });
             });
-            
         </script>
     </x-slot>
 </x-dashboard-Layout>
