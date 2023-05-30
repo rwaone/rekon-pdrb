@@ -5,6 +5,7 @@ $(document).ready(function() {
     let catB = "A,B,C,D,G,H,I,K"
     let catSpecific = catB.split(",")
     let catLast = catArray.filter(value => !catSpecific.includes(value))
+    console.log(catLast)
     let sum = 0
 
     //full-form last column sum
@@ -13,16 +14,16 @@ $(document).ready(function() {
     let tr = tbody.find('tr');
 
     tr.on('blur', 'td input', function(e) {
-        let sum = 0;
-        let $currentRow = $(this).closest('tr');
-        let $lastCol = $currentRow.find('td:last');
-        $currentRow.find('td:not(:last-child) input').each(function() {
-            let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
-            let Y = X.replaceAll(/[,]/g, '.');
-            sum += Y > 0 ? Number(Y) : 0;
-        });
-        let sumRp = String(sum).replaceAll(/[.]/g, ',');
-        $lastCol.find('input').val(formatRupiah(sumRp, 'Rp '));
+        let $currentRow = $(this).closest('tr')
+        let $lastCol = $currentRow.find('td:last')
+        let sum = 0
+        $currentRow.find('td:not(:last-child) input:not(:hidden)').each(function() {
+            let X = $(this).val().replaceAll(/[A-Za-z.]/g, '')
+            let Y = X.replaceAll(/[,]/g, '.')
+            sum += Y > 0 ? Number(Y) : 0
+        })
+        let sumRp = String(sum).replaceAll(/[.]/g, ',')
+        $lastCol.find('input').val(formatRupiah(sumRp, 'Rp '))
 
         for (let index of catSpecific) {
             let darksum = 0
@@ -73,12 +74,14 @@ $(document).ready(function() {
                         pdrb += Y > 0 ? Number(Y) : 0
                     }
                 }
-                if (cell.find('input').attr('id').includes('adhk__1_B_') || cell.find('input').attr(
-                        'id').includes('adhk_b_1_C_')) {
-                    let X = cell.find('input').val().replaceAll(/[A-Za-z.]/g, '')
-                    let Y = X.replaceAll(/[,]/g, '.')
-                    nonmigas += Y > 0 ? Number(Y) : 0
-                }
+                cell.find('input').each(function() {
+                    let inputId = $(this).attr('id');
+                    if (inputId && (inputId.includes('adhk__1_B_') || inputId.includes('adhk_b_1_C_'))) {
+                      let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
+                      let Y = X.replaceAll(/[,]/g, '.');
+                      nonmigas += Y > 0 ? Number(Y) : 0;
+                    }
+                });
             }
             let pdrbs = sum + pdrb
             let PdrbNonmigas = pdrbs - nonmigas
@@ -187,7 +190,31 @@ $(document).ready(function() {
         $('#adhk_1_C').val(formatRupiah(que, 'Rp '));
     })
 
-    $('table').on('paste','input',function(e){
+    $('#rekonsiliasi-table').on('paste','input',function(e){
+        const $this = $(this);
+        let panjang_ndas = $('thead').children().length
+        $.each(e.originalEvent.clipboardData.items, function(i, v){
+            if (v.type === 'text/plain'){
+                v.getAsString(function(text){
+                    var x = $this.closest('td').index(),
+                        y = $this.closest('tr').index()+1,
+                        obj = {};
+                    text = text.trim('\r\n');
+                    $.each(text.split('\r\n'), function(i2, v2){
+                        $.each(v2.split('\t'), function(i3, v3){
+                            var row = y+i2+ (panjang_ndas>2?1:0), col = x+i3;
+                            obj['cell-'+row+'-'+col] = v3
+                            $this.closest('table').find('tr:eq('+row+') td:eq('+col+') input').val(formatRupiah(v3, 'Rp '));
+                        });
+                    });
+  
+                });
+            }
+        });
+        return false;
+      });
+
+    $('#rekonsiliasi-table-single').on('paste','input',function(e){
         const $this = $(this);
         let panjang_ndas = $('thead').children().length
         $.each(e.originalEvent.clipboardData.items, function(i, v){
@@ -200,7 +227,7 @@ $(document).ready(function() {
                     $.each(text.split('\r\n'), function(i2, v2){
                         $.each(v2.split('\t'), function(i3, v3){
                             var row = y+i2+ (panjang_ndas>2?1:0), col = x+i3;
-                            obj['cell-'+row+'-'+col] = v3;
+                            obj['cell-'+row+'-'+col] = v3
                             $this.closest('table').find('tr:eq('+row+') td:eq('+col+') input').val(formatRupiah(v3, 'Rp '));
                         });
                     });

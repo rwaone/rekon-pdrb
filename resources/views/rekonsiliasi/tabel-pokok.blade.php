@@ -53,7 +53,6 @@
         </style>
         @vite(['resources/css/app.css'])
     </x-slot>
-
     <x-slot name="breadcrumb">
         <li class="breadcrumb-item active">Daftar Tabel Pokok</li>
     </x-slot>
@@ -71,7 +70,7 @@
                         <tbody>
                             @foreach($daftar_1 as $item)
                             <tr>
-                                <td class="text-center"></td>
+                                <td class="text-center">{{ $item->number }}</td>
                                 <td>{{ $item->region->name }}</td>
                                 <td class="text-center">{{ $item->period->year }}</td>
                                 <td class="text-center">
@@ -102,10 +101,10 @@
                                 @csrf
                                 @foreach($daftar_2 as $item)
                                 <tr>
-                                    <td class="text-center"></td>
+                                    <td class="text-center">{{ $item->number }}</td>
                                     <td>{{ $item->region->name }}</td>
                                     <td class="text-center">{{ $item->period->year }}</td>
-                                    <td class="text-center">{{ $item->period->quarter }}</td>
+                                    <td class="text-center">{{ $item->quarter }}</td>
                                     <td class="text-center">
                                         <input value="{{ $item->period->id.'-'.$item->quarter }}" class="hiddenInput" hidden>
                                         <a href="{{ url('detailPokok').'/'.$item->period->id.'/'.$item->quarter }}" class="btn btn-primary">
@@ -148,13 +147,13 @@
 
             $(document).ready(function() {
                 $('#view-main-table').DataTable()
-                $('#view-main-table tbody tr').each(function(index) {
-                    $(this).find('td:first').text(index + 1);
-                });
+                // $('#view-main-table tbody tr').each(function(index) {
+                //     $(this).find('td:first').text(index + 1);
+                // });
                 $('#view-quarter-table').DataTable()
-                $('#view-quarter-table tbody tr').each(function(index) {
-                    $(this).find('td:first').text(index + 1);
-                });
+                // $('#view-quarter-table tbody tr').each(function(index) {
+                //     $(this).find('td:first').text(index + 1);
+                // });
             })
         </script>
     </x-slot>

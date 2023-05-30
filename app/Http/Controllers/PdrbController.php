@@ -99,9 +99,19 @@ class PdrbController extends Controller
     }
 
     public function daftarPokok()
-    {
+    {   
+        $number = 1;
         $daftar_1 = Pdrb::select('region_id', 'period_id', 'quarter')->where('quarter', 'Y')->groupBy('region_id', 'period_id', 'quarter')->get();
-        $daftar_2 = Pdrb::select('region_id', 'period_id', 'quarter')->whereNotIn('quarter', ['Y'])->groupBy('region_id', 'period_id', 'quarter')->get();
+        foreach ($daftar_1 as $item){
+            $item->number = $number;
+            $number++;
+        }
+        $number = 1;
+        $daftar_2 = Pdrb::select('region_id', 'period_id', 'quarter')->whereNotIn('region_id', ['1'])->whereNotIn('quarter', ['Y'])->groupBy('region_id', 'period_id', 'quarter')->get();
+        foreach ($daftar_2 as $item){
+            $item->number = $number;
+            $number++;
+        }
         return view('rekonsiliasi.tabel-pokok', [
             'daftar_1' => $daftar_1,
             'daftar_2' => $daftar_2,
@@ -329,6 +339,7 @@ class PdrbController extends Controller
                 array_push($inputData, $singleData);
             }
             Pdrb::insert($inputData);
+            // Pdrb::create($inputData);
             $data = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->orderBy('subsector_id')->get();
             return response()->json($data);
         }
@@ -339,7 +350,7 @@ class PdrbController extends Controller
         $filter = $request->filter;
         $input = $request->input;
         $data = [];
-
+        
         for ($x = 1; $x <= 55; $x++) {
             $inputData = (float) str_replace(',','.',str_replace('.','',str_replace('Rp. ','',$input['value_' . $x])));
             // return response()->json($inputData);
@@ -347,7 +358,7 @@ class PdrbController extends Controller
             // $inputData['id'] = $input['id_'.$x];
             // array_push($data, $inputData);
         }
-        return response()->json();
+        return response()->json($request);
     }
 
     public function saveFullData(Request $request)

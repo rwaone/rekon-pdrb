@@ -100,7 +100,7 @@
 
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route('fetchYear') }}',
+                        url: '{{ route("fetchYear") }}',
                         data: {
                             type: pdrb_type,
                             _token: '{{ csrf_token() }}',
@@ -130,7 +130,7 @@
 
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route('fetchQuarter') }}',
+                        url: '{{ route("fetchQuarter") }}',
                         data: {
                             type: pdrb_type,
                             year: pdrb_year,
@@ -164,7 +164,7 @@
 
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route('fetchPeriod') }}',
+                        url: '{{ route("fetchPeriod") }}',
                         data: {
                             type: pdrb_type,
                             year: pdrb_year,
@@ -204,15 +204,19 @@
                 });
 
                 function showForm() {
+                    $('.loader').removeClass('d-none')
                     var quarter = $('#quarter').val();
-                    if (quarter == 'F') {
-                        getFullData()
-                    } else if (quarter != null) {
-                        getSingleData();
-                    } else {
-                        $('#fullFormContainer').addClass('d-none');
-                        $('#singleFormContainer').addClass('d-none');
-                    }
+                    setTimeout(function(){
+                            if (quarter == 'F') {
+                            getFullData()
+                        } else if (quarter != null) {
+                            getSingleData();
+                        } else {
+                            $('#fullFormContainer').addClass('d-none');
+                            $('#singleFormContainer').addClass('d-none');
+                        }
+                        $('.loader').addClass('d-none')
+                    }, 500)
                 };
 
 
@@ -221,7 +225,7 @@
                     $('#singleFormContainer').removeClass('d-none');
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route('getSingleData') }}',
+                        url: '{{ route("getSingleData") }}',
                         data: {
                             filter: $('#filterForm').serializeArray().reduce(function(obj, item) {
                                 obj[item.name] = item.value;
@@ -232,7 +236,7 @@
 
                         success: function(result) {
 
-                            // console.log(result);
+                            console.log(result);
                             $('#singleForm')[0].reset();
                             if ($('#price_base').val() == 'adhk') {
                                 $.each(result, function(key, value) {
@@ -281,7 +285,7 @@
                     $('#singleFormContainer').addClass('d-none');
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route('getFullData') }}',
+                        url: '{{ route("getFullData") }}',
                         data: {
                             filter: $('#filterForm').serializeArray().reduce(function(obj, item) {
                                 obj[item.name] = item.value;
@@ -346,14 +350,10 @@
                 }
 
                 $("#singleFormSave").on('click', function() {
-                    // // console.log(data);
-                    // $('#filterForm').serializeArray().reduce(function(obj, item) {
-                    //             obj[item.name] = item.value;
-                    //             console.log(obj)
-                    //         },{})
+                    // console.log(data);
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route('saveSingleData') }}',
+                        url: '{{ route("saveSingleData") }}',
                         data: {
                             filter: $('#filterForm').serializeArray().reduce(function(obj, item) {
                                 obj[item.name] = item.value;
@@ -388,7 +388,7 @@
                 $("#fullFormSave").click(function() {
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route('saveFullData') }}',
+                        url: '{{ route("saveFullData") }}',
                         data: {
                             filter: $('#filterForm').serializeArray().reduce(function(obj, item) {
                                 obj[item.name] = item.value;

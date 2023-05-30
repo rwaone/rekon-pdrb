@@ -53,7 +53,7 @@
 
             <!-- Main content -->
             <section class="content">
-            
+            <span class="loader d-none"></span>
                 <div class="container-fluid">
                 <div></div><div></div><div></div><div></div>
                     {{ $slot }}
