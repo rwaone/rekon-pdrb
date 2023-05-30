@@ -250,43 +250,6 @@ class PdrbController extends Controller
 
     public function rekonsiliasi(Request $request)
     {
-        $filter = [
-            'type' => '',
-            'year' => '',
-            'quarter' => '',
-            'period_id' => '',
-            'region_id' => '',
-            'price_base' => '',
-        ];
-
-        if ($request->filter) {
-            $filter = [
-                'type' => $request->type,
-                'year' => $request->year,
-                'quarter' => $request->quarter,
-                'period_id' => $request->period_id,
-                'region_id' => $request->region_id,
-                'price_base' => $request->price_base,
-            ];
-            $years = Period::where('type', $filter['type'])->groupBy('year')->get('year');
-            $quarters = Period::where('year', $filter['year'])->groupBy('quarter')->get('quarter');
-            $periods = Period::where('type', $filter['type'])->where('year', $filter['year'])->where('quarter', $filter['quarter'])->get();
-            $data = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->get();
-        } else {
-
-            $filter = [
-                'type' => '',
-                'year' => '',
-                'quarter' => '',
-                'period_id' => '',
-                'region_id' => '',
-                'price_base' => '',
-            ];
-            $years = NULL;
-            $quarters = NULL;
-            $periods = NULL;
-        }
-
         $cat = Category::pluck('code')->toArray();
         $catString = implode(", ", $cat);
         $regions = Region::all();
@@ -299,10 +262,6 @@ class PdrbController extends Controller
             'categories' => $categories,
             'sectors' => $sectors,
             'subsectors' => $subsectors,
-            'years' => $years,
-            'quarters'  => $quarters,
-            'periods' => $periods,
-            'filter' => $filter,
         ]);
     }
 
