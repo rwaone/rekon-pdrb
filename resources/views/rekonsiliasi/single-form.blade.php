@@ -19,7 +19,7 @@
                                 </td>
                                 <td class="categories">
                                     <input disabled type="text" name="{{ $subsector->sector->category->code }}"
-                                        id="adhk_{{ $subsector->sector->category->code }}" class="form-control"
+                                        id="adhk_{{ $subsector->sector->category->code }}" class="form-control text-right"
                                         aria-required="true">
                                 </td>
                             </tr>
@@ -34,7 +34,7 @@
                                     <input disabled type="text"
                                         name="{{ $subsector->sector->code . '_' . $subsector->sector->category->code }}"
                                         id="adhk_{{ $subsector->sector->code . '_' . $subsector->sector->category->code }}"
-                                        class="form-control {{ 'category-' . $subsector->sector->category->code }}"
+                                        class="form-control text-right {{ 'category-' . $subsector->sector->category->code }}"
                                         aria-required="true">
                                 </td>
                             </tr>
@@ -52,7 +52,7 @@
                                 <td>
                                     <input type="text" name="value_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
-                                        class="form-control {{ 'sector-' . $subsector->sector_id }} {{ 'category-' . $subsector->sector->category_id }}"
+                                        class="form-control text-right {{ 'sector-' . $subsector->sector_id }} {{ 'category-' . $subsector->sector->category_id }}"
                                         aria-required="true">
                                 </td>
                             </tr>
@@ -69,7 +69,7 @@
                                 <td>
                                     <input type="text" name="value_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
-                                        class="form-control {{ 'sector-' . $subsector->sector_id }} {{ 'category-' . $subsector->sector->category_id }}"
+                                        class="form-control text-right {{ 'sector-' . $subsector->sector_id }} {{ 'category-' . $subsector->sector->category_id }}"
                                         aria-required="true">
                                 </td>
                             </tr>
@@ -85,7 +85,7 @@
                                 <td>
                                     <input type="text" name="value_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
-                                        class="form-control {{ 'sector-' . $subsector->sector_id }} {{ 'category-' . $subsector->sector->category_id }}"
+                                        class="form-control text-right {{ 'sector-' . $subsector->sector_id }} {{ 'category-' . $subsector->sector->category_id }}"
                                         aria-required="true">
                                 </td>
                             </tr>

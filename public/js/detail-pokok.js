@@ -3,7 +3,7 @@ function getSummarise(){
     $('.values').each(function () {
         $(this).text(formatRupiah($(this).text(), 'Rp '))
     })
-    for (let q = 1; q <= 4; q++) {
+    for (let q = 1; q <= 5; q++) {
         for (let i = 1; i <= 7; i++) {
             let X = $(`#value-${i}-${q}`).text().replaceAll(/[A-Za-z.]/g,'')
             // let X = $(`#value-${i}`).text()
@@ -14,7 +14,7 @@ function getSummarise(){
         sum = sum - sum
     }
     sum = sum - sum
-    for (let q = 1; q <= 4; q++) {
+    for (let q = 1; q <= 5; q++) {
         for (let i = 14; i <= 15; i++) {
             let X = $(`#value-${i}-${q}`).text().replaceAll(/[A-Za-z.]/g,'')
             let Y = X.replaceAll(/[,]/g, '.')
@@ -25,7 +25,7 @@ function getSummarise(){
         sum = sum - sum
     }
     sum = sum - sum
-    for (let q = 1; q <= 4; q++) {
+    for (let q = 1; q <= 5; q++) {
         for (let index of catArray){    
             let jumlah = calculateSector(`categories-${index}-${q}`).toFixed(2)
             let que = String(jumlah).replaceAll(/[.]/g, ',')
@@ -33,7 +33,7 @@ function getSummarise(){
             $(`#categories-${index}-${q}`).addClass(`text-bold pdrb-total-${q}`)
         }
     }
-    for (let q = 1; q <= 4; q++) {
+    for (let q = 1; q <= 5; q++) {
         let pdrb = calculateSector(`pdrb-total-${q}`).toFixed(2)
         let nonmigas = simpleSum(`#value-10-${q}`) + simpleSum(`#value-15-${q}`)
         $(`#total-${q}`).text(formatRupiah(String(pdrb).replaceAll(/[.]/g, ','), 'Rp '))
@@ -56,7 +56,7 @@ function distribusi(values, index){
 }
 
 function getDist(){
-    for (let q = 1; q <= 4; q++){
+    for (let q = 1; q <= 5; q++){
         $(`.view-distribusi-${q}`).each(function(){
             let id = '#' + $(this).attr('id')
             let y = distribusi(id, q)
@@ -77,7 +77,7 @@ function getAdhb() {
         return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
     })
     $('tbody td:nth-child(n+2):nth-child(-n+6)').addClass('view-adhb')
-    for (let q = 1; q <= 4; q++) {
+    for (let q = 1; q <= 5; q++) {
         for(let i = 1; i <= 55; i++) {
             let X = adhb_data[`pdrb-${q}`][i-1]
             let Y = String(X).replaceAll(/[.]/g,',')
@@ -92,7 +92,7 @@ function getAdhk(){
         return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
     })
     $('tbody td:nth-child(n+2):nth-child(-n+6)').addClass('view-adhk')
-    for (let q = 1; q <= 4; q++) {
+    for (let q = 1; q <= 5; q++) {
         for(let i = 1; i <= 55; i++) {
             let X = adhk_data[`pdrb-${q}`][i-1]
             let Y = String(X).replaceAll(/[.]/g,',')
@@ -109,7 +109,7 @@ function getGrowth() {
     $('tbody td:nth-child(n+2):nth-child(-n+6)').addClass('view-pertumbuhan')
     let idx_adhk = []
     let growth = []
-    for (let q = 1; q <= 4; q++) {
+    for (let q = 1; q <= 5; q++) {
         for(let i = 1; i <= 55; i++) {
             $(`#value-${i}-${q}`).text(adhk_data[`pdrb-${q}`][i-1])
         }
@@ -142,7 +142,7 @@ function getIndex() {
     let idx_adhb = []
     let idx_adhk = []
     let idx = []
-    for (let q = 1; q <= 4; q++) {
+    for (let q = 1; q <= 5; q++) {
         for(let i = 1; i <= 55; i++) {
             $(`#value-${i}-${q}`).text(adhb_data[`pdrb-${q}`][i-1])
         }
@@ -153,7 +153,7 @@ function getIndex() {
         let Y = X.replaceAll(/[,]/g, '.')
         idx_adhb.push(Number(Y))
     })
-    for (let q = 1; q <= 4; q++) {
+    for (let q = 1; q <= 5; q++) {
         for(let i = 1; i <= 55; i++) {
             $(`#value-${i}-${q}`).text(adhk_data[`pdrb-${q}`][i-1])
         }

@@ -75,7 +75,7 @@
                                 <td>{{ $item->region->name }}</td>
                                 <td class="text-center">{{ $item->period->year }}</td>
                                 <td class="text-center">
-                                    <a href="{{ url('detailPokok').'/'.$item->period->id }}" class="btn btn-primary">
+                                    <a href="{{ url('detailPokok').'/'.$item->period->id.'/Y' }}" class="btn btn-primary">
                                         <span class="bi bi-check2-square"></span>
                                     </a>
                                 </td>

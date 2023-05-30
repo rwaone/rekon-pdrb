@@ -129,11 +129,11 @@
                                         <label class="col" style="margin-bottom:0rem;"
                                             for="{{ $item->sector->category->code . '_' . $item->name }}">{{ $item->sector->category->code . '. ' . $item->name }}</label>
                                     </td>
-                                    <td id="{{ 'value-'.$item->id.'-1' }}" class = "values {{ 'categories-'.$item->sector->category->code }}-1 {{'sector-Q1'.$item->sector_id }} {{'category-Q1'.$item->sector->category_id}} text-bold pdrb-total"></td>
-                                    <td id="{{ 'value-'.$item->id.'-2' }}" class = "values {{ 'categories-'.$item->sector->category->code }}-2 {{'sector-Q2'.$item->sector_id }} {{'category-Q2'.$item->sector->category_id}} text-bold pdrb-total"></td>
-                                    <td id="{{ 'value-'.$item->id.'-3' }}" class = "values {{ 'categories-'.$item->sector->category->code }}-3 {{'sector-Q3'.$item->sector_id }} {{'category-Q3'.$item->sector->category_id}} text-bold pdrb-total"></td>
-                                    <td id="{{ 'value-'.$item->id.'-4' }}" class = "values {{ 'categories-'.$item->sector->category->code }}-4 {{'sector-Q4'.$item->sector_id }} {{'category-Q4'.$item->sector->category_id}} text-bold pdrb-total"></td>
-                                    <td id="{{ 'value-'.$item->id.'-5' }}" class = "values {{ 'categories-'.$item->sector->category->code }}-5 {{'sector-Y1'.$item->sector_id }} {{'category-Y1'.$item->sector->category_id}} text-bold pdrb-total"></td>
+                                    <td id="{{ 'value-'.$item->id.'-1' }}" class = "values {{ 'categories-'.$item->sector->category->code }}-1 {{'sector-Q1'.$item->sector_id }} {{'category-Q1'.$item->sector->category_id}} text-bold pdrb-total-1"></td>
+                                    <td id="{{ 'value-'.$item->id.'-2' }}" class = "values {{ 'categories-'.$item->sector->category->code }}-2 {{'sector-Q2'.$item->sector_id }} {{'category-Q2'.$item->sector->category_id}} text-bold pdrb-total-2"></td>
+                                    <td id="{{ 'value-'.$item->id.'-3' }}" class = "values {{ 'categories-'.$item->sector->category->code }}-3 {{'sector-Q3'.$item->sector_id }} {{'category-Q3'.$item->sector->category_id}} text-bold pdrb-total-3"></td>
+                                    <td id="{{ 'value-'.$item->id.'-4' }}" class = "values {{ 'categories-'.$item->sector->category->code }}-4 {{'sector-Q4'.$item->sector_id }} {{'category-Q4'.$item->sector->category_id}} text-bold pdrb-total-4"></td>
+                                    <td id="{{ 'value-'.$item->id.'-5' }}" class = "values {{ 'categories-'.$item->sector->category->code }}-5 {{'sector-Y1'.$item->sector_id }} {{'category-Y1'.$item->sector->category_id}} text-bold pdrb-total-5"></td>
                                 </tr>
                             @endif
                             @endforeach
