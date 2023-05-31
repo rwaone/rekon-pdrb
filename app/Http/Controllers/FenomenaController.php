@@ -97,4 +97,10 @@ class FenomenaController extends Controller
     {
         //
     }
+
+    public function getFenomena(Request $request)
+    {
+        $filter = $request->filter;        
+        $fenomena = Feomena::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->orderBy('subsector_id')->get();
+    }
 }
