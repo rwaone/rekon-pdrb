@@ -322,7 +322,7 @@ class PdrbController extends Controller
     public function getSingleData(Request $request)
     {
         $filter = $request->filter;
-        $subsectors = Subsector::all();
+        $subsectors = Subsector::where('type', $filter['type'])->orderBy('id')->get();
         $data = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->orderBy('subsector_id')->get();
         //    return response()->json($data);
         if (sizeof($data) != 0) {
@@ -354,14 +354,12 @@ class PdrbController extends Controller
     {
         $filter = $request->filter;
         $input = $request->input;
+        $subsectors = Subsector::where('type', $filter['type'])->orderBy('id')->get();
         $data = [];
         
-        for ($x = 1; $x <= 55; $x++) {
-            $inputData = (float) str_replace(',','.',str_replace('.','',str_replace('Rp. ','',$input['value_' . $x])));
-            // return response()->json($inputData);
-            Pdrb::where('id', $input['id_'.$x])->update([$filter['price_base'] => $inputData]);
-            // $inputData['id'] = $input['id_'.$x];
-            // array_push($data, $inputData);
+        foreach ($subsectors as $subsector) {
+            $inputData = (float) str_replace(',','.',str_replace('.','',str_replace('Rp. ','',$input['value_' . $subsector->id])));
+            Pdrb::where('id', $input['id_'.$subsector->id])->update([$filter['price_base'] => $inputData]);
         }
         return response()->json($request);
     }
@@ -370,6 +368,7 @@ class PdrbController extends Controller
     {
         $filter = $request->filter;
         $input = $request->input;
+        $subsectors = Subsector::where('type', $filter['type'])->orderBy('id')->get();
         $data = [];
         $dataSeries = [
             '1',
@@ -379,11 +378,11 @@ class PdrbController extends Controller
         ];
 
         foreach ($dataSeries as $key){
-            for ($x = 1; $x <= 55; $x++) {
-                $inputData = (float) str_replace(',','.',str_replace('.','',str_replace('Rp. ','',$input['value_'. $key .'_' . $x])));
+            foreach ($subsectors as $subsector) {
+                $inputData = (float) str_replace(',','.',str_replace('.','',str_replace('Rp. ','',$input['value_'. $key .'_' . $subsector->id])));
                 // return response()->json($inputData);
                 
-                Pdrb::where('id', $input['id_'. $key .'_'.$x])->update([$filter['price_base'] => $inputData]);
+                Pdrb::where('id', $input['id_'. $key .'_'.$subsector->id])->update([$filter['price_base'] => $inputData]);
                 // $inputData['id'] = $input['id_'.$x];
                 array_push($data, $inputData);
             }
