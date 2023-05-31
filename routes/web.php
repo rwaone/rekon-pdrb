@@ -18,8 +18,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('dashboard');
+})->middleware(['auth', 'verified']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -52,4 +52,4 @@ Route::post('fetch/period', [PeriodController::class, 'fetchPeriod'])->name('fet
 Route::resource('period', PeriodController::class)->middleware(['auth', 'verified']);
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

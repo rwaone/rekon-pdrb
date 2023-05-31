@@ -1,7 +1,7 @@
     <form id="fullForm" method="post"  class="form-horizontal">
         <div class="card-body p-3">
             <table class="table table-bordered" id="rekonsiliasi-table">
-                <thead class="text-center" style="background-color: steelblue; color:aliceblue;">
+                <thead class="text-center" style="background-color: #09c140; color:aliceblue;">
                     <tr>
                         <th>Komponen</th>
                         <th>Triwulan I</th>
@@ -242,7 +242,7 @@
                         @endif
                     @endforeach
                     <tr class="PDRB-footer text-center"
-                        style="background-color: steelblue; color:aliceblue; font-weight: bold;">
+                        style="background-color: #09c140; color:aliceblue; font-weight: bold;">
                         <td>
                             <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto
                                 (PDRB) Nonmigas </p>
@@ -264,7 +264,7 @@
                         </td>
                     </tr>
                     <tr class="PDRB-footer text-center"
-                        style="background-color: steelblue; color:aliceblue; font-weight: bold;">
+                        style="background-color: #09c140; color:aliceblue; font-weight: bold;">
                         <td>
                             <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto
                                 (PDRB) </p>

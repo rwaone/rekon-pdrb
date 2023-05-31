@@ -31,6 +31,8 @@
     <div id="my-cat" data-cat="{{ json_encode($cat) }}"></div>
 
     @include('rekonsiliasi.filter')
+    
+    <span class="loader d-none"></span>
 
     <div id="fullFormContainer" class="card d-none">@include('rekonsiliasi.full-form')</div>
     <div id="singleFormContainer" class="card d-none">@include('rekonsiliasi.single-form')</div>
