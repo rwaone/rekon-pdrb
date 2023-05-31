@@ -30,9 +30,11 @@
             #rekon-view tr:not(:last-child):not(:nth-last-child(2)) td:not(:first-child) {
                 text-align: right;
             }
+
             a.nav-item {
                 color: black !important;
             }
+
             tbody td:not(:first-child) {
                 width: 200px;
             }
@@ -47,97 +49,96 @@
         <div id="my-adhb" data-adhb="{{ $adhb }}"></div>
     </x-slot>
     <div class="card mb-3" id="view-body">
-            <div class="card-body">
-                <nav class="navbar d-flex justify-content-center">
-                    <ul class="nav nav-tabs d-flex">
-                        <a class="nav-item nav-link" id = "nav-adhb" href="#">ADHB</a>
-                        <a class="nav-item nav-link" id = "nav-adhk" href="#">ADHK</a>
-                        <a class="nav-item nav-link" id = "nav-distribusi" href="#">Distribusi</a>
-                        <a class="nav-item nav-link" id = "nav-pertumbuhan" href="#">Pertumbuhan</a>
-                        <a class="nav-item nav-link" id = "nav-indeks" href="#">Indeks Implisit</a>
-                        <a class="nav-item nav-link" id = "nav-laju" href="#">Laju Implisit</a>
-                    </ul>
-                </nav>
-                <span class="loader d-none"></span>
-                <div class="table-container">
-                    <table class="table table-bordered" id="rekon-view">
-                        <thead class="text-center" style="background-color: steelblue; color:aliceblue;">
-                            <tr>
-                                <th>Komponen</th>
-                                @foreach(array_reverse($years) as $item)
-                                <th>{{$item}}</th>
-                                @endforeach
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($subsectors as $index => $item)
-                                @if (($item->code != NULL && $item->code == "a" && $item->sector->code == "1") || ($item->code == NULL && $item->sector->code == "1"))
-                                    <tr>
-                                        <td>
-                                            <label class="col" style="margin-bottom:0rem;"
-                                                for="">{{ $item->sector->category->code . '. ' . $item->sector->category->name }}</label>
-                                        </td>
-                                        <td id="categories-{{ $item->sector->category->code }}-1" class="categories values"></td>
-                                        <td id="categories-{{ $item->sector->category->code }}-2" class="categories values"></td>
-                                        <td id="categories-{{ $item->sector->category->code }}-3" class="categories values"></td>
-                                        <td id="categories-{{ $item->sector->category->code }}-4" class="categories values"></td>
-                                        <td id="categories-{{ $item->sector->category->code }}-5" class="categories values"></td>
-                                    </tr>
-                                @endif
-                                @if ($item->code != null && $item->code == 'a')
-                                <tr>
-                                    <td>
-                                        <p class="col ml-4" style="margin-bottom:0rem;" for="">
-                                            {{ $item->sector->code . '. ' . $item->sector->name }}</p>
-                                    </td>
-                                    <td id="sector-{{ $index+1 }}-1" class="values"></td>
-                                    <td id="sector-{{ $index+1 }}-2" class="values"></td>
-                                    <td id="sector-{{ $index+1 }}-3" class="values"></td>
-                                    <td id="sector-{{ $index+1 }}-4" class="values"></td>
-                                    <td id="sector-{{ $index+1 }}-5" class="values"></td>
-                                </tr>
-                            @endif
-                            @if ($item->code != null)
-                                <tr>
-                                    <td>
-                                        <p class="col ml-5" style="margin-bottom:0rem;"
-                                            for="{{ $item->code }}_{{ $item->name }}">
-                                            {{ $item->code . '. ' . $item->name }}</p>
-                                    </td>
-                                    <td id="{{ 'value-'.$item->id.'-1' }}" class ="values {{ 'categories-'.$item->sector->category->code }}-1 {{ 'sector-Q1-'.$item->sector_id }} {{ 'category-Q1-'.$item->sector->category_id}}"></td>
-                                    <td id="{{ 'value-'.$item->id.'-2' }}" class ="values {{ 'categories-'.$item->sector->category->code }}-2 {{ 'sector-Q2-'.$item->sector_id }} {{ 'category-Q2-'.$item->sector->category_id}}"></td>
-                                    <td id="{{ 'value-'.$item->id.'-3' }}" class ="values {{ 'categories-'.$item->sector->category->code }}-3 {{ 'sector-Q3-'.$item->sector_id }} {{ 'category-Q3-'.$item->sector->category_id}}"></td>
-                                    <td id="{{ 'value-'.$item->id.'-4' }}" class ="values {{ 'categories-'.$item->sector->category->code }}-4 {{ 'sector-Q4-'.$item->sector_id }} {{ 'category-Q4-'.$item->sector->category_id}}"></td>
-                                    <td id="{{ 'value-'.$item->id.'-5' }}" class ="values {{ 'categories-'.$item->sector->category->code }}-5 {{ 'sector-Y1-'.$item->sector_id }} {{ 'category-Y1-'.$item->sector->category_id}}"></td>
-                                </tr>
-                            @elseif ($item->code == null && $item->sector->code != null)
-                                <tr>
-                                    <td>
-                                        <p class="col ml-4" style="margin-bottom:0rem;"
-                                            for="{{ $item->sector->code . '_' . $item->sector->name }}">
-                                            {{ $item->sector->code . '. ' . $item->sector->name }}</p>
-                                    </td>
-                                    <td id="{{ 'value-'.$item->id.'-1' }}" class ="values {{ 'categories-'.$item->sector->category->code }}-1 {{ 'sector-Q1-'.$item->sector_id }} {{ 'category-Q1-'.$item->sector->category_id}}"></td>
-                                    <td id="{{ 'value-'.$item->id.'-2' }}" class ="values {{ 'categories-'.$item->sector->category->code }}-2 {{ 'sector-Q2-'.$item->sector_id }} {{ 'category-Q2-'.$item->sector->category_id}}"></td>
-                                    <td id="{{ 'value-'.$item->id.'-3' }}" class ="values {{ 'categories-'.$item->sector->category->code }}-3 {{ 'sector-Q3-'.$item->sector_id }} {{ 'category-Q3-'.$item->sector->category_id}}"></td>
-                                    <td id="{{ 'value-'.$item->id.'-4' }}" class ="values {{ 'categories-'.$item->sector->category->code }}-4 {{ 'sector-Q4-'.$item->sector_id }} {{ 'category-Q4-'.$item->sector->category_id}}"></td>
-                                    <td id="{{ 'value-'.$item->id.'-5' }}" class ="values {{ 'categories-'.$item->sector->category->code }}-5 {{ 'sector-Y1-'.$item->sector_id }} {{ 'category-Y1-'.$item->sector->category_id}}"></td>
-                                </tr>
-                            @elseif ($item->code == null && $item->sector->code == null)
-                                <tr>
-                                    <td>
-                                        <label class="col" style="margin-bottom:0rem;"
-                                            for="{{ $item->sector->category->code . '_' . $item->name }}">{{ $item->sector->category->code . '. ' . $item->name }}</label>
-                                    </td>
-                                    <td id="{{ 'value-'.$item->id.'-1' }}" class = "values {{ 'categories-'.$item->sector->category->code }}-1 {{'sector-Q1'.$item->sector_id }} {{'category-Q1'.$item->sector->category_id}} text-bold pdrb-total-1"></td>
-                                    <td id="{{ 'value-'.$item->id.'-2' }}" class = "values {{ 'categories-'.$item->sector->category->code }}-2 {{'sector-Q2'.$item->sector_id }} {{'category-Q2'.$item->sector->category_id}} text-bold pdrb-total-2"></td>
-                                    <td id="{{ 'value-'.$item->id.'-3' }}" class = "values {{ 'categories-'.$item->sector->category->code }}-3 {{'sector-Q3'.$item->sector_id }} {{'category-Q3'.$item->sector->category_id}} text-bold pdrb-total-3"></td>
-                                    <td id="{{ 'value-'.$item->id.'-4' }}" class = "values {{ 'categories-'.$item->sector->category->code }}-4 {{'sector-Q4'.$item->sector_id }} {{'category-Q4'.$item->sector->category_id}} text-bold pdrb-total-4"></td>
-                                    <td id="{{ 'value-'.$item->id.'-5' }}" class = "values {{ 'categories-'.$item->sector->category->code }}-5 {{'sector-Y1'.$item->sector_id }} {{'category-Y1'.$item->sector->category_id}} text-bold pdrb-total-5"></td>
-                                </tr>
-                            @endif
+        <div class="card-body">
+            <nav class="navbar d-flex justify-content-center">
+                <ul class="nav nav-tabs d-flex">
+                    <a class="nav-item nav-link" id="nav-adhb" href="#">ADHB</a>
+                    <a class="nav-item nav-link" id="nav-adhk" href="#">ADHK</a>
+                    <a class="nav-item nav-link" id="nav-distribusi" href="#">Distribusi</a>
+                    <a class="nav-item nav-link" id="nav-pertumbuhan" href="#">Pertumbuhan</a>
+                    <a class="nav-item nav-link" id="nav-indeks" href="#">Indeks Implisit</a>
+                    <a class="nav-item nav-link" id="nav-laju" href="#">Laju Implisit</a>
+                </ul>
+            </nav>
+            <span class="loader d-none"></span>
+            <div class="table-container">
+                <table class="table table-bordered" id="rekon-view">
+                    <thead class="text-center" style="background-color: steelblue; color:aliceblue;">
+                        <tr>
+                            <th>Komponen</th>
+                            @foreach(array_reverse($years) as $item)
+                            <th>{{$item}}</th>
                             @endforeach
-                            <tr class = "PDRB-footer text-center" style="background-color: steelblue; color:aliceblue; font-weight: bold;">
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($subsectors as $index => $item)
+                        @if (($item->code != NULL && $item->code == "a" && $item->sector->code == "1") || ($item->code == NULL && $item->sector->code == "1"))
+                        <tr>
+                            <td>
+                                <label class="col" style="margin-bottom:0rem;" for="">{{ $item->sector->category->code . '. ' . $item->sector->category->name }}</label>
+                            </td>
+                            <td id="categories-{{ $item->sector->category->code }}-1" class="categories values"></td>
+                            <td id="categories-{{ $item->sector->category->code }}-2" class="categories values"></td>
+                            <td id="categories-{{ $item->sector->category->code }}-3" class="categories values"></td>
+                            <td id="categories-{{ $item->sector->category->code }}-4" class="categories values"></td>
+                            <td id="categories-{{ $item->sector->category->code }}-5" class="categories values"></td>
+                        </tr>
+                        @endif
+                        @if ($item->code != null && $item->code == 'a')
+                        <tr>
+                            <td>
+                                <p class="col ml-4" style="margin-bottom:0rem;" for="">
+                                    {{ $item->sector->code . '. ' . $item->sector->name }}
+                                </p>
+                            </td>
+                            <td id="sector-{{ $index+1 }}-1" class="values"></td>
+                            <td id="sector-{{ $index+1 }}-2" class="values"></td>
+                            <td id="sector-{{ $index+1 }}-3" class="values"></td>
+                            <td id="sector-{{ $index+1 }}-4" class="values"></td>
+                            <td id="sector-{{ $index+1 }}-5" class="values"></td>
+                        </tr>
+                        @endif
+                        @if ($item->code != null)
+                        <tr>
+                            <td>
+                                <p class="col ml-5" style="margin-bottom:0rem;" for="{{ $item->code }}_{{ $item->name }}">
+                                    {{ $item->code . '. ' . $item->name }}
+                                </p>
+                            </td>
+                            <td id="{{ 'value-'.$item->id.'-1' }}" class="values {{ 'categories-'.$item->sector->category->code }}-1 {{ 'sector-Q1-'.$item->sector_id }} {{ 'category-Q1-'.$item->sector->category_id}}"></td>
+                            <td id="{{ 'value-'.$item->id.'-2' }}" class="values {{ 'categories-'.$item->sector->category->code }}-2 {{ 'sector-Q2-'.$item->sector_id }} {{ 'category-Q2-'.$item->sector->category_id}}"></td>
+                            <td id="{{ 'value-'.$item->id.'-3' }}" class="values {{ 'categories-'.$item->sector->category->code }}-3 {{ 'sector-Q3-'.$item->sector_id }} {{ 'category-Q3-'.$item->sector->category_id}}"></td>
+                            <td id="{{ 'value-'.$item->id.'-4' }}" class="values {{ 'categories-'.$item->sector->category->code }}-4 {{ 'sector-Q4-'.$item->sector_id }} {{ 'category-Q4-'.$item->sector->category_id}}"></td>
+                            <td id="{{ 'value-'.$item->id.'-5' }}" class="values {{ 'categories-'.$item->sector->category->code }}-5 {{ 'sector-Y1-'.$item->sector_id }} {{ 'category-Y1-'.$item->sector->category_id}}"></td>
+                        </tr>
+                        @elseif ($item->code == null && $item->sector->code != null)
+                        <tr>
+                            <td>
+                                <p class="col ml-4" style="margin-bottom:0rem;" for="{{ $item->sector->code . '_' . $item->sector->name }}">
+                                    {{ $item->sector->code . '. ' . $item->sector->name }}
+                                </p>
+                            </td>
+                            <td id="{{ 'value-'.$item->id.'-1' }}" class="values {{ 'categories-'.$item->sector->category->code }}-1 {{ 'sector-Q1-'.$item->sector_id }} {{ 'category-Q1-'.$item->sector->category_id}}"></td>
+                            <td id="{{ 'value-'.$item->id.'-2' }}" class="values {{ 'categories-'.$item->sector->category->code }}-2 {{ 'sector-Q2-'.$item->sector_id }} {{ 'category-Q2-'.$item->sector->category_id}}"></td>
+                            <td id="{{ 'value-'.$item->id.'-3' }}" class="values {{ 'categories-'.$item->sector->category->code }}-3 {{ 'sector-Q3-'.$item->sector_id }} {{ 'category-Q3-'.$item->sector->category_id}}"></td>
+                            <td id="{{ 'value-'.$item->id.'-4' }}" class="values {{ 'categories-'.$item->sector->category->code }}-4 {{ 'sector-Q4-'.$item->sector_id }} {{ 'category-Q4-'.$item->sector->category_id}}"></td>
+                            <td id="{{ 'value-'.$item->id.'-5' }}" class="values {{ 'categories-'.$item->sector->category->code }}-5 {{ 'sector-Y1-'.$item->sector_id }} {{ 'category-Y1-'.$item->sector->category_id}}"></td>
+                        </tr>
+                        @elseif ($item->code == null && $item->sector->code == null)
+                        <tr>
+                            <td>
+                                <label class="col" style="margin-bottom:0rem;" for="{{ $item->sector->category->code . '_' . $item->name }}">{{ $item->sector->category->code . '. ' . $item->name }}</label>
+                            </td>
+                            <td id="{{ 'value-'.$item->id.'-1' }}" class="values {{ 'categories-'.$item->sector->category->code }}-1 {{'sector-Q1'.$item->sector_id }} {{'category-Q1'.$item->sector->category_id}} text-bold pdrb-total-1"></td>
+                            <td id="{{ 'value-'.$item->id.'-2' }}" class="values {{ 'categories-'.$item->sector->category->code }}-2 {{'sector-Q2'.$item->sector_id }} {{'category-Q2'.$item->sector->category_id}} text-bold pdrb-total-2"></td>
+                            <td id="{{ 'value-'.$item->id.'-3' }}" class="values {{ 'categories-'.$item->sector->category->code }}-3 {{'sector-Q3'.$item->sector_id }} {{'category-Q3'.$item->sector->category_id}} text-bold pdrb-total-3"></td>
+                            <td id="{{ 'value-'.$item->id.'-4' }}" class="values {{ 'categories-'.$item->sector->category->code }}-4 {{'sector-Q4'.$item->sector_id }} {{'category-Q4'.$item->sector->category_id}} text-bold pdrb-total-4"></td>
+                            <td id="{{ 'value-'.$item->id.'-5' }}" class="values {{ 'categories-'.$item->sector->category->code }}-5 {{'sector-Y1'.$item->sector_id }} {{'category-Y1'.$item->sector->category_id}} text-bold pdrb-total-5"></td>
+                        </tr>
+                        @endif
+                        @endforeach
+                        <tr class="PDRB-footer text-center" style="background-color: steelblue; color:aliceblue; font-weight: bold;">
                             <td>
                                 <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto (PDRB) Nonmigas </p>
                             </td>
@@ -147,7 +148,7 @@
                             <td id="total-nonmigas-4" style="margin-bottom:0rem;"></td>
                             <td id="total-nonmigas-5" style="margin-bottom:0rem;"></td>
                         </tr>
-                        <tr class = "PDRB-footer text-center" style="background-color: steelblue; color:aliceblue; font-weight: bold;">
+                        <tr class="PDRB-footer text-center" style="background-color: steelblue; color:aliceblue; font-weight: bold;">
                             <td>
                                 <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto (PDRB) </p>
                             </td>
@@ -157,11 +158,11 @@
                             <td id="total-4" style="margin-bottom:0rem;"></td>
                             <td id="total-5" style="margin-bottom:0rem;"></td>
                         </tr>
-                        </tbody>
-                    </table>
-                </div>
+                    </tbody>
+                </table>
             </div>
         </div>
+    </div>
     <x-slot name="script">
         <!-- Additional JS resources -->
         <script src="{{ url('') }}/plugins/select2/js/select2.full.min.js"></script>
@@ -207,9 +208,9 @@
             //change
             $(document).ready(function() {
                 let tbody = $('#rekon-view').find('tbody')
-                $('#nav-distribusi').on('click', function(){
+                $('#nav-distribusi').on('click', function() {
                     $('.loader').removeClass('d-none')
-                    setTimeout(function(){
+                    setTimeout(function() {
                         getAdhb()
                         $('tbody td:nth-child(n+2):nth-child(-n+6)').removeClass(function(index, className) {
                             return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
@@ -219,53 +220,53 @@
                                 $(`#value-${i}-${q}`).addClass(`view-distribusi-${q}`)
                                 $(`#sector-${i}-${q}`).addClass(`view-distribusi-${q}`)
                             }
-                            for (let index of catArray){    
+                            for (let index of catArray) {
                                 $(`#categories-${index}-${q}`).addClass(`view-distribusi-${q}`)
                             }
                         }
                         getDist()
                         $('.loader').addClass('d-none')
-                    },500)
+                    }, 500)
                 })
-            
-                $('#nav-adhb').on('click', function(){
+
+                $('#nav-adhb').on('click', function() {
                     $('.loader').removeClass('d-none')
-                    setTimeout(function(){
+                    setTimeout(function() {
                         getAdhb()
                         $('.loader').addClass('d-none')
                     }, 500)
                 })
 
-                $('#nav-adhk').on('click', function(){
+                $('#nav-adhk').on('click', function() {
                     $('.loader').removeClass('d-none')
-                    setTimeout(function(){
+                    setTimeout(function() {
                         getAdhk()
                         $('.loader').addClass('d-none')
-                    }, 500)  
+                    }, 500)
                 })
-                
+
                 //belum tau gimana
-                $('#nav-pertumbuhan').on('click', function(){
+                $('#nav-pertumbuhan').on('click', function() {
                     $('.loader').removeClass('d-none')
-                    setTimeout(function(){
+                    setTimeout(function() {
                         getGrowth()
                         $('.loader').addClass('d-none')
                     }, 500)
                 })
 
                 //indeks implisit adhb/adhk
-                $('#nav-indeks').on('click', function(){
+                $('#nav-indeks').on('click', function() {
                     $('.loader').removeClass('d-none')
-                    setTimeout(function(){
+                    setTimeout(function() {
                         getIndex()
                         $('.loader').addClass('d-none')
                     }, 500)
                 })
 
                 //laju index
-                $('#nav-laju').on('click', function(){
+                $('#nav-laju').on('click', function() {
                     $('.loader').removeClass('d-none')
-                    setTimeout(function(){
+                    setTimeout(function() {
                         let laju = getIndex()
                         getLaju(laju)
                         $('.loader').addClass('d-none')
@@ -274,9 +275,9 @@
             })
 
             //summarise
-            
 
-            $(document).ready(function(){
+
+            $(document).ready(function() {
                 getAdhb()
             })
 

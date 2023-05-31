@@ -94,8 +94,14 @@ class PdrbController extends Controller
 
     public function getKonserda(Request $request, $period_id)
     {
-        $pdrb = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_id)->orderBy('subsector_id')->get();
-        return response()->json($pdrb);
+        // $pdrb = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_id)->where('region_id', '1')->orderBy('subsector_id')->get();
+        $regions = Region::select('id')->get();
+        $datas = [];
+            foreach ($regions as $region){
+                $datas['pdrb-'.$region->id] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_id)->where('region_id', $region->id)->orderBy('subsector_id')->get();
+            }
+            
+        return response()->json($datas);
     }
 
     public function daftarPokok()
@@ -118,7 +124,7 @@ class PdrbController extends Controller
         ]);
     }
 
-    public function detailPokok(Request $request, $period_id, $quarter)
+    public function detailPokok(Request $request, $period_id, $region_id, $quarter)
     {
         $subsectors = Subsector::all();
         $period = Period::where('id', $period_id)->first();
@@ -141,11 +147,11 @@ class PdrbController extends Controller
                     array_push($periods, 0);
                 }
             }
-            $pdrb_1 = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $periods[4])->orderBy('subsector_id')->get();
-            $pdrb_2 = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $periods[3])->orderBy('subsector_id')->get();
-            $pdrb_3 = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $periods[2])->orderBy('subsector_id')->get();
-            $pdrb_4 = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $periods[1])->orderBy('subsector_id')->get();
-            $pdrb = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_id)->orderBy('subsector_id')->get();
+            $pdrb_1 = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $periods[4])->where('region_id', $region_id)->orderBy('subsector_id')->get();
+            $pdrb_2 = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $periods[3])->where('region_id', $region_id)->orderBy('subsector_id')->get();
+            $pdrb_3 = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $periods[2])->where('region_id', $region_id)->orderBy('subsector_id')->get();
+            $pdrb_4 = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $periods[1])->where('region_id', $region_id)->orderBy('subsector_id')->get();
+            $pdrb = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_id)->where('region_id', $region_id)->orderBy('subsector_id')->get();
 
             $datas = [
                 'pdrb-1' => $pdrb_1,
@@ -184,10 +190,10 @@ class PdrbController extends Controller
                     array_push($periods, 0);
                 }
             }
-            $pdrb_1 = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $periods[0])->orderBy('subsector_id')->get();
-            $pdrb_2 = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $periods[1])->orderBy('subsector_id')->get();
-            $pdrb_3 = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $periods[2])->orderBy('subsector_id')->get();
-            $pdrb_4 = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $periods[3])->orderBy('subsector_id')->get();
+            $pdrb_1 = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $periods[0])->where('region_id', $region_id)->orderBy('subsector_id')->get();
+            $pdrb_2 = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $periods[1])->where('region_id', $region_id)->orderBy('subsector_id')->get();
+            $pdrb_3 = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $periods[2])->where('region_id', $region_id)->orderBy('subsector_id')->get();
+            $pdrb_4 = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $periods[3])->where('region_id', $region_id)->orderBy('subsector_id')->get();
             
             $datas = [
                 'pdrb-1' => $pdrb_1,
@@ -242,13 +248,12 @@ class PdrbController extends Controller
             $periods = Period::where('type', $filter['type'])->where('year', $filter['year'])->where('quarter', $filter['quarter'])->get();
         }
 
-        $pdrb = Pdrb::all();
-        $year = Period::select('year')->distinct()->get();
+        $regions = Region::all();
         $cat = Category::pluck('code')->toArray();
         $catString = implode(", ", $cat);
         $subsectors = Subsector::all();
         return view('rekonsiliasi.konserda', [
-            'pdrb' => $pdrb,
+            'regions' => $regions,
             'subsectors' => $subsectors,
             'cat' => $catString,
             'years' => isset($years) ? $years : NULL,
