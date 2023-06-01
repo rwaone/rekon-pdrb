@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('subsectors', function (Blueprint $table) {
-            $table->char('type', 25)->after('id');;
+            $table->char('type', 25)->after('id');
         });
     }
 
