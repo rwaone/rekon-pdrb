@@ -20,6 +20,10 @@
                 min-height: 48px !important;
             }
 
+            .table td {
+                padding: 0rem !important;
+            }
+
             #komponen {
                 table-layout: fixed;
                 width: 500px;
@@ -55,8 +59,9 @@
 
             .table-data-wrapper td,
             .table-data-wrapper th {
-                min-width: 225px;
-                max-width: 225px;
+                min-width: 180px;
+                max-width: 180px;
+                padding: 0rem !important;
             }
 
             .table-data-wrapper td:not(:last-child),
@@ -70,14 +75,19 @@
 
             #komponen thead th,
             #rekon-view thead th {
-                height: 125px;
+                height: 50px;
                 vertical-align: middle;
+                padding: .1rem;
+                /* white-space: nowrap; */
+                text-overflow: ellipsis;
+                overflow: hidden;
             }
 
             #rekon-view tbody tr {
-                height: 48px;
+                /* height: 48px; */
+                padding: 0rem !important;
             }
-            
+
             .sum-of-kabkot {
                 text-align: right;
             }
@@ -153,7 +163,8 @@
                 <ul class="nav nav-tabs d-flex">
                     <a class="nav-item nav-link" id="nav-adhb" href="">ADHB</a>
                     <a class="nav-item nav-link" id="nav-adhk" href="">ADHK</a>
-                    <a class="nav-item nav-link" id="nav-distribusi" href="">Distribusi</a>
+                    <a class="nav-item nav-link" id="nav-distribusi" href="">Struktur Dalam</a>
+                    <a class="nav-item nav-link" id="nav-struktur-antar" href="">Struktur Antar</a>
                     <a class="nav-item nav-link" id="nav-pertumbuhan" href="">Pertumbuhan</a>
                     <a class="nav-item nav-link" id="nav-indeks" href="">Indeks Implisit</a>
                     <a class="nav-item nav-link" id="nav-laju" href="">Laju Implisit</a>
@@ -223,6 +234,7 @@
                         <table class="table table-bordered" id="rekon-view">
                             <thead class="text-center" style="background-color: steelblue; color:aliceblue;">
                                 <tr>
+                                    <th id="head-purpose" class=""></th>
                                     <th>Total Kabupaten/Kota</th>
                                     @foreach ($regions as $region)
                                     <th>{{$region->name}}</th>
@@ -233,7 +245,8 @@
                                 @foreach ($subsectors as $index => $item)
                                 @if (($item->code != NULL && $item->code == "a" && $item->sector->code == "1") || ($item->code == NULL && $item->sector->code == "1"))
                                 <tr>
-                                    <td class="sum-of-kabkot text-bold"></td>
+                                    <td id="purpose-categories-{{ $index+1 }}" class="text-bold"></td>
+                                    <td id="categories-totalKabkot-{{ $index+1 }}" class="sum-of-kabkot text-bold"></td>
                                     @foreach ($regions as $region)
                                     <td id="categories-{{ $item->sector->category->code.'-'.$region->id }}" class="categories text-right values other-columns"></td>
                                     @endforeach
@@ -241,7 +254,8 @@
                                 @endif
                                 @if ($item->code != null && $item->code == 'a')
                                 <tr>
-                                    <td class="sum-of-kabkot"></td>
+                                    <td id="sector-purpose-{{ $index+1 }}" class=""></td>
+                                    <td id="sector-totalKabkot-{{ $index+1 }}" class="sum-of-kabkot"></td>
                                     @foreach ($regions as $region)
                                     <td id="sector-{{ $index+1 }}-{{ $region->id }}" class="text-right values other-columns"></td>
                                     @endforeach
@@ -249,35 +263,40 @@
                                 @endif
                                 @if ($item->code != null)
                                 <tr>
-                                    <td class="sum-of-kabkot"></td>
+                                    <td id="purpose-{{ $index+1 }}" class=""></td>
+                                    <td id="totalKabkot-{{ $index+1 }}" class="sum-of-kabkot"></td>
                                     @foreach ($regions as $region)
                                     <td id="{{ 'value-'.$item->id }}-{{ $region->id }}" class="text-right values other-columns {{ 'categories-'.$item->sector->category->code }}-{{ $region->id }}"></td>
                                     @endforeach
                                 </tr>
                                 @elseif ($item->code == null && $item->sector->code != null)
                                 <tr>
-                                    <td class="sum-of-kabkot"></td>
+                                    <td id="purpose-{{ $index+1 }}" class=""></td>
+                                    <td id="totalKabkot-{{ $index+1 }}" class="sum-of-kabkot"></td>
                                     @foreach ($regions as $region)
                                     <td id="{{ 'value-'.$item->id }}-{{ $region->id }}" class="text-right values other-columns {{ 'categories-'.$item->sector->category->code }}-{{ $region->id }}"></td>
                                     @endforeach
                                 </tr>
                                 @elseif ($item->code == null && $item->sector->code == null)
                                 <tr>
-                                    <td class="sum-of-kabkot text-bold"></td>
+                                    <td id="purpose-{{ $index+1 }}" class=" text-bold"></td>
+                                    <td id="totalKabkot-{{ $index+1 }}" class="sum-of-kabkot text-bold"></td>
                                     @foreach ($regions as $region)
                                     <td id="{{ 'value-'.$item->id }}-{{ $region->id }}" class="text-right values other-columns {{ 'categories-'.$item->sector->category->code }}-{{ $region->id }} text-bold pdrb-total"></td>
                                     @endforeach
                                 </tr>
                                 @endif
                                 @endforeach
-                                <tr class="PDRB-footer text-center" style="background-color: steelblue; color:aliceblue; font-weight: bold;">
-                                    <td class="sum-of-kabkot"></td>
+                                <tr class="PDRB-footer text-right" style="background-color: steelblue; color:aliceblue; font-weight: bold;">
+                                    <td class="text-right" id="purpose-nonmigas"></td>
+                                    <td class="sum-of-kabkot text-right" id="totalKabkot-nonmigas"></td>
                                     @foreach ($regions as $region)
                                     <td id="total-nonmigas-{{ $region->id }}" style="margin-bottom:0rem;"></td>
                                     @endforeach
                                 </tr>
-                                <tr class="PDRB-footer text-center" style="background-color: steelblue; color:aliceblue; font-weight: bold;">
-                                    <td class="sum-of-kabkot"></td>
+                                <tr class="PDRB-footer text-right" style="background-color: steelblue; color:aliceblue; font-weight: bold;">
+                                    <td class="text-right" id="purpose-migas"></td>
+                                    <td class="sum-of-kabkot text-right" id="totalKabkot-migas"></td>
                                     @foreach ($regions as $region)
                                     <td id="total-{{ $region->id }}" style="margin-bottom:0rem;"></td>
                                     @endforeach
@@ -378,20 +397,28 @@
                     let tbody = $('#rekon-view').find('tbody')
                     $('#nav-distribusi').on('click', function(e) {
                         e.preventDefault()
-                        getStored()
-                        $('#rekon-view tbody td').removeClass(function(index, className) {
-                            return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
-                        })
-                        for (let q = 1; q <= 16; q++) {
-                            for (let i = 0; i <= 55; i++) {
-                                $(`#value-${i}-${q}`).addClass(`view-distribusi-${q}`)
-                                $(`#sector-${i}-${q}`).addClass(`view-distribusi-${q}`)
+                        $('.loader').removeClass('d-none')
+                        setTimeout(function() {
+                            getStored()
+                            $('#rekon-view tbody td').removeClass(function(index, className) {
+                                return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
+                            })
+                            for (let q = 1; q <= 16; q++) {
+                                for (let i = 0; i <= 55; i++) {
+                                    $(`#value-${i}-${q}`).addClass(`view-distribusi-${q}`)
+                                    $(`#sector-${i}-${q}`).addClass(`view-distribusi-${q}`)
+                                }
+                                for (let index of catArray) {
+                                    $(`#categories-${index}-${q}`).addClass(`view-distribusi-${q}`)
+                                }
                             }
-                            for (let index of catArray) {
-                                $(`#categories-${index}-${q}`).addClass(`view-distribusi-${q}`)
-                            }
-                        }
-                        getDist()
+                            $('#rekon-view tbody td:nth-child(2)').each(function() {
+                                $(this).addClass(`view-distribusi-totalKabkot`)
+                            })
+                            $('.loader').addClass('d-none')
+                            showOff()
+                            getDist()
+                        }, 200)
                     })
 
                     $('#nav-adhb').on('click', function(e) {
@@ -399,6 +426,7 @@
                         $('.loader').removeClass('d-none')
                         setTimeout(function() {
                             $('.loader').addClass('d-none')
+                            showOff()
                             getStored()
                         }, 200)
                     })
@@ -421,6 +449,7 @@
                             success: function(data) {
                                 setTimeout(function() {
                                     $('.loader').addClass('d-none')
+                                    showOff()
                                     getAdhk(data)
                                 }, 200)
                             }
@@ -446,7 +475,33 @@
                             success: function(data) {
                                 setTimeout(function() {
                                     $('.loader').addClass('d-none')
+                                    showOff()
                                     getIndex(data)
+                                }, 200)
+                            }
+                        })
+                    })
+
+                    //indeks implisit adhb/adhk
+                    $('#nav-struktur-antar').on('click', function(e) {
+                        e.preventDefault()
+                        let period_id
+                        if ($('#period').val() !== '') {
+                            period_id = $('#period').val()
+                        } else {
+                            period_id = localStorage.getItem('filters')
+                        }
+                        $.ajax({
+                            beforeSend: function() {
+                                $('.loader').removeClass('d-none')
+                            },
+                            type: 'GET',
+                            url: '/getKonserda/' + period_id,
+                            dataType: 'json',
+                            success: function(data) {
+                                setTimeout(function() {
+                                    $('.loader').addClass('d-none')
+                                    getAntar(data)
                                 }, 200)
                             }
                         })

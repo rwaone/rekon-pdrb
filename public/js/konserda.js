@@ -65,6 +65,17 @@ function getDist() {
         $(`#total-nonmigas-${q}`).text(distribusi(`#total-nonmigas-${q}`, q))
         $(`#total-${q}`).text(distribusi(`#total-${q}`, q))
     }
+    $('.view-distribusi-totalKabkot').each(function () {
+        let id = '#' + $(this).attr('id')
+        let X = simpleSum(id)
+        let Y = simpleSum('#totalKabkot-migas')
+        let score = X > 0 ? X / Y * 100 : 0
+        $(this).text(score.toFixed(2))
+    })
+    let nonmigas = simpleSum('#totalKabkot-nonmigas')
+    let Kabkotnonmigas = nonmigas > 0 ? nonmigas / Y * 100 : 0
+    $('#totalKabkot-nonmigas').text(Kabkotnonmigas)
+    $('totalKabkot-migas').text('100')
 }
 
 function getIdx(adhb, adhk) {
@@ -179,6 +190,34 @@ function getIndex(data) {
     return (idx)
 }
 
+function getAntar(data) {
+    getAdhb(data)
+    let dividen = []
+    $('.sum-of-kabkot').each(function () {
+        let X = $(this).text().replaceAll(/[A-Za-z.]/g, '')
+        let Y = X.replaceAll(/[,]/g, '.')
+        dividen.push(Number(Y))
+    })
+    // console.log(dividen)
+    $('#rekon-view tbody td:not(:first-child)').each(function () {
+        let X = $(this).text().replaceAll(/[A-Za-z.]/g, '')
+        let Y = X.replaceAll(/[,]/g, '.')
+        let rowIndex = $(this).closest('tr').index()
+        let colIndex = $(this).closest('td').index()
+        if (colIndex === 2){
+            $(this).addClass('d-none')
+            $('#rekon-view thead th:nth-child(3)').addClass('d-none')
+        }
+        let score = Y > 0 ? Y / dividen[rowIndex] * 100: 0
+        $(this).text(score.toFixed(2))
+    })
+}
+
+function showOff(){
+    $('#rekon-view thead th').removeClass('d-none')
+    $('#rekon-view tbody td').removeClass('d-none')
+}
+
 // function getLaju(laju) {
 //     $('tbody td:nth-child(n+2):nth-child(-n+6)').removeClass(function (index, className) {
 //         return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
@@ -206,7 +245,7 @@ function getTotalKabkot() {
         let numCols = table.find('tr:first-child td').length
         for (let row = 1; row <= numRows; row++) {
             let sum = 0
-            for (let col = 3; col <= numCols; col++) {
+            for (let col = 4; col <= numCols; col++) {
                 let cellValue = table.find('tr:nth-child(' + row + ') td:nth-child(' + col + ')').text()
                 let X = cellValue.replaceAll(/[A-Za-z.]/g, '')
                 let Y = X.replaceAll(/[,]/g, '.')
@@ -214,7 +253,7 @@ function getTotalKabkot() {
                     sum += Number(Y)
                 }
             }
-            table.find('tr:nth-child(' + row + ') td:first-child').text(formatRupiah(String(sum.toFixed(2)).replaceAll(/[.]/g, ','), 'Rp '))
+            table.find('tr:nth-child(' + row + ') td:nth-child(2)').text(formatRupiah(String(sum.toFixed(2)).replaceAll(/[.]/g, ','), 'Rp '))
         }
     });
 }
