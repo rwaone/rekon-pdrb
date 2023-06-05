@@ -94,7 +94,6 @@ class PdrbController extends Controller
 
     public function getKonserda(Request $request, $period_id)
     {
-        // $pdrb = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_id)->where('region_id', '1')->orderBy('subsector_id')->get();
         $regions = Region::select('id')->get();
         $datas = [];
             foreach ($regions as $region){
@@ -267,7 +266,7 @@ class PdrbController extends Controller
     {
         $cat = Category::pluck('code')->toArray();
         $catString = implode(", ", $cat);
-        $regions = Region::all();
+        $regions = Region::getMyRegion();
         $categories = Category::all();
         $sectors = Sector::all();
         $subsectors = Subsector::all();
