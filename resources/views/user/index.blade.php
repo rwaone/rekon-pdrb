@@ -50,19 +50,20 @@
                             <td class="text-center">{{ $user->satker->name }}</td>
                             <td class="project-actions text-center">
                                 <a class="btn btn-primary btn-sm" href="#">
-                                    <i class="fas fa-folder">
-                                    </i>
+                                    <i class="fas fa-eye"></i>
                                     View
                                 </a>
                                 <a class="btn btn-info btn-sm" href="/user/{{ $user->id }}/edit">
-                                    <i class="fas fa-pencil-alt">
-                                    </i>
+                                    <i class="fas fa-pencil-alt"></i>
                                     Edit
+                                </a>
+                                <a class="btn btn-warning btn-sm" href="#">
+                                    <i class="fas fa-key"></i>
+                                    Reset
                                 </a>
                                 <a onclick="deleteConfirm('/user/{{ $user->id }}')" class="btn btn-danger btn-sm"
                                     href="#">
-                                    <i class="fas fa-trash">
-                                    </i>
+                                    <i class="fas fa-trash"></i>
                                     Delete
                                 </a>
                             </td>

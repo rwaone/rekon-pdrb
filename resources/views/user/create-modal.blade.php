@@ -1,6 +1,6 @@
 <div class="modal fade" id="modal-lg">
     <div class="modal-dialog modal-lg">
-        <form action="/user" method="post">
+        <form action="{{ route('register') }}" method="post">
             @csrf
             <div class="modal-content">
 
@@ -29,6 +29,18 @@
                         <label for="email-text" class="col-form-label">E-Mail:</label>
                         <input type="text" class="form-control" id="email-text" name="email"
                             placeholder="E-Mail">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password-text" class="col-form-label">Password:</label>
+                        <input type="password" class="form-control" id="password-text" name="password"
+                            placeholder="Password">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password_confirmation" class="col-form-label">Password:</label>
+                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation"
+                            placeholder="Password">
                     </div>
 
                     <div class="form-group">
