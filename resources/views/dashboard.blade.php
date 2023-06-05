@@ -26,7 +26,7 @@
             </div>
         </div> --}}
         <div class="card-body">
-            Hai! Selamat datang di Aplikasi Rekonsilisi PDRB Online Badan Pusat Statistik Provinsi Sulawesi Utara.
+            Hai! Selamat datang di Aplikasi Rekonsiliasi PDRB Online Badan Pusat Statistik Provinsi Sulawesi Utara.
         </div>
         <!-- /.card-body -->
     </div>
