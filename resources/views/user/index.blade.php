@@ -1,7 +1,7 @@
 <x-dashboard-Layout>
 
     <x-slot name="title">
-        {{ __('Jadwal Rekonsiliasi') }}
+        {{ __('Pengguna') }}
     </x-slot>
 
     <x-slot name="head">
@@ -15,7 +15,7 @@
     </x-slot>
 
     <x-slot name="breadcrumb">
-        <li class="breadcrumb-item active">Jadwal</li>
+        <li class="breadcrumb-item active">Pengguna</li>
     </x-slot>
 
     <div class="card">
@@ -33,39 +33,33 @@
                 <thead>
                     <tr>
                         <th class="text-center">No.</th>
-                        <th class="text-center">PDRB</th>
-                        <th class="text-center">Tahun</th>
-                        <th class="text-center">Triwulan</th>
-                        <th class="text-center">Periode</th>
-                        <th class="text-center">Tanggal Mulai</th>
-                        <th class="text-center">Tanggal Selesai</th>
-                        <th class="text-center">Status</th>
+                        <th class="text-center">Nama</th>
+                        <th class="text-center">Username</th>
+                        <th class="text-center">Email</th>
+                        <th class="text-center">Satker</th>
                         <th class="text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($periods as $period)
+                    @foreach ($users as $user)
                         <tr>
                             <td class="text-center">{{ $loop->iteration }}</td>
-                            <td class="text-center">{{ $period->type }}</td>
-                            <td class="text-center">{{ $period->year }}</td>
-                            <td class="text-center">{{ $period->quarter }}</td>
-                            <td class="text-center">{{ $period->description }}</td>
-                            <td class="text-center">{{ $period->started_at }}</td>
-                            <td class="text-center">{{ $period->ended_at }}</td>
-                            <td class="text-center">{{ $period->status }}</td>
-                            <td class="project-actions text-right">
+                            <td class="text-center">{{ $user->name }}</td>
+                            <td class="text-center">{{ $user->username }}</td>
+                            <td class="text-center">{{ $user->email }}</td>
+                            <td class="text-center">{{ $user->satker->name }}</td>
+                            <td class="project-actions text-center">
                                 <a class="btn btn-primary btn-sm" href="#">
                                     <i class="fas fa-folder">
                                     </i>
                                     View
                                 </a>
-                                <a class="btn btn-info btn-sm" href="/period/{{ $period->id }}/edit">
+                                <a class="btn btn-info btn-sm" href="/user/{{ $user->id }}/edit">
                                     <i class="fas fa-pencil-alt">
                                     </i>
                                     Edit
                                 </a>
-                                <a onclick="deleteConfirm('/period/{{ $period->id }}')" class="btn btn-danger btn-sm"
+                                <a onclick="deleteConfirm('/user/{{ $user->id }}')" class="btn btn-danger btn-sm"
                                     href="#">
                                     <i class="fas fa-trash">
                                     </i>
@@ -78,85 +72,7 @@
             </table>
         </div>
 
-        <div class="modal fade" id="modal-lg">
-            <div class="modal-dialog modal-lg">
-                <form action="/period" method="post">
-                    @csrf
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Add New Period</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-
-                            <div class="form-group">
-                                <label class="col-form-label" for="typeSelect">Jenis PDRB:</label>
-                                <select id="typeSelect" class="form-control select2bs4" style="width: 100%;"
-                                    name="type">
-                                    <option value="" disabled selected>Pilih Jenis PDRB</option>
-                                    <option value='Lapangan Usaha'>Lapangan Usaha</option>
-                                    <option value='Pengeluaran'>Pengeluaran</option>
-                                </select>
-                                <div class="help-block"></div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-form-label" for="tahunSelect">Tahun:</label>
-                                <select id="tahunSelect" class="form-control select2bs4" style="width: 100%;"
-                                    name="year">
-                                    <option value="" disabled selected>Pilih Tahun</option>
-                                    @foreach ($years as $year)
-                                        <option value='{{$year}}'>{{$year}}</option>
-                                    @endforeach
-                                </select>
-                                <div class="help-block"></div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-form-label" for="quarterSelect">Triwulan:</label>
-                                <select id="quarterSelect" class="form-control select2bs4" style="width: 100%;"
-                                    name="quarter">
-                                    <option value="" disabled selected>Pilih Triwulan</option>
-                                    <option value='1'>Triwulan 1</option>
-                                    <option value='2'>Triwulan 2</option>
-                                    <option value='3'>Triwulan 3</option>
-                                    <option value='4'>Triwulan 4</option>
-                                    <option value='Y'>Tahunan</option>
-                                    <option value='F'>Lengkap</option>
-                                </select>
-                                <div class="help-block"></div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="description-text" class="col-form-label">Keterangan:</label>
-                                <input type="text" class="form-control" id="description-text" name="description"
-                                    placeholder="Keterangan Putaran">
-                            </div>
-
-                            <div class="form-group">
-                                <label>Jadwal:</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">
-                                            <i class="far fa-calendar-alt"></i>
-                                        </span>
-                                    </div>
-                                    <input type="text" class="form-control float-right" id="jadwal"
-                                        name="date_range">
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="modal-footer justify-content-between">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-                            <button type="submit" class="btn btn-success">Simpan</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
+        @include('user.create-modal')
 
         <div class="modal fade" id="deleteModal">
             <div class="modal-dialog">

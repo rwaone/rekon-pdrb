@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\FenomenaController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PdrbController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\PeriodController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FenomenaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,8 @@ Route::post('fetch/year', [PeriodController::class, 'fetchYear'])->name('fetchYe
 Route::post('fetch/quarter', [PeriodController::class, 'fetchQuarter'])->name('fetchQuarter');
 Route::post('fetch/period', [PeriodController::class, 'fetchPeriod'])->name('fetchPeriod');
 Route::resource('period', PeriodController::class)->middleware(['auth', 'verified']);
+
+Route::resource('user', UserController::class)->middleware(['auth', 'verified']);
 
 
 require __DIR__ . '/auth.php';

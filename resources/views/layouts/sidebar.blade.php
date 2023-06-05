@@ -78,7 +78,7 @@
                 
                 <li class="nav-header">PENGATURAN</li>
                 <li class="nav-item">
-                    <a href="../widgets.html" class="nav-link">
+                    <a href="{{ url('user')}}" class="nav-link {{ Request::is('user*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Pengguna
