@@ -92,28 +92,40 @@ class PdrbController extends Controller
         //
     }
 
-    public function getKonserda(Request $request, $period_id)
+    public function getKonserda($period_id)
     {
         $regions = Region::select('id')->get();
+        $period_now = Period::where('id', $period_id)->first();
+        $year_ = $period_now->year - 1;
+        $period_before = Period::where('year', $year_)->where('quarter', 'Y')->first();
         $datas = [];
-            foreach ($regions as $region){
-                $datas['pdrb-'.$region->id] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_id)->where('region_id', $region->id)->orderBy('subsector_id')->get();
+        foreach ($regions as $region) {
+            $datas['pdrb-' . $region->id] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_id)->where('quarter', 'Y')->where('region_id', $region->id)->orderBy('subsector_id')->get();
+        }
+        $befores = [];
+        if ($period_before){
+            foreach ($regions as $region) {
+                $befores['pdrb-' . $region->id] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_before->id)->where('quarter', 'Y')->where('region_id', $region->id)->orderBy('subsector_id')->get();
             }
-            
-        return response()->json($datas);
+        }
+
+        return response()->json([
+            'data' => $datas,
+            'before' => $befores
+        ]);
     }
 
     public function daftarPokok()
-    {   
+    {
         $number = 1;
         $daftar_1 = Pdrb::select('region_id', 'period_id', 'quarter')->where('quarter', 'Y')->groupBy('region_id', 'period_id', 'quarter')->get();
-        foreach ($daftar_1 as $item){
+        foreach ($daftar_1 as $item) {
             $item->number = $number;
             $number++;
         }
         $number = 1;
         $daftar_2 = Pdrb::select('region_id', 'period_id', 'quarter')->whereNotIn('region_id', ['1'])->whereNotIn('quarter', ['Y'])->groupBy('region_id', 'period_id', 'quarter')->get();
-        foreach ($daftar_2 as $item){
+        foreach ($daftar_2 as $item) {
             $item->number = $number;
             $number++;
         }
@@ -128,7 +140,7 @@ class PdrbController extends Controller
         $subsectors = Subsector::all();
         $period = Period::where('id', $period_id)->first();
         $year_ = $period->year;
-        $quarters = [1,2,3,4];
+        $quarters = [1, 2, 3, 4];
         $cat = Category::pluck('code')->toArray();
         $catString = implode(", ", $cat);
         if ($quarter === 'Y') {
@@ -179,11 +191,11 @@ class PdrbController extends Controller
                 'years' => $years,
                 'pdrb' => $pdrb,
             ]);
-        } elseif (in_array($quarter, $quarters)){
+        } elseif (in_array($quarter, $quarters)) {
             $periods = [];
-            foreach ($quarters as $item){
+            foreach ($quarters as $item) {
                 $per = Period::select('id')->where('quarter', $item)->where('year', $year_)->first();
-                if ($per){
+                if ($per) {
                     array_push($periods, $per->id);
                 } else {
                     array_push($periods, 0);
@@ -193,7 +205,7 @@ class PdrbController extends Controller
             $pdrb_2 = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $periods[1])->where('region_id', $region_id)->orderBy('subsector_id')->get();
             $pdrb_3 = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $periods[2])->where('region_id', $region_id)->orderBy('subsector_id')->get();
             $pdrb_4 = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $periods[3])->where('region_id', $region_id)->orderBy('subsector_id')->get();
-            
+
             $datas = [
                 'pdrb-1' => $pdrb_1,
                 'pdrb-2' => $pdrb_2,
@@ -292,7 +304,7 @@ class PdrbController extends Controller
         $fullData = [];
 
         foreach ($dataSeries as $key => $data) {
-            if (sizeof($data) == 0){
+            if (sizeof($data) == 0) {
                 $inputData = [];
                 $timestamp = date('Y-m-d H:i:s');
                 foreach ($subsectors as $subsector) {
@@ -310,7 +322,7 @@ class PdrbController extends Controller
                 }
                 Pdrb::insert($inputData);
                 $fullData[$key] = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->where('quarter', $key)->orderBy('subsector_id')->get();
-            }else {
+            } else {
                 $fullData[$key] = $data;
             }
         }
@@ -355,10 +367,10 @@ class PdrbController extends Controller
         $input = $request->input;
         $subsectors = Subsector::where('type', $filter['type'])->orderBy('id')->get();
         $data = [];
-        
+
         foreach ($subsectors as $subsector) {
-            $inputData = (float) str_replace(',','.',str_replace('.','',str_replace('Rp. ','',$input['value_' . $subsector->id])));
-            Pdrb::where('id', $input['id_'.$subsector->id])->update([$filter['price_base'] => $inputData]);
+            $inputData = (float) str_replace(',', '.', str_replace('.', '', str_replace('Rp. ', '', $input['value_' . $subsector->id])));
+            Pdrb::where('id', $input['id_' . $subsector->id])->update([$filter['price_base'] => $inputData]);
         }
         return response()->json($request);
     }
@@ -376,16 +388,15 @@ class PdrbController extends Controller
             '4',
         ];
 
-        foreach ($dataSeries as $key){
+        foreach ($dataSeries as $key) {
             foreach ($subsectors as $subsector) {
-                $inputData = (float) str_replace(',','.',str_replace('.','',str_replace('Rp. ','',$input['value_'. $key .'_' . $subsector->id])));
+                $inputData = (float) str_replace(',', '.', str_replace('.', '', str_replace('Rp. ', '', $input['value_' . $key . '_' . $subsector->id])));
                 // return response()->json($inputData);
-                
-                Pdrb::where('id', $input['id_'. $key .'_'.$subsector->id])->update([$filter['price_base'] => $inputData]);
+
+                Pdrb::where('id', $input['id_' . $key . '_' . $subsector->id])->update([$filter['price_base'] => $inputData]);
                 // $inputData['id'] = $input['id_'.$x];
                 array_push($data, $inputData);
             }
-
         }
 
         return response()->json($data);

@@ -51,7 +51,7 @@ function simpleSum(atri) {
 function distribusi(values, index) {
     let X = simpleSum(values)
     let Y = simpleSum(`#total-${index}`)
-    let score = X > 0 ? X / Y * 100 : 0
+    let score = Y > 0 ? X / Y * 100 : 0
     return score > 0 ? score.toFixed(2) : 0
 }
 
@@ -69,9 +69,10 @@ function getDist() {
         let id = '#' + $(this).attr('id')
         let X = simpleSum(id)
         let Y = simpleSum('#totalKabkot-migas')
-        let score = X > 0 ? X / Y * 100 : 0
+        let score = Y > 0 ? X / Y * 100 : 0
         $(this).text(score.toFixed(2))
     })
+    let Y = simpleSum('#totalKabkot-migas')
     let nonmigas = simpleSum('#totalKabkot-nonmigas')
     let Kabkotnonmigas = nonmigas > 0 ? nonmigas / Y * 100 : 0
     $('#totalKabkot-nonmigas').text(Kabkotnonmigas)
@@ -83,11 +84,29 @@ function getIdx(adhb, adhk) {
     return result > 0 ? result.toFixed(2) : ''
 }
 
+function diskrepansi() {
+    $('#rekon-view tbody td:first-child').each(function () {
+        let X = Number($(this).closest('tr').find('td:nth-child(3)').text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+        let Y = Number($(this).closest('tr').find('td:nth-child(2)').text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+        let score = X > 0 ? (Y - X) / X * 100 : 0
+        $(this).addClass('text-right')
+        if (score > 5) {
+            $(this).css('background-color', 'red')
+            $(this).css('color', 'aliceblue')
+        } else if (score > 1 && score < 6) {
+            $(this).css('background-color', 'yellow')
+            $(this).css('color', 'aliceblue')
+        }
+        $(this).text(score.toFixed(2))
+    })
+    $('#head-purpose').text('Cek Diskrepansi')
+}
+
 function getAdhb(data) {
-    $('#rekon-view tbody td').removeClass(function (index, className) {
+    $('#rekon-view tbody td:not(:first-child)').removeClass(function (index, className) {
         return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
     })
-    $('#rekon-view tbody td').addClass('view-adhb')
+    $('#rekon-view tbody td:not(:first-child)').addClass('view-adhb')
     for (let q = 1; q <= 16; q++) {
         for (let i = 1; i <= 55; i++) {
             let X = data[`pdrb-${q}`][i - 1]['adhb']
@@ -97,13 +116,14 @@ function getAdhb(data) {
     }
     getSummarise()
     getTotalKabkot()
+    diskrepansi()
 }
 
 function getAdhk(data) {
-    $('#rekon-view tbody td').removeClass(function (index, className) {
+    $('#rekon-view tbody td:not(:first-child)').removeClass(function (index, className) {
         return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
     })
-    $('#rekon-view tbody td').addClass('view-adhk')
+    $('#rekon-view tbody td:not(:first-child)').addClass('view-adhk')
     for (let q = 1; q <= 16; q++) {
         for (let i = 1; i <= 55; i++) {
             let X = data[`pdrb-${q}`][i - 1]['adhk']
@@ -113,45 +133,60 @@ function getAdhk(data) {
     }
     getSummarise()
     getTotalKabkot()
+    diskrepansi()
 }
 
-// function getGrowth() {
-//     $('tbody td:nth-child(n+2):nth-child(-n+6)').removeClass(function (index, className) {
-//         return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
-//     })
-//     $('tbody td:nth-child(n+2):nth-child(-n+6)').addClass('view-pertumbuhan')
-//     let idx_adhk = []
-//     let growth = []
-//     for (let q = 1; q <= 16; q++) {
-//         for (let i = 1; i <= 55; i++) {
-//             $(`#value-${i}-${q}`).text(adhk_data[`pdrb-${q}`][i - 1])
-//         }
-//     }
-//     getSummarise()
-//     $('tbody td:not(:first-child)').each(function () {
-//         let X = $(this).text().replaceAll(/[A-Za-z.]/g, '')
-//         let Y = X.replaceAll(/[,]/g, '.')
-//         idx_adhk.push(Number(Y))
-//     })
-//     for (let i = 0; i < idx_adhk.length; i++) {
-//         if (i % 5 != 0 && i > 0) {
-//             let score = idx_adhk[i - 1] > 0 ? (idx_adhk[i] / idx_adhk[i - 1] * 100 - 100).toFixed(2) : ''
-//             growth.push(score)
-//         } else {
-//             score = '-'
-//             growth.push(score)
-//         }
-//     }
-//     $('tbody td:not(:first-child)').each(function (index) {
-//         $(this).text(growth[index])
-//     })
-// }
-
-function getIndex(data) {
-    $('#rekon-view tbody td').removeClass(function (index, className) {
+function getGrowth(data, before) {
+    $('tbody td:nth-child(n+2):nth-child(-n+6)').removeClass(function (index, className) {
         return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
     })
-    $('#rekon-view tbody td').addClass('view-indeks')
+    $('tbody td:nth-child(n+2):nth-child(-n+6)').addClass('view-pertumbuhan')
+    let adhk_now = []
+    let adhk_before = []
+    let growth = []
+    for (let q = 1; q <= 16; q++) {
+        for (let i = 1; i <= 55; i++) {
+            let X = data[`pdrb-${q}`][i - 1]['adhb']
+            let Y = String(X).replaceAll(/[.]/g, ',')
+            $(`#value-${i}-${q}`).text(Y)
+        }
+    }
+    getSummarise()
+    getTotalKabkot()
+    $('#rekon-view tbody td:not(:first-child)').each(function () {
+        let X = $(this).text().replaceAll(/[A-Za-z.]/g, '')
+        let Y = X.replaceAll(/[,]/g, '.')
+        adhk_now.push(Number(Y))
+    })
+    for (let q = 1; q <= 16; q++) {
+        for (let i = 1; i <= 55; i++) {
+            let X = before[`pdrb-${q}`][i - 1]['adhb']
+            let Y = String(X).replaceAll(/[.]/g, ',')
+            $(`#value-${i}-${q}`).text(Y)
+        }
+    }
+    getSummarise()
+    getTotalKabkot()
+    $('#rekon-view tbody td:not(:first-child)').each(function () {
+        let X = $(this).text().replaceAll(/[A-Za-z.]/g, '')
+        let Y = X.replaceAll(/[,]/g, '.')
+        adhk_before.push(Number(Y))
+    })
+
+    for (let i = 0; i < adhk_now.length; i++) {
+        let score = adhk_before[i] > 0 ? (adhk_now[i] / adhk_before[i] * 100 - 100).toFixed(2) : ''
+        growth.push(score)
+    }
+    $('#rekon-view tbody td:not(:first-child)').each(function (index) {
+        $(this).text(growth[index])
+    })
+}
+
+function getIndex(data) {
+    $('#rekon-view tbody td:not(:first-child)').removeClass(function (index, className) {
+        return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
+    })
+    $('#rekon-view tbody td:not(:first-child)').addClass('view-indeks')
     let idx_adhb = []
     let idx_adhk = []
     let idx = []
@@ -163,7 +198,8 @@ function getIndex(data) {
         }
     }
     getSummarise()
-    $('#rekon-view tbody td').each(function () {
+    getTotalKabkot()
+    $('#rekon-view tbody td:not(:first-child)').each(function () {
         let X = $(this).text().replaceAll(/[A-Za-z.]/g, '')
         let Y = X.replaceAll(/[,]/g, '.')
         idx_adhb.push(Number(Y))
@@ -176,7 +212,8 @@ function getIndex(data) {
         }
     }
     getSummarise()
-    $('#rekon-view tbody td').each(function () {
+    getTotalKabkot()
+    $('#rekon-view tbody td:not(:first-child)').each(function () {
         let X = $(this).text().replaceAll(/[A-Za-z.]/g, '')
         let Y = X.replaceAll(/[,]/g, '.')
         idx_adhk.push(Number(Y))
@@ -184,7 +221,7 @@ function getIndex(data) {
     for (let i = 0; i < idx_adhb.length; i++) {
         idx.push(getIdx(idx_adhb[i], idx_adhk[i]))
     }
-    $('#rekon-view tbody td').each(function (index) {
+    $('#rekon-view tbody td:not(:first-child)').each(function (index) {
         $(this).text(idx[index])
     })
     return (idx)
@@ -204,39 +241,34 @@ function getAntar(data) {
         let Y = X.replaceAll(/[,]/g, '.')
         let rowIndex = $(this).closest('tr').index()
         let colIndex = $(this).closest('td').index()
-        if (colIndex === 2){
+        if (colIndex === 2) {
             $(this).addClass('d-none')
             $('#rekon-view thead th:nth-child(3)').addClass('d-none')
         }
-        let score = Y > 0 ? Y / dividen[rowIndex] * 100: 0
+        let score = Y > 0 ? Y / dividen[rowIndex] * 100 : 0
         $(this).text(score.toFixed(2))
     })
 }
 
-function showOff(){
+function showOff() {
     $('#rekon-view thead th').removeClass('d-none')
     $('#rekon-view tbody td').removeClass('d-none')
 }
 
-// function getLaju(laju) {
-//     $('tbody td:nth-child(n+2):nth-child(-n+6)').removeClass(function (index, className) {
-//         return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
-//     })
-//     $('tbody td:nth-child(n+2):nth-child(-n+6)').addClass('view-laju')
-//     let growth = []
-//     for (let i = 0; i < laju.length; i++) {
-//         if (i % 5 != 0 && i > 0) {
-//             let score = laju[i - 1] > 0 ? (laju[i] / laju[i - 1] * 100 - 100).toFixed(2) : ''
-//             growth.push(score)
-//         } else {
-//             score = '-'
-//             growth.push(score)
-//         }
-//     }
-//     $('tbody td:not(:first-child)').each(function (index) {
-//         $(this).text(growth[index])
-//     })
-// }
+function getLaju(first, before) {
+    $('#rekon-view tbody td:not(:first-child)').removeClass(function (index, className) {
+        return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
+    })
+    $('#rekon-view tbody td:not(:first-child)').addClass('view-laju')
+    let growth = []
+    for (let i = 0; i < first.length; i++) {
+        let score = before[i] > 0 ? (first[i] / before[i] * 100 - 100).toFixed(2) : ''
+        growth.push(score)
+    }
+    $('#rekon-view tbody td:not(:first-child)').each(function (index) {
+        $(this).text(growth[index])
+    })
+}
 
 function getTotalKabkot() {
     $('#rekon-view').each(function () {

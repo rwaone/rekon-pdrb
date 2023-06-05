@@ -371,11 +371,12 @@
                             dataType: 'json',
                             success: function(data) {
                                 setTimeout(function() {
-                                    getAdhb(data)
+                                    // console.log(data)
+                                    getAdhb(data.data)
                                     $('.loader').addClass('d-none')
                                     $('#view-body').removeClass('d-none')
                                 }, 200)
-                                localStorage.setItem('dataStored', JSON.stringify(data))
+                                localStorage.setItem('dataStored', JSON.stringify(data.data))
                                 localStorage.setItem('filters', period_id)
                             },
                             error: function(jqXHR, textStatus, errorThrown) {
@@ -450,7 +451,7 @@
                                 setTimeout(function() {
                                     $('.loader').addClass('d-none')
                                     showOff()
-                                    getAdhk(data)
+                                    getAdhk(data.data)
                                 }, 200)
                             }
                         })
@@ -476,13 +477,74 @@
                                 setTimeout(function() {
                                     $('.loader').addClass('d-none')
                                     showOff()
-                                    getIndex(data)
+                                    getIndex(data.data)
                                 }, 200)
                             }
                         })
                     })
 
-                    //indeks implisit adhb/adhk
+                    $('#nav-laju').on('click', function(e) {
+                        e.preventDefault()
+                        let period_id
+                        if ($('#period').val() !== '') {
+                            period_id = $('#period').val()
+                        } else {
+                            period_id = localStorage.getItem('filters')
+                        }
+                        $.ajax({
+                            beforeSend: function() {
+                                $('.loader').removeClass('d-none')
+                            },
+                            type: 'GET',
+                            url: '/getKonserda/' + period_id,
+                            dataType: 'json',
+                            success: function(data) {
+                                setTimeout(function() {
+                                    $('.loader').addClass('d-none')
+                                    showOff()
+                                    if (data.before === null || data.before.length === 0) {
+                                        alert('Data tahun lalu tidak ada')
+                                    } else {
+                                        let first = getIndex(data.data)
+                                        let before = getIndex(data.before)
+                                        getLaju(first, before)
+                                    }
+                                }, 200)
+                            }
+                        })
+                    })
+
+                    //growth
+                    $('#nav-pertumbuhan').on('click', function(e) {
+                        e.preventDefault()
+                        let period_id
+                        if ($('#period').val() !== '') {
+                            period_id = $('#period').val()
+                        } else {
+                            period_id = localStorage.getItem('filters')
+                        }
+                        $.ajax({
+                            beforeSend: function() {
+                                $('.loader').removeClass('d-none')
+                            },
+                            type: 'GET',
+                            url: '/getKonserda/' + period_id,
+                            dataType: 'json',
+                            success: function(data) {
+                                setTimeout(function() {
+                                    $('.loader').addClass('d-none')
+                                    showOff()
+                                    if (data.before === null || data.before.length === 0) {
+                                        alert('Data tahun lalu tidak ada')
+                                    } else {
+                                        getGrowth(data.data, data.before)
+                                    }
+                                }, 200)
+                            }
+                        })
+                    })
+
+                    //struktur antar
                     $('#nav-struktur-antar').on('click', function(e) {
                         e.preventDefault()
                         let period_id
@@ -501,14 +563,12 @@
                             success: function(data) {
                                 setTimeout(function() {
                                     $('.loader').addClass('d-none')
-                                    getAntar(data)
+                                    getAntar(data.data)
                                 }, 200)
                             }
                         })
                     })
                 })
-
-                //summarise
 
                 //filter
                 $(document).ready(function() {
