@@ -51,7 +51,7 @@ function simpleSum(atri) {
 function distribusi(values, index){
     let X = simpleSum(values)
     let Y = simpleSum(`#total-${index}`)
-    let score = X > 0 ? X/Y * 100 : 0 
+    let score = Y > 0 ? X/Y * 100 : 0 
     return score > 0 ? score.toFixed(2) : 0
 }
 
@@ -68,7 +68,7 @@ function getDist(){
 }
 
 function getIdx(adhb, adhk) {
-    let result = adhb > 0 ? adhb/adhk * 100 : ''
+    let result = adhk > 0 ? adhb/adhk * 100 : ''
     return result > 0 ? result.toFixed(2) : ''
 }
 
