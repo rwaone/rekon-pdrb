@@ -14,7 +14,7 @@
 
     <!-- Default box -->
     <div class="card">
-        <div class="card-header">
+        {{-- <div class="card-header">
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -24,9 +24,9 @@
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-        </div>
+        </div> --}}
         <div class="card-body">
-            Hai! Selamat datang di Aplikasi Rekonsilisi PDRB Online.
+            Hai! Selamat datang di Aplikasi Rekonsiliasi PDRB Online Badan Pusat Statistik Provinsi Sulawesi Utara.
         </div>
         <!-- /.card-body -->
     </div>
