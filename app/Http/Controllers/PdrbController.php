@@ -264,7 +264,7 @@ class PdrbController extends Controller
         $regions = Region::all();
         $cat = Category::pluck('code')->toArray();
         $catString = implode(", ", $cat);
-        $subsectors = Subsector::all();
+        $subsectors = Subsector::where('type', 'Lapangan Usaha')->get();
         return view('rekonsiliasi.konserda', [
             'regions' => $regions,
             'subsectors' => $subsectors,
