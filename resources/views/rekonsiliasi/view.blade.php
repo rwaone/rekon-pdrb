@@ -22,6 +22,13 @@
             #rekonsiliasi-table .PDRB-footer td p {
                 text-align: center !important;
             }
+
+            #btn-back-to-top {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                display: none;
+            }
         </style>
     </x-slot>
 
@@ -37,11 +44,42 @@
     <div id="fullFormContainer" class="card d-none">@include('rekonsiliasi.full-form')</div>
     <div id="singleFormContainer" class="card d-none">@include('rekonsiliasi.single-form')</div>
 
+    <!-- Back to top button -->
+    <button type="button" class="btn btn-light btn-floating btn-lg" id="btn-back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     <x-slot name="script">
         <!-- Additional JS resources -->
         <script src="{{ url('') }}/plugins/select2/js/select2.full.min.js"></script>
         <script src="{{ asset('js/rekonsiliasi.js') }}"></script>
         <script>
+            //Get the button
+            let mybutton = document.getElementById("btn-back-to-top");
+
+            // When the user scrolls down 20px from the top of the document, show the button
+            window.onscroll = function() {
+                scrollFunction();
+            };
+
+            function scrollFunction() {
+                if (
+                    document.body.scrollTop > 20 ||
+                    document.documentElement.scrollTop > 20
+                ) {
+                    mybutton.style.display = "block";
+                } else {
+                    mybutton.style.display = "none";
+                }
+            }
+            // When the user clicks on the button, scroll to the top of the document
+            mybutton.addEventListener("click", backToTop);
+
+            function backToTop() {
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop = 0;
+            }
+            
             $(document).on('focus', '.select2-selection', function(e) {
                 $(this).closest(".select2-container").siblings('select:enabled').select2('open');
             })
