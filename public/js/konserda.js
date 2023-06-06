@@ -77,6 +77,7 @@ function getDist() {
     let Kabkotnonmigas = nonmigas > 0 ? nonmigas / Y * 100 : 0
     $('#totalKabkot-nonmigas').text(Kabkotnonmigas)
     $('totalKabkot-migas').text('100')
+    selisih()
 }
 
 function getIdx(adhb, adhk) {
@@ -91,15 +92,28 @@ function diskrepansi() {
         let score = X > 0 ? (Y - X) / X * 100 : 0
         $(this).addClass('text-right')
         if (score > 5) {
-            $(this).css('background-color', 'red')
+            $(this).css('background-color', '#DB3131')
             $(this).css('color', 'aliceblue')
         } else if (score > 1 && score < 6) {
-            $(this).css('background-color', 'yellow')
+            $(this).css('background-color', '#E6ED18')
             $(this).css('color', 'aliceblue')
         }
         $(this).text(score.toFixed(2))
     })
     $('#head-purpose').text('Cek Diskrepansi')
+}
+
+function selisih() {
+    $('#rekon-view tbody td:first-child').each(function () {
+        let X = Number($(this).closest('tr').find('td:nth-child(3)').text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+        let Y = Number($(this).closest('tr').find('td:nth-child(2)').text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+        let score = X - Y
+        $(this).addClass('text-right')
+        $(this).css('background-color', '')
+        $(this).css('color', '')
+        $(this).text(score.toFixed(2))
+    })
+    $('#head-purpose').text('Selisih')
 }
 
 function getAdhb(data) {
@@ -180,6 +194,7 @@ function getGrowth(data, before) {
     $('#rekon-view tbody td:not(:first-child)').each(function (index) {
         $(this).text(growth[index])
     })
+    selisih()
 }
 
 function getIndex(data) {
@@ -224,6 +239,7 @@ function getIndex(data) {
     $('#rekon-view tbody td:not(:first-child)').each(function (index) {
         $(this).text(idx[index])
     })
+    selisih()
     return (idx)
 }
 
@@ -236,6 +252,10 @@ function getAntar(data) {
         dividen.push(Number(Y))
     })
     // console.log(dividen)
+    $('#rekon-view tbody td:first-child').each(function () {
+        $(this).addClass('d-none')
+        $('#rekon-view thead th:first-child').addClass('d-none')
+    })
     $('#rekon-view tbody td:not(:first-child)').each(function () {
         let X = $(this).text().replaceAll(/[A-Za-z.]/g, '')
         let Y = X.replaceAll(/[,]/g, '.')
@@ -268,6 +288,7 @@ function getLaju(first, before) {
     $('#rekon-view tbody td:not(:first-child)').each(function (index) {
         $(this).text(growth[index])
     })
+    selisih()
 }
 
 function getTotalKabkot() {

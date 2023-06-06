@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Region;
 use App\Models\Sector;
 use App\Models\Subsector;
+use Illuminate\Http\Request;
 
 class FenomenaController extends Controller
 {
@@ -101,6 +102,6 @@ class FenomenaController extends Controller
     public function getFenomena(Request $request)
     {
         $filter = $request->filter;        
-        $fenomena = Feomena::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->orderBy('subsector_id')->get();
+        $fenomena = Fenomena::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->orderBy('subsector_id')->get();
     }
 }

@@ -47,6 +47,9 @@ Route::get('konserda', [PdrbController::class, 'konserda'])->middleware(['auth',
 Route::get('getKonserda/{period_id}', [PdrbController::class, 'getKonserda'])->middleware(['auth', 'verified']);
 Route::get('daftarPokok', [PdrbController::class, 'daftarPokok'])->middleware(['auth', 'verified']);
 Route::get('detailPokok/{period_id}/{region_id}/{quarter}', [PdrbController::class, 'detailPokok'])->middleware(['auth', 'verified']);
+Route::post('konserda/year', [PeriodController::class, 'konserdaYear'])->name('konserdaYear');
+Route::post('konserda/quarter', [PeriodController::class, 'konserdaQuarter'])->name('konserdaQuarter');
+Route::post('konserda/period', [PeriodController::class, 'konserdaPeriod'])->name('konserdaPeriod');
 
 Route::post('fetch/year', [PeriodController::class, 'fetchYear'])->name('fetchYear');
 Route::post('fetch/quarter', [PeriodController::class, 'fetchQuarter'])->name('fetchQuarter');

@@ -16,7 +16,9 @@
             }
 
             #rekon-view td {
-                word-wrap: break-word;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
             }
 
             #rekon-view .values {
@@ -52,12 +54,12 @@
         <div class="card-body">
             <nav class="navbar d-flex justify-content-center">
                 <ul class="nav nav-tabs d-flex">
-                    <a class="nav-item nav-link" id="nav-adhb" href="#">ADHB</a>
-                    <a class="nav-item nav-link" id="nav-adhk" href="#">ADHK</a>
-                    <a class="nav-item nav-link" id="nav-distribusi" href="#">Distribusi</a>
-                    <a class="nav-item nav-link" id="nav-pertumbuhan" href="#">Pertumbuhan</a>
-                    <a class="nav-item nav-link" id="nav-indeks" href="#">Indeks Implisit</a>
-                    <a class="nav-item nav-link" id="nav-laju" href="#">Laju Implisit</a>
+                    <a class="nav-item nav-link" id="nav-adhb" href="">ADHB</a>
+                    <a class="nav-item nav-link" id="nav-adhk" href="">ADHK</a>
+                    <a class="nav-item nav-link" id="nav-distribusi" href="">Distribusi</a>
+                    <a class="nav-item nav-link" id="nav-pertumbuhan" href="">Pertumbuhan</a>
+                    <a class="nav-item nav-link" id="nav-indeks" href="">Indeks Implisit</a>
+                    <a class="nav-item nav-link" id="nav-laju" href="">Laju Implisit</a>
                 </ul>
             </nav>
             <span class="loader d-none"></span>
@@ -208,7 +210,8 @@
             //change
             $(document).ready(function() {
                 let tbody = $('#rekon-view').find('tbody')
-                $('#nav-distribusi').on('click', function() {
+                $('#nav-distribusi').on('click', function(e) {
+                    e.preventDefault()
                     $('.loader').removeClass('d-none')
                     setTimeout(function() {
                         getAdhb()
@@ -229,7 +232,8 @@
                     }, 500)
                 })
 
-                $('#nav-adhb').on('click', function() {
+                $('#nav-adhb').on('click', function(e) {
+                    e.preventDefault()
                     $('.loader').removeClass('d-none')
                     setTimeout(function() {
                         getAdhb()
@@ -237,7 +241,8 @@
                     }, 500)
                 })
 
-                $('#nav-adhk').on('click', function() {
+                $('#nav-adhk').on('click', function(e) {
+                    e.preventDefault()
                     $('.loader').removeClass('d-none')
                     setTimeout(function() {
                         getAdhk()
@@ -246,7 +251,8 @@
                 })
 
                 //belum tau gimana
-                $('#nav-pertumbuhan').on('click', function() {
+                $('#nav-pertumbuhan').on('click', function(e) {
+                    e.preventDefault()
                     $('.loader').removeClass('d-none')
                     setTimeout(function() {
                         getGrowth()
@@ -255,7 +261,8 @@
                 })
 
                 //indeks implisit adhb/adhk
-                $('#nav-indeks').on('click', function() {
+                $('#nav-indeks').on('click', function(e) {
+                    e.preventDefault()
                     $('.loader').removeClass('d-none')
                     setTimeout(function() {
                         getIndex()
@@ -264,7 +271,8 @@
                 })
 
                 //laju index
-                $('#nav-laju').on('click', function() {
+                $('#nav-laju').on('click', function(e) {
+                    e.preventDefault()
                     $('.loader').removeClass('d-none')
                     setTimeout(function() {
                         let laju = getIndex()

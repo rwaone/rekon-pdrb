@@ -141,4 +141,22 @@ class PeriodController extends Controller
         $data['periods'] = Period::where('type', $request->type)->where('year',$request->year)->where('quarter', $request->quarter)->get();
         return response()->json($data);
     }
+
+    public function konserdaYear(Request $request)
+    {
+        $data['years'] = Period::where('type',$request->type)->where('status', 'Selesai')->groupBy('year')->orderBy('year','DESC')->get('year');
+        return response()->json($data);
+    }
+
+    public function konserdaQuarter(Request $request)
+    {
+        $data['quarters'] = Period::where('type', $request->type)->where('status', 'Selesai')->where('year',$request->year)->groupBy('quarter')->get('quarter');
+        return response()->json($data);
+    }
+    
+    public function konserdaPeriod(Request $request)
+    {
+        $data['periods'] = Period::where('type', $request->type)->where('status', 'Selesai')->where('year',$request->year)->where('quarter', $request->quarter)->get();
+        return response()->json($data);
+    }
 }

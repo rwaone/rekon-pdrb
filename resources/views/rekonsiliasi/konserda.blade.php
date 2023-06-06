@@ -577,7 +577,7 @@
                         if (pdrb_type) {
                             $.ajax({
                                 type: 'POST',
-                                url: "{{ route('fetchYear') }}",
+                                url: "{{ route('konserdaYear') }}",
                                 data: {
                                     type: pdrb_type,
                                     _token: '{{csrf_token()}}',
@@ -608,7 +608,7 @@
                         if (pdrb_year) {
                             $.ajax({
                                 type: 'POST',
-                                url: "{{ route('fetchQuarter') }}",
+                                url: "{{ route('konserdaQuarter') }}",
                                 data: {
                                     type: pdrb_type,
                                     year: pdrb_year,
@@ -640,7 +640,7 @@
                         if (pdrb_quarter) {
                             $.ajax({
                                 type: 'POST',
-                                url: "{{ route('fetchPeriod') }}",
+                                url: "{{ route('konserdaPeriod') }}",
                                 data: {
                                     type: pdrb_type,
                                     year: pdrb_year,

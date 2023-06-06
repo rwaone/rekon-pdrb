@@ -23,8 +23,8 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item {{ Request::is('rekonsiliasi', 'fenomena') ? 'menu-open' : '' }}">
-                    <a href="../widgets.html" class="nav-link {{ Request::is('rekonsiliasi', 'fenomena') ? 'active' : '' }}">
+                <li class="nav-item {{ Request::is('rekonsiliasi', 'fenomena', 'daftarPokok', 'konserda') ? 'menu-open' : '' }}">
+                    <a href="../widgets.html" class="nav-link {{ Request::is('rekonsiliasi', 'fenomena', 'daftarPokok', 'konserda') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             PDRB
@@ -39,13 +39,19 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ url('konserda') }}" class="nav-link {{ Request::is('konserda') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Konserda</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ url('fenomena') }}" class="nav-link {{ Request::is('fenomena') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Fenomena</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('daftarPokok') }}" class="nav-link">
+                            <a href="{{ url('daftarPokok') }}" class="nav-link {{ Request::is('daftarPokok') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Daftar Tabel Pokok</p>
                             </a>
