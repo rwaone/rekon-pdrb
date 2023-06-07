@@ -99,6 +99,7 @@ class PeriodController extends Controller
             'type' => 'required',
             'year' => 'required',
             'quarter' => 'required',
+            'status' => 'required',
             'description' => 'required',
         ]);
 

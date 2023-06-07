@@ -80,6 +80,20 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="col-form-label" for="statusSelect">Status:</label>
+                    <select id="statusSelect" class="form-control select2bs4" style="width: 100%;" name="status">
+                        <option value="" disabled selected>Pilih Status</option>
+                        <option {{ old('type', $period->status) == 'Aktif' ? 'selected' : '' }} value='Aktif'>Aktif
+                        </option>
+                        <option {{ old('type', $period->status) == 'Selesai' ? 'selected' : '' }} value='Selesai'>Selesai
+                        </option>
+                        <option {{ old('type', $period->status) == 'Final' ? 'selected' : '' }} value='Final'>Final
+                        </option>
+                    </select>
+                    <div class="help-block"></div>
+                </div>
+
+                <div class="form-group">
                     <label>Jadwal:</label>
                     <div class="input-group">
                         <div class="input-group-prepend">

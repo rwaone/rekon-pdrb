@@ -54,12 +54,7 @@
                             <td class="text-center">{{ $period->started_at }}</td>
                             <td class="text-center">{{ $period->ended_at }}</td>
                             <td class="text-center">{{ $period->status }}</td>
-                            <td class="project-actions text-right">
-                                <a class="btn btn-primary btn-sm" href="#">
-                                    <i class="fas fa-folder">
-                                    </i>
-                                    View
-                                </a>
+                            <td class="project-actions text-center">
                                 <a class="btn btn-info btn-sm" href="/period/{{ $period->id }}/edit">
                                     <i class="fas fa-pencil-alt">
                                     </i>
