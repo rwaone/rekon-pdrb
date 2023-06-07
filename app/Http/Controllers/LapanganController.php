@@ -64,7 +64,7 @@ class LapanganController extends Controller
                 $number++;
             }
         }
-        return view('rekonsiliasi.tabel-pokok', [
+        return view('lapangan.tabel-pokok', [
             'daftar_1' => $daftar_1,
             'daftar_2' => $daftar_2,
         ]);
@@ -114,7 +114,7 @@ class LapanganController extends Controller
             }
             $adhk = json_encode($adhk);
             $adhb = json_encode($adhb);
-            return view('rekonsiliasi.detail-pokok', [
+            return view('lapangan.detail-pokok', [
                 'subsectors' => $subsectors,
                 'cat' => $catString,
                 'adhk' => $adhk,
@@ -155,7 +155,7 @@ class LapanganController extends Controller
             }
             $adhk = json_encode($adhk);
             $adhb = json_encode($adhb);
-            return view('rekonsiliasi.detail-pokok-quarter', [
+            return view('lapangan.detail-pokok-quarter', [
                 'subsectors' => $subsectors,
                 'cat' => $catString,
                 'adhk' => $adhk,
@@ -183,7 +183,7 @@ class LapanganController extends Controller
         $cat = Category::pluck('code')->toArray();
         $catString = implode(", ", $cat);
         $subsectors = Subsector::where('type', 'Lapangan Usaha')->get();
-        return view('rekonsiliasi.konserda', [
+        return view('lapangan.konserda', [
             'regions' => $regions,
             'subsectors' => $subsectors,
             'cat' => $catString,

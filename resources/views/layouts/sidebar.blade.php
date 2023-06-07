@@ -58,11 +58,11 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item {{ Request::is('rekonsiliasi', 'fenomena', 'lapangan-usaha/daftarPokok', 'lapangan-usaha/konserda') ? 'menu-open' : '' }}">
-                    <a href="../widgets.html" class="nav-link {{ Request::is('rekonsiliasi', 'fenomena', 'lapangan-usaha/daftarPokok', 'lapangan-usaha/konserda') ? 'active' : '' }}">
+                <li class="nav-item {{ Request::is('rekonsiliasi', 'fenomena', 'pengeluaran/daftarPokok', 'pengeluaran/konserda') ? 'menu-open' : '' }}">
+                    <a href="../widgets.html" class="nav-link {{ Request::is('rekonsiliasi', 'fenomena', 'pengeluaran/daftarPokok', 'pengeluaran/konserda') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
-                            Lapangan Usaha
+                            Pengeluaran
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
@@ -74,7 +74,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('lapangan-usaha/konserda') }}" class="nav-link {{ Request::is('lapangan-usaha/konserda') ? 'active' : '' }}">
+                            <a href="{{ url('pengeluaran/konserda') }}" class="nav-link {{ Request::is('pengeluaran/konserda') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Hasil Konserda</p>
                             </a>
@@ -86,7 +86,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('lapangan-usaha/daftarPokok') }}" class="nav-link {{ Request::is('lapangan-usaha/daftarPokok') ? 'active' : '' }}">
+                            <a href="{{ url('pengeluaran/daftarPokok') }}" class="nav-link {{ Request::is('pengeluaran/daftarPokok') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Daftar Tabel Pokok</p>
                             </a>

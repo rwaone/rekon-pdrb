@@ -74,7 +74,7 @@
                                 <td>{{ $item->region->name }}</td>
                                 <td class="text-center">{{ $item->period->year }}</td>
                                 <td class="text-center">
-                                    <a href="{{ url('detailPokok').'/'.$item->period->id.'/'.$item->region_id.'/Y' }}" class="btn btn-primary">
+                                    <a href="{{ url('lapangan-usaha/detailPokok').'/'.$item->period->id.'/'.$item->region_id.'/Y' }}" class="btn btn-primary">
                                         <span class="bi bi-check2-square"></span>
                                     </a>
                                 </td>
@@ -107,7 +107,7 @@
                                     <td class="text-center">{{ $item->quarter }}</td>
                                     <td class="text-center">
                                         <input value="{{ $item->period->id.'-'.$item->quarter }}" class="hiddenInput" hidden>
-                                        <a href="{{ url('detailPokok').'/'.$item->period->id.'/'.$item->region_id.'/'.$item->quarter }}" class="btn btn-primary">
+                                        <a href="{{ url('lapangan-usaha/detailPokok').'/'.$item->period->id.'/'.$item->region_id.'/'.$item->quarter }}" class="btn btn-primary">
                                             <span class="bi bi-check2-square"></span>
                                         </a>
                                     </td>

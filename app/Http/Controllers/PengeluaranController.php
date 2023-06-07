@@ -16,7 +16,7 @@ class PengeluaranController extends Controller
     {
         $regions = Region::select('id')->get();
         $period_now = Period::where('id', $period_id)->first();
-        $quarter_check = Pdrb::select('quarter')->where('period_id', $period_id)->first();
+        $quarter_check = Pdrb::select('quarter')->where('type', 'Pengeluaran')->where('period_id', $period_id)->first();
         $quarters = [1, 2, 3, 4];
         if ($quarter_check->quarter == 'Y') {
             $year_ = $period_now->year - 1;
@@ -27,12 +27,12 @@ class PengeluaranController extends Controller
         }
         $datas = [];
         foreach ($regions as $region) {
-            $datas['pdrb-' . $region->id] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_id)->where('region_id', $region->id)->orderBy('subsector_id')->get();
+            $datas['pdrb-' . $region->id] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('type', 'Pengeluaran')->where('period_id', $period_id)->where('region_id', $region->id)->orderBy('subsector_id')->get();
         }
         $befores = [];
         if ($period_before) {
             foreach ($regions as $region) {
-                $befores['pdrb-' . $region->id] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_before->id)->where('region_id', $region->id)->orderBy('subsector_id')->get();
+                $befores['pdrb-' . $region->id] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('type', 'Pengeluaran')->where('period_id', $period_before->id)->where('region_id', $region->id)->orderBy('subsector_id')->get();
             }
         }
 
@@ -64,7 +64,7 @@ class PengeluaranController extends Controller
                 $number++;
             }
         }
-        return view('rekonsiliasi.tabel-pokok', [
+        return view('pengeluaran.tabel-pokok', [
             'daftar_1' => $daftar_1,
             'daftar_2' => $daftar_2,
         ]);
@@ -114,7 +114,7 @@ class PengeluaranController extends Controller
             }
             $adhk = json_encode($adhk);
             $adhb = json_encode($adhb);
-            return view('rekonsiliasi.detail-pokok', [
+            return view('pengeluaran.detail-pokok', [
                 'subsectors' => $subsectors,
                 'cat' => $catString,
                 'adhk' => $adhk,
@@ -155,7 +155,7 @@ class PengeluaranController extends Controller
             }
             $adhk = json_encode($adhk);
             $adhb = json_encode($adhb);
-            return view('rekonsiliasi.detail-pokok-quarter', [
+            return view('pengeluaran.detail-pokok-quarter', [
                 'subsectors' => $subsectors,
                 'cat' => $catString,
                 'adhk' => $adhk,
@@ -183,7 +183,7 @@ class PengeluaranController extends Controller
         $cat = Category::pluck('code')->toArray();
         $catString = implode(", ", $cat);
         $subsectors = Subsector::where('type', 'Pengeluaran')->get();
-        return view('rekonsiliasi.konserda', [
+        return view('pengeluaran.konserda', [
             'regions' => $regions,
             'subsectors' => $subsectors,
             'cat' => $catString,
