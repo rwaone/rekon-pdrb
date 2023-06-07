@@ -23,11 +23,11 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item {{ Request::is('rekonsiliasi', 'fenomena', 'daftarPokok', 'konserda') ? 'menu-open' : '' }}">
-                    <a href="../widgets.html" class="nav-link {{ Request::is('rekonsiliasi', 'fenomena', 'daftarPokok', 'konserda') ? 'active' : '' }}">
+                <li class="nav-item {{ Request::is('rekonsiliasi', 'fenomena', 'lapangan-usaha/daftarPokok', 'lapangan-usaha/konserda') ? 'menu-open' : '' }}">
+                    <a href="../widgets.html" class="nav-link {{ Request::is('rekonsiliasi', 'fenomena', 'lapangan-usaha/daftarPokok', 'lapangan-usaha/konserda') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
-                            PDRB
+                            Lapangan Usaha
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
@@ -35,13 +35,13 @@
                         <li class="nav-item">
                             <a href="{{ url('rekonsiliasi') }}" class="nav-link {{ Request::is('rekonsiliasi') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Rekonsiliasi</p>
+                                <p>Entri PDRB</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('konserda') }}" class="nav-link {{ Request::is('konserda') ? 'active' : '' }}">
+                            <a href="{{ url('lapangan-usaha/konserda') }}" class="nav-link {{ Request::is('lapangan-usaha/konserda') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Konserda</p>
+                                <p>Hasil Konserda</p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -51,7 +51,42 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('daftarPokok') }}" class="nav-link {{ Request::is('daftarPokok') ? 'active' : '' }}">
+                            <a href="{{ url('lapangan-usaha/daftarPokok') }}" class="nav-link {{ Request::is('lapangan-usaha/daftarPokok') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Daftar Tabel Pokok</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item {{ Request::is('rekonsiliasi', 'fenomena', 'lapangan-usaha/daftarPokok', 'lapangan-usaha/konserda') ? 'menu-open' : '' }}">
+                    <a href="../widgets.html" class="nav-link {{ Request::is('rekonsiliasi', 'fenomena', 'lapangan-usaha/daftarPokok', 'lapangan-usaha/konserda') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Lapangan Usaha
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ url('rekonsiliasi') }}" class="nav-link {{ Request::is('rekonsiliasi') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Entri PDRB</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('lapangan-usaha/konserda') }}" class="nav-link {{ Request::is('lapangan-usaha/konserda') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Hasil Konserda</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('fenomena') }}" class="nav-link {{ Request::is('fenomena') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Fenomena</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('lapangan-usaha/daftarPokok') }}" class="nav-link {{ Request::is('lapangan-usaha/daftarPokok') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Daftar Tabel Pokok</p>
                             </a>

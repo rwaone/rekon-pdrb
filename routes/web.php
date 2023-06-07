@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PeriodController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FenomenaController;
+use App\Http\Controllers\LapanganController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,11 +43,14 @@ Route::resource('pdrb', PdrbController::class)->middleware(['auth', 'verified'])
 Route::post('fenomena/get', [FenomenaController::class, 'getFenomena'])->middleware(['auth', 'verified'])->name('getFenomena');
 Route::resource('fenomena', FenomenaController::class)->middleware(['auth', 'verified']);
 
-//view PDRB list
-Route::get('konserda', [PdrbController::class, 'konserda'])->middleware(['auth', 'verified']);
-Route::get('getKonserda/{period_id}', [PdrbController::class, 'getKonserda'])->middleware(['auth', 'verified']);
-Route::get('daftarPokok', [PdrbController::class, 'daftarPokok'])->middleware(['auth', 'verified']);
-Route::get('detailPokok/{period_id}/{region_id}/{quarter}', [PdrbController::class, 'detailPokok'])->middleware(['auth', 'verified']);
+//Lapangan
+Route::get('lapangan-usaha/konserda', [LapanganController::class, 'konserda'])->middleware(['auth', 'verified']);
+Route::get('getKonserda/{period_id}', [LapanganController::class, 'getKonserda'])->middleware(['auth', 'verified']);
+Route::get('lapangan-usaha/daftarPokok', [LapanganController::class, 'daftarPokok'])->middleware(['auth', 'verified']);
+Route::get('detailPokok/{period_id}/{region_id}/{quarter}', [LapanganController::class, 'detailPokok'])->middleware(['auth', 'verified']);
+
+
+
 Route::post('konserda/year', [PeriodController::class, 'konserdaYear'])->name('konserdaYear');
 Route::post('konserda/quarter', [PeriodController::class, 'konserdaQuarter'])->name('konserdaQuarter');
 Route::post('konserda/period', [PeriodController::class, 'konserdaPeriod'])->name('konserdaPeriod');
