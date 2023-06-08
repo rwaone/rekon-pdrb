@@ -13,6 +13,9 @@
             .table td {
                 vertical-align: middle;
                 padding: 0.25rem;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
             }
 
             #rekonsiliasi-table td {
@@ -253,7 +256,7 @@
                     var quarter = $('#quarter').val();
                     setTimeout(function() {
                         if (quarter == 'F') {
-                            getFullData()
+                            getFullData(type)
                         } else if (quarter != null) {
                             getSingleData(type);
                         } else {
@@ -331,9 +334,14 @@
                     });
                 }
 
-                function getFullData() {
-                    $('#fullFormContainer').removeClass('d-none');
-                    $('#singleFormContainer').addClass('d-none');
+                function getFullData(type) {
+                    if (type === 'Lapangan Usaha'){
+                        $('#fullFormContainer').removeClass('d-none');
+                        $('#singleFormContainer').addClass('d-none');
+                    } else if (type === 'Pengeluaran'){
+                        $('#fullFormContainer-pengeluaran').removeClass('d-none');
+                        $('#singleFormContainer-pengeluaran').addClass('d-none');
+                    }
                     $.ajax({
                         type: 'POST',
                         url: '{{ route('getFullData') }}',

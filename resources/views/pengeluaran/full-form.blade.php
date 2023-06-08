@@ -1,6 +1,6 @@
     <form id="fullForm" method="post"  class="form-horizontal">
         <div class="card-body p-3">
-            <table class="table table-bordered" id="rekonsiliasi-table">
+            <table class="table table-bordered" id="rekonsiliasi-table-pengeluaran">
                 <thead class="text-center" style="background-color: #09c140; color:aliceblue;">
                     <tr>
                         <th>Komponen</th>
@@ -19,35 +19,35 @@
                                     <p class="col ml-4" style="margin-bottom:0rem;" for="">
                                         {{ $subsector->sector->code . '. ' . $subsector->sector->name }}</p>
                                 </td>
-                                <td>
+                                <td class="sectors">
                                     <input disabled type="text"
                                         name="value_1_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q1' }}"
                                         class="form-control text-right {{ 'category-Q1-' . $subsector->sector->category->code }}"
                                         aria-required="true">
                                 </td>
-                                <td>
+                                <td class="sectors">
                                     <input disabled type="text"
                                         name="value_2_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q2' }}"
                                         class="form-control text-right {{ 'category-Q2-' . $subsector->sector->category->code }}"
                                         aria-required="true">
                                 </td>
-                                <td>
+                                <td class="sectors">
                                     <input disabled type="text"
                                         name="value_3_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q3' }}"
                                         class="form-control text-right {{ 'category-Q3-' . $subsector->sector->category->code }}"
                                         aria-required="true">
                                 </td>
-                                <td>
+                                <td class="sectors">
                                     <input disabled type="text"
                                         name="value_4_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q4' }}"
                                         class="form-control text-right {{ 'category-Q4-' . $subsector->sector->category->code }}"
                                         aria-required="true">
                                 </td>
-                                <td>
+                                <td class="sectors">
                                     <input disabled type="text"
                                         name="value_Y_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->sector->code . '_' . $subsector->sector->category->code . '_Y' }}"
@@ -111,7 +111,7 @@
                                         for="{{ $subsector->sector->code . '_' . $subsector->sector->name }}">
                                         {{ $subsector->sector->code . '. ' . $subsector->sector->name }}</p>
                                 </td>
-                                <td>
+                                <td class ="sectors">
                                     <input type="hidden" name="id_1_{{ $subsector->id }}">
                                     <input type="text"
                                         name="value_1_{{ $subsector->id }}"
@@ -119,7 +119,7 @@
                                         class="form-control text-right {{ 'sector-Q1-' . $subsector->sector_id }} {{ 'category-Q1-' . $subsector->sector->category_id }}"
                                         aria-required="true" tabindex="{{ $subsector->id }}">
                                 </td>
-                                <td>
+                                <td class ="sectors">
                                     <input type="hidden" name="id_2_{{ $subsector->id }}">
                                     <input type="text"
                                         name="value_2_{{ $subsector->id }}"
@@ -127,7 +127,7 @@
                                         class="form-control text-right {{ 'sector-Q2-' . $subsector->sector_id }} {{ 'category-Q2-' . $subsector->sector->category_id }}"
                                         aria-required="true" tabindex="{{ $subsector->id + 55 }}">
                                 </td>
-                                <td>
+                                <td class ="sectors">
                                     <input type="hidden" name="id_3_{{ $subsector->id }}">
                                     <input type="text"
                                         name="value_3_{{ $subsector->id }}"
@@ -135,7 +135,7 @@
                                         class="form-control text-right {{ 'sector-Q3-' . $subsector->sector_id }} {{ 'category-Q3-' . $subsector->sector->category_id }}"
                                         aria-required="true" tabindex="{{ $subsector->id + 110 }}">
                                 </td>
-                                <td>
+                                <td class ="sectors">
                                     <input type="hidden" name="id_4_{{ $subsector->id }}">
                                     <input type="text"
                                         name="value_4_{{ $subsector->id }}"
@@ -143,12 +143,12 @@
                                         class="form-control text-right {{ 'sector-Q4-' . $subsector->sector_id }} {{ 'category-Q4-' . $subsector->sector->category_id }}"
                                         aria-required="true" tabindex="{{ $subsector->id + 165 }}">
                                 </td>
-                                <td>
+                                <td class ="sectors">
                                     <input type="hidden" name="id_Y_{{ $subsector->id }}">
                                     <input disabled type="text"
                                         name="value_Y_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Y' }}"
-                                        class="form-control text-right {{ 'sector-Y-' . $subsector->sector_id }} {{ 'category-Y-' . $subsector->sector->category_id }}"
+                                        class="form-control text-right {{ 'sector-Y-' . $subsector->sector_id }} {{ 'category-Y-' . $subsector->sector->category_id }} sectors"
                                         aria-required="true" tabindex="{{ $subsector->id + 220 }}">
                                 </td>
                             </tr>

@@ -22,7 +22,7 @@ $(document).ready(function () {
             let Y = X.replaceAll(/[,]/g, '.')
             sum += Y > 0 ? Number(Y) : 0
         })
-        let sumRp = String(sum).replaceAll(/[.]/g, ',')
+        let sumRp = String(sum.toFixed(2)).replaceAll(/[.]/g, ',')
         $lastCol.find('input').val(formatRupiah(sumRp, 'Rp '))
 
         for (let index of catSpecific) {
@@ -48,8 +48,8 @@ $(document).ready(function () {
                 }
             })
 
-            let lightsumRp = String(lightsum).replaceAll(/[.]/g, ',');
-            let darksumRp = String(darksum).replaceAll(/[.]/g, ',');
+            let lightsumRp = String(lightsum.toFixed(2)).replaceAll(/[.]/g, ',');
+            let darksumRp = String(darksum.toFixed(2)).replaceAll(/[.]/g, ',');
             $(`#adhk_1_${index}_Y`).val(formatRupiah(lightsumRp, 'Rp '))
             $(`#adhk_${index}_Y`).val(formatRupiah(darksumRp, 'Rp '))
         }
@@ -85,8 +85,8 @@ $(document).ready(function () {
             }
             let pdrbs = sum + pdrb
             let PdrbNonmigas = pdrbs - nonmigas
-            let sumPDRB = String(pdrbs).replaceAll(/[.]/g, ',')
-            let sumPDRBnm = String(PdrbNonmigas).replaceAll(/[.]/g, ',')
+            let sumPDRB = String(pdrbs.toFixed(2)).replaceAll(/[.]/g, ',')
+            let sumPDRBnm = String(PdrbNonmigas.toFixed(2)).replaceAll(/[.]/g, ',')
             let totalnm = $('#rekonsiliasi-table tr').last().prev().find('td').eq(col)
             let totalCell = $('#rekonsiliasi-table tr').last().find('td').eq(col)
             totalnm.text(formatRupiah(sumPDRBnm, 'Rp '))
@@ -129,8 +129,8 @@ $(document).ready(function () {
         }
         let pdrbs = sum + pdrb
         let PdrbNonmigas = pdrbs - nonmigas
-        let sumPDRB = String(pdrbs).replaceAll(/[.]/g, ',')
-        let sumPDRBnm = String(PdrbNonmigas).replaceAll(/[.]/g, ',')
+        let sumPDRB = String(pdrbs.toFixed(2)).replaceAll(/[.]/g, ',')
+        let sumPDRBnm = String(PdrbNonmigas.toFixed(2)).replaceAll(/[.]/g, ',')
         let totalnm = $('#rekonsiliasi-table-single tr').last().prev().find('td').eq(1)
         let totalCell = $('#rekonsiliasi-table-single tr').last().find('td').eq(1)
         totalnm.text(formatRupiah(sumPDRBnm, 'Rp '))
@@ -141,23 +141,23 @@ $(document).ready(function () {
     //single and full, sum for every category and sector
     for (let i = 1; i < 5; i++) {
         $(`.sector-Q${i}-1`).keyup(function (e) {
-            let jumlah = calculateSector(`sector-Q${i}-1`);
+            let jumlah = calculateSector(`sector-Q${i}-1`).toFixed(2);
             let que = String(jumlah).replaceAll(/[.]/g, ',');
             $(`#adhk_1_A_Q${i}`).val(formatRupiah(que, 'Rp '));
         });
         $(`.sector-Q${i}-8`).keyup(function (e) {
-            let jumlah = calculateSector(`sector-Q${i}-8`);
+            let jumlah = calculateSector(`sector-Q${i}-8`).toFixed(2);
             let que = String(jumlah).replaceAll(/[.]/g, ',');
             $(`#adhk_1_C_Q${i}`).val(formatRupiah(que, 'Rp '))
         });
         for (let j = 1; j < 18; j++) {
             $(`.category-Q${i}-${j}`).keyup(function (e) {
-                let jumlah = calculateSector(`category-Q${i}-${j}`);
+                let jumlah = calculateSector(`category-Q${i}-${j}`).toFixed(2);
                 let que = String(jumlah).replaceAll(/[.]/g, ',');
                 $(`#adhk_${catArray[j - 1]}_Q${i}`).val(formatRupiah(que, 'Rp '))
             });
             $(`.category-${j}`).keyup(function (e) {
-                let jumlah = calculateSector(`category-${j}`);
+                let jumlah = calculateSector(`category-${j}`).toFixed(2);
                 let que = String(jumlah).replaceAll(/[.]/g, ',');
                 $(`#adhk_${catArray[j - 1]}`).val(formatRupiah(que, 'Rp '))
             });
@@ -179,20 +179,20 @@ $(document).ready(function () {
     }
 
     $('.sector-1').keyup(function (e) {
-        let jumlah = calculateSector('sector-1');
+        let jumlah = calculateSector('sector-1').toFixed(2);
         let que = String(jumlah).replaceAll(/[.]/g, ',');
         $('#adhk_1_A').val(formatRupiah(que, 'Rp '));
     })
 
     $('.sector-8').keyup(function (e) {
-        let jumlah = calculateSector('sector-8');
+        let jumlah = calculateSector('sector-8').toFixed(2);
         let que = String(jumlah).replaceAll(/[.]/g, ',');
         $('#adhk_1_C').val(formatRupiah(que, 'Rp '));
     })
 
     $('#rekonsiliasi-table').on('paste', 'input', function (e) {
         const $this = $(this);
-        let panjang_ndas = $('thead').children().length
+        // let panjang_ndas = $('thead').children().length
         $.each(e.originalEvent.clipboardData.items, function (i, v) {
             if (v.type === 'text/plain') {
                 v.getAsString(function (text) {
@@ -202,7 +202,7 @@ $(document).ready(function () {
                     text = text.trim('\r\n');
                     $.each(text.split('\r\n'), function (i2, v2) {
                         $.each(v2.split('\t'), function (i3, v3) {
-                            var row = y + i2 + (panjang_ndas > 2 ? 1 : 0), col = x + i3;
+                            var row = y + i2, col = x + i3;
                             obj['cell-' + row + '-' + col] = v3
                             $this.closest('table').find('tr:eq(' + row + ') td:eq(' + col + ') input').val(formatRupiah(v3, 'Rp '));
                         });
@@ -216,7 +216,7 @@ $(document).ready(function () {
 
     $('#rekonsiliasi-table-single').on('paste', 'input', function (e) {
         const $this = $(this);
-        let panjang_ndas = $('thead').children().length
+        // let panjang_ndas = $('thead').children().length
         $.each(e.originalEvent.clipboardData.items, function (i, v) {
             if (v.type === 'text/plain') {
                 v.getAsString(function (text) {
@@ -226,7 +226,7 @@ $(document).ready(function () {
                     text = text.trim('\r\n');
                     $.each(text.split('\r\n'), function (i2, v2) {
                         $.each(v2.split('\t'), function (i3, v3) {
-                            var row = y + i2 + (panjang_ndas > 2 ? 1 : 0), col = x + i3;
+                            var row = y + i2, col = x + i3;
                             obj['cell-' + row + '-' + col] = v3
                             $this.closest('table').find('tr:eq(' + row + ') td:eq(' + col + ') input').val(formatRupiah(v3, 'Rp '));
                         });

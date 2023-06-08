@@ -15,7 +15,7 @@
                                     <p class="col ml-4" style="margin-bottom:0rem;" for="">
                                         {{ $subsector->sector->code . '. ' . $subsector->sector->name }}</p>
                                 </td>
-                                <td>
+                                <td class = "sectors">
                                     <input disabled type="text"
                                         name="{{ $subsector->sector->code . '_' . $subsector->sector->category->code }}"
                                         id="adhk_{{ $subsector->sector->code . '_' . $subsector->sector->category->code }}"
@@ -43,7 +43,7 @@
                             </tr>
                         @elseif ($subsector->code == null && $subsector->sector->code != null && $subsector->sector->category->type == 'Pengeluaran')
                             <tr>
-                                <td>
+                                <td class = "sectors">
                                     <p class="col ml-4" style="margin-bottom:0rem;"
                                         for="{{ $subsector->sector->code . '_' . $subsector->sector->name }}">
                                         {{ $subsector->sector->code . '. ' . $subsector->sector->name }}</p>

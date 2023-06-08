@@ -92,24 +92,7 @@ class PdrbController extends Controller
     {
         //
     }
-
-    public function rekonsiliasi()
-    {
-        $cat = Category::pluck('code')->toArray();
-        $catString = implode(", ", $cat);
-        $regions = Region::getMyRegion();
-        $categories = Category::all();
-        $sectors = Sector::all();
-        $subsectors = Subsector::where('type', 'Pengeluaran')->get();
-        return view('rekonsiliasi.view', [
-            'cat' => $catString,
-            'regions' => $regions,
-            'categories' => $categories,
-            'sectors' => $sectors,
-            'subsectors' => $subsectors,
-        ]);
-    }
-
+    
     public function getFullData(Request $request)
     {
         $filter = $request->filter;
