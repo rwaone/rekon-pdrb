@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     // Your jQuery code goes here
     let cat = JSON.parse($("#my-cat").data('cat'))
     let catArray = cat.split(", ")
@@ -13,11 +13,11 @@ $(document).ready(function() {
     let tbody = table.find('tbody');
     let tr = tbody.find('tr');
 
-    tr.on('blur', 'td input', function(e) {
+    tr.on('blur', 'td input', function (e) {
         let $currentRow = $(this).closest('tr')
         let $lastCol = $currentRow.find('td:last')
         let sum = 0
-        $currentRow.find('td:not(:last-child) input:not(:hidden)').each(function() {
+        $currentRow.find('td:not(:last-child) input:not(:hidden)').each(function () {
             let X = $(this).val().replaceAll(/[A-Za-z.]/g, '')
             let Y = X.replaceAll(/[,]/g, '.')
             sum += Y > 0 ? Number(Y) : 0
@@ -32,7 +32,7 @@ $(document).ready(function() {
             let row = $(`#adhk_${index}_Y`).closest('tr')
             let subsection = $(`#adhk_1_${index}_Y`).closest('tr')
 
-            row.find('td input:not(#adhk_' + index + '_Y)').each(function() {
+            row.find('td input:not(#adhk_' + index + '_Y)').each(function () {
                 if (!$(this).hasClass(`adhk_${index}_Y`)) {
                     let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
                     let Y = X.replaceAll(/[,]/g, '.');
@@ -40,7 +40,7 @@ $(document).ready(function() {
                 }
             })
 
-            subsection.find('td input:not(#adhk_1_' + index + '_Y)').each(function() {
+            subsection.find('td input:not(#adhk_1_' + index + '_Y)').each(function () {
                 if (!$(this).hasClass(`adhk_${index}_Y`)) {
                     let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
                     let Y = X.replaceAll(/[,]/g, '.');
@@ -74,12 +74,12 @@ $(document).ready(function() {
                         pdrb += Y > 0 ? Number(Y) : 0
                     }
                 }
-                cell.find('input').each(function() {
+                cell.find('input').each(function () {
                     let inputId = $(this).attr('id');
                     if (inputId && (inputId.includes('adhk__1_B_') || inputId.includes('adhk_b_1_C_'))) {
-                      let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
-                      let Y = X.replaceAll(/[,]/g, '.');
-                      nonmigas += Y > 0 ? Number(Y) : 0;
+                        let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
+                        let Y = X.replaceAll(/[,]/g, '.');
+                        nonmigas += Y > 0 ? Number(Y) : 0;
                     }
                 });
             }
@@ -100,7 +100,7 @@ $(document).ready(function() {
     let tbodySingle = tableSingle.find('tbody')
     let trSingle = tbodySingle.find('tr')
 
-    trSingle.on('blur', 'td input', function(e) {
+    trSingle.on('blur', 'td input', function (e) {
         let numRows = trSingle.length - 2
         let sum = 0
         let pdrb = 0
@@ -121,7 +121,7 @@ $(document).ready(function() {
                 }
             }
             if (cell.find('input').attr('id').includes('adhk__1_B') || cell.find('input').attr(
-                    'id').includes('adhk_b_1_C')) {
+                'id').includes('adhk_b_1_C')) {
                 let X = cell.find('input').val().replaceAll(/[A-Za-z.]/g, '')
                 let Y = X.replaceAll(/[,]/g, '.')
                 nonmigas += Y > 0 ? Number(Y) : 0
@@ -139,37 +139,26 @@ $(document).ready(function() {
     //
 
     //single and full, sum for every category and sector
-    for (let i = 1; i < 5; i++) {
-        $(`.sector-Q${i}-1`).keyup(function(e) {
-            let jumlah = calculateSector(`sector-Q${i}-1`);
+    for (let i = 49; i < 54; i++) {
+        $(`.sector-Q${i}-49`).keyup(function (e) {
+            let jumlah = calculateSector(`sector-Q${i}-49`);
             let que = String(jumlah).replaceAll(/[.]/g, ',');
             $(`#adhk_1_A_Q${i}`).val(formatRupiah(que, 'Rp '));
         });
-        $(`.sector-Q${i}-8`).keyup(function(e) {
+        $(`.sector-Q${i}-8`).keyup(function (e) {
             let jumlah = calculateSector(`sector-Q${i}-8`);
             let que = String(jumlah).replaceAll(/[.]/g, ',');
             $(`#adhk_1_C_Q${i}`).val(formatRupiah(que, 'Rp '))
         });
-        for (let j = 1; j < 18; j++) {
-            $(`.category-Q${i}-${j}`).keyup(function(e) {
-                let jumlah = calculateSector(`category-Q${i}-${j}`);
-                let que = String(jumlah).replaceAll(/[.]/g, ',');
-                $(`#adhk_${catArray[j-1]}_Q${i}`).val(formatRupiah(que, 'Rp '))
-            });
-            $(`.category-${j}`).keyup(function(e) {
-                let jumlah = calculateSector(`category-${j}`);
-                let que = String(jumlah).replaceAll(/[.]/g, ',');
-                $(`#adhk_${catArray[j-1]}`).val(formatRupiah(que, 'Rp '))
-            });
-        }
-        for (let j = 1; j < 49; j++) {
-            $(`.sector-Q${i}-${j}`).keyup(function(e) {
+
+        for (let j = 49; j < 54; j++) {
+            $(`.sector-Q${i}-${j}`).keyup(function (e) {
                 $(this).val(formatRupiah($(this).val(), 'Rp '))
                 var charCode = (e.which) ? e.which : event.keyCode
                 if (String.fromCharCode(charCode).match(/[^0-9.,]/g))
                     return false;
             })
-            $(`.sector-${j}`).keyup(function(e) {
+            $(`.sector-${j}`).keyup(function (e) {
                 $(this).val(formatRupiah($(this).val(), 'Rp '))
                 var charCode = (e.which) ? e.which : event.keyCode
                 if (String.fromCharCode(charCode).match(/[^0-9.,]/g))
@@ -178,63 +167,69 @@ $(document).ready(function() {
         }
     }
 
-    $('.sector-1').keyup(function(e) {
-        let jumlah = calculateSector('sector-1');
+    $('.sector-49').keyup(function (e) {
+        let jumlah = calculateSector('sector-49');
         let que = String(jumlah).replaceAll(/[.]/g, ',');
-        $('#adhk_1_A').val(formatRupiah(que, 'Rp '));
+        $('#adhk_1_X').val(formatRupiah(que, 'Rp '));
     })
 
-    $('.sector-8').keyup(function(e) {
-        let jumlah = calculateSector('sector-8');
+    $('.sector-52').keyup(function (e) {
+        let jumlah = calculateSector('sector-52');
         let que = String(jumlah).replaceAll(/[.]/g, ',');
-        $('#adhk_1_C').val(formatRupiah(que, 'Rp '));
+        $('#adhk_4_X').val(formatRupiah(que, 'Rp '));
     })
 
-    $('#rekonsiliasi-table').on('paste','input',function(e){
+    $('.sector-54').keyup(function (e) {
+        let jumlah = calculateSector('sector-54');
+        let que = String(jumlah).replaceAll(/[.]/g, ',');
+        $('#adhk_6_X').val(formatRupiah(que, 'Rp '));
+    })
+
+    $('#rekonsiliasi-table').on('paste', 'input', function (e) {
         const $this = $(this);
         let panjang_ndas = $('thead').children().length
-        $.each(e.originalEvent.clipboardData.items, function(i, v){
-            if (v.type === 'text/plain'){
-                v.getAsString(function(text){
+        $.each(e.originalEvent.clipboardData.items, function (i, v) {
+            if (v.type === 'text/plain') {
+                v.getAsString(function (text) {
                     var x = $this.closest('td').index(),
-                        y = $this.closest('tr').index()+1,
+                        y = $this.closest('tr').index() + 1,
                         obj = {};
                     text = text.trim('\r\n');
-                    $.each(text.split('\r\n'), function(i2, v2){
-                        $.each(v2.split('\t'), function(i3, v3){
-                            var row = y+i2+ (panjang_ndas>2?1:0), col = x+i3;
-                            obj['cell-'+row+'-'+col] = v3
-                            $this.closest('table').find('tr:eq('+row+') td:eq('+col+') input').val(formatRupiah(v3, 'Rp '));
+                    $.each(text.split('\r\n'), function (i2, v2) {
+                        $.each(v2.split('\t'), function (i3, v3) {
+                            var row = y + i2 + (panjang_ndas > 2 ? 1 : 0), col = x + i3;
+                            obj['cell-' + row + '-' + col] = v3
+                            $this.closest('table').find('tr:eq(' + row + ') td:eq(' + col + ') input').val(formatRupiah(v3, 'Rp '));
                         });
                     });
-  
+
                 });
             }
         });
         return false;
-      });
+    });
 
-    $('#rekonsiliasi-table-single').on('paste','input',function(e){
+    $('#rekonsiliasi-table-single').on('paste', 'input', function (e) {
         const $this = $(this);
         let panjang_ndas = $('thead').children().length
-        $.each(e.originalEvent.clipboardData.items, function(i, v){
-            if (v.type === 'text/plain'){
-                v.getAsString(function(text){
-                    var x = $this.closest('td').index()-2,
-                        y = $this.closest('tr').index()+1,
+        $.each(e.originalEvent.clipboardData.items, function (i, v) {
+            if (v.type === 'text/plain') {
+                v.getAsString(function (text) {
+                    var x = $this.closest('td').index() - 2,
+                        y = $this.closest('tr').index() + 1,
                         obj = {};
                     text = text.trim('\r\n');
-                    $.each(text.split('\r\n'), function(i2, v2){
-                        $.each(v2.split('\t'), function(i3, v3){
-                            var row = y+i2+ (panjang_ndas>2?1:0), col = x+i3;
-                            obj['cell-'+row+'-'+col] = v3
-                            $this.closest('table').find('tr:eq('+row+') td:eq('+col+') input').val(formatRupiah(v3, 'Rp '));
+                    $.each(text.split('\r\n'), function (i2, v2) {
+                        $.each(v2.split('\t'), function (i3, v3) {
+                            var row = y + i2 + (panjang_ndas > 2 ? 1 : 0), col = x + i3;
+                            obj['cell-' + row + '-' + col] = v3
+                            $this.closest('table').find('tr:eq(' + row + ') td:eq(' + col + ') input').val(formatRupiah(v3, 'Rp '));
                         });
                     });
-  
+
                 });
             }
         });
         return false;
-      });
+    });
 })

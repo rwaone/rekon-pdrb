@@ -1,3 +1,33 @@
+function switchPlay(type) {
+    if (type === '1') {
+        let tr = $('#rekon-view tbody tr')
+        let td_2 = []
+        let td_3 = []
+        tr.each(function () {
+            let X = $(this).find('td:nth-child(2)').text()
+            td_2.push(X)
+
+            let Y = $(this).find('td:nth-child(3)').text()
+            td_3.push(Y)
+        })
+
+        tr.find('td:nth-child(2)').each(function (index) {
+            $(this).text(td_3[index])
+        })
+        tr.find('td:nth-child(3)').each(function (index) {
+            $(this).text(td_2[index])
+        })
+        $('#rekon-view thead tr').find('th:nth-child(2)').text('Provinsi Sulawesi Utara')
+        $('#rekon-view thead tr').find('th:nth-child(3)').text('Total Kabupaten/Kota')
+
+    } else if (type === '2') {
+        $('#rekon-view thead tr').find('th:nth-child(2)').text('Total Kabupaten/Kota')
+        $('#rekon-view thead tr').find('th:nth-child(3)').text('Provinsi Sulawesi Utara')
+        $('#change-query').prop('disabled', false)
+    }
+}
+
+
 function getSummarise(type) {
     $('.values').each(function () {
         $(this).text(formatRupiah($(this).text(), 'Rp '))

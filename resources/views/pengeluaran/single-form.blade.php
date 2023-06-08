@@ -1,6 +1,6 @@
     <form action="/pdrb" method="post" class="form-horizontal" id="singleForm">
         <div class="card-body p-3">
-            <table class="table table-striped table-bordered" id="rekonsiliasi-table-single">
+            <table class="table table-striped table-bordered" id="rekonsiliasi-table-single-pengeluaran">
                 <thead class="text-center" style="background-color: #09c140; color:aliceblue;">
                     <tr>
                         <th>Komponen</th>
@@ -9,22 +9,7 @@
                 </thead>
                 <tbody>
                     @foreach ($subsectors as $subsector)
-                        @if (
-                            ($subsector->code != null && $subsector->code == 'a' && $subsector->sector->code == '1' && $subsector->sector->category->type == 'Lapangan Usaha') ||
-                                ($subsector->code == null && $subsector->sector->code == '1' && $subsector->sector->category->type == 'Lapangan Usaha'))
-                            <tr>
-                                <td>
-                                    <label class="col" style="margin-bottom:0rem;"
-                                        for="">{{ $subsector->sector->category->code . '. ' . $subsector->sector->category->name }}</label>
-                                </td>
-                                <td class="categories">
-                                    <input disabled type="text" name="{{ $subsector->sector->category->code }}"
-                                        id="adhk_{{ $subsector->sector->category->code }}" class="form-control text-right"
-                                        aria-required="true">
-                                </td>
-                            </tr>
-                        @endif
-                        @if ($subsector->code != null && $subsector->code == 'a' && $subsector->sector->category->type == 'Lapangan Usaha')
+                        @if ($subsector->code != null && $subsector->code == 'a' && $subsector->sector->category->type == 'Pengeluaran')
                             <tr>
                                 <td>
                                     <p class="col ml-4" style="margin-bottom:0rem;" for="">
@@ -39,7 +24,7 @@
                                 </td>
                             </tr>
                         @endif
-                        @if ($subsector->code != null && $subsector->sector->category->type == 'Lapangan Usaha')
+                        @if ($subsector->code != null && $subsector->sector->category->type == 'Pengeluaran')
                             <tr>
                                 <td>
                                     <p class="col ml-5" style="margin-bottom:0rem;"
@@ -56,7 +41,7 @@
                                         aria-required="true">
                                 </td>
                             </tr>
-                        @elseif ($subsector->code == null && $subsector->sector->code != null && $subsector->sector->category->type == 'Lapangan Usaha')
+                        @elseif ($subsector->code == null && $subsector->sector->code != null && $subsector->sector->category->type == 'Pengeluaran')
                             <tr>
                                 <td>
                                     <p class="col ml-4" style="margin-bottom:0rem;"
@@ -73,35 +58,8 @@
                                         aria-required="true">
                                 </td>
                             </tr>
-                        @elseif ($subsector->code == null && $subsector->sector->code == null && $subsector->sector->category->type == 'Lapangan Usaha')
-                            <tr>
-                                <td>
-                                    <label class="col" style="margin-bottom:0rem;"
-                                        for="{{ $subsector->sector->category->code . '_' . $subsector->name }}">{{ $subsector->sector->category->code . '. ' . $subsector->name }}</label>
-                                </td>
-                                <input type="hidden" name="id_{{ $subsector->id }}">
-                                <input type="hidden" name="subsector_{{ $subsector->id }}"
-                                    value="{{ $subsector->id }}">
-                                <td>
-                                    <input type="text" name="value_{{ $subsector->id }}"
-                                        id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
-                                        class="form-control text-right {{ 'sector-' . $subsector->sector_id }} {{ 'category-' . $subsector->sector->category_id }}"
-                                        aria-required="true">
-                                </td>
-                            </tr>
                         @endif
                     @endforeach
-                    <tr class="PDRB-footer text-center"
-                        style="background-color: #09c140; color:aliceblue; font-weight: bold;">
-                        <td>
-                            <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto (PDRB)
-                                Nonmigas </p>
-                        </td>
-                        <td>
-                            <p class="col mt-1 mb-1" id="total-nonmigas" style="margin-bottom:0rem;"></p>
-                        </td>
-                        </td>
-                    </tr>
                     <tr class="PDRB-footer text-center"
                         style="background-color: #09c140; color:aliceblue; font-weight: bold;">
                         <td>

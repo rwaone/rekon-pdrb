@@ -45,20 +45,20 @@ class PengeluaranController extends Controller
     public function daftarPokok()
     {
         $number = 1;
-        $daftar_1 = Pdrb::select('region_id', 'period_id', 'quarter')->where('quarter', 'Y')->groupBy('region_id', 'period_id', 'quarter')->orderByDesc('year')->orderBy('region_id')->get();
+        $daftar_1 = Pdrb::select('region_id', 'period_id', 'quarter')->where('type', 'Pengeluaran')->where('quarter', 'Y')->groupBy('region_id', 'period_id', 'quarter')->orderByDesc('year')->orderBy('region_id')->get();
         foreach ($daftar_1 as $item) {
             $item->number = $number;
             $number++;
         }
         $number = 1;
         if (Auth::user()->satker_id == 1) {
-            $daftar_2 = Pdrb::select('region_id', 'period_id', 'quarter')->where('region_id', '1')->whereNotIn('quarter', ['Y'])->groupBy('region_id', 'period_id', 'quarter')->get();
+            $daftar_2 = Pdrb::select('region_id', 'period_id', 'quarter')->where('type', 'Pengeluaran')->where('region_id', '1')->whereNotIn('quarter', ['Y'])->groupBy('region_id', 'period_id', 'quarter')->get();
             foreach ($daftar_2 as $item) {
                 $item->number = $number;
                 $number++;
             }
         } else {
-            $daftar_2 = Pdrb::select('region_id', 'period_id', 'quarter')->whereNotIn('region_id', ['1'])->whereNotIn('quarter', ['Y'])->groupBy('region_id', 'period_id', 'quarter')->get();
+            $daftar_2 = Pdrb::select('region_id', 'period_id', 'quarter')->where('type', 'Pengeluaran')->whereNotIn('region_id', ['1'])->whereNotIn('quarter', ['Y'])->groupBy('region_id', 'period_id', 'quarter')->get();
             foreach ($daftar_2 as $item) {
                 $item->number = $number;
                 $number++;
@@ -67,6 +67,21 @@ class PengeluaranController extends Controller
         return view('pengeluaran.tabel-pokok', [
             'daftar_1' => $daftar_1,
             'daftar_2' => $daftar_2,
+        ]);
+    }
+
+    public function rekonsiliasi()
+    {
+        $cat = Category::pluck('code')->toArray();
+        $catString = implode(", ", $cat);
+        $regions = Region::getMyRegion();
+        $subsectors = Subsector::where('type', 'Pengeluaran')->get();
+        $type = 'Pengeluaran';
+        return view('rekonsiliasi.view', [
+            'cat' => $catString,
+            'subsectors' => $subsectors,
+            'regions' => $regions,
+            'type' => $type,
         ]);
     }
 

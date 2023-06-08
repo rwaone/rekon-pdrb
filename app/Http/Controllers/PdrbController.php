@@ -100,7 +100,7 @@ class PdrbController extends Controller
         $regions = Region::getMyRegion();
         $categories = Category::all();
         $sectors = Sector::all();
-        $subsectors = Subsector::where('type', 'Lapangan Usaha')->get();
+        $subsectors = Subsector::where('type', 'Pengeluaran')->get();
         return view('rekonsiliasi.view', [
             'cat' => $catString,
             'regions' => $regions,
@@ -113,7 +113,7 @@ class PdrbController extends Controller
     public function getFullData(Request $request)
     {
         $filter = $request->filter;
-        $subsectors = Subsector::where('type', 'Lapangan Usaha')->get();
+        $subsectors = Subsector::where('type', $filter['type'])->get();
         $dataSeries['1'] = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->where('quarter', 1)->orderBy('subsector_id')->get();
         $dataSeries['2'] = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->where('quarter', 2)->orderBy('subsector_id')->get();
         $dataSeries['3'] = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->where('quarter', 3)->orderBy('subsector_id')->get();

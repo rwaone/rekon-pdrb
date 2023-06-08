@@ -43,6 +43,8 @@
 
     <div id="fullFormContainer" class="card d-none">@include('rekonsiliasi.full-form')</div>
     <div id="singleFormContainer" class="card d-none">@include('rekonsiliasi.single-form')</div>
+    <div id="fullFormContainer-pengeluaran" class="card d-none">@include('pengeluaran.full-form')</div>
+    <div id="singleFormContainer-pengeluaran" class="card d-none">@include('pengeluaran.single-form')</div>
 
     <!-- Back to top button -->
     <button type="button" class="btn btn-light btn-floating btn-lg" id="btn-back-to-top">
@@ -52,7 +54,8 @@
     <x-slot name="script">
         <!-- Additional JS resources -->
         <script src="{{ url('') }}/plugins/select2/js/select2.full.min.js"></script>
-        <script src="{{ asset('js/rekonsiliasi.js') }}"></script>
+        <script src="{{ asset('js/rekon-lapangan-usaha.js') }}"></script>
+        <script src="{{ asset('js/rekon-pengeluaran.js') }}"></script>
         <script>
             //Get the button
             let mybutton = document.getElementById("btn-back-to-top");
@@ -234,7 +237,8 @@
 
                 $('#price_base').change(function() {
                     if (this.value != '') {
-                        showForm();
+                        let type = $('#type').val()
+                        showForm(type);
                     } else {
                         $('#fullFormContainer').addClass('d-none');
                         $('#fullForm')[0].reset();
@@ -243,14 +247,15 @@
                     }
                 });
 
-                function showForm() {
+                function showForm(type) {
                     $('.loader').removeClass('d-none')
+                    // console.log(type)
                     var quarter = $('#quarter').val();
                     setTimeout(function() {
                         if (quarter == 'F') {
                             getFullData()
                         } else if (quarter != null) {
-                            getSingleData();
+                            getSingleData(type);
                         } else {
                             $('#fullFormContainer').addClass('d-none');
                             $('#singleFormContainer').addClass('d-none');
@@ -260,9 +265,15 @@
                 };
 
 
-                function getSingleData() {
-                    $('#fullFormContainer').addClass('d-none');
-                    $('#singleFormContainer').removeClass('d-none');
+                function getSingleData(type) {
+                    // console.log(type)
+                    if (type === 'Lapangan Usaha'){
+                        $('#fullFormContainer').addClass('d-none');
+                        $('#singleFormContainer').removeClass('d-none');
+                    } else if (type === 'Pengeluaran'){
+                        $('#fullFormContainer-pengeluaran').addClass('d-none');
+                        $('#singleFormContainer-pengeluaran').removeClass('d-none');
+                    }
                     $.ajax({
                         type: 'POST',
                         url: '{{ route('getSingleData') }}',
@@ -276,7 +287,7 @@
 
                         success: function(result) {
 
-                            console.log(result);
+                            // console.log(result);
                             $('#singleForm')[0].reset();
                             if ($('#price_base').val() == 'adhk') {
                                 $.each(result, function(key, value) {
@@ -336,7 +347,7 @@
 
                         success: function(result) {
 
-                            console.log(result);
+                            // console.log(result);
                             $('#fullForm')[0].reset();
                             if ($('#price_base').val() == 'adhk') {
                                 $.each(result, function(quarter, value) {
@@ -408,7 +419,7 @@
 
                         success: function(result) {
 
-                            console.log(result);
+                            // console.log(result);
                             const Toast = Swal.mixin({
                                 toast: true,
                                 position: 'top-end',
@@ -443,7 +454,7 @@
 
                         success: function(result) {
 
-                            console.log(result);
+                            // console.log(result);
                             const Toast = Swal.mixin({
                                 toast: true,
                                 position: 'top-end',

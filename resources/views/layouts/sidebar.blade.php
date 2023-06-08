@@ -23,8 +23,8 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item {{ Request::is('rekonsiliasi', 'fenomena', 'lapangan-usaha/daftarPokok', 'lapangan-usaha/konserda') ? 'menu-open' : '' }}">
-                    <a href="../widgets.html" class="nav-link {{ Request::is('rekonsiliasi', 'fenomena', 'lapangan-usaha/daftarPokok', 'lapangan-usaha/konserda') ? 'active' : '' }}">
+                <li class="nav-item {{ Request::is('lapangan-usaha/rekonsiliasi', 'fenomena', 'lapangan-usaha/daftarPokok', 'lapangan-usaha/konserda') ? 'menu-open' : '' }}">
+                    <a href="../widgets.html" class="nav-link {{ Request::is('lapangan-usaha/rekonsiliasi', 'fenomena', 'lapangan-usaha/daftarPokok', 'lapangan-usaha/konserda') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Lapangan Usaha
@@ -33,7 +33,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ url('rekonsiliasi') }}" class="nav-link {{ Request::is('rekonsiliasi') ? 'active' : '' }}">
+                            <a href="{{ url('lapangan-usaha/rekonsiliasi') }}" class="nav-link {{ Request::is('lapangan-usaha/rekonsiliasi') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Entri PDRB</p>
                             </a>
@@ -58,8 +58,8 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item {{ Request::is('rekonsiliasi', 'fenomena', 'pengeluaran/daftarPokok', 'pengeluaran/konserda') ? 'menu-open' : '' }}">
-                    <a href="../widgets.html" class="nav-link {{ Request::is('rekonsiliasi', 'fenomena', 'pengeluaran/daftarPokok', 'pengeluaran/konserda') ? 'active' : '' }}">
+                <li class="nav-item {{ Request::is('pengeluaran/rekonsiliasi', 'fenomena', 'pengeluaran/daftarPokok', 'pengeluaran/konserda') ? 'menu-open' : '' }}">
+                    <a href="../widgets.html" class="nav-link {{ Request::is('pengeluaran/rekonsiliasi', 'fenomena', 'pengeluaran/daftarPokok', 'pengeluaran/konserda') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Pengeluaran
@@ -68,7 +68,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ url('rekonsiliasi') }}" class="nav-link {{ Request::is('rekonsiliasi') ? 'active' : '' }}">
+                            <a href="{{ url('pengeluaran/rekonsiliasi') }}" class="nav-link {{ Request::is('pengeluaran/rekonsiliasi') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Entri PDRB</p>
                             </a>

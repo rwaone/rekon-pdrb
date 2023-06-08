@@ -12,6 +12,21 @@ use Illuminate\Support\Facades\Auth;
 class LapanganController extends Controller
 {
     //
+    public function rekonsiliasi()
+    {
+        $cat = Category::pluck('code')->toArray();
+        $catString = implode(", ", $cat);
+        $regions = Region::getMyRegion();
+        $type = 'Lapangan Usaha';
+        $subsectors = Subsector::where('type', 'Lapangan Usaha')->get();
+        return view('rekonsiliasi.view', [
+            'cat' => $catString,
+            'regions' => $regions,
+            'subsectors' => $subsectors,
+            'type' => $type,
+        ]);
+    }
+
     public function getKonserda($period_id)
     {
         $regions = Region::select('id')->get();
@@ -45,20 +60,20 @@ class LapanganController extends Controller
     public function daftarPokok()
     {
         $number = 1;
-        $daftar_1 = Pdrb::select('region_id', 'period_id', 'quarter')->where('quarter', 'Y')->groupBy('region_id', 'period_id', 'quarter')->orderByDesc('year')->orderBy('region_id')->get();
+        $daftar_1 = Pdrb::select('region_id', 'period_id', 'quarter')->where('type', 'Lapangan Usaha')->where('quarter', 'Y')->groupBy('region_id', 'period_id', 'quarter')->orderByDesc('year')->orderBy('region_id')->get();
         foreach ($daftar_1 as $item) {
             $item->number = $number;
             $number++;
         }
         $number = 1;
         if (Auth::user()->satker_id == 1) {
-            $daftar_2 = Pdrb::select('region_id', 'period_id', 'quarter')->where('region_id', '1')->whereNotIn('quarter', ['Y'])->groupBy('region_id', 'period_id', 'quarter')->get();
+            $daftar_2 = Pdrb::select('region_id', 'period_id', 'quarter')->where('type', 'Lapangan Usaha')->where('region_id', '1')->whereNotIn('quarter', ['Y'])->groupBy('region_id', 'period_id', 'quarter')->get();
             foreach ($daftar_2 as $item) {
                 $item->number = $number;
                 $number++;
             }
         } else {
-            $daftar_2 = Pdrb::select('region_id', 'period_id', 'quarter')->whereNotIn('region_id', ['1'])->whereNotIn('quarter', ['Y'])->groupBy('region_id', 'period_id', 'quarter')->get();
+            $daftar_2 = Pdrb::select('region_id', 'period_id', 'quarter')->where('type', 'Lapangan Usaha')->whereNotIn('region_id', ['1'])->whereNotIn('quarter', ['Y'])->groupBy('region_id', 'period_id', 'quarter')->get();
             foreach ($daftar_2 as $item) {
                 $item->number = $number;
                 $number++;

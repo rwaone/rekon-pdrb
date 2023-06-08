@@ -112,7 +112,6 @@
                     <div class="col-md-2">
                         <select class="form-control select2bs4" id="type" name="type">
                             <option value="" selected>-- Pilih Jenis PDRB --</option>
-                            <option {{ old('type', $filter['type']) == 'Lapangan Usaha' ? 'selected' : '' }} value='Lapangan Usaha'>Lapangan Usaha</option>
                             <option {{ old('type', $filter['type']) == 'Pengeluaran' ? 'selected' : '' }} value='Pengeluaran'>Pengeluaran</option>
                         </select>
                     </div>
@@ -157,7 +156,7 @@
         </div>
     </div>
     <span class="loader d-none"></span>
-    <div class="card mb-3" id="view-body">
+    <div class="card mb-3 d-none" id="view-body">
         <div class="card-body">
             <nav class="navbar">
                 <ul class="nav nav-tabs d-flex">
@@ -168,6 +167,9 @@
                     <a class="nav-item nav-link" id="nav-pertumbuhan" href="">Pertumbuhan</a>
                     <a class="nav-item nav-link" id="nav-indeks" href="">Indeks Implisit</a>
                     <a class="nav-item nav-link" id="nav-laju" href="">Laju Implisit</a>
+                </ul>
+                <ul class="nav-item ml-auto">
+                    <button class="btn btn-primary" id="change-query" onclick="switchPlay('1')">Tukar Posisi Kolom</button>
                 </ul>
             </nav>
             <div class="table-container">
@@ -385,6 +387,7 @@
                             $('.loader').addClass('d-none')
                             showOff()
                             getDist()
+                            switchPlay('2')
                         }, 200)
                     })
 
@@ -395,6 +398,7 @@
                             $('.loader').addClass('d-none')
                             showOff()
                             getStored('pengeluaran')
+                            switchPlay('2')
                         }, 200)
                         // switchColumn()
                     })
@@ -419,6 +423,7 @@
                                     $('.loader').addClass('d-none')
                                     showOff()
                                     getAdhk(data.data, 'pengeluaran')
+                                    switchPlay('2')
                                 }, 200)
                             }
                         })
@@ -445,6 +450,7 @@
                                     $('.loader').addClass('d-none')
                                     showOff()
                                     getIndex(data.data, 'pengeluaran')
+                                    switchPlay('2')
                                 }, 200)
                             }
                         })
@@ -475,6 +481,7 @@
                                         let first = getIndex(data.data, 'pengeluaran')
                                         let before = getIndex(data.before, 'pengeluaran')
                                         getLaju(first, before)
+                                        switchPlay('2')
                                     }
                                 }, 200)
                             }
@@ -506,6 +513,7 @@
                                         alert('Data tahun lalu tidak ada')
                                     } else {
                                         getGrowth(data.data, data.before, 'pengeluaran')
+                                        switchPlay('2')
                                     }
                                 }, 200)
                             }
@@ -532,6 +540,8 @@
                                 setTimeout(function() {
                                     $('.loader').addClass('d-none')
                                     getAntar(data.data, 'pengeluaran')
+                                    switchPlay('2')
+                                    $('#change-query').prop('disabled', true)
                                 }, 200)
                             }
                         })
@@ -636,6 +646,9 @@
                 $(document).ready(function() {
                     // getStored('pengeluaran')
                     getTotalKabkot()
+                    $('#change-query').click(function() {
+                        $(this).prop('disabled', true)
+                    })
                 })
 
                 $(document).on('select2:open', () => {

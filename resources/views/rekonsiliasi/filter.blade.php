@@ -8,8 +8,7 @@
                     <label class="col-sm-2 col-form-label" for="type">PDRB:</label>
                     <select id="type" class="form-control col-sm-9 select2bs4" name="type" required>
                         <option value="" selected>Pilih Jenis PDRB</option>
-                        <option value='Lapangan Usaha'>Lapangan Usaha</option>
-                        <option value='Pengeluaran'>Pengeluaran</option>
+                        <option value='{{ $type }}'>{{ $type }}</option>
                     </select>
                     <div class="help-block"></div>
                 </div>
