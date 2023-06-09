@@ -169,6 +169,7 @@
                     <a class="nav-item nav-link" id="nav-laju" href="">Laju Implisit</a>
                 </ul>
                 <ul class="nav-item ml-auto">
+                    <button class="btn btn-success" id="download-csv">Download</button>
                     <button class="btn btn-primary" id="change-query" onclick="switchPlay('1')">Tukar Posisi Kolom</button>
                 </ul>
             </nav>
@@ -313,6 +314,7 @@
             <!-- Additional JS resources -->
             <script src="{{ url('') }}/plugins/select2/js/select2.full.min.js"></script>
             <script src="{{ asset('js/konserda.js') }}"></script>
+            <script src="{{ asset('js/download.js') }}"></script>
             <script>
                 $(document).on('focus', '.select2-selection', function(e) {
                     $(this).closest(".select2-container").siblings('select:enabled').select2('open');
@@ -320,7 +322,20 @@
                 let cat = JSON.parse($("#my-cat").data('cat'))
                 let catArray = cat.split(", ")
                 let rowComponent = 55
-
+                
+                // const csvData = convertToCSV()
+                
+                $('#download-csv').on('click', function(e){
+                    e.preventDefault()
+                    $('.loader').removeClass('d-none')
+                    setTimeout(function(){
+                        let datas = getReady()
+                        const csvData = convertToCSV(datas)
+                        $('.loader').addClass('d-none')
+                        downloadCSV(csvData, "download-data.csv")
+                    }, 200)
+                })
+                
                 //sum of each value in sector and category
                 function calculateSector(sector) {
                     let sum = 0;
