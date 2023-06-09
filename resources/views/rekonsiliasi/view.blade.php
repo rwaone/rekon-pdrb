@@ -44,10 +44,13 @@
 
     <span class="loader d-none"></span>
 
-    <div id="fullFormContainer" class="card d-none">@include('rekonsiliasi.full-form')</div>
-    <div id="singleFormContainer" class="card d-none">@include('rekonsiliasi.single-form')</div>
-    <div id="fullFormContainer-pengeluaran" class="card d-none">@include('pengeluaran.full-form')</div>
-    <div id="singleFormContainer-pengeluaran" class="card d-none">@include('pengeluaran.single-form')</div>
+    @if ($type == 'Lapangan Usaha')
+        <div id="fullFormContainer" class="card d-none">@include('lapangan.full-form')</div>
+        <div id="singleFormContainer" class="card d-none">@include('lapangan.single-form')</div>
+    @elseif ($type == 'Pengeluaran')
+        <div id="fullFormContainer" class="card d-none">@include('pengeluaran.full-form')</div>
+        <div id="singleFormContainer" class="card d-none">@include('pengeluaran.single-form')</div>
+    @endif
 
     <!-- Back to top button -->
     <button type="button" class="btn btn-light btn-floating btn-lg" id="btn-back-to-top">
@@ -85,7 +88,7 @@
                 document.body.scrollTop = 0;
                 document.documentElement.scrollTop = 0;
             }
-            
+
             $(document).on('focus', '.select2-selection', function(e) {
                 $(this).closest(".select2-container").siblings('select:enabled').select2('open');
             })
@@ -240,8 +243,7 @@
 
                 $('#price_base').change(function() {
                     if (this.value != '') {
-                        let type = $('#type').val()
-                        showForm(type);
+                        showForm();
                     } else {
                         $('#fullFormContainer').addClass('d-none');
                         $('#fullForm')[0].reset();
@@ -250,15 +252,15 @@
                     }
                 });
 
-                function showForm(type) {
+                function showForm() {
                     $('.loader').removeClass('d-none')
                     // console.log(type)
                     var quarter = $('#quarter').val();
                     setTimeout(function() {
                         if (quarter == 'F') {
-                            getFullData(type)
+                            getFullData()
                         } else if (quarter != null) {
-                            getSingleData(type);
+                            getSingleData();
                         } else {
                             $('#fullFormContainer').addClass('d-none');
                             $('#singleFormContainer').addClass('d-none');
@@ -268,15 +270,10 @@
                 };
 
 
-                function getSingleData(type) {
+                function getSingleData() {
                     // console.log(type)
-                    if (type === 'Lapangan Usaha'){
-                        $('#fullFormContainer').addClass('d-none');
-                        $('#singleFormContainer').removeClass('d-none');
-                    } else if (type === 'Pengeluaran'){
-                        $('#fullFormContainer-pengeluaran').addClass('d-none');
-                        $('#singleFormContainer-pengeluaran').removeClass('d-none');
-                    }
+                    $('#fullFormContainer').addClass('d-none');
+                    $('#singleFormContainer').removeClass('d-none');
                     $.ajax({
                         type: 'POST',
                         url: '{{ route('getSingleData') }}',
@@ -335,13 +332,8 @@
                 }
 
                 function getFullData(type) {
-                    if (type === 'Lapangan Usaha'){
-                        $('#fullFormContainer').removeClass('d-none');
-                        $('#singleFormContainer').addClass('d-none');
-                    } else if (type === 'Pengeluaran'){
-                        $('#fullFormContainer-pengeluaran').removeClass('d-none');
-                        $('#singleFormContainer-pengeluaran').addClass('d-none');
-                    }
+                    $('#fullFormContainer').removeClass('d-none');
+                    $('#singleFormContainer').addClass('d-none');
                     $.ajax({
                         type: 'POST',
                         url: '{{ route('getFullData') }}',
