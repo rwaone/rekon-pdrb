@@ -3,9 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\Sector;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
+use App\Models\Category;
 use App\Models\subsector;
+use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class PengeluaranSeeder extends Seeder
 {
@@ -18,32 +19,32 @@ class PengeluaranSeeder extends Seeder
     {
         $sectors = [
             [
-                'category_id' => 17,
+                'category_id' => 18,
                 'code' => 1,
                 'name' => 'Pengeluaran Konsumsi Rumah Tangga'
             ],
             [
-                'category_id' => 17,
+                'category_id' => 18,
                 'code' => 2,
                 'name' => 'Pengeluaran Konsumsi LNPRT'
             ],
             [
-                'category_id' => 17,
+                'category_id' => 18,
                 'code' => 3,
                 'name' => 'Pengeluaran Konsumsi Pemerintah'
             ],
             [
-                'category_id' => 17,
+                'category_id' => 18,
                 'code' => 4,
                 'name' => 'Pembentukan Modal Tetap Bruto'
             ],
             [
-                'category_id' => 17,
+                'category_id' => 18,
                 'code' => 5,
                 'name' => 'Perubahan Inventori'
             ],
             [
-                'category_id' => 17,
+                'category_id' => 18,
                 'code' => 6,
                 'name' => 'Net Ekspor'
             ],
@@ -142,5 +143,13 @@ class PengeluaranSeeder extends Seeder
         foreach ($subsectors as $subsector) {
             Subsector::create($subsector);
         }
+        
+        Category::create([
+            'id' => 18,
+            'type' => 'Pengeluaran',
+            'code' => 'X',
+            'name' => 'Pengeluaran'
+        ]);
+
     }
 }
