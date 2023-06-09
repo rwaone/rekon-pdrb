@@ -92,7 +92,35 @@ class PdrbController extends Controller
     {
         //
     }
-    
+
+    public function monitoring()
+    {
+        $quarter = ['F', 1, 2, 3, 4];
+        $regions = Region::getMyRegion();
+        $daftar_quarters = Period::select('id', 'year', 'type', 'description')->where('year', 2017)->whereIn('quarter', $quarter)->where('status', 'Aktif')->get();
+        $data_regions = [];
+        foreach ($regions as $index => $item) {
+            $datas = [];
+            foreach ($daftar_quarters as $quarter) {
+                $data = Pdrb::select('adhk', 'adhb')->where('region_id', $item->id)->where('period_id', $quarter->id)->first('adhk');
+                if (!$data){
+                    $data = '0';
+                } else {
+                    $data = '1';
+                }
+                array_push($datas, $data);
+            }
+            $data_regions[$index] = $datas;
+        }
+        $daftar_years = Period::select('year', 'type')->where('quarter', 'Y')->where('status', 'Aktif')->get();
+        return view('rekonsiliasi.monitoring', [
+            'daftar_quarters' => $daftar_quarters,
+            'daftar_years' => $daftar_years,
+            'regions' => $regions,
+            'data_regions' => $data_regions
+        ]);
+    }
+
     public function getFullData(Request $request)
     {
         $filter = $request->filter;

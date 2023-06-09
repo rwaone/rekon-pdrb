@@ -276,6 +276,7 @@
                 </div>
             </div>
         </div>
+    </div>
         <x-slot name="script">
             <!-- Additional JS resources -->
             <script src="{{ url('') }}/plugins/select2/js/select2.full.min.js"></script>
