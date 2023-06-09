@@ -85,6 +85,23 @@ class PengeluaranController extends Controller
         ]);
     }
 
+    public function fenomena()
+    {
+        $type = 'Pengeluaran';
+        $cat = Category::pluck('code')->toArray();
+        $catString = implode(", ", $cat);
+        $regions = Region::getMyRegion();
+        $category = Category::where('type', $type)->get();
+        $subsectors = Subsector::where('type', $type)->get();
+        return view('fenomena.view', [
+            'cat' => $catString,
+            'subsectors' => $subsectors,
+            'regions' => $regions,
+            'type' => $type,
+            'category' => $category,
+        ]);
+    }
+
     public function detailPokok($period_id, $region_id, $quarter)
     {
         $subsectors = Subsector::where('type', 'Pengeluaran')->get();

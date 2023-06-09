@@ -45,7 +45,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('fenomena') }}" class="nav-link {{ Request::is('fenomena') ? 'active' : '' }}">
+                            <a href="{{ url('lapangan-usaha/fenomena') }}" class="nav-link {{ Request::is('lapangan-usaha/fenomena') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Fenomena</p>
                             </a>
@@ -80,7 +80,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('fenomena') }}" class="nav-link {{ Request::is('fenomena') ? 'active' : '' }}">
+                            <a href="{{ url('pengeluaran/fenomena') }}" class="nav-link {{ Request::is('pengeluaran/fenomena') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Fenomena</p>
                             </a>

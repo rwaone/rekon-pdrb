@@ -27,6 +27,23 @@ class LapanganController extends Controller
         ]);
     }
 
+    public function fenomena()
+    {
+        $type = 'Lapangan Usaha';
+        $cat = Category::pluck('code')->toArray();
+        $catString = implode(", ", $cat);
+        $regions = Region::getMyRegion();
+        $category = Category::where('type', $type)->get();
+        $subsectors = Subsector::where('type', $type)->get();
+        return view('fenomena.view', [
+            'cat' => $catString,
+            'subsectors' => $subsectors,
+            'regions' => $regions,
+            'type' => $type,
+            'category' => $category,
+        ]);
+    }
+
     public function getKonserda($period_id)
     {
         $regions = Region::select('id')->get();
