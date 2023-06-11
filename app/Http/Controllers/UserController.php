@@ -68,7 +68,7 @@ class UserController extends Controller
 
         $request->user()->save();
 
-        return redirect('user')->with('status', 'profile-updated');
+        return redirect('user')->with('notif', 'user-updated');
     }
 
     /**
@@ -76,6 +76,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        User::destroy($user->id);
+        return redirect('user')->with('notif', 'Data berhasil dihapus!');
     }
 }

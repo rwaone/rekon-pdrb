@@ -17,7 +17,7 @@ class PeriodController extends Controller
     public function index()
     {
         $periods = Period::all();
-        return view('period.view', [
+        return view('period.index', [
             'periods' => $periods,
             'years' => range(date('Y'), 2010),
         ]);
@@ -105,7 +105,6 @@ class PeriodController extends Controller
 
         $validatedData['started_at'] = $range[0];
         $validatedData['ended_at'] = $range[1];
-        $validatedData['status'] = 'Aktif';
         
         //dd($validatedData);
         

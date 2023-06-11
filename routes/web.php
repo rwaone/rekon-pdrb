@@ -71,9 +71,9 @@ Route::post('konserda/period', [PeriodController::class, 'konserdaPeriod'])->nam
 Route::post('fetch/year', [PeriodController::class, 'fetchYear'])->name('fetchYear');
 Route::post('fetch/quarter', [PeriodController::class, 'fetchQuarter'])->name('fetchQuarter');
 Route::post('fetch/period', [PeriodController::class, 'fetchPeriod'])->name('fetchPeriod');
-Route::resource('period', PeriodController::class)->middleware(['auth', 'verified']);
+Route::resource('period', PeriodController::class)->middleware(['auth', 'verified', 'admin']);
 
-Route::resource('user', UserController::class)->middleware(['auth', 'verified']);
+Route::resource('user', UserController::class)->middleware(['auth', 'verified', 'admin']);
 
 
 require __DIR__ . '/auth.php';

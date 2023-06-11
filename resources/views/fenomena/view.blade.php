@@ -11,13 +11,14 @@
         <link rel="stylesheet" href="{{ url('') }}/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
         <script></script>
         <style type="text/css">
-        .table td { 
-            vertical-align: middle;
-            padding: 0.25rem;
-        }
-        .table tr:nth-child(even) {
-            background-color: ; 
-        }
+            .table td {
+                vertical-align: middle;
+                padding: 0.25rem;
+            }
+
+            .table tr:nth-child(even) {
+                background-color: ;
+            }
         </style>
     </x-slot>
 
@@ -25,10 +26,10 @@
         <li class="breadcrumb-item active">Fenomena</li>
     </x-slot>
 
-    @include('rekonsiliasi.filter')
+    @include('fenomena.filter')
     <span class="loader d-none"></span>
 
-    <div class="card">
+    <div id="fenomenaFormContainer" class="card d-none">
         @include('fenomena.single-form')
     </div>
 
@@ -56,7 +57,7 @@
             });
 
             $(document).ready(function() {
-                
+
                 $('#type').on('change', function() {
                     var pdrb_type = this.value;
                     $("#year").html('');
@@ -65,7 +66,7 @@
 
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route("fetchYear") }}',
+                        url: '{{ route('fetchYear') }}',
                         data: {
                             type: pdrb_type,
                             _token: '{{ csrf_token() }}',
@@ -78,10 +79,6 @@
                                 $('#year').append('<option value="' + value.year + '">' +
                                     value.year + '</option>');
                             });
-                            $('#quarter').append(
-                                '<option value="" disabled selected> Pilih Triwulan </option>');
-                            $('#period').append(
-                                '<option value="" selected> Pilih Periode </option>');
                         },
                     })
                 });
@@ -89,79 +86,21 @@
                 $('#year').on('change', function() {
                     var pdrb_type = $('#type').val();
                     var pdrb_year = this.value;
-                    $("#quarter").html('');
                     $('#region_id').val('').change();
-                    $('#price_base').val('').change();
-
-                    $.ajax({
-                        type: 'POST',
-                        url: '{{ route("fetchQuarter") }}',
-                        data: {
-                            type: pdrb_type,
-                            year: pdrb_year,
-                            _token: '{{ csrf_token() }}',
-                        },
-                        dataType: 'json',
-
-                        success: function(result) {
-                            $('#quarter').html(
-                                '<option value="" selected> Pilih Triwulan </option>');
-                            $.each(result.quarters, function(key, value) {
-                                var description = (value.quarter == 'F') ? 'Lengkap' : ((
-                                        value.quarter == 'Y') ? 'Tahunan' :
-                                    'Triwulan ' + value.quarter);
-                                $('#quarter').append('<option value="' + value.quarter +
-                                    '">' + description + '</option>');
-                            });
-                            $('#period').append(
-                                '<option value="" selected> Pilih Periode </option>');
-                        },
-                    })
                 });
 
                 $('#quarter').on('change', function() {
-                    var pdrb_type = $('#type').val();
-                    var pdrb_year = $('#year').val();
                     var pdrb_quarter = this.value;
-                    $("#period").html('');
                     $('#region_id').val('').change();
-                    $('#price_base').val('').change();
-
-                    $.ajax({
-                        type: 'POST',
-                        url: '{{ route("fetchPeriod") }}',
-                        data: {
-                            type: pdrb_type,
-                            year: pdrb_year,
-                            quarter: pdrb_quarter,
-                            _token: '{{ csrf_token() }}',
-                        },
-                        dataType: 'json',
-
-                        success: function(result) {
-                            $('#period').html('<option value="" selected> Pilih Periode </option>');
-                            $.each(result.periods, function(key, value) {
-                                $('#period').append('<option value="' + value.id + '">' +
-                                    value.description + '</option>');
-                            });
-                        },
-                    })
-                });
-
-                $('#period').change(function() {
-                    $('#region_id').val('').change();
-                    $('#price_base').val('').change();
                 });
 
                 $('#region_id').change(function() {
-                    $('#price_base').val('').change();
-                });
-
-                $('#price_base').change(function() {
                     if (this.value != '') {
+                        $('#fenomenaFormContainer').removeClass('d-none');
                         showFenomena();
                     } else {
                         $('#fenomenaSingleForm')[0].reset();
+                        $('#fenomenaFormContainer').addClass('d-none');
                     }
                 });
 
@@ -169,7 +108,7 @@
                     $('.loader').removeClass('d-none')
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route("getFenomena") }}',
+                        url: '{{ route('getFenomena') }}',
                         data: {
                             filter: $('#filterForm').serializeArray().reduce(function(obj, item) {
                                 obj[item.name] = item.value;
@@ -228,7 +167,7 @@
                     // console.log(data);
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route("saveSingleData") }}',
+                        url: '{{ route('saveSingleData') }}',
                         data: {
                             filter: $('#filterForm').serializeArray().reduce(function(obj, item) {
                                 obj[item.name] = item.value;
@@ -261,7 +200,6 @@
                 });
 
             });
-            
         </script>
     </x-slot>
 </x-dashboard-Layout>

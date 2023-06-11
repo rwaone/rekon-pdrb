@@ -49,11 +49,40 @@
                             <td class="text-center">{{ $loop->iteration }}</td>
                             <td class="text-center">{{ $period->type }}</td>
                             <td class="text-center">{{ $period->year }}</td>
-                            <td class="text-center">{{ $period->quarter }}</td>
+                            <td class="text-center">
+                                @switch($period->quarter)
+                                    @case('T')
+                                        Tahunan
+                                    @break
+
+                                    @case('F')
+                                        Lengkap
+                                    @break
+
+                                    @default
+                                        Triwulan {{ $period->quarter }}
+                                @endswitch
+                            </td>
                             <td class="text-center">{{ $period->description }}</td>
                             <td class="text-center">{{ $period->started_at }}</td>
                             <td class="text-center">{{ $period->ended_at }}</td>
-                            <td class="text-center">{{ $period->status }}</td>
+                            <td class="text-center">
+                                @switch($period->status)
+                                    @case('Aktif')
+                                        <span class="badge bg-warning"> {{ $period->status }} </span>
+                                    @break
+
+                                    @case('Selesai')
+                                        <span class="badge bg-success"> {{ $period->status }} </span>
+                                    @break
+
+                                    @case('Final')
+                                        <span class="badge bg-primary"> {{ $period->status }} </span>
+                                    @break
+
+                                    @default
+                                @endswitch
+                            </td>
                             <td class="project-actions text-center">
                                 <a class="btn btn-info btn-sm" href="/period/{{ $period->id }}/edit">
                                     <i class="fas fa-pencil-alt">
@@ -103,7 +132,7 @@
                                     name="year">
                                     <option value="" disabled selected>Pilih Tahun</option>
                                     @foreach ($years as $year)
-                                        <option value='{{$year}}'>{{$year}}</option>
+                                        <option value='{{ $year }}'>{{ $year }}</option>
                                     @endforeach
                                 </select>
                                 <div class="help-block"></div>
@@ -219,7 +248,7 @@
                         })
                     }
                 });
-                
+
                 $(document).on('focus', '.select2-selection', function(e) {
                     $(this).closest(".select2-container").siblings('select:enabled').select2('open');
                 })

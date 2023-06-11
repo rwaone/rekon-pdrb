@@ -36,6 +36,7 @@
                         <th class="text-center">Nama</th>
                         <th class="text-center">Username</th>
                         <th class="text-center">Email</th>
+                        <th class="text-center">Role</th>
                         <th class="text-center">Satker</th>
                         <th class="text-center">Aksi</th>
                     </tr>
@@ -47,6 +48,19 @@
                             <td class="text-center">{{ $user->name }}</td>
                             <td class="text-center">{{ $user->username }}</td>
                             <td class="text-center">{{ $user->email }}</td>
+                            <td class="text-center">
+                                @switch($user->role)
+                                    @case('admin')
+                                        <span class="badge bg-primary"> {{ $user->role }} </span>
+                                    @break
+
+                                    @case('user')
+                                        <span class="badge bg-success"> {{ $user->role }} </span>
+                                    @break
+
+                                    @default
+                                @endswitch
+                            </td>
                             <td class="text-center">{{ $user->satker->name }}</td>
                             <td class="project-actions text-center">
                                 <a class="btn btn-primary btn-sm" href="#">
@@ -141,7 +155,7 @@
                         })
                     }
                 });
-                
+
                 $(document).on('focus', '.select2-selection', function(e) {
                     $(this).closest(".select2-container").siblings('select:enabled').select2('open');
                 })

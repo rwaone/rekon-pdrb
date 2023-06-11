@@ -24,7 +24,7 @@
             @method('put')
             
             <div class="card-header">
-                <a href="{{ url()->previous() }}">
+                <a href="{{ url('user') }}">
                     <button type="button" class="btn btn-warning"> {{ _('< Kembali') }} </button>
                 </a>
             </div>
@@ -46,6 +46,17 @@
                     <label for="email-text" class="col-form-label">E-Mail:</label>
                     <input type="text" class="form-control" id="email-text" name="email"
                         placeholder="E-Mail" value="{{ old('email', $user->email) }}">
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-form-label" for="roleSelect">Role:</label>
+                    <select id="roleSelect" class="form-control select2bs4" style="width: 100%;"
+                        name="role">
+                        <option value="" disabled selected>Pilih Role</option>
+                        <option {{ old('role', $user->role) == 'admin' ? 'selected' : '' }} value="admin">admin</option>
+                        <option {{ old('role', $user->role) == 'user' ? 'selected' : '' }} value="user">user</option>
+                    </select>
+                    <div class="help-block"></div>
                 </div>
 
                 <div class="form-group">

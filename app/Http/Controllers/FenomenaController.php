@@ -101,7 +101,30 @@ class FenomenaController extends Controller
 
     public function getFenomena(Request $request)
     {
-        $filter = $request->filter;        
-        $fenomena = Fenomena::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->orderBy('subsector_id')->get();
+        $filter = $request->filter;
+        $fenomena_data = Fenomena::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->orderBy('subsector_id')->get();
+        if (sizeof($fenomena_data) != 0) {
+            return response()->json($fenomena_data);
+        } else {
+            $inputData = [];
+            $timestamp = date('Y-m-d H:i:s');
+            foreach ($subsectors as $subsector) {
+                $singleData = [
+                    'subsector_id' => $subsector->id,
+                    'type' => $filter['type'],
+                    'year' => $filter['year'],
+                    'quarter' => $filter['quarter'],
+                    'period_id' => $filter['period_id'],
+                    'region_id' => $filter['region_id'],
+                    'created_at' => $timestamp,
+                    'updated_at' => $timestamp,
+                ];
+                array_push($inputData, $singleData);
+            }
+            Pdrb::insert($inputData);
+            // Pdrb::create($inputData);
+            $data = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->orderBy('subsector_id')->get();
+            return response()->json($data);
+        }
     }
 }

@@ -32,6 +32,17 @@
                     </div>
 
                     <div class="form-group">
+                        <label class="col-form-label" for="roleSelect">Role:</label>
+                        <select id="roleSelect" class="form-control select2bs4" style="width: 100%;"
+                            name="role">
+                            <option value="" disabled selected>Pilih Role</option>
+                            <option value="admin">admin</option>
+                            <option value="user">user</option>
+                        </select>
+                        <div class="help-block"></div>
+                    </div>
+
+                    <div class="form-group">
                         <label for="password-text" class="col-form-label">Password:</label>
                         <input type="password" class="form-control" id="password-text" name="password"
                             placeholder="Password">
