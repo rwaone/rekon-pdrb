@@ -3,7 +3,7 @@
             <table class="table table-bordered" id="rekonsiliasi-table">
                 <thead class="text-center" style="background-color: #09c140; color:aliceblue;">
                     <tr>
-                        <th>Komponen</th>
+                        <th style="width: 200px">Komponen</th>
                         <th>Triwulan I</th>
                         <th>Triwulan II</th>
                         <th>Triwulan III</th>

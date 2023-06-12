@@ -10,8 +10,8 @@
             <tbody>
                 @foreach ($subsectors as $subsector)
                     @if (
-                        ($subsector->code != null && $subsector->code == 'a' && $subsector->sector->code == '1' && $subsector->sector->category->type == 'Lapangan Usaha') ||
-                            ($subsector->code == null && $subsector->sector->code == '1' && $subsector->sector->category->type == 'Lapangan Usaha'))
+                        ($subsector->code != null && $subsector->code == 'a' && $subsector->sector->code == '1') ||
+                            ($subsector->code == null && $subsector->sector->code == '1'))
                         <tr>
                             <td>
                                 <label class="col" style="margin-bottom:0rem;"
@@ -24,7 +24,7 @@
                             </td>
                         </tr>
                     @endif
-                    @if ($subsector->code != null && $subsector->code == 'a' && $subsector->sector->category->type == 'Lapangan Usaha')
+                    @if ($subsector->code != null && $subsector->code == 'a')
                         <tr>
                             <td>
                                 <p class="col ml-4" style="margin-bottom:0rem;" for="">
@@ -38,7 +38,7 @@
                             </td>
                         </tr>
                     @endif
-                    @if ($subsector->code != null && $subsector->sector->category->type == 'Lapangan Usaha')
+                    @if ($subsector->code != null)
                         <tr>
                             <td>
                                 <p class="col ml-5" style="margin-bottom:0rem;"
@@ -55,7 +55,7 @@
                                     aria-required="true"></textarea>
                             </td>
                         </tr>
-                    @elseif ($subsector->code == null && $subsector->sector->code != null && $subsector->sector->category->type == 'Lapangan Usaha')
+                    @elseif ($subsector->code == null && $subsector->sector->code != null)
                         <tr>
                             <td>
                                 <p class="col ml-4" style="margin-bottom:0rem;"
@@ -72,7 +72,7 @@
                                     aria-required="true"></textarea>
                             </td>
                         </tr>
-                    @elseif ($subsector->code == null && $subsector->sector->code == null && $subsector->sector->category->type == 'Lapangan Usaha')
+                    @elseif ($subsector->code == null && $subsector->sector->code == null)
                         <tr>
                             <td>
                                 <label class="col" style="margin-bottom:0rem;"

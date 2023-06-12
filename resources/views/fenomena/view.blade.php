@@ -29,7 +29,7 @@
     @include('fenomena.filter')
     <span class="loader d-none"></span>
 
-    <div id="fenomenaFormContainer" class="card d-none">
+    <div id="fenomenaFormContainer" class="card">
         @include('fenomena.single-form')
     </div>
 

@@ -102,7 +102,8 @@ class FenomenaController extends Controller
     public function getFenomena(Request $request)
     {
         $filter = $request->filter;
-        $fenomena_data = Fenomena::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->orderBy('subsector_id')->get();
+        $subsectors = Subsector::where('type', $filter['type'])->get();
+        $fenomena_data = Fenomena::where('region_id', $filter['region_id'])->orderBy('subsector_id')->get();
         if (sizeof($fenomena_data) != 0) {
             return response()->json($fenomena_data);
         } else {
@@ -121,7 +122,7 @@ class FenomenaController extends Controller
                 ];
                 array_push($inputData, $singleData);
             }
-            Pdrb::insert($inputData);
+            Fenomena::insert($inputData);
             // Pdrb::create($inputData);
             $data = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->orderBy('subsector_id')->get();
             return response()->json($data);
