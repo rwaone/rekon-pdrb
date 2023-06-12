@@ -65,7 +65,7 @@
                         </option>
                         <option {{ old('type', $period->quarter) == '4' ? 'selected' : '' }} value='4'>Triwulan 4
                         </option>
-                        <option {{ old('type', $period->quarter) == 'T' ? 'selected' : '' }} value='T'>Tahunan
+                        <option {{ old('type', $period->quarter) == 'Y' ? 'selected' : '' }} value='Y'>Tahunan
                         </option>
                         <option {{ old('type', $period->quarter) == 'F' ? 'selected' : '' }} value='F'>Lengkap
                         </option>

@@ -254,13 +254,19 @@
 
                 function showForm() {
                     $('.loader').removeClass('d-none')
-                    // console.log(type)
                     var quarter = $('#quarter').val();
                     setTimeout(function() {
-                        if (quarter == 'F') {
-                            getFullData()
-                        } else if (quarter != null) {
+                        if (quarter == 'T') {
                             getSingleData();
+                        } else if (quarter != null) {
+                            getFullData();
+                            if (quarter < 4) {
+                                for (let index = +quarter + 1; index < 5; index++) {
+                                    console.log(index);
+                                    $('input[name*=value_' + index + '_]').prop('disabled', true);
+                                    $('input[name*=id' + index + '_]').prop('disabled', true);
+                                }
+                            }
                         } else {
                             $('#fullFormContainer').addClass('d-none');
                             $('#singleFormContainer').addClass('d-none');
@@ -271,7 +277,6 @@
 
 
                 function getSingleData() {
-                    // console.log(type)
                     $('#fullFormContainer').addClass('d-none');
                     $('#singleFormContainer').removeClass('d-none');
                     $.ajax({
@@ -286,8 +291,6 @@
                         },
 
                         success: function(result) {
-
-                            // console.log(result);
                             $('#singleForm')[0].reset();
                             if ($('#price_base').val() == 'adhk') {
                                 $.each(result, function(key, value) {
@@ -346,8 +349,6 @@
                         },
 
                         success: function(result) {
-
-                            // console.log(result);
                             $('#fullForm')[0].reset();
                             if ($('#price_base').val() == 'adhk') {
                                 $.each(result, function(quarter, value) {
@@ -401,7 +402,6 @@
                 }
 
                 $("#singleFormSave").on('click', function() {
-                    // console.log(data);
                     $.ajax({
                         type: 'POST',
                         url: '{{ route('saveSingleData') }}',
@@ -418,8 +418,6 @@
                         },
 
                         success: function(result) {
-
-                            // console.log(result);
                             const Toast = Swal.mixin({
                                 toast: true,
                                 position: 'top-end',
@@ -437,6 +435,11 @@
                 });
 
                 $("#fullFormSave").click(function() {
+                    input = $('#fullForm').serializeArray().reduce(function(obj, item) {
+                            obj[item.name] = item.value;
+                            return obj;
+                        }, {});
+                        console.log(input)
                     $.ajax({
                         type: 'POST',
                         url: '{{ route('saveFullData') }}',
@@ -453,8 +456,6 @@
                         },
 
                         success: function(result) {
-
-                            // console.log(result);
                             const Toast = Swal.mixin({
                                 toast: true,
                                 position: 'top-end',
