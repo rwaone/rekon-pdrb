@@ -26,7 +26,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ url('monitoring') }}"
-                        class="nav-link {{ Request::is('/', 'monitoring') ? 'active' : '' }}">
+                        class="nav-link {{ Request::is('monitoring') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Monitoring Upload Tabel
@@ -34,9 +34,9 @@
                     </a>
                 </li>
                 <li
-                    class="nav-item {{ Request::is('lapangan-usaha/rekonsiliasi', 'fenomena', 'lapangan-usaha/daftarPokok', 'lapangan-usaha/konserda') ? 'menu-open' : '' }}">
+                    class="nav-item {{ Request::is('lapangan-usaha*') ? 'menu-open' : '' }}">
                     <a href="../widgets.html"
-                        class="nav-link {{ Request::is('lapangan-usaha/rekonsiliasi', 'fenomena', 'lapangan-usaha/daftarPokok', 'lapangan-usaha/konserda') ? 'active' : '' }}">
+                        class="nav-link {{ Request::is('lapangan-usaha*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Lapangan Usaha
@@ -75,9 +75,9 @@
                     </ul>
                 </li>
                 <li
-                    class="nav-item {{ Request::is('pengeluaran/rekonsiliasi', 'fenomena', 'pengeluaran/daftarPokok', 'pengeluaran/konserda') ? 'menu-open' : '' }}">
+                    class="nav-item {{ Request::is('pengeluaran*') ? 'menu-open' : '' }}">
                     <a href="../widgets.html"
-                        class="nav-link {{ Request::is('pengeluaran/rekonsiliasi', 'fenomena', 'pengeluaran/daftarPokok', 'pengeluaran/konserda') ? 'active' : '' }}">
+                        class="nav-link {{ Request::is('pengeluaran*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Pengeluaran
