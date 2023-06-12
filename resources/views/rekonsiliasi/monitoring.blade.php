@@ -11,7 +11,7 @@
         <script></script>
         <style type="text/css">
             #monitoring-kuarter thead {
-                text-align:center;
+                text-align: center;
             }
         </style>
     </x-slot>
@@ -36,7 +36,7 @@
                     <tr>
                         <td>{{ $item->name }}</td>
                         @foreach ($daftar_quarters as $quarter => $items)
-                        <td>{{ $data_regions[$index][$quarter] }}</td>
+                        <td>{{ $data_regions_quarters[$index][$quarter] }}</td>
                         @endforeach
                     </tr>
                     @endforeach
@@ -47,6 +47,24 @@
     <div class="card">
         <div class="card-body p-2">
             <h4>Monitoring Pemasukan Tabel PDRB Tahunan</h4>
+            <table class="table table-bordered table-striped" id="monitoring-kuarter">
+                <thead>
+                    <th>Kabupaten/Kota</th>
+                    @foreach ($daftar_years as $year)
+                    <th>Putaran ke {{ $year->description }}</th>
+                    @endforeach
+                </thead>
+                <tbody>
+                    @foreach ($regions as $index => $item)
+                    <tr>
+                        <td>{{ $item->name }}</td>
+                        @foreach ($daftar_years as $year => $items)
+                        <td>{{ $data_regions_years[$index][$year] }}</td>
+                        @endforeach
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -58,7 +76,7 @@
         <script src="{{ asset('js/rekon-pengeluaran.js') }}"></script>
         <script>
             $('#monitoring-kuarter tbody tr td').each(function() {
-                if($(this).text() === '0'){
+                if ($(this).text() === '0') {
                     $(this).html('<i class="bi bi-x-lg"></i>');
                     $(this).addClass('text-center')
                 }
