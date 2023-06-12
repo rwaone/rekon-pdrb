@@ -97,8 +97,10 @@ class PdrbController extends Controller
     {
         $quarter = ['F', 1, 2, 3, 4];
         $regions = Region::getMyRegion();
-        $daftar_quarters = Period::select('id', 'year', 'type', 'description')->where('year', 2017)->whereIn('quarter', $quarter)->where('status', 'Aktif')->get();
-        $data_regions = [];
+        // $this_year = date('Y');
+        $this_year = 2017;
+        $daftar_quarters = Period::select('id', 'year', 'type', 'description')->where('year', $this_year)->whereIn('status', ['Selesai','Aktif'])->whereIn('quarter', $quarter)->get();
+        $data_regions_quarters = [];
         foreach ($regions as $index => $item) {
             $datas = [];
             foreach ($daftar_quarters as $quarter) {
@@ -110,14 +112,30 @@ class PdrbController extends Controller
                 }
                 array_push($datas, $data);
             }
-            $data_regions[$index] = $datas;
+            $data_regions_quarters[$index] = $datas;
         }
-        $daftar_years = Period::select('year', 'type')->where('quarter', 'Y')->where('status', 'Aktif')->get();
+        $daftar_years = Period::select('id', 'year', 'type', 'description')->where('year', $this_year)->where('quarter', 'Y')->whereIn('status', ['Selesai','Aktif'])->get();
+        $data_regions_years = [];
+        foreach ($regions as $index => $item){
+            $datas = [];
+            foreach ($daftar_years as $year){
+                $data = Pdrb::select('adhk', 'adhb')->where('region_id', $item->id)->where('period_id', $year)->first('adhk');
+                if (!$data){
+                    $data = '0';
+                } else {
+                    $data = '1';
+                }
+                array_push($datas, $data);
+            }
+            $data_regions_years[$index] = $datas;
+        }
+
         return view('rekonsiliasi.monitoring', [
             'daftar_quarters' => $daftar_quarters,
             'daftar_years' => $daftar_years,
             'regions' => $regions,
-            'data_regions' => $data_regions
+            'data_regions_quarters' => $data_regions_quarters,
+            'data_regions_years' => $data_regions_years
         ]);
     }
 
