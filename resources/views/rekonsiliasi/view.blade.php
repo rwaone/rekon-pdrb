@@ -191,9 +191,8 @@
                             $('#quarter').html(
                                 '<option value="" selected> Pilih Triwulan </option>');
                             $.each(result.quarters, function(key, value) {
-                                var description = (value.quarter == 'F') ? 'Lengkap' : ((
-                                        value.quarter == 'Y') ? 'Tahunan' :
-                                    'Triwulan ' + value.quarter);
+                                var description = (value.quarter == 'Y') ? 'Tahunan' :
+                                    'Triwulan ' + value.quarter;
                                 $('#quarter').append('<option value="' + value.quarter +
                                     '">' + description + '</option>');
                             });
