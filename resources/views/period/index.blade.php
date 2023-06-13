@@ -148,7 +148,6 @@
                                     <option value='3'>Triwulan 3</option>
                                     <option value='4'>Triwulan 4</option>
                                     <option value='Y'>Tahunan</option>
-                                    <option value='F'>Lengkap</option>
                                 </select>
                                 <div class="help-block"></div>
                             </div>

@@ -67,8 +67,6 @@
                         </option>
                         <option {{ old('type', $period->quarter) == 'Y' ? 'selected' : '' }} value='Y'>Tahunan
                         </option>
-                        <option {{ old('type', $period->quarter) == 'F' ? 'selected' : '' }} value='F'>Lengkap
-                        </option>
                     </select>
                     <div class="help-block"></div>
                 </div>
