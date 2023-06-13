@@ -256,10 +256,14 @@
                     $('.loader').removeClass('d-none')
                     var quarter = $('#quarter').val();
                     setTimeout(function() {
-                        if (quarter == 'T') {
+                        if (quarter == 'Y') {
                             getSingleData();
+                            $('#fullFormContainer').addClass('d-none');
+                            $('#singleFormContainer').removeClass('d-none');
                         } else if (quarter != null) {
                             getFullData();
+                                    $('input[name*=value_]').prop('disabled', false);
+                                    $('input[name*=id_]').prop('disabled', false);
                             if (quarter < 4) {
                                 for (let index = +quarter + 1; index < 5; index++) {
                                     console.log(index);
@@ -277,8 +281,6 @@
 
 
                 function getSingleData() {
-                    $('#fullFormContainer').addClass('d-none');
-                    $('#singleFormContainer').removeClass('d-none');
                     $.ajax({
                         type: 'POST',
                         url: '{{ route('getSingleData') }}',
@@ -334,7 +336,7 @@
                     });
                 }
 
-                function getFullData(type) {
+                function getFullData() {
                     $('#fullFormContainer').removeClass('d-none');
                     $('#singleFormContainer').addClass('d-none');
                     $.ajax({
@@ -349,6 +351,7 @@
                         },
 
                         success: function(result) {
+                            console.log(result);
                             $('#fullForm')[0].reset();
                             if ($('#price_base').val() == 'adhk') {
                                 $.each(result, function(quarter, value) {
@@ -436,10 +439,10 @@
 
                 $("#fullFormSave").click(function() {
                     input = $('#fullForm').serializeArray().reduce(function(obj, item) {
-                            obj[item.name] = item.value;
-                            return obj;
-                        }, {});
-                        console.log(input)
+                        obj[item.name] = item.value;
+                        return obj;
+                    }, {});
+                    console.log(input)
                     $.ajax({
                         type: 'POST',
                         url: '{{ route('saveFullData') }}',

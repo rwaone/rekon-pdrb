@@ -99,13 +99,13 @@ class PdrbController extends Controller
         $regions = Region::getMyRegion();
         // $this_year = date('Y');
         $this_year = 2017;
-        $daftar_quarters = Period::select('id', 'year', 'type', 'description')->where('year', $this_year)->whereIn('status', ['Selesai','Aktif'])->whereIn('quarter', $quarter)->get();
+        $daftar_quarters = Period::select('id', 'year', 'type', 'description')->where('year', $this_year)->whereIn('status', ['Selesai', 'Aktif'])->whereIn('quarter', $quarter)->get();
         $data_regions_quarters = [];
         foreach ($regions as $index => $item) {
             $datas = [];
             foreach ($daftar_quarters as $quarter) {
                 $data = Pdrb::select('adhk', 'adhb')->where('region_id', $item->id)->where('period_id', $quarter->id)->first('adhk');
-                if (!$data){
+                if (!$data) {
                     $data = '0';
                 } else {
                     $data = '1';
@@ -114,13 +114,13 @@ class PdrbController extends Controller
             }
             $data_regions_quarters[$index] = $datas;
         }
-        $daftar_years = Period::select('id', 'year', 'type', 'description')->where('year', $this_year)->where('quarter', 'Y')->whereIn('status', ['Selesai','Aktif'])->get();
+        $daftar_years = Period::select('id', 'year', 'type', 'description')->where('year', $this_year)->where('quarter', 'Y')->whereIn('status', ['Selesai', 'Aktif'])->get();
         $data_regions_years = [];
-        foreach ($regions as $index => $item){
+        foreach ($regions as $index => $item) {
             $datas = [];
-            foreach ($daftar_years as $year){
+            foreach ($daftar_years as $year) {
                 $data = Pdrb::select('adhk', 'adhb')->where('region_id', $item->id)->where('period_id', $year)->first('adhk');
-                if (!$data){
+                if (!$data) {
                     $data = '0';
                 } else {
                     $data = '1';
@@ -143,16 +143,11 @@ class PdrbController extends Controller
     {
         $filter = $request->filter;
         $subsectors = Subsector::where('type', $filter['type'])->get();
-        $dataSeries['1'] = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->where('quarter', 1)->orderBy('subsector_id')->get();
-        $dataSeries['2'] = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->where('quarter', 2)->orderBy('subsector_id')->get();
-        $dataSeries['3'] = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->where('quarter', 3)->orderBy('subsector_id')->get();
-        $dataSeries['4'] = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->where('quarter', 4)->orderBy('subsector_id')->get();
-        $dataSeries['Y'] = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->where('quarter', 'Y')->orderBy('subsector_id')->get();
-
         $fullData = [];
-
-        foreach ($dataSeries as $key => $data) {
-            if (sizeof($data) == 0) {
+    
+        for ($index = 1; $index <= $filter['quarter']; $index++) {
+            $data[$index] = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->where('quarter', $index)->orderBy('subsector_id')->get();
+            if (sizeof($data[$index]) == 0) {
                 $inputData = [];
                 $timestamp = date('Y-m-d H:i:s');
                 foreach ($subsectors as $subsector) {
@@ -160,7 +155,7 @@ class PdrbController extends Controller
                         'subsector_id' => $subsector->id,
                         'type' => $filter['type'],
                         'year' => $filter['year'],
-                        'quarter' => $key,
+                        'quarter' => $index,
                         'period_id' => $filter['period_id'],
                         'region_id' => $filter['region_id'],
                         'created_at' => $timestamp,
@@ -168,13 +163,13 @@ class PdrbController extends Controller
                     ];
                     array_push($inputData, $singleData);
                 }
+
                 Pdrb::insert($inputData);
-                $fullData[$key] = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->where('quarter', $key)->orderBy('subsector_id')->get();
+                $fullData[$index] = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->where('quarter', $index)->orderBy('subsector_id')->get();
             } else {
-                $fullData[$key] = $data;
+                $fullData[$index] = $data[$index];
             }
         }
-
         return response()->json($fullData);
     }
 

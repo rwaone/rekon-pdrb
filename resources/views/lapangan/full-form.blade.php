@@ -1,9 +1,9 @@
     <form id="fullForm" method="post"  class="form-horizontal">
         <div class="card-body p-3">
-            <table class="table table-bordered" id="rekonsiliasi-table">
+            <table class="table table-bordered table-responsive" id="rekonsiliasi-table">
                 <thead class="text-center" style="background-color: #09c140; color:aliceblue;">
                     <tr>
-                        <th style="width: 200px">Komponen</th>
+                        <th>Komponen</th>
                         <th>Triwulan I</th>
                         <th>Triwulan II</th>
                         <th>Triwulan III</th>
@@ -47,7 +47,7 @@
                                 </td>
                                 <td class="categories">
                                     <input disabled type="text"
-                                        name="value_Y_{{ $subsector->id }}"
+                                        name="sum_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->sector->category->code . '_Y' }}"
                                         class="form-control text-right" aria-required="true">
                                 </td>
@@ -89,7 +89,7 @@
                                 </td>
                                 <td>
                                     <input disabled type="text"
-                                        name="value_Y_{{ $subsector->id }}"
+                                        name="sum_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->sector->code . '_' . $subsector->sector->category->code . '_Y' }}"
                                         class="form-control text-right {{ 'category-Y-' . $subsector->sector->category->code }}"
                                         aria-required="true">
@@ -138,7 +138,7 @@
                                 <td>
                                     <input type="hidden" name="id_Y_{{ $subsector->id }}">
                                     <input disabled type="text"
-                                        name="value_Y_{{ $subsector->id }}"
+                                        name="sum_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Y' }}"
                                         class="form-control text-right {{ 'sector-Y-' . $subsector->sector_id }} {{ 'category-Y-' . $subsector->sector->category_id }}"
                                         aria-required="true" tabindex="{{ $subsector->id + 220 }}">
@@ -186,7 +186,7 @@
                                 <td>
                                     <input type="hidden" name="id_Y_{{ $subsector->id }}">
                                     <input disabled type="text"
-                                        name="value_Y_{{ $subsector->id }}"
+                                        name="sum_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Y' }}"
                                         class="form-control text-right {{ 'sector-Y-' . $subsector->sector_id }} {{ 'category-Y-' . $subsector->sector->category_id }}"
                                         aria-required="true" tabindex="{{ $subsector->id + 220 }}">
@@ -233,7 +233,7 @@
                                 <td>
                                     <input type="hidden" name="id_Y_{{ $subsector->id }}">
                                     <input disabled type="text"
-                                        name="value_Y_{{ $subsector->id }}"
+                                        name="sum_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Y' }}"
                                         class="form-control text-right {{ 'sector-Y-' . $subsector->sector->id }} {{ 'category-Y-' . $subsector->sector->category_id }}"
                                         aria-required="true" tabindex="{{ $subsector->id + 220 }}">
