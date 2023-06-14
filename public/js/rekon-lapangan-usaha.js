@@ -5,7 +5,7 @@ $(document).ready(function () {
     let catB = "A,B,C,D,G,H,I,K"
     let catSpecific = catB.split(",")
     let catLast = catArray.filter(value => !catSpecific.includes(value))
-    console.log(catLast)
+    // console.log(catLast)
     let sum = 0
 
     //full-form last column sum

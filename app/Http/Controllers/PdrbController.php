@@ -178,7 +178,6 @@ class PdrbController extends Controller
         $filter = $request->filter;
         $subsectors = Subsector::where('type', $filter['type'])->orderBy('id')->get();
         $data = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->orderBy('subsector_id')->get();
-        //    return response()->json($data);
         if (sizeof($data) != 0) {
             return response()->json($data);
         } else {
