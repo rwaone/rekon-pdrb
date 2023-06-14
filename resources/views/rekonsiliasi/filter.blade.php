@@ -52,8 +52,8 @@
                     <label class="col-sm-2 col-form-label" for="price_base">Basis Harga:</label>
                     <select class="form-control col-sm-9 select2bs4" name="price_base" id="price_base" required>
                         <option value="">Pilih Basis Harga</option>
-                        <option value='adhk'>Atas Dasar Harga Konstan</option>
                         <option value='adhb'>Atas Dasar Harga Berlaku</option>
+                        <option value='adhk'>Atas Dasar Harga Konstan</option>
                     </select>
                     <div class="help-block"></div>
                 </div>

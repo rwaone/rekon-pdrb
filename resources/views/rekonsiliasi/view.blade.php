@@ -225,7 +225,8 @@
                             $('#period').html('<option value="" selected> Pilih Periode </option>');
                             $.each(result.periods, function(key, value) {
                                 $('#period').append('<option value="' + value.id + '">' +
-                                    value.description + '</option>');
+                                    value.description + ' (' + value.status + ')' +
+                                    '</option>');
                             });
                         },
                     })
@@ -234,6 +235,15 @@
                 $('#period').change(function() {
                     $('#region_id').val('').change();
                     $('#price_base').val('').change();
+                    if ($('#period').text().includes('Aktif')) {
+                        console.log('Aktif')
+                        $('#singleFormSave').prop('disabled', false);
+                        $('#fullFormSave').prop('disabled', false);
+                    } else {
+                        console.log('Tidak Aktif')
+                        $('#fullFormSave').prop('disabled', true);
+                        $('#singleFormSave').prop('disabled', true);
+                    }
                 });
 
                 $('#region_id').change(function() {
@@ -261,8 +271,8 @@
                             $('#singleFormContainer').removeClass('d-none');
                         } else if (quarter != null) {
                             getFullData();
-                                    $('input[name*=value_]').prop('disabled', false);
-                                    $('input[name*=id_]').prop('disabled', false);
+                            $('input[name*=value_]').prop('disabled', false);
+                            $('input[name*=id_]').prop('disabled', false);
                             if (quarter < 4) {
                                 for (let index = +quarter + 1; index < 5; index++) {
                                     console.log(index);
