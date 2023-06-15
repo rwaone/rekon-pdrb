@@ -27,7 +27,7 @@
                 <li class="nav-item">
                     <a href="{{ url('monitoring') }}"
                         class="nav-link {{ Request::is('monitoring') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <i class="nav-icon fas fa-table"></i>
                         <p>
                             Monitoring Upload Tabel
                         </p>
@@ -37,7 +37,7 @@
                     class="nav-item {{ Request::is('lapangan-usaha*') ? 'menu-open' : '' }}">
                     <a href="../widgets.html"
                         class="nav-link {{ Request::is('lapangan-usaha*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             Lapangan Usaha
                             <i class="fas fa-angle-left right"></i>
@@ -78,7 +78,7 @@
                     class="nav-item {{ Request::is('pengeluaran*') ? 'menu-open' : '' }}">
                     <a href="../widgets.html"
                         class="nav-link {{ Request::is('pengeluaran*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="nav-icon fas fa-coins"></i>
                         <p>
                             Pengeluaran
                             <i class="fas fa-angle-left right"></i>
@@ -115,29 +115,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-table"></i>
-                        <p>
-                            Tables
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="../tables/simple.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Simple Tables</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="../tables/data.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>DataTables</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                
                 @can('admin')
                     <li class="nav-header">PENGATURAN</li>
                     <li class="nav-item">
