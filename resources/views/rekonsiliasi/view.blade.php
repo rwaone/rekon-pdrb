@@ -31,6 +31,7 @@
                 bottom: 20px;
                 right: 20px;
                 display: none;
+                border-radius: 100%
             }
         </style>
     </x-slot>
