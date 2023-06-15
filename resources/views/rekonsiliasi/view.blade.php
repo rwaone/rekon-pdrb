@@ -18,6 +18,15 @@
                 overflow: hidden;
             }
 
+            .desc-col {
+                column-width: 100px;
+                word-wrap: break-word;
+            }
+
+            .desc-col p {
+                word-break: break-all;
+            }
+
             #rekonsiliasi-table td {
                 word-wrap: break-word;
             }
@@ -46,7 +55,7 @@
     <span class="loader d-none"></span>
 
     @if ($type == 'Lapangan Usaha')
-        <div id="fullFormContainer" class="card d-none">@include('lapangan.full-form')</div>
+        <div id="fullFormContainer" class="card">@include('lapangan.full-form')</div>
         <div id="singleFormContainer" class="card d-none">@include('lapangan.single-form')</div>
     @elseif ($type == 'Pengeluaran')
         <div id="fullFormContainer" class="card d-none">@include('pengeluaran.full-form')</div>
@@ -94,18 +103,6 @@
                 $(this).closest(".select2-container").siblings('select:enabled').select2('open');
             })
 
-            //sum of each value in sector and category
-            function calculateSector(sector) {
-                let sum = 0;
-                // let sector = sector.replaceAll(",","");
-                $(`.${sector}`).each(function(index) {
-                    let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
-                    let Y = X.replaceAll(/[,]/g, '.')
-                    sum += Y > 0 ? Number(Y) : 0;
-                });
-                return sum;
-            }
-            //
 
             //change the value of inputed number to Rupiah 
             function formatRupiah(angka, prefix) {
@@ -281,6 +278,7 @@
                                     $('input[name*=id' + index + '_]').prop('disabled', true);
                                 }
                             }
+                            $('input[name*=value_Y]').prop('disabled', true);
                         } else {
                             $('#fullFormContainer').addClass('d-none');
                             $('#singleFormContainer').addClass('d-none');

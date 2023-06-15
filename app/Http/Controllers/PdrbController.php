@@ -169,6 +169,7 @@ class PdrbController extends Controller
             } else {
                 $fullData[$index] = $data[$index];
             }
+            $fullData['Y'] = PDRB::where('region_id', $filter['region_id'])->where('quarter', 'Y')->orderBy('subsector_id')->get();
         }
         return response()->json($fullData);
     }
