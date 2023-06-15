@@ -23,31 +23,26 @@
                                 </td>
                                 <td class="categories">
                                     <input disabled type="text"
-                                        name="value_1_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->sector->category->code . '_Q1' }}"
                                         class="form-control text-right" aria-required="true">
                                 </td>
                                 <td class="categories">
                                     <input disabled type="text"
-                                        name="value_2_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->sector->category->code . '_Q2' }}"
                                         class="form-control text-right" aria-required="true">
                                 </td>
                                 <td class="categories">
                                     <input disabled type="text"
-                                        name="value_3_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->sector->category->code . '_Q3' }}"
                                         class="form-control text-right" aria-required="true">
                                 </td>
                                 <td class="categories">
                                     <input disabled type="text"
-                                        name="value_4_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->sector->category->code . '_Q4' }}"
                                         class="form-control text-right" aria-required="true">
                                 </td>
                                 <td class="categories">
                                     <input disabled type="text"
-                                        name="sum_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->sector->category->code . '_Y' }}"
                                         class="form-control text-right" aria-required="true">
                                 </td>
@@ -61,35 +56,30 @@
                                 </td>
                                 <td>
                                     <input disabled type="text"
-                                        name="value_1_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q1' }}"
                                         class="form-control text-right {{ 'category-Q1-' . $subsector->sector->category->code }}"
                                         aria-required="true">
                                 </td>
                                 <td>
                                     <input disabled type="text"
-                                        name="value_2_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q2' }}"
                                         class="form-control text-right {{ 'category-Q2-' . $subsector->sector->category->code }}"
                                         aria-required="true">
                                 </td>
                                 <td>
                                     <input disabled type="text"
-                                        name="value_3_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q3' }}"
                                         class="form-control text-right {{ 'category-Q3-' . $subsector->sector->category->code }}"
                                         aria-required="true">
                                 </td>
                                 <td>
                                     <input disabled type="text"
-                                        name="value_4_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q4' }}"
                                         class="form-control text-right {{ 'category-Q4-' . $subsector->sector->category->code }}"
                                         aria-required="true">
                                 </td>
                                 <td>
                                     <input disabled type="text"
-                                        name="sum_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->sector->code . '_' . $subsector->sector->category->code . '_Y' }}"
                                         class="form-control text-right {{ 'category-Y-' . $subsector->sector->category->code }}"
                                         aria-required="true">
