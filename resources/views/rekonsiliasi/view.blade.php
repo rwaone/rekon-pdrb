@@ -275,7 +275,7 @@
                                 for (let index = +quarter + 1; index < 5; index++) {
                                     console.log(index);
                                     $('input[name*=value_' + index + '_]').prop('disabled', true);
-                                    $('input[name*=id' + index + '_]').prop('disabled', true);
+                                    $('input[name*=id_' + index + '_]').prop('disabled', true);
                                 }
                             }
                             $('input[name*=value_Y]').prop('disabled', true);
