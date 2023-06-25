@@ -139,6 +139,9 @@
 
             $(document).ready(function() {
 
+                let cat = JSON.parse($("#my-cat").data('cat'))
+                let catArray = cat.split(", ")
+
                 $('#type').on('change', function() {
                     var pdrb_type = this.value;
                     $("#year").html('');
@@ -394,6 +397,22 @@
                                             value.id);
                                     });
                                 });
+                            }
+
+                            let jumlahSector1 = calculateSector('sector-Y-1').toFixed(2);
+                            let queSector1 = String(jumlahSector1).replaceAll(/[.]/g, ',');
+                            $('#adhk_1_A_Y').val(formatRupiah(queSector1, 'Rp '));
+
+
+                            let jumlahSector8 = calculateSector('sector-Y-8').toFixed(2);
+                            let queSector8 = String(jumlahSector8).replaceAll(/[.]/g, ',');
+                            $('#adhk_1_C_Y').val(formatRupiah(queSector8, 'Rp '));
+
+                            for (let j = 1; j < 18; j++) {
+                                let jumlah = calculateSector(`category-Y-${j}`).toFixed(2);
+                                let que = String(jumlah).replaceAll(/[.]/g, ',');
+                                $(`#adhk_${catArray[j - 1]}_Y`).val(formatRupiah(que,
+                                    'Rp '))
                             }
 
                             const Toast = Swal.mixin({
