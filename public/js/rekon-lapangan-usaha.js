@@ -44,7 +44,7 @@ $(document).ready(function () {
             let row = $(`#adhk_${index}_T`).closest('tr')
             let subsection = $(`#adhk_1_${index}_T`).closest('tr')
 
-            row.find('td input:not(#adhk_' + index + '_T)').each(function () {
+            row.find('td input:not(#adhk_' + index + '_T):not(#adhk_' + index + '_Y)').each(function () {
                 if (!$(this).hasClass(`adhk_${index}_T`)) {
                     let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
                     let Y = X.replaceAll(/[,]/g, '.');
@@ -52,7 +52,7 @@ $(document).ready(function () {
                 }
             })
 
-            subsection.find('td input:not(#adhk_1_' + index + '_T)').each(function () {
+            subsection.find('td input:not(#adhk_1_' + index + '_T):not(#adhk_1_' + index + '_Y)').each(function () {
                 if (!$(this).hasClass(`adhk_${index}_T`)) {
                     let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
                     let Y = X.replaceAll(/[,]/g, '.');
