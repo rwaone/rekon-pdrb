@@ -7,6 +7,7 @@ use App\Models\Period;
 use App\Models\Region;
 use App\Models\Category;
 use App\Models\Subsector;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LapanganController extends Controller
@@ -102,8 +103,13 @@ class LapanganController extends Controller
         ]);
     }
 
-    public function detailPokok($period_id, $region_id, $quarter)
+    // public function detailPokok($period_id, $region_id, $quarter)
+    public function detailPokok(Request $request)
     {
+        $period_id = $request->query('period_id');
+        $region_id = $request->query('region_id');
+        $quarter = $request->query('quarter');
+        
         $subsectors = Subsector::where('type', 'Lapangan Usaha')->get();
         $period = Period::where('id', $period_id)->first();
         $year_ = $period->year;

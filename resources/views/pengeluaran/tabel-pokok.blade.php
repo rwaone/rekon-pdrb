@@ -20,20 +20,20 @@
                 word-wrap: break-word;
             }
 
-            #view-main-table thead th{
+            #view-main-table thead th {
                 background-color: steelblue;
                 color: aliceblue;
                 text-align: center;
             }
 
-            #view-quarter-table thead th{
+            #view-quarter-table thead th {
                 background-color: steelblue;
                 color: aliceblue;
                 text-align: center;
             }
-            
+
             #view-main-table th {
-                padding:0.25rem;
+                padding: 0.25rem;
             }
 
             #rekon-view .values {
@@ -47,6 +47,7 @@
             #rekon-view tr:not(:last-child):not(:nth-last-child(2)) td:not(:first-child) {
                 text-align: right;
             }
+
             a.nav-item {
                 color: black !important;
             }
@@ -56,7 +57,7 @@
     <x-slot name="breadcrumb">
         <li class="breadcrumb-item active">Daftar Tabel Pokok</li>
     </x-slot>
-    <div class="row">    
+    <div class="row">
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
@@ -68,17 +69,18 @@
                             <th>Liat</th>
                         </thead>
                         <tbody>
-                            @foreach($daftar_1 as $item)
-                            <tr>
-                                <td class="text-center">{{ $item->number }}</td>
-                                <td>{{ $item->region->name }}</td>
-                                <td class="text-center">{{ $item->period->year }}</td>
-                                <td class="text-center">
-                                    <a href="{{ url('lapangan-usaha/detailPokok').'/'.$item->period->id.'/'.$item->region_id.'/Y' }}" class="btn btn-primary">
-                                        <span class="bi bi-check2-square"></span>
-                                    </a>
-                                </td>
-                            </tr>
+                            @foreach ($daftar_1 as $item)
+                                <tr>
+                                    <td class="text-center">{{ $item->number }}</td>
+                                    <td>{{ $item->region->name }}</td>
+                                    <td class="text-center">{{ $item->period->year }}</td>
+                                    <td class="text-center">
+                                        <a href="{{ route('pengeluaran.detail', ['period_id' => $item->period->id, 'region_id' => $item->region_id, 'quarter' => $item->quarter]) }}"
+                                            class="btn btn-primary">
+                                            <span class="bi bi-check2-square"></span>
+                                        </a>
+                                    </td>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>
@@ -99,19 +101,21 @@
                         <tbody>
                             <form>
                                 @csrf
-                                @foreach($daftar_2 as $item)
-                                <tr>
-                                    <td class="text-center">{{ $item->number }}</td>
-                                    <td>{{ $item->region->name }}</td>
-                                    <td class="text-center">{{ $item->period->year }}</td>
-                                    <td class="text-center">{{ $item->quarter }}</td>
-                                    <td class="text-center">
-                                        <input value="{{ $item->period->id.'-'.$item->quarter }}" class="hiddenInput" hidden>
-                                        <a href="{{ url('lapangan-usaha/detailPokok').'/'.$item->period->id.'/'.$item->region_id.'/'.$item->quarter }}" class="btn btn-primary">
-                                            <span class="bi bi-check2-square"></span>
-                                        </a>
-                                    </td>
-                                </tr>
+                                @foreach ($daftar_2 as $item)
+                                    <tr>
+                                        <td class="text-center">{{ $item->number }}</td>
+                                        <td>{{ $item->region->name }}</td>
+                                        <td class="text-center">{{ $item->period->year }}</td>
+                                        <td class="text-center">{{ $item->quarter }}</td>
+                                        <td class="text-center">
+                                            <input value="{{ $item->period->id . '-' . $item->quarter }}"
+                                                class="hiddenInput" hidden>
+                                            <a href="{{ route('pengeluaran.detail', ['period_id' => $item->period->id, 'region_id' => $item->region_id, 'quarter' => $item->quarter]) }}"
+                                                class="btn btn-primary">
+                                                <span class="bi bi-check2-square"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </form>
                         </tbody>
@@ -124,8 +128,8 @@
         <!-- Additional JS resources -->
         <script src="{{ url('') }}/plugins/select2/js/select2.full.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
-        
-        
+
+
         <script>
             $(document).on('focus', '.select2-selection', function(e) {
                 $(this).closest(".select2-container").siblings('select:enabled').select2('open');
