@@ -179,11 +179,11 @@
                     <a class="nav-item nav-link" id="nav-struktur-antar" href="">Struktur Antar</a>
                     <a class="nav-item nav-link" id="nav-pertumbuhan-year" href="">Pertumbuhan (Y to Y)</a>
                     <a class="nav-item nav-link" id="" href="nav-pertumbuhan-quarter">Pertumbuhan (Q to Q)</a>
-                    <a class="nav-item nav-link" id="" href="nav-pertumbuhan-cycle">Pertumbuhan (C to C)</a>
+                    <a class="nav-item nav-link" id="" href="nav-pertumbuhan-cumulative">Pertumbuhan (C to C)</a>
                     <a class="nav-item nav-link" id="nav-indeks" href="">Indeks Implisit</a>
-                    <a class="nav-item nav-link" id="nav-laju" href="">Laju Implisit</a>
-                    <a class="nav-item nav-link" id="nav-laju" href="">Laju Implisit</a>
-                    <a class="nav-item nav-link" id="nav-laju" href="">Laju Implisit</a>
+                    <a class="nav-item nav-link" id="nav-laju-year" href="">Laju Implisit (Y to Y)</a>
+                    <a class="nav-item nav-link" id="nav-laju-quarter" href="">Laju Implisit (Q to Q)</a>
+                    <a class="nav-item nav-link" id="nav-laju-cumulative" href="">Laju Implisit (C to C)</a>
                 </ul>
             </nav>
             <div class="table-container">
@@ -542,7 +542,7 @@
                     })
                 })
 
-                $('#nav-laju').on('click', function(e) {
+                $('#nav-laju-year').on('click', function(e) {
                     e.preventDefault()
                     let period_id
                     if ($('#period').val() !== '') {
