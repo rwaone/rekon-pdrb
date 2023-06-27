@@ -82,6 +82,7 @@ class PeriodController extends Controller
     {
         return view('period.edit', [
             'period' => $period,
+            'years' => range(date('Y'), 2010),
         ]);
     }
 

@@ -18,6 +18,15 @@
                 overflow: hidden;
             }
 
+            .desc-col {
+                column-width: 100px;
+                word-wrap: break-word;
+            }
+
+            .desc-col p {
+                word-break: break-all;
+            }
+
             #rekonsiliasi-table td {
                 word-wrap: break-word;
             }
@@ -94,18 +103,6 @@
                 $(this).closest(".select2-container").siblings('select:enabled').select2('open');
             })
 
-            //sum of each value in sector and category
-            function calculateSector(sector) {
-                let sum = 0;
-                // let sector = sector.replaceAll(",","");
-                $(`.${sector}`).each(function(index) {
-                    let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
-                    let Y = X.replaceAll(/[,]/g, '.')
-                    sum += Y > 0 ? Number(Y) : 0;
-                });
-                return sum;
-            }
-            //
 
             //change the value of inputed number to Rupiah 
             function formatRupiah(angka, prefix) {
@@ -141,6 +138,9 @@
             });
 
             $(document).ready(function() {
+
+                let cat = JSON.parse($("#my-cat").data('cat'))
+                let catArray = cat.split(", ")
 
                 $('#type').on('change', function() {
                     var pdrb_type = this.value;
@@ -278,9 +278,10 @@
                                 for (let index = +quarter + 1; index < 5; index++) {
                                     console.log(index);
                                     $('input[name*=value_' + index + '_]').prop('disabled', true);
-                                    $('input[name*=id' + index + '_]').prop('disabled', true);
+                                    $('input[name*=id_' + index + '_]').prop('disabled', true);
                                 }
                             }
+                            $('input[name*=value_Y]').prop('disabled', true);
                         } else {
                             $('#fullFormContainer').addClass('d-none');
                             $('#singleFormContainer').addClass('d-none');
@@ -396,6 +397,22 @@
                                             value.id);
                                     });
                                 });
+                            }
+
+                            let jumlahSector1 = calculateSector('sector-Y-1').toFixed(2);
+                            let queSector1 = String(jumlahSector1).replaceAll(/[.]/g, ',');
+                            $('#adhk_1_A_Y').val(formatRupiah(queSector1, 'Rp '));
+
+
+                            let jumlahSector8 = calculateSector('sector-Y-8').toFixed(2);
+                            let queSector8 = String(jumlahSector8).replaceAll(/[.]/g, ',');
+                            $('#adhk_1_C_Y').val(formatRupiah(queSector8, 'Rp '));
+
+                            for (let j = 1; j < 18; j++) {
+                                let jumlah = calculateSector(`category-Y-${j}`).toFixed(2);
+                                let que = String(jumlah).replaceAll(/[.]/g, ',');
+                                $(`#adhk_${catArray[j - 1]}_Y`).val(formatRupiah(que,
+                                    'Rp '))
                             }
 
                             const Toast = Swal.mixin({

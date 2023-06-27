@@ -1,3 +1,15 @@
+ //sum of each value in sector and category
+ function calculateSector(sector) {
+    let sum = 0;
+    // let sector = sector.replaceAll(",","");
+    $(`.${sector}`).each(function(index) {
+        let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
+        let Y = X.replaceAll(/[,]/g, '.')
+        sum += Y > 0 ? Number(Y) : 0;
+    });
+    return sum;
+}
+
 $(document).ready(function () {
     // Your jQuery code goes here
     let cat = JSON.parse($("#my-cat").data('cat'))
@@ -15,33 +27,33 @@ $(document).ready(function () {
 
     tr.on('blur', 'td input', function (e) {
         let $currentRow = $(this).closest('tr')
-        let $lastCol = $currentRow.find('td:last')
+        let $totalCol = $currentRow.find('td:last').prev()
         let sum = 0
-        $currentRow.find('td:not(:last-child) input:not(:hidden)').each(function () {
+        $currentRow.find('input:not(:hidden):not(:disabled)').each(function () {
             let X = $(this).val().replaceAll(/[A-Za-z.]/g, '')
             let Y = X.replaceAll(/[,]/g, '.')
             sum += Y > 0 ? Number(Y) : 0
         })
         let sumRp = String(sum.toFixed(2)).replaceAll(/[.]/g, ',')
-        $lastCol.find('input').val(formatRupiah(sumRp, 'Rp '))
+        $totalCol.find('input').val(formatRupiah(sumRp, 'Rp '))
 
         for (let index of catSpecific) {
             let darksum = 0
             let lightsum = 0
 
-            let row = $(`#adhk_${index}_Y`).closest('tr')
-            let subsection = $(`#adhk_1_${index}_Y`).closest('tr')
+            let row = $(`#adhk_${index}_T`).closest('tr')
+            let subsection = $(`#adhk_1_${index}_T`).closest('tr')
 
-            row.find('td input:not(#adhk_' + index + '_Y)').each(function () {
-                if (!$(this).hasClass(`adhk_${index}_Y`)) {
+            row.find('td input:not(#adhk_' + index + '_T):not(#adhk_' + index + '_Y)').each(function () {
+                if (!$(this).hasClass(`adhk_${index}_T`)) {
                     let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
                     let Y = X.replaceAll(/[,]/g, '.');
                     darksum += Y > 0 ? Number(Y) : 0;
                 }
             })
 
-            subsection.find('td input:not(#adhk_1_' + index + '_Y)').each(function () {
-                if (!$(this).hasClass(`adhk_${index}_Y`)) {
+            subsection.find('td input:not(#adhk_1_' + index + '_T):not(#adhk_1_' + index + '_Y)').each(function () {
+                if (!$(this).hasClass(`adhk_${index}_T`)) {
                     let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
                     let Y = X.replaceAll(/[,]/g, '.');
                     lightsum += Y > 0 ? Number(Y) : 0;
@@ -50,8 +62,8 @@ $(document).ready(function () {
 
             let lightsumRp = String(lightsum.toFixed(2)).replaceAll(/[.]/g, ',');
             let darksumRp = String(darksum.toFixed(2)).replaceAll(/[.]/g, ',');
-            $(`#adhk_1_${index}_Y`).val(formatRupiah(lightsumRp, 'Rp '))
-            $(`#adhk_${index}_Y`).val(formatRupiah(darksumRp, 'Rp '))
+            $(`#adhk_1_${index}_T`).val(formatRupiah(lightsumRp, 'Rp '))
+            $(`#adhk_${index}_T`).val(formatRupiah(darksumRp, 'Rp '))
         }
 
         let numRows = tr.length - 2
