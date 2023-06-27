@@ -55,7 +55,7 @@
     <span class="loader d-none"></span>
 
     @if ($type == 'Lapangan Usaha')
-        <div id="fullFormContainer" class="card">@include('lapangan.full-form')</div>
+        <div id="fullFormContainer" class="card d-none">@include('lapangan.full-form')</div>
         <div id="singleFormContainer" class="card d-none">@include('lapangan.single-form')</div>
     @elseif ($type == 'Pengeluaran')
         <div id="fullFormContainer" class="card d-none">@include('pengeluaran.full-form')</div>

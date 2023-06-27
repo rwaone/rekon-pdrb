@@ -23,7 +23,7 @@
             @csrf
             @method('put')
             <div class="card-header">
-                <a href="{{ url()->previous() }}">
+                <a href="{{ url('period') }}">
                     <button type="button" class="btn btn-warning"> {{ _('< Kembali') }} </button>
                 </a>
             </div>
@@ -45,10 +45,9 @@
                     <label class="col-form-label" for="tahunSelect">Tahun:</label>
                     <select id="tahunSelect" class="form-control select2bs4" style="width: 100%;" name="year">
                         <option value="" disabled selected>Pilih Tahun</option>
-                        <option {{ old('type', $period->year) == '2023' ? 'selected' : '' }} value='2023'>2023
-                        </option>
-                        <option {{ old('type', $period->year) == '2022' ? 'selected' : '' }} value='2022'>2022
-                        </option>
+                        @foreach ($years as $year)
+                            <option {{ old('year', $period->year) == $year ? 'selected' : '' }} value='{{ $year }}'>{{ $year }}</option>
+                        @endforeach
                     </select>
                     <div class="help-block"></div>
                 </div>
@@ -57,15 +56,15 @@
                     <label class="col-form-label" for="quarterSelect">Triwulan:</label>
                     <select id="quarterSelect" class="form-control select2bs4" style="width: 100%;" name="quarter">
                         <option value="" disabled selected>Pilih Triwulan</option>
-                        <option {{ old('type', $period->quarter) == '1' ? 'selected' : '' }} value='1'>Triwulan 1
+                        <option {{ old('quarter', $period->quarter) == '1' ? 'selected' : '' }} value='1'>Triwulan 1
                         </option>
-                        <option {{ old('type', $period->quarter) == '2' ? 'selected' : '' }} value='2'>Triwulan 2
+                        <option {{ old('quarter', $period->quarter) == '2' ? 'selected' : '' }} value='2'>Triwulan 2
                         </option>
-                        <option {{ old('type', $period->quarter) == '3' ? 'selected' : '' }} value='3'>Triwulan 3
+                        <option {{ old('quarter', $period->quarter) == '3' ? 'selected' : '' }} value='3'>Triwulan 3
                         </option>
-                        <option {{ old('type', $period->quarter) == '4' ? 'selected' : '' }} value='4'>Triwulan 4
+                        <option {{ old('quarter', $period->quarter) == '4' ? 'selected' : '' }} value='4'>Triwulan 4
                         </option>
-                        <option {{ old('type', $period->quarter) == 'Y' ? 'selected' : '' }} value='Y'>Tahunan
+                        <option {{ old('quarter', $period->quarter) == 'Y' ? 'selected' : '' }} value='Y'>Tahunan
                         </option>
                     </select>
                     <div class="help-block"></div>
@@ -81,11 +80,11 @@
                     <label class="col-form-label" for="statusSelect">Status:</label>
                     <select id="statusSelect" class="form-control select2bs4" style="width: 100%;" name="status">
                         <option value="" disabled selected>Pilih Status</option>
-                        <option {{ old('type', $period->status) == 'Aktif' ? 'selected' : '' }} value='Aktif'>Aktif
+                        <option {{ old('status', $period->status) == 'Aktif' ? 'selected' : '' }} value='Aktif'>Aktif
                         </option>
-                        <option {{ old('type', $period->status) == 'Selesai' ? 'selected' : '' }} value='Selesai'>Selesai
+                        <option {{ old('status', $period->status) == 'Selesai' ? 'selected' : '' }} value='Selesai'>Selesai
                         </option>
-                        <option {{ old('type', $period->status) == 'Final' ? 'selected' : '' }} value='Final'>Final
+                        <option {{ old('status', $period->status) == 'Final' ? 'selected' : '' }} value='Final'>Final
                         </option>
                     </select>
                     <div class="help-block"></div>

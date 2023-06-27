@@ -140,14 +140,13 @@
                                         aria-required="true" tabindex="{{ $subsector->id + 165 }}">
                                 </td>
                                 <td>
-                                    <input type="hidden" name="id_T_{{ $subsector->id }}">
                                     <input disabled type="text" name="sum_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_T' }}"
                                         class="form-control text-right {{ 'sector-T-' . $subsector->sector_id }} {{ 'category-T-' . $subsector->sector->category_id }}"
                                         aria-required="true" tabindex="{{ $subsector->id + 220 }}">
                                 </td>
                                 <td>
-                                    <input type="hidden" name="id_Y_{{ $subsector->id }}">
+                                    <input disabled type="hidden" name="id_Y_{{ $subsector->id }}">
                                     <input disabled type="text" name="value_Y_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Y' }}"
                                         class="form-control text-right {{ 'sector-Y-' . $subsector->sector_id }} {{ 'category-Y-' . $subsector->sector->category_id }}"
@@ -193,14 +192,13 @@
                                         aria-required="true" tabindex="{{ $subsector->id + 165 }}">
                                 </td>
                                 <td>
-                                    <input type="hidden" name="id_T_{{ $subsector->id }}">
                                     <input disabled type="text" name="sum_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_T' }}"
                                         class="form-control text-right {{ 'sector-T-' . $subsector->sector_id }} {{ 'category-T-' . $subsector->sector->category_id }}"
                                         aria-required="true" tabindex="{{ $subsector->id + 220 }}">
                                 </td>
                                 <td>
-                                    <input type="hidden" name="id_Y_{{ $subsector->id }}">
+                                    <input disabled type="hidden" name="id_Y_{{ $subsector->id }}">
                                     <input disabled type="text" name="value_Y_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Y' }}"
                                         class="form-control text-right {{ 'sector-Y-' . $subsector->sector_id }} {{ 'category-Y-' . $subsector->sector->category_id }}"
@@ -245,14 +243,13 @@
                                         aria-required="true" tabindex="{{ $subsector->id + 165 }}">
                                 </td>
                                 <td>
-                                    <input type="hidden" name="id_T_{{ $subsector->id }}">
                                     <input disabled type="text" name="sum_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_T' }}"
                                         class="form-control text-right {{ 'sector-T-' . $subsector->sector->id }} {{ 'category-T-' . $subsector->sector->category_id }}"
                                         aria-required="true" tabindex="{{ $subsector->id + 220 }}">
                                 </td>
                                 <td>
-                                    <input type="hidden" name="id_Y_{{ $subsector->id }}">
+                                    <input disabled type="hidden" name="id_Y_{{ $subsector->id }}">
                                     <input disabled type="text" name="value_Y_{{ $subsector->id }}"
                                         id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Y' }}"
                                         class="form-control text-right {{ 'sector-Y-' . $subsector->sector->id }} {{ 'category-Y-' . $subsector->sector->category_id }}"
