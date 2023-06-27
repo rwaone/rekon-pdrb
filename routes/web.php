@@ -51,7 +51,8 @@ Route::resource('fenomena', FenomenaController::class)->middleware(['auth', 'ver
 Route::get('lapangan-usaha/rekonsiliasi', [LapanganController::class, 'rekonsiliasi'])->middleware(['auth', 'verified']);
 Route::get('lapangan-usaha/fenomena', [LapanganController::class, 'fenomena'])->middleware(['auth', 'verified']);
 Route::get('lapangan-usaha/konserda', [LapanganController::class, 'konserda'])->middleware(['auth', 'verified']);
-Route::get('lapangan-usaha/getKonserda/{period_id}', [LapanganController::class, 'getKonserda'])->middleware(['auth', 'verified']);
+// Route::get('lapangan-usaha/getKonserda/{period_id}', [LapanganController::class, 'getKonserda'])->middleware(['auth', 'verified']);
+Route::get('lapangan-usaha/getKonserda', [LapanganController::class, 'getKonserda'])->middleware(['auth', 'verified'])->name('lapangan-usaha.getKonserda');
 Route::get('lapangan-usaha/daftarPokok', [LapanganController::class, 'daftarPokok'])->middleware(['auth', 'verified']);
 Route::get('lapangan-usaha/detailPokok', [LapanganController::class, 'detailPokok'])->middleware(['auth', 'verified'])->name('lapangan-usaha.detail');
 

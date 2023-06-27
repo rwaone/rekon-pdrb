@@ -175,11 +175,12 @@
                 <ul class="nav nav-tabs d-flex">
                     <a class="nav-item nav-link" id="nav-adhb" href="">ADHB</a>
                     <a class="nav-item nav-link" id="nav-adhk" href="">ADHK</a>
-                    <a class="nav-item nav-link" id="nav-distribusi" href="">Struktur Dalam</a>
-                    <a class="nav-item nav-link" id="nav-struktur-antar" href="">Struktur Antar</a>
-                    <a class="nav-item nav-link" id="nav-pertumbuhan-year" href="">Pertumbuhan (Y to Y)</a>
-                    <a class="nav-item nav-link" id="" href="nav-pertumbuhan-quarter">Pertumbuhan (Q to Q)</a>
-                    <a class="nav-item nav-link" id="" href="nav-pertumbuhan-cumulative">Pertumbuhan (C to C)</a>
+                    <a class="nav-item nav-link" id="nav-distribusi" href="">S.Dalam</a>
+                    <a class="nav-item nav-link" id="nav-struktur-antar" href="">S.Antar</a>
+                    <a class="nav-item nav-link" id="nav-pertumbuhan-year" href="">Growth (Y to Y)</a>
+                    <a class="nav-item nav-link" id="nav-pertumbuhan-quarter" href="">Growth (Q to Q)</a>
+                    <a class="nav-item nav-link" id="nav-pertumbuhan-cumulative" href="">Growth (C to
+                        C)</a>
                     <a class="nav-item nav-link" id="nav-indeks" href="">Indeks Implisit</a>
                     <a class="nav-item nav-link" id="nav-laju-year" href="">Laju Implisit (Y to Y)</a>
                     <a class="nav-item nav-link" id="nav-laju-quarter" href="">Laju Implisit (Q to Q)</a>
@@ -416,13 +417,19 @@
             $(document).ready(function() {
                 $('#showData').click(function(e) {
                     e.preventDefault()
+
                     const period_id = $('#period').val()
+                    const url_key = new URL('{{ route('lapangan-usaha.getKonserda') }}')
+                    url_key.searchParams.set('period_id', encodeURIComponent(period_id))
+                    url_key.searchParams.set('type', encodeURIComponent('show'))
+
                     $.ajax({
                         beforeSend: function() {
                             $('.loader').removeClass('d-none')
                         },
                         type: 'GET',
-                        url: 'getKonserda/' + period_id,
+                        // url: 'getKonserda/' + period_id,
+                        url: url_key.href,
                         dataType: 'json',
                         success: function(data) {
                             setTimeout(function() {
@@ -453,6 +460,8 @@
                 let tbody = $('#rekon-view').find('tbody')
                 $('#nav-distribusi').on('click', function(e) {
                     e.preventDefault()
+                    $('.nav-item').removeClass('active')
+                    $(this).addClass('active')
                     $('.loader').removeClass('d-none')
                     setTimeout(function() {
                         getStored('lapangan')
@@ -480,6 +489,8 @@
 
                 $('#nav-adhb').on('click', function(e) {
                     e.preventDefault()
+                    $('.nav-item').removeClass('active')
+                    $(this).addClass('active')
                     $('.loader').removeClass('d-none')
                     setTimeout(function() {
                         $('.loader').addClass('d-none')
@@ -491,18 +502,25 @@
 
                 $('#nav-adhk').on('click', function(e) {
                     e.preventDefault()
+                    $('.nav-item').removeClass('active')
+                    $(this).addClass('active')
                     let period_id
                     if ($('#period').val() !== '') {
                         period_id = $('#period').val()
                     } else {
                         period_id = localStorage.getItem('filters')
                     }
+                    const url_key = new URL('{{ route('lapangan-usaha.getKonserda') }}')
+                    url_key.searchParams.set('period_id', encodeURIComponent(period_id))
+                    url_key.searchParams.set('type', encodeURIComponent('show'))
+
                     $.ajax({
                         beforeSend: function() {
                             $('.loader').removeClass('d-none')
                         },
                         type: 'GET',
-                        url: 'getKonserda/' + period_id,
+                        // url: 'getKonserda/' + period_id,
+                        url: url_key.href,
                         dataType: 'json',
                         success: function(data) {
                             setTimeout(function() {
@@ -518,18 +536,26 @@
                 //indeks implisit adhb/adhk
                 $('#nav-indeks').on('click', function(e) {
                     e.preventDefault()
+                    $('.nav-item').removeClass('active')
+                    $(this).addClass('active')
                     let period_id
                     if ($('#period').val() !== '') {
                         period_id = $('#period').val()
                     } else {
                         period_id = localStorage.getItem('filters')
                     }
+                    const url_key = new URL('{{ route('lapangan-usaha.getKonserda') }}')
+                    url_key.searchParams.set('period_id', encodeURIComponent(period_id))
+                    url_key.searchParams.set('type', encodeURIComponent('show'))
+
                     $.ajax({
                         beforeSend: function() {
                             $('.loader').removeClass('d-none')
                         },
                         type: 'GET',
-                        url: 'getKonserda/' + period_id,
+                        // url: 'getKonserda/' + period_id,
+                        url: url_key.href,
+
                         dataType: 'json',
                         success: function(data) {
                             setTimeout(function() {
@@ -544,18 +570,25 @@
 
                 $('#nav-laju-year').on('click', function(e) {
                     e.preventDefault()
+                    $('.nav-item').removeClass('active')
+                    $(this).addClass('active')
                     let period_id
                     if ($('#period').val() !== '') {
                         period_id = $('#period').val()
                     } else {
                         period_id = localStorage.getItem('filters')
                     }
+                    const url_key = new URL('{{ route('lapangan-usaha.getKonserda') }}')
+                    url_key.searchParams.set('period_id', encodeURIComponent(period_id))
+                    url_key.searchParams.set('type', encodeURIComponent('show'))
+
                     $.ajax({
                         beforeSend: function() {
                             $('.loader').removeClass('d-none')
                         },
                         type: 'GET',
-                        url: 'getKonserda/' + period_id,
+                        // url: 'getKonserda/' + period_id,
+                        url: url_key.href,
                         dataType: 'json',
                         success: function(data) {
                             setTimeout(function() {
@@ -577,18 +610,63 @@
                 //growth
                 $('#nav-pertumbuhan-year').on('click', function(e) {
                     e.preventDefault()
+                    $('.nav-item').removeClass('active')
+                    $(this).addClass('active')
                     let period_id
                     if ($('#period').val() !== '') {
                         period_id = $('#period').val()
                     } else {
                         period_id = localStorage.getItem('filters')
                     }
+                    const url_key = new URL('{{ route('lapangan-usaha.getKonserda') }}')
+                    url_key.searchParams.set('period_id', encodeURIComponent(period_id))
+                    url_key.searchParams.set('type', encodeURIComponent('year'))
+
                     $.ajax({
                         beforeSend: function() {
                             $('.loader').removeClass('d-none')
                         },
                         type: 'GET',
-                        url: 'getKonserda/' + period_id,
+                        // url: 'getKonserda/' + period_id,
+                        url: url_key.href,
+                        dataType: 'json',
+                        success: function(data) {
+                            
+                            setTimeout(function() {
+                                $('.loader').addClass('d-none')
+                                showOff()
+                                if (data.before === null || data.before.length === 0) {
+                                    alert('Data tahun lalu tidak ada')
+                                } else {
+                                    getGrowth(data.data, data.before, 'lapangan')
+                                    switchPlay('2')
+                                }
+                            }, 200)
+                        }
+                    })
+                })
+
+                $('#nav-pertumbuhan-quarter').on('click', function(e) {
+                    e.preventDefault()
+                    $('.nav-item').removeClass('active')
+                    $(this).addClass('active')
+                    let period_id
+                    if ($('#period').val() !== '') {
+                        period_id = $('#period').val()
+                    } else {
+                        period_id = localStorage.getItem('filters')
+                    }
+                    const url_key = new URL('{{ route('lapangan-usaha.getKonserda') }}')
+                    url_key.searchParams.set('period_id', encodeURIComponent(period_id))
+                    url_key.searchParams.set('type', encodeURIComponent('quarter'))
+
+                    $.ajax({
+                        beforeSend: function() {
+                            $('.loader').removeClass('d-none')
+                        },
+                        type: 'GET',
+                        // url: 'getKonserda/' + period_id,
+                        url: url_key.href,
                         dataType: 'json',
                         success: function(data) {
                             setTimeout(function() {
@@ -604,22 +682,28 @@
                         }
                     })
                 })
-
                 //struktur antar
                 $('#nav-struktur-antar').on('click', function(e) {
                     e.preventDefault()
+                    $('.nav-item').removeClass('active')
+                    $(this).addClass('active')
                     let period_id
                     if ($('#period').val() !== '') {
                         period_id = $('#period').val()
                     } else {
                         period_id = localStorage.getItem('filters')
                     }
+                    const url_key = new URL('{{ route('lapangan-usaha.getKonserda') }}')
+                    url_key.searchParams.set('period_id', encodeURIComponent(period_id))
+                    url_key.searchParams.set('type', encodeURIComponent('show'))
+
                     $.ajax({
                         beforeSend: function() {
                             $('.loader').removeClass('d-none')
                         },
                         type: 'GET',
-                        url: 'getKonserda/' + period_id,
+                        // url: 'getKonserda/' + period_id,
+                        url: url_key.href,
                         dataType: 'json',
                         success: function(data) {
                             setTimeout(function() {

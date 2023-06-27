@@ -45,18 +45,36 @@ class LapanganController extends Controller
         ]);
     }
 
-    public function getKonserda($period_id)
+    public function getKonserda(Request $request)
     {
+        $period_id = $request->query('period_id');
+        $typeof = $request->query('type');
+        if ($typeof == 'show') {
+            $typeof = 'quarter';
+        }
         $regions = Region::select('id')->get();
         $period_now = Period::where('id', $period_id)->first();
         $quarter_check = Pdrb::select('quarter')->where('period_id', $period_id)->first();
         $quarters = [1, 2, 3, 4];
-        if ($quarter_check->quarter == 'Y') {
-            $year_ = $period_now->year - 1;
-            $period_before = Period::where('year', $year_)->where('quarter', 'Y')->first();
-        } elseif (in_array($quarter_check->quarter, $quarters)) {
-            $quarter_before = $quarter_check->quarter - 1;
-            $period_before = Period::where('year', $period_now->year)->where('quarter', $quarter_before)->first();
+
+        if ($typeof == 'quarter') {
+            // if ($quarter_check->quarter == 'Y') {
+            //     $year_ = $period_now->year - 1;
+            //     $period_before = Period::where('year', $year_)->where('quarter', 'Y')->first();
+            // } else
+            if (in_array($quarter_check->quarter, $quarters)) {
+                $quarter_before = $quarter_check->quarter - 1;
+                if ($quarter_before == 0) {
+                    $quarter_before = 4;
+                    $period_before = Period::where('year', $period_now->year - 1)->where('quarter', $quarter_before)->first();
+                } else {
+                    $period_before = Period::where('year', $period_now->year)->where('quarter', $quarter_before)->first();
+                }
+            }
+        } 
+        elseif ($typeof == 'year') {
+            $period_before = Period::where('year', $period_now->year - 1)->where('quarter', $quarter_check->quarter)->first();
+        } elseif ($typeof == 'cumulative') {
         }
         $datas = [];
         foreach ($regions as $region) {
@@ -109,7 +127,7 @@ class LapanganController extends Controller
         $period_id = $request->query('period_id');
         $region_id = $request->query('region_id');
         $quarter = $request->query('quarter');
-        
+
         $subsectors = Subsector::where('type', 'Lapangan Usaha')->get();
         $period = Period::where('id', $period_id)->first();
         $year_ = $period->year;
