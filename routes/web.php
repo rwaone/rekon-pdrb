@@ -60,7 +60,8 @@ Route::get('lapangan-usaha/detailPokok', [LapanganController::class, 'detailPoko
 Route::get('pengeluaran/rekonsiliasi', [PengeluaranController::class, 'rekonsiliasi'])->middleware(['auth', 'verified']);
 Route::get('pengeluaran/konserda', [PengeluaranController::class, 'konserda'])->middleware(['auth', 'verified']);
 Route::get('pengeluaran/fenomena', [PengeluaranController::class, 'fenomena'])->middleware(['auth', 'verified']);
-Route::get('pengeluaran/getKonserda/{period_id}', [PengeluaranController::class, 'getKonserda'])->middleware(['auth', 'verified']);
+// Route::get('pengeluaran/getKonserda/{period_id}', [PengeluaranController::class, 'getKonserda'])->middleware(['auth', 'verified']);
+Route::get('pengeluaran/getKonserda', [PengeluaranController::class, 'getKonserda'])->middleware(['auth', 'verified'])->name('pengeluaran.getKonserda');
 Route::get('pengeluaran/daftarPokok', [PengeluaranController::class, 'daftarPokok'])->middleware(['auth', 'verified']);
 Route::get('pengeluaran/detailPokok', [PengeluaranController::class, 'detailPokok'])->middleware(['auth', 'verified'])->name('pengeluaran.detail');
 

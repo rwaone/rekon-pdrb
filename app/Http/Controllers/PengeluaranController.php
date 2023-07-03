@@ -13,27 +13,109 @@ use Illuminate\Support\Facades\Auth;
 class PengeluaranController extends Controller
 {
     //
-    public function getKonserda($period_id)
+    public function getKonserda(Request $request)
     {
+        $period_id = $request->query('period_id');
+        $typeof = $request->query('type');
+        if ($typeof == 'show') {
+            $typeof = 'quarter';
+        }
         $regions = Region::select('id')->get();
         $period_now = Period::where('id', $period_id)->first();
         $quarter_check = Pdrb::select('quarter')->where('type', 'Pengeluaran')->where('period_id', $period_id)->first();
         $quarters = [1, 2, 3, 4];
-        if ($quarter_check->quarter == 'Y') {
-            $year_ = $period_now->year - 1;
-            $period_before = Period::where('year', $year_)->where('quarter', 'Y')->first();
-        } elseif (in_array($quarter_check->quarter, $quarters)) {
-            $quarter_before = $quarter_check->quarter - 1;
-            $period_before = Period::where('year', $period_now->year)->where('quarter', $quarter_before)->first();
-        }
-        $datas = [];
-        foreach ($regions as $region) {
-            $datas['pdrb-' . $region->id] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('type', 'Pengeluaran')->where('period_id', $period_id)->where('region_id', $region->id)->orderBy('subsector_id')->get();
-        }
-        $befores = [];
-        if ($period_before) {
+
+        if ($typeof == 'quarter') {
+            // if ($quarter_check->quarter == 'Y') {
+            //     $year_ = $period_now->year - 1;
+            //     $period_before = Period::where('year', $year_)->where('quarter', 'Y')->first();
+            // } else
+            if (in_array($quarter_check->quarter, $quarters)) {
+                $quarter_before = $quarter_check->quarter - 1;
+                if ($quarter_before == 0) {
+                    $quarter_before = 4;
+                    $period_before = Period::where('year', $period_now->year - 1)->where('quarter', $quarter_before)->first();
+                } else {
+                    $period_before = Period::where('year', $period_now->year)->where('quarter', $quarter_before)->first();
+                }
+            }
+            $datas = [];
             foreach ($regions as $region) {
-                $befores['pdrb-' . $region->id] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('type', 'Pengeluaran')->where('period_id', $period_before->id)->where('region_id', $region->id)->orderBy('subsector_id')->get();
+                $datas['pdrb-' . $region->id] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_id)->where('region_id', $region->id)->orderBy('subsector_id')->get();
+            }
+            $befores = [];
+            if ($period_before) {
+                foreach ($regions as $region) {
+                    $befores['pdrb-' . $region->id] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_before->id)->where('region_id', $region->id)->orderBy('subsector_id')->get();
+                }
+            }
+        } elseif ($typeof == 'year') {
+            $period_before = Period::where('year', $period_now->year - 1)->where('quarter', $quarter_check->quarter)->first();
+            $datas = [];
+            foreach ($regions as $region) {
+                $datas['pdrb-' . $region->id] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_id)->where('region_id', $region->id)->orderBy('subsector_id')->get();
+            }
+            $befores = [];
+            if ($period_before) {
+                foreach ($regions as $region) {
+                    $befores['pdrb-' . $region->id] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_before->id)->where('region_id', $region->id)->orderBy('subsector_id')->get();
+                }
+            }
+        } elseif ($typeof == 'cumulative') {
+            $period_before = Period::where('year', $period_now->year - 1)->where('quarter', '<=', $quarter_check->quarter)->get();
+            $period_cumulative_now = Period::where('year', $period_now->year)->where('quarter', '<=', $quarter_check->quarter)->get();
+            $datas = [];
+            foreach ($regions as $region) {
+                $Cumulative = [];
+                $sum_up = [];
+                foreach ($period_cumulative_now as $periods) {
+                    $sum_up['sum-' . $periods->id] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $periods->id)->where('region_id', $region->id)->orderBy('subsector_id')->get();
+                }
+                foreach ($sum_up as $subdivision) {
+                    foreach ($subdivision as $division) {
+                        $divisionId = $division['subsector_id'] - 1;
+                        $divisionAdhk = $division['adhk'];
+                        $divisionAdhb = $division['adhb'];
+                        if (!isset($Cumulative[$divisionId]['adhk'])) {
+                            $Cumulative[$divisionId]['adhk'] = 0;
+                        }
+                        if (!isset($Cumulative[$divisionId]['adhb'])) {
+                            $Cumulative[$divisionId]['adhb'] = 0;
+                        }
+
+                        $Cumulative[$divisionId]['adhk'] += $divisionAdhk;
+                        $Cumulative[$divisionId]['adhb'] += $divisionAdhb;
+                    }
+                }
+                $datas['pdrb-' . $region->id] = $Cumulative;
+            }
+
+            $befores = [];
+            if ($period_before) {
+                foreach ($regions as $region) {
+                    $Cumulative = [];
+                    $sum_up = [];
+                    foreach ($period_before as $periods) {
+                        $sum_up['sum-' . $periods->id] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $periods->id)->where('region_id', $region->id)->orderBy('subsector_id')->get();
+                    }
+                    foreach ($sum_up as $subdivision) {
+                        foreach ($subdivision as $division) {
+                            $divisionId = $division['subsector_id'] - 1;
+                            $divisionAdhk = $division['adhk'];
+                            $divisionAdhb = $division['adhb'];
+                            if (!isset($Cumulative[$divisionId]['adhk'])) {
+                                $Cumulative[$divisionId]['adhk'] = 0;
+                            }
+                            if (!isset($Cumulative[$divisionId]['adhb'])) {
+                                $Cumulative[$divisionId]['adhb'] = 0;
+                            }
+
+                            $Cumulative[$divisionId]['adhk'] += $divisionAdhk;
+                            $Cumulative[$divisionId]['adhb'] += $divisionAdhb;
+                        }
+                    }
+                    $befores['pdrb-' . $region->id] = $Cumulative;
+                }
             }
         }
 

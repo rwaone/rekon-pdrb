@@ -112,16 +112,18 @@
                     <div class="col-md-2">
                         <select class="form-control select2bs4" id="type" name="type">
                             <option value="" selected>-- Pilih Jenis PDRB --</option>
-                            <option {{ old('type', $filter['type']) == 'Pengeluaran' ? 'selected' : '' }} value='Pengeluaran'>Pengeluaran</option>
+                            <option {{ old('type', $filter['type']) == 'Pengeluaran' ? 'selected' : '' }}
+                                value='Pengeluaran'>Pengeluaran</option>
                         </select>
                     </div>
                     <div class="col-md-2">
                         <select class="form-control select2bs4" id="year" name="year">
                             <option value="" selected>-- Pilih Tahun --</option>
                             @if ($years)
-                            @foreach ($years as $year)
-                            <option {{ old('year', $filter['year']) == $year->year ? 'selected' : '' }} value="{{ $year->year }}">{{ $year->year }}</option>
-                            @endforeach
+                                @foreach ($years as $year)
+                                    <option {{ old('year', $filter['year']) == $year->year ? 'selected' : '' }}
+                                        value="{{ $year->year }}">{{ $year->year }}</option>
+                                @endforeach
                             @endif
                         </select>
                     </div>
@@ -129,11 +131,13 @@
                         <select class="form-control select2bs4" id="quarter" name="quarter">
                             <option value="" selected>-- Pilih Triwulan --</option>
                             @if ($quarters)
-                            @foreach ($quarters as $quarter)
-                            <option {{ old('quarter', $filter['quarter']) == $quarter->quarter ? 'selected' : '' }} value="{{ $quarter->quarter }}">
-                                {{ $quarter->quarter == 'F' ? 'Lengkap' : ($quarter->quarter == 'T' ? 'Tahunan' : 'Triwulan ' . $quarter->quarter) }}
-                            </option>
-                            @endforeach
+                                @foreach ($quarters as $quarter)
+                                    <option
+                                        {{ old('quarter', $filter['quarter']) == $quarter->quarter ? 'selected' : '' }}
+                                        value="{{ $quarter->quarter }}">
+                                        {{ $quarter->quarter == 'F' ? 'Lengkap' : ($quarter->quarter == 'T' ? 'Tahunan' : 'Triwulan ' . $quarter->quarter) }}
+                                    </option>
+                                @endforeach
                             @endif
                         </select>
                     </div>
@@ -141,9 +145,10 @@
                         <select class="form-control select2bs4" id="period" name="period">
                             <option value="" selected>-- Pilih Putaran --</option>
                             @if ($periods)
-                            @foreach ($periods as $period)
-                            <option {{ old('period', $filter['period_id']) == $period->id ? 'selected' : '' }} value="{{ $period->id }}">{{ $period->description }}</option>
-                            @endforeach
+                                @foreach ($periods as $period)
+                                    <option {{ old('period', $filter['period_id']) == $period->id ? 'selected' : '' }}
+                                        value="{{ $period->id }}">{{ $period->description }}</option>
+                                @endforeach
                             @endif
                         </select>
                     </div>
@@ -170,7 +175,8 @@
                 </ul>
                 <ul class="nav-item ml-auto">
                     <button class="btn btn-success" id="download-csv">Download</button>
-                    <button class="btn btn-primary" id="change-query" onclick="switchPlay('1')">Tukar Posisi Kolom</button>
+                    <button class="btn btn-primary" id="change-query" onclick="switchPlay('1')">Tukar Posisi
+                        Kolom</button>
                 </ul>
             </nav>
             <div class="table-container">
@@ -184,40 +190,44 @@
                             </thead>
                             <tbody>
                                 @foreach ($subsectors as $index => $item)
-                                @if ($item->code != null && $item->code == 'a')
-                                <tr>
-                                    <td class="first-columns">
-                                        <p class="text-bold ml-1" style="margin-bottom:0rem;" for="">
-                                            {{ $item->sector->code . '. ' . $item->sector->name }}
-                                        </p>
-                                    </td>
-                                </tr>
-                                @endif
-                                @if ($item->code != null)
-                                <tr>
-                                    <td class="first-columns">
-                                        <p class=" ml-4" style="margin-bottom:0rem;" for="{{ $item->code }}_{{ $item->name }}">
-                                            {{ $item->code . '. ' . $item->name }}
-                                        </p>
-                                    </td>
-                                </tr>
-                                @elseif ($item->code == null && $item->sector->code != null)
-                                <tr>
-                                    <td class="first-columns">
-                                        <p class=" text-bold ml-1" style="margin-bottom:0rem;" for="{{ $item->sector->code . '_' . $item->sector->name }}">
-                                            {{ $item->sector->code . '. ' . $item->sector->name }}
-                                        </p>
-                                    </td>
-                                </tr>
-                                @elseif ($item->code == null && $item->sector->code == null)
-                                <tr>
-                                    <td class="first-columns">
-                                        <label class="" style="margin-bottom:0rem;" for="{{ $item->sector->category->code . '_' . $item->name }}">{{ $item->sector->category->code . '. ' . $item->name }}</label>
-                                    </td>
-                                </tr>
-                                @endif
+                                    @if ($item->code != null && $item->code == 'a')
+                                        <tr>
+                                            <td class="first-columns">
+                                                <p class="text-bold ml-1" style="margin-bottom:0rem;" for="">
+                                                    {{ $item->sector->code . '. ' . $item->sector->name }}
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if ($item->code != null)
+                                        <tr>
+                                            <td class="first-columns">
+                                                <p class=" ml-4" style="margin-bottom:0rem;"
+                                                    for="{{ $item->code }}_{{ $item->name }}">
+                                                    {{ $item->code . '. ' . $item->name }}
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    @elseif ($item->code == null && $item->sector->code != null)
+                                        <tr>
+                                            <td class="first-columns">
+                                                <p class=" text-bold ml-1" style="margin-bottom:0rem;"
+                                                    for="{{ $item->sector->code . '_' . $item->sector->name }}">
+                                                    {{ $item->sector->code . '. ' . $item->sector->name }}
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    @elseif ($item->code == null && $item->sector->code == null)
+                                        <tr>
+                                            <td class="first-columns">
+                                                <label class="" style="margin-bottom:0rem;"
+                                                    for="{{ $item->sector->category->code . '_' . $item->name }}">{{ $item->sector->category->code . '. ' . $item->name }}</label>
+                                            </td>
+                                        </tr>
+                                    @endif
                                 @endforeach
-                                <tr class="PDRB-footer text-center" style="background-color: steelblue; color:aliceblue; font-weight: bold;">
+                                <tr class="PDRB-footer text-center"
+                                    style="background-color: steelblue; color:aliceblue; font-weight: bold;">
                                     <td>Produk Domestik Regional Bruto (PDRB)</td>
                                 </tr>
                             </tbody>
@@ -230,44 +240,51 @@
                                     <th id="head-purpose" class=""></th>
                                     <th>Total Kabupaten/Kota</th>
                                     @foreach ($regions as $region)
-                                    <th>{{$region->name}}</th>
+                                        <th>{{ $region->name }}</th>
                                     @endforeach
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($subsectors as $index => $item)
-                                @if ($item->code != null && $item->code == 'a')
-                                <tr>
-                                    <td id="sector-purpose-{{ $index+1 }}" class=""></td>
-                                    <td id="sector-totalKabkot-{{ $index+1 }}" class="sum-of-kabkot text-bold"></td>
-                                    @foreach ($regions as $region)
-                                    <td id="sector-{{ $index+1 }}-{{ $region->id }}" class="text-right values other-columns"></td>
-                                    @endforeach
-                                </tr>
-                                @endif
-                                @if ($item->code != null)
-                                <tr>
-                                    <td id="purpose-{{ $index+1 }}" class=""></td>
-                                    <td id="totalKabkot-{{ $index+1 }}" class="sum-of-kabkot"></td>
-                                    @foreach ($regions as $region)
-                                    <td id="{{ 'value-'.$index+1 }}-{{ $region->id }}" class="text-right values other-columns"></td>
-                                    @endforeach
-                                </tr>
-                                @elseif ($item->code == null && $item->sector->code != null)
-                                <tr>
-                                    <td id="purpose-{{ $index+1 }}" class=""></td>
-                                    <td id="totalKabkot-{{ $index+1 }}" class="sum-of-kabkot text-bold"></td>
-                                    @foreach ($regions as $region)
-                                    <td id="{{ 'value-'.$index+1 }}-{{ $region->id }}" class="text-right text-bold values other-columns pdrb-total-{{ $region->id }}"></td>
-                                    @endforeach
-                                </tr>
-                                @endif
+                                    @if ($item->code != null && $item->code == 'a')
+                                        <tr>
+                                            <td id="sector-purpose-{{ $index + 1 }}" class=""></td>
+                                            <td id="sector-totalKabkot-{{ $index + 1 }}"
+                                                class="sum-of-kabkot text-bold"></td>
+                                            @foreach ($regions as $region)
+                                                <td id="sector-{{ $index + 1 }}-{{ $region->id }}"
+                                                    class="text-right values other-columns"></td>
+                                            @endforeach
+                                        </tr>
+                                    @endif
+                                    @if ($item->code != null)
+                                        <tr>
+                                            <td id="purpose-{{ $index + 1 }}" class=""></td>
+                                            <td id="totalKabkot-{{ $index + 1 }}" class="sum-of-kabkot"></td>
+                                            @foreach ($regions as $region)
+                                                <td id="{{ 'value-' . $index + 1 }}-{{ $region->id }}"
+                                                    class="text-right values other-columns"></td>
+                                            @endforeach
+                                        </tr>
+                                    @elseif ($item->code == null && $item->sector->code != null)
+                                        <tr>
+                                            <td id="purpose-{{ $index + 1 }}" class=""></td>
+                                            <td id="totalKabkot-{{ $index + 1 }}" class="sum-of-kabkot text-bold">
+                                            </td>
+                                            @foreach ($regions as $region)
+                                                <td id="{{ 'value-' . $index + 1 }}-{{ $region->id }}"
+                                                    class="text-right text-bold values other-columns pdrb-total-{{ $region->id }}">
+                                                </td>
+                                            @endforeach
+                                        </tr>
+                                    @endif
                                 @endforeach
-                                <tr class="PDRB-footer text-right" style="background-color: steelblue; color:aliceblue; font-weight: bold;">
+                                <tr class="PDRB-footer text-right"
+                                    style="background-color: steelblue; color:aliceblue; font-weight: bold;">
                                     <td class="text-right" id="purpose-migas"></td>
                                     <td class="sum-of-kabkot text-right" id="totalKabkot-migas"></td>
                                     @foreach ($regions as $region)
-                                    <td id="total-{{ $region->id }}" style="margin-bottom:0rem;"></td>
+                                        <td id="total-{{ $region->id }}" style="margin-bottom:0rem;"></td>
                                     @endforeach
                                 </tr>
                             </tbody>
@@ -277,407 +294,145 @@
             </div>
         </div>
     </div>
-        <x-slot name="script">
-            <!-- Additional JS resources -->
-            <script src="{{ url('') }}/plugins/select2/js/select2.full.min.js"></script>
-            <script src="{{ asset('js/konserda.js') }}"></script>
-            <script src="{{ asset('js/download.js') }}"></script>
-            <script>
-                $(document).on('focus', '.select2-selection', function(e) {
-                    $(this).closest(".select2-container").siblings('select:enabled').select2('open');
-                })
-                let cat = JSON.parse($("#my-cat").data('cat'))
-                let catArray = cat.split(", ")
-                let rowComponent = 14
+    <x-slot name="script">
+        <!-- Additional JS resources -->
+        <script src="{{ url('') }}/plugins/select2/js/select2.full.min.js"></script>
+        <script src="{{ asset('js/konserda.js') }}"></script>
+        <script src="{{ asset('js/konserda-pengeluaran.js') }}"></script>
+        <script src="{{ asset('js/download.js') }}"></script>
+        <script>
+            $(document).on('focus', '.select2-selection', function(e) {
+                $(this).closest(".select2-container").siblings('select:enabled').select2('open');
+            })
+            let cat = JSON.parse($("#my-cat").data('cat'))
+            let catArray = cat.split(", ")
+            let rowComponent = 14
 
-                $('#download-csv').on('click', function(e){
-                    e.preventDefault()
-                    $('.loader').removeClass('d-none')
-                    setTimeout(function(){
-                        let datas = getReady()
-                        const csvData = convertToCSV(datas)
-                        $('.loader').addClass('d-none')
-                        downloadCSV(csvData, "download-data.csv")
-                    }, 200)
-                })
-                
-                //sum of each value in sector and category
-                function calculateSector(sector) {
-                    let sum = 0;
-                    // let sector = sector.replaceAll(",","");
-                    $(`.${sector}`).each(function(index) {
-                        let X = $(this).text().replaceAll(/[A-Za-z.]/g, '');
-                        let Y = X.replaceAll(/[,]/g, '.')
-                        sum += Y > 0 ? Number(Y) : 0;
-                    });
-                    return sum;
-                }
+            const url_key = new URL('{{ route('pengeluaran.getKonserda') }}')
 
-                //change the value of inputed number to Rupiah 
-                function formatRupiah(angka, prefix) {
-                    var number_string = String(angka).replace(/[^,\d]/g, '').toString(),
-                        split = number_string.split(','),
-                        sisa = split[0].length % 3,
-                        rupiah = split[0].substr(0, sisa),
-                        ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+            //filter
+            $(document).ready(function() {
+                $('#type').on('change', function() {
+                    let pdrb_type = $(this).val()
+                    if (pdrb_type) {
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{ route('konserdaYear') }}",
+                            data: {
+                                type: pdrb_type,
+                                _token: '{{ csrf_token() }}',
+                            },
+                            dataType: 'json',
 
-                    if (ribuan) {
-                        separator = sisa ? '.' : '';
-                        rupiah += separator + ribuan.join('.');
+                            success: function(result) {
+                                $('#year').empty()
+                                $('#year').append('<option value="">-- Pilih Tahun --</option>')
+                                $.each(result.years, function(key, value) {
+                                    $('#year').append('<option value="' + value.year +
+                                        '">' + value.year + '</option>')
+                                })
+                            },
+                        })
+                    } else {
+                        $('#year').empty()
+                        $('#year').append('<option value="">-- Pilih Tahun --</option>')
+                        $('#quarter').empty()
+                        $('#quarter').append('<option value="" selected>-- Pilih Triwulan --</option>')
+                        $('#period').empty()
+                        $('#period').append('<option value="" selected>-- Pilih Putaran --</option>')
                     }
+                })
 
-                    rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-                    return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
-                }
-                //
+                $('#year').on('change', function() {
+                    var pdrb_type = $('#type').val()
+                    var pdrb_year = this.value
+                    if (pdrb_year) {
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{ route('konserdaQuarter') }}",
+                            data: {
+                                type: pdrb_type,
+                                year: pdrb_year,
+                                _token: '{{ csrf_token() }}',
+                            },
+                            dataType: 'json',
 
-                function getStored(type) {
-                    const dataStored = localStorage.getItem('dataPengeluaran')
-                    if (dataStored) {
-                        let data = JSON.parse(dataStored)
-                        getAdhb(data, type)
-                        $('#view-body').removeClass('d-none')
+                            success: function(result) {
+                                $('#quarter').empty()
+                                $('#quarter').append(
+                                    '<option value="" selected>-- Pilih Triwulan --</option>')
+                                $.each(result.quarters, function(key, value) {
+                                    var description = (value.quarter == 'F') ? 'Lengkap' : (
+                                        (value.quarter == 'T') ? 'Tahunan' :
+                                        'Triwulan ' + value.quarter)
+                                    $('#quarter').append('<option value="' + value.quarter +
+                                        '">' + description + '</option>')
+                                })
+                            },
+                        })
+                    } else {
+                        $('#quarter').empty()
+                        $('#quarter').append('<option value="" selected>-- Pilih Triwulan --</option>')
+                        $('#period').empty()
+                        $('#period').append('<option value="" selected>-- Pilih Putaran --</option>')
                     }
-                }
-
-                //get the data
-                $(document).ready(function() {
-                    $('#showData').click(function(e) {
-                        e.preventDefault()
-                        const period_id = $('#period').val()
-                        $.ajax({
-                            beforeSend: function() {
-                                $('.loader').removeClass('d-none')
-                            },
-                            type: 'GET',
-                            url: 'getKonserda/' + period_id,
-                            dataType: 'json',
-                            success: function(data) {
-                                setTimeout(function() {
-                                    // console.log(data)
-
-                                    getAdhb(data.data, 'pengeluaran')
-                                    $('.loader').addClass('d-none')
-                                    $('#view-body').removeClass('d-none')
-                                }, 200)
-                                localStorage.setItem('dataPengeluaran', JSON.stringify(data.data))
-                                localStorage.setItem('filters', period_id)
-                                // switchColumn()
-                            },
-                            error: function(jqXHR, textStatus, errorThrown) {
-                                $('.loader').addClass('d-none')
-                                localStorage.clear()
-                                alert('Error : Pilihan Error')
-                            },
-                        })
-                    })
-
-                    $('#refresh').click(function() {
-                        localStorage.clear()
-                        $('#view-body').addClass('d-none')
-                    })
                 })
 
-                //change
-                $(document).ready(function() {
-                    let tbody = $('#rekon-view').find('tbody')
-                    $('#nav-distribusi').on('click', function(e) {
-                        e.preventDefault()
-                        $('.loader').removeClass('d-none')
-                        setTimeout(function() {
-                            getStored('pengeluaran')
-                            $('#rekon-view tbody td').removeClass(function(index, className) {
-                                return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
-                            })
-                            for (let q = 1; q <= 16; q++) {
-                                for (let i = 0; i <= rowComponent; i++) {
-                                    $(`#value-${i}-${q}`).addClass(`view-distribusi-${q}`)
-                                    $(`#sector-${i}-${q}`).addClass(`view-distribusi-${q}`)
-                                }
-                            }
-                            $('#rekon-view tbody td:nth-child(2)').each(function() {
-                                $(this).addClass(`view-distribusi-totalKabkot`)
-                            })
-                            $('.loader').addClass('d-none')
-                            showOff()
-                            getDist()
-                            switchPlay('2')
-                        }, 200)
-                    })
-
-                    $('#nav-adhb').on('click', function(e) {
-                        e.preventDefault()
-                        $('.loader').removeClass('d-none')
-                        setTimeout(function() {
-                            $('.loader').addClass('d-none')
-                            showOff()
-                            getStored('pengeluaran')
-                            switchPlay('2')
-                        }, 200)
-                        // switchColumn()
-                    })
-
-                    $('#nav-adhk').on('click', function(e) {
-                        e.preventDefault()
-                        let period_id
-                        if ($('#period').val() !== '') {
-                            period_id = $('#period').val()
-                        } else {
-                            period_id = localStorage.getItem('filters')
-                        }
+                $('#quarter').on('change', function() {
+                    var pdrb_type = $('#type').val()
+                    var pdrb_year = $('#year').val()
+                    var pdrb_quarter = this.value
+                    if (pdrb_quarter) {
                         $.ajax({
-                            beforeSend: function() {
-                                $('.loader').removeClass('d-none')
+                            type: 'POST',
+                            url: "{{ route('konserdaPeriod') }}",
+                            data: {
+                                type: pdrb_type,
+                                year: pdrb_year,
+                                quarter: pdrb_quarter,
+                                _token: '{{ csrf_token() }}',
                             },
-                            type: 'GET',
-                            url: 'getKonserda/' + period_id,
                             dataType: 'json',
-                            success: function(data) {
-                                setTimeout(function() {
-                                    $('.loader').addClass('d-none')
-                                    showOff()
-                                    getAdhk(data.data, 'pengeluaran')
-                                    switchPlay('2')
-                                }, 200)
-                            }
-                        })
-                    })
 
-                    //indeks implisit adhb/adhk
-                    $('#nav-indeks').on('click', function(e) {
-                        e.preventDefault()
-                        let period_id
-                        if ($('#period').val() !== '') {
-                            period_id = $('#period').val()
-                        } else {
-                            period_id = localStorage.getItem('filters')
-                        }
-                        $.ajax({
-                            beforeSend: function() {
-                                $('.loader').removeClass('d-none')
+                            success: function(result) {
+                                $('#period').empty()
+                                $('#period').append(
+                                    '<option value="" selected>-- Pilih Putaran --</option>')
+                                $.each(result.periods, function(key, value) {
+                                    $('#period').append('<option value="' + value.id +
+                                        '">' + value.description + '</option>')
+                                })
                             },
-                            type: 'GET',
-                            url: 'getKonserda/' + period_id,
-                            dataType: 'json',
-                            success: function(data) {
-                                setTimeout(function() {
-                                    $('.loader').addClass('d-none')
-                                    showOff()
-                                    getIndex(data.data, 'pengeluaran')
-                                    switchPlay('2')
-                                }, 200)
-                            }
                         })
-                    })
-
-                    $('#nav-laju').on('click', function(e) {
-                        e.preventDefault()
-                        let period_id
-                        if ($('#period').val() !== '') {
-                            period_id = $('#period').val()
-                        } else {
-                            period_id = localStorage.getItem('filters')
-                        }
-                        $.ajax({
-                            beforeSend: function() {
-                                $('.loader').removeClass('d-none')
-                            },
-                            type: 'GET',
-                            url: 'getKonserda/' + period_id,
-                            dataType: 'json',
-                            success: function(data) {
-                                setTimeout(function() {
-                                    $('.loader').addClass('d-none')
-                                    showOff()
-                                    if (data.before === null || data.before['pdrb-1'].length === 0) {
-                                        alert('Data tahun lalu tidak ada')
-                                    } else {
-                                        let first = getIndex(data.data, 'pengeluaran')
-                                        let before = getIndex(data.before, 'pengeluaran')
-                                        getLaju(first, before)
-                                        switchPlay('2')
-                                    }
-                                }, 200)
-                            }
-                        })
-                    })
-
-                    //growth
-                    $('#nav-pertumbuhan').on('click', function(e) {
-                        e.preventDefault()
-                        let period_id
-                        if ($('#period').val() !== '') {
-                            period_id = $('#period').val()
-                        } else {
-                            period_id = localStorage.getItem('filters')
-                        }
-                        $.ajax({
-                            beforeSend: function() {
-                                $('.loader').removeClass('d-none')
-                            },
-                            type: 'GET',
-                            url: 'getKonserda/' + period_id,
-                            dataType: 'json',
-                            success: function(data) {
-                                setTimeout(function() {
-                                    // console.log()
-                                    $('.loader').addClass('d-none')
-                                    showOff()
-                                    if (data.before === null || data.before['pdrb-1'].length === 0) {
-                                        alert('Data tahun lalu tidak ada')
-                                    } else {
-                                        getGrowth(data.data, data.before, 'pengeluaran')
-                                        switchPlay('2')
-                                    }
-                                }, 200)
-                            }
-                        })
-                    })
-
-                    //struktur antar
-                    $('#nav-struktur-antar').on('click', function(e) {
-                        e.preventDefault()
-                        let period_id
-                        if ($('#period').val() !== '') {
-                            period_id = $('#period').val()
-                        } else {
-                            period_id = localStorage.getItem('filters')
-                        }
-                        $.ajax({
-                            beforeSend: function() {
-                                $('.loader').removeClass('d-none')
-                            },
-                            type: 'GET',
-                            url: 'getKonserda/' + period_id,
-                            dataType: 'json',
-                            success: function(data) {
-                                setTimeout(function() {
-                                    $('.loader').addClass('d-none')
-                                    getAntar(data.data, 'pengeluaran')
-                                    switchPlay('2')
-                                    $('#change-query').prop('disabled', true)
-                                }, 200)
-                            }
-                        })
-                    })
+                    } else {
+                        $('#period').empty()
+                        $('#period').append('<option value="" selected>-- Pilih Putaran --</option>')
+                    }
                 })
+            })
 
-                //filter
-                $(document).ready(function() {
-                    $('#type').on('change', function() {
-                        let pdrb_type = $(this).val()
-                        if (pdrb_type) {
-                            $.ajax({
-                                type: 'POST',
-                                url: "{{ route('konserdaYear') }}",
-                                data: {
-                                    type: pdrb_type,
-                                    _token: '{{csrf_token()}}',
-                                },
-                                dataType: 'json',
-
-                                success: function(result) {
-                                    $('#year').empty()
-                                    $('#year').append('<option value="">-- Pilih Tahun --</option>')
-                                    $.each(result.years, function(key, value) {
-                                        $('#year').append('<option value="' + value.year + '">' + value.year + '</option>')
-                                    })
-                                },
-                            })
-                        } else {
-                            $('#year').empty()
-                            $('#year').append('<option value="">-- Pilih Tahun --</option>')
-                            $('#quarter').empty()
-                            $('#quarter').append('<option value="" selected>-- Pilih Triwulan --</option>')
-                            $('#period').empty()
-                            $('#period').append('<option value="" selected>-- Pilih Putaran --</option>')
-                        }
-                    })
-
-                    $('#year').on('change', function() {
-                        var pdrb_type = $('#type').val()
-                        var pdrb_year = this.value
-                        if (pdrb_year) {
-                            $.ajax({
-                                type: 'POST',
-                                url: "{{ route('konserdaQuarter') }}",
-                                data: {
-                                    type: pdrb_type,
-                                    year: pdrb_year,
-                                    _token: '{{csrf_token()}}',
-                                },
-                                dataType: 'json',
-
-                                success: function(result) {
-                                    $('#quarter').empty()
-                                    $('#quarter').append('<option value="" selected>-- Pilih Triwulan --</option>')
-                                    $.each(result.quarters, function(key, value) {
-                                        var description = (value.quarter == 'F') ? 'Lengkap' : ((value.quarter == 'T') ? 'Tahunan' : 'Triwulan ' + value.quarter)
-                                        $('#quarter').append('<option value="' + value.quarter + '">' + description + '</option>')
-                                    })
-                                },
-                            })
-                        } else {
-                            $('#quarter').empty()
-                            $('#quarter').append('<option value="" selected>-- Pilih Triwulan --</option>')
-                            $('#period').empty()
-                            $('#period').append('<option value="" selected>-- Pilih Putaran --</option>')
-                        }
-                    })
-
-                    $('#quarter').on('change', function() {
-                        var pdrb_type = $('#type').val()
-                        var pdrb_year = $('#year').val()
-                        var pdrb_quarter = this.value
-                        if (pdrb_quarter) {
-                            $.ajax({
-                                type: 'POST',
-                                url: "{{ route('konserdaPeriod') }}",
-                                data: {
-                                    type: pdrb_type,
-                                    year: pdrb_year,
-                                    quarter: pdrb_quarter,
-                                    _token: '{{csrf_token()}}',
-                                },
-                                dataType: 'json',
-
-                                success: function(result) {
-                                    $('#period').empty()
-                                    $('#period').append('<option value="" selected>-- Pilih Putaran --</option>')
-                                    $.each(result.periods, function(key, value) {
-                                        $('#period').append('<option value="' + value.id + '">' + value.description + '</option>')
-                                    })
-                                },
-                            })
-                        } else {
-                            $('#period').empty()
-                            $('#period').append('<option value="" selected>-- Pilih Putaran --</option>')
-                        }
-                    })
+            //get localized storage data
+            $(document).ready(function() {
+                // getStored('pengeluaran')
+                getTotalKabkot()
+                $('#change-query').click(function() {
+                    $(this).prop('disabled', true)
                 })
+            })
 
-                //get localized storage data
-                $(document).ready(function() {
-                    // getStored('pengeluaran')
-                    getTotalKabkot()
-                    $('#change-query').click(function() {
-                        $(this).prop('disabled', true)
-                    })
+            $(document).on('select2:open', () => {
+                document.querySelector('.select2-search__field').focus();
+            });
+
+            $(function() {
+                //Initialize Select2 Elements
+                $('.select2').select2()
+
+                //Initialize Select2 Elements
+                $('.select2bs4').select2({
+                    theme: 'bootstrap4'
                 })
-
-                $(document).on('select2:open', () => {
-                    document.querySelector('.select2-search__field').focus();
-                });
-
-                $(function() {
-                    //Initialize Select2 Elements
-                    $('.select2').select2()
-
-                    //Initialize Select2 Elements
-                    $('.select2bs4').select2({
-                        theme: 'bootstrap4'
-                    })
-                });
-            </script>
-        </x-slot>
+            });
+        </script>
+    </x-slot>
 </x-dashboard-Layout>

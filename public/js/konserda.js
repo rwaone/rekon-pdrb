@@ -551,3 +551,52 @@ function getTotalKabkot() {
         }
     });
 }
+
+$("#download-csv").on("click", function (e) {
+    e.preventDefault();
+    $(".loader").removeClass("d-none");
+    setTimeout(function () {
+        let datas = getReady();
+        const csvData = convertToCSV(datas);
+        $(".loader").addClass("d-none");
+        downloadCSV(csvData, "download-data.csv");
+    }, 200);
+});
+
+//sum of each value in sector and category
+function calculateSector(sector) {
+    let sum = 0;
+    // let sector = sector.replaceAll(",","");
+    $(`.${sector}`).each(function (index) {
+        let X = $(this)
+            .text()
+            .replaceAll(/[A-Za-z.]/g, "");
+        let Y = X.replaceAll(/[,]/g, ".");
+        sum += Y > 0 ? Number(Y) : 0;
+    });
+    return sum;
+}
+
+//change the value of inputed number to Rupiah
+function formatRupiah(angka, prefix) {
+    var number_string = String(angka)
+            .replace(/[^,\d]/g, "")
+            .toString(),
+        split = number_string.split(","),
+        sisa = split[0].length % 3,
+        rupiah = split[0].substr(0, sisa),
+        ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+    if (ribuan) {
+        separator = sisa ? "." : "";
+        rupiah += separator + ribuan.join(".");
+    }
+
+    rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+    return prefix == undefined ? rupiah : rupiah ? "Rp. " + rupiah : "";
+}
+//
+
+
+
+//filter
