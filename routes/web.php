@@ -55,6 +55,7 @@ Route::get('lapangan-usaha/konserda', [LapanganController::class, 'konserda'])->
 Route::get('lapangan-usaha/getKonserda', [LapanganController::class, 'getKonserda'])->middleware(['auth', 'verified'])->name('lapangan-usaha.getKonserda');
 Route::get('lapangan-usaha/daftarPokok', [LapanganController::class, 'daftarPokok'])->middleware(['auth', 'verified']);
 Route::get('lapangan-usaha/detailPokok', [LapanganController::class, 'detailPokok'])->middleware(['auth', 'verified'])->name('lapangan-usaha.detail');
+Route::get('lapangan-usaha/getDetail', [LapanganController::class, 'getDetail'])->middleware(['auth', 'verified'])->name('lapangan-usaha.getDetail');
 
 //Pengeluaran
 Route::get('pengeluaran/rekonsiliasi', [PengeluaranController::class, 'rekonsiliasi'])->middleware(['auth', 'verified']);

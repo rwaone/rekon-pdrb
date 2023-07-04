@@ -72,87 +72,133 @@
                             <th>Triwulan II</th>
                             <th>Triwulan III</th>
                             <th>Triwulan IV</th>
+                            <th>Total</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($subsectors as $index => $item)
-                        @if (($item->code != NULL && $item->code == "a" && $item->sector->code == "1") || ($item->code == NULL && $item->sector->code == "1"))
-                        <tr>
-                            <td>
-                                <label class="col" style="margin-bottom:0rem;" for="">{{ $item->sector->category->code . '. ' . $item->sector->category->name }}</label>
-                            </td>
-                            <td id="categories-{{ $item->sector->category->code }}-1" class="categories values"></td>
-                            <td id="categories-{{ $item->sector->category->code }}-2" class="categories values"></td>
-                            <td id="categories-{{ $item->sector->category->code }}-3" class="categories values"></td>
-                            <td id="categories-{{ $item->sector->category->code }}-4" class="categories values"></td>
-                        </tr>
-                        @endif
-                        @if ($item->code != null && $item->code == 'a')
-                        <tr>
-                            <td>
-                                <p class="col ml-4" style="margin-bottom:0rem;" for="">
-                                    {{ $item->sector->code . '. ' . $item->sector->name }}
-                                </p>
-                            </td>
-                            <td id="sector-{{ $index+1 }}-1" class="values"></td>
-                            <td id="sector-{{ $index+1 }}-2" class="values"></td>
-                            <td id="sector-{{ $index+1 }}-3" class="values"></td>
-                            <td id="sector-{{ $index+1 }}-4" class="values"></td>
-                        </tr>
-                        @endif
-                        @if ($item->code != null)
-                        <tr>
-                            <td>
-                                <p class="col ml-5" style="margin-bottom:0rem;" for="{{ $item->code }}_{{ $item->name }}">
-                                    {{ $item->code . '. ' . $item->name }}
-                                </p>
-                            </td>
-                            <td id="{{ 'value-'.$item->id.'-1' }}" class="values {{ 'categories-'.$item->sector->category->code }}-1 {{ 'sector-Q1-'.$item->sector_id }} {{ 'category-Q1-'.$item->sector->category_id}}"></td>
-                            <td id="{{ 'value-'.$item->id.'-2' }}" class="values {{ 'categories-'.$item->sector->category->code }}-2 {{ 'sector-Q2-'.$item->sector_id }} {{ 'category-Q2-'.$item->sector->category_id}}"></td>
-                            <td id="{{ 'value-'.$item->id.'-3' }}" class="values {{ 'categories-'.$item->sector->category->code }}-3 {{ 'sector-Q3-'.$item->sector_id }} {{ 'category-Q3-'.$item->sector->category_id}}"></td>
-                            <td id="{{ 'value-'.$item->id.'-4' }}" class="values {{ 'categories-'.$item->sector->category->code }}-4 {{ 'sector-Q4-'.$item->sector_id }} {{ 'category-Q4-'.$item->sector->category_id}}"></td>
-                        </tr>
-                        @elseif ($item->code == null && $item->sector->code != null)
-                        <tr>
-                            <td>
-                                <p class="col ml-4" style="margin-bottom:0rem;" for="{{ $item->sector->code . '_' . $item->sector->name }}">
-                                    {{ $item->sector->code . '. ' . $item->sector->name }}
-                                </p>
-                            </td>
-                            <td id="{{ 'value-'.$item->id.'-1' }}" class="values {{ 'categories-'.$item->sector->category->code }}-1 {{ 'sector-Q1-'.$item->sector_id }} {{ 'category-Q1-'.$item->sector->category_id}}"></td>
-                            <td id="{{ 'value-'.$item->id.'-2' }}" class="values {{ 'categories-'.$item->sector->category->code }}-2 {{ 'sector-Q2-'.$item->sector_id }} {{ 'category-Q2-'.$item->sector->category_id}}"></td>
-                            <td id="{{ 'value-'.$item->id.'-3' }}" class="values {{ 'categories-'.$item->sector->category->code }}-3 {{ 'sector-Q3-'.$item->sector_id }} {{ 'category-Q3-'.$item->sector->category_id}}"></td>
-                            <td id="{{ 'value-'.$item->id.'-4' }}" class="values {{ 'categories-'.$item->sector->category->code }}-4 {{ 'sector-Q4-'.$item->sector_id }} {{ 'category-Q4-'.$item->sector->category_id}}"></td>
-                        </tr>
-                        @elseif ($item->code == null && $item->sector->code == null)
-                        <tr>
-                            <td>
-                                <label class="col" style="margin-bottom:0rem;" for="{{ $item->sector->category->code . '_' . $item->name }}">{{ $item->sector->category->code . '. ' . $item->name }}</label>
-                            </td>
-                            <td id="{{ 'value-'.$item->id.'-1' }}" class="values {{ 'categories-'.$item->sector->category->code }}-1 {{'sector-Q1'.$item->sector_id }} {{'category-Q1'.$item->sector->category_id}} text-bold pdrb-total-1"></td>
-                            <td id="{{ 'value-'.$item->id.'-2' }}" class="values {{ 'categories-'.$item->sector->category->code }}-2 {{'sector-Q2'.$item->sector_id }} {{'category-Q2'.$item->sector->category_id}} text-bold pdrb-total-2"></td>
-                            <td id="{{ 'value-'.$item->id.'-3' }}" class="values {{ 'categories-'.$item->sector->category->code }}-3 {{'sector-Q3'.$item->sector_id }} {{'category-Q3'.$item->sector->category_id}} text-bold pdrb-total-3"></td>
-                            <td id="{{ 'value-'.$item->id.'-4' }}" class="values {{ 'categories-'.$item->sector->category->code }}-4 {{'sector-Q4'.$item->sector_id }} {{'category-Q4'.$item->sector->category_id}} text-bold pdrb-total-4"></td>
-                        </tr>
-                        @endif
+                            @if (
+                                ($item->code != null && $item->code == 'a' && $item->sector->code == '1') ||
+                                    ($item->code == null && $item->sector->code == '1'))
+                                <tr>
+                                    <td>
+                                        <label class="col" style="margin-bottom:0rem;"
+                                            for="">{{ $item->sector->category->code . '. ' . $item->sector->category->name }}</label>
+                                    </td>
+                                    <td id="categories-{{ $item->sector->category->code }}-1" class="categories values">
+                                    </td>
+                                    <td id="categories-{{ $item->sector->category->code }}-2" class="categories values">
+                                    </td>
+                                    <td id="categories-{{ $item->sector->category->code }}-3"
+                                        class="categories values"></td>
+                                    <td id="categories-{{ $item->sector->category->code }}-4"
+                                        class="categories values"></td>
+                                    <td class="total-column text-bold"></td>
+                                </tr>
+                            @endif
+                            @if ($item->code != null && $item->code == 'a')
+                                <tr>
+                                    <td>
+                                        <p class="col ml-4" style="margin-bottom:0rem;" for="">
+                                            {{ $item->sector->code . '. ' . $item->sector->name }}
+                                        </p>
+                                    </td>
+                                    <td id="sector-{{ $index + 1 }}-1" class="values"></td>
+                                    <td id="sector-{{ $index + 1 }}-2" class="values"></td>
+                                    <td id="sector-{{ $index + 1 }}-3" class="values"></td>
+                                    <td id="sector-{{ $index + 1 }}-4" class="values"></td>
+                                    <td class="total-column"></td>
+                                </tr>
+                            @endif
+                            @if ($item->code != null)
+                                <tr>
+                                    <td>
+                                        <p class="col ml-5" style="margin-bottom:0rem;"
+                                            for="{{ $item->code }}_{{ $item->name }}">
+                                            {{ $item->code . '. ' . $item->name }}
+                                        </p>
+                                    </td>
+                                    <td id="{{ 'value-' . $item->id . '-1' }}"
+                                        class="values {{ 'categories-' . $item->sector->category->code }}-1 {{ 'sector-Q1-' . $item->sector_id }} {{ 'category-Q1-' . $item->sector->category_id }}">
+                                    </td>
+                                    <td id="{{ 'value-' . $item->id . '-2' }}"
+                                        class="values {{ 'categories-' . $item->sector->category->code }}-2 {{ 'sector-Q2-' . $item->sector_id }} {{ 'category-Q2-' . $item->sector->category_id }}">
+                                    </td>
+                                    <td id="{{ 'value-' . $item->id . '-3' }}"
+                                        class="values {{ 'categories-' . $item->sector->category->code }}-3 {{ 'sector-Q3-' . $item->sector_id }} {{ 'category-Q3-' . $item->sector->category_id }}">
+                                    </td>
+                                    <td id="{{ 'value-' . $item->id . '-4' }}"
+                                        class="values {{ 'categories-' . $item->sector->category->code }}-4 {{ 'sector-Q4-' . $item->sector_id }} {{ 'category-Q4-' . $item->sector->category_id }}">
+                                    </td>
+                                    <td class="total-column"></td>
+                                </tr>
+                            @elseif ($item->code == null && $item->sector->code != null)
+                                <tr>
+                                    <td>
+                                        <p class="col ml-4" style="margin-bottom:0rem;"
+                                            for="{{ $item->sector->code . '_' . $item->sector->name }}">
+                                            {{ $item->sector->code . '. ' . $item->sector->name }}
+                                        </p>
+                                    </td>
+                                    <td id="{{ 'value-' . $item->id . '-1' }}"
+                                        class="values {{ 'categories-' . $item->sector->category->code }}-1 {{ 'sector-Q1-' . $item->sector_id }} {{ 'category-Q1-' . $item->sector->category_id }}">
+                                    </td>
+                                    <td id="{{ 'value-' . $item->id . '-2' }}"
+                                        class="values {{ 'categories-' . $item->sector->category->code }}-2 {{ 'sector-Q2-' . $item->sector_id }} {{ 'category-Q2-' . $item->sector->category_id }}">
+                                    </td>
+                                    <td id="{{ 'value-' . $item->id . '-3' }}"
+                                        class="values {{ 'categories-' . $item->sector->category->code }}-3 {{ 'sector-Q3-' . $item->sector_id }} {{ 'category-Q3-' . $item->sector->category_id }}">
+                                    </td>
+                                    <td id="{{ 'value-' . $item->id . '-4' }}"
+                                        class="values {{ 'categories-' . $item->sector->category->code }}-4 {{ 'sector-Q4-' . $item->sector_id }} {{ 'category-Q4-' . $item->sector->category_id }}">
+                                    </td>
+                                    <td class="total-column"></td>
+                                </tr>
+                            @elseif ($item->code == null && $item->sector->code == null)
+                                <tr>
+                                    <td>
+                                        <label class="col" style="margin-bottom:0rem;"
+                                            for="{{ $item->sector->category->code . '_' . $item->name }}">{{ $item->sector->category->code . '. ' . $item->name }}</label>
+                                    </td>
+                                    <td id="{{ 'value-' . $item->id . '-1' }}"
+                                        class="values {{ 'categories-' . $item->sector->category->code }}-1 {{ 'sector-Q1' . $item->sector_id }} {{ 'category-Q1' . $item->sector->category_id }} text-bold pdrb-total-1">
+                                    </td>
+                                    <td id="{{ 'value-' . $item->id . '-2' }}"
+                                        class="values {{ 'categories-' . $item->sector->category->code }}-2 {{ 'sector-Q2' . $item->sector_id }} {{ 'category-Q2' . $item->sector->category_id }} text-bold pdrb-total-2">
+                                    </td>
+                                    <td id="{{ 'value-' . $item->id . '-3' }}"
+                                        class="values {{ 'categories-' . $item->sector->category->code }}-3 {{ 'sector-Q3' . $item->sector_id }} {{ 'category-Q3' . $item->sector->category_id }} text-bold pdrb-total-3">
+                                    </td>
+                                    <td id="{{ 'value-' . $item->id . '-4' }}"
+                                        class="values {{ 'categories-' . $item->sector->category->code }}-4 {{ 'sector-Q4' . $item->sector_id }} {{ 'category-Q4' . $item->sector->category_id }} text-bold pdrb-total-4">
+                                    </td>
+                                    <td class="total-column text-bold"></td>
+                                </tr>
+                            @endif
                         @endforeach
-                        <tr class="PDRB-footer text-center" style="background-color: steelblue; color:aliceblue; font-weight: bold;">
+                        <tr class="PDRB-footer text-center"
+                            style="background-color: steelblue; color:aliceblue; font-weight: bold;">
                             <td>
-                                <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto (PDRB) Nonmigas </p>
+                                <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto
+                                    (PDRB) Nonmigas </p>
                             </td>
                             <td id="total-nonmigas-1" style="margin-bottom:0rem;"></td>
                             <td id="total-nonmigas-2" style="margin-bottom:0rem;"></td>
                             <td id="total-nonmigas-3" style="margin-bottom:0rem;"></td>
                             <td id="total-nonmigas-4" style="margin-bottom:0rem;"></td>
+                            <td class="total-column" style="margin-bottom:0rem;"></td>
                         </tr>
-                        <tr class="PDRB-footer text-center" style="background-color: steelblue; color:aliceblue; font-weight: bold;">
+                        <tr class="PDRB-footer text-center"
+                            style="background-color: steelblue; color:aliceblue; font-weight: bold;">
                             <td>
-                                <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto (PDRB) </p>
+                                <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto
+                                    (PDRB) </p>
                             </td>
                             <td id="total-1" style="margin-bottom:0rem;"></td>
                             <td id="total-2" style="margin-bottom:0rem;"></td>
                             <td id="total-3" style="margin-bottom:0rem;"></td>
                             <td id="total-4" style="margin-bottom:0rem;"></td>
+                            <td class="total-column" style="margin-bottom:0rem;"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -171,6 +217,10 @@
             let adhk_data = ($("#my-adhk").data('adhk'))
             let adhb_data = ($("#my-adhb").data('adhb'))
             let catArray = cat.split(", ")
+            let urlParams = new URLSearchParams(window.location.search)
+            let getUrl = new URL('{{ route("lapangan-usaha.getDetail") }}')
+            
+
 
             //sum of each value in sector and category
             function calculateSector(sector) {
@@ -209,7 +259,8 @@
                     $('.loader').removeClass('d-none')
                     setTimeout(function() {
                         getAdhb()
-                        $('tbody td:nth-child(n+2):nth-child(-n+6)').removeClass(function(index, className) {
+                        $('tbody td:nth-child(n+2):nth-child(-n+6)').removeClass(function(index,
+                            className) {
                             return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
                         })
                         for (let q = 1; q <= 5; q++) {
@@ -221,6 +272,9 @@
                                 $(`#categories-${index}-${q}`).addClass(`view-distribusi-${q}`)
                             }
                         }
+                        tbody.find('.total-column').each(function() {
+                            $(this).addClass('view-distribusi-total')
+                        })
                         getDist()
                         $('.loader').addClass('d-none')
                     }, 500)
@@ -280,6 +334,7 @@
 
 
             $(document).ready(function() {
+                
                 getAdhb()
             })
 

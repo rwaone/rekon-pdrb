@@ -59,7 +59,7 @@
     </x-slot>
     <div class="row">
         <div class="col-md-6">
-            <div class="card">
+            {{-- <div class="card">
                 <div class="card-body">
                     <table class="table table-bordered" id="view-main-table">
                         <thead>
@@ -85,7 +85,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </div> --}}
         </div>
         <div class="col-md-6">
             <div class="card">
@@ -100,7 +100,6 @@
                         </thead>
                         <tbody>
                             <form>
-                                @csrf
                                 @foreach ($daftar_2 as $item)
                                     <tr>
                                         <td class="text-center">{{ $item->number }}</td>
