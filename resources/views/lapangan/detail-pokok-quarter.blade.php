@@ -47,8 +47,6 @@
     <x-slot name="breadcrumb">
         <li class="breadcrumb-item active">Konserda</li>
         <div id="my-cat" data-cat="{{ json_encode($cat) }}"></div>
-        <div id="my-adhk" data-adhk="{{ $adhk }}"></div>
-        <div id="my-adhb" data-adhb="{{ $adhb }}"></div>
     </x-slot>
     <div class="card mb-3" id="view-body">
         <div class="card-body">
@@ -218,8 +216,10 @@
             let adhb_data = ($("#my-adhb").data('adhb'))
             let catArray = cat.split(", ")
             let urlParams = new URLSearchParams(window.location.search)
-            let getUrl = new URL('{{ route("lapangan-usaha.getDetail") }}')
-            
+            let getUrl = new URL('{{ route('lapangan-usaha.getDetail') }}')
+            getUrl.searchParams.set('period_id', urlParams.get('period_id'))
+            getUrl.searchParams.set('region_id', urlParams.get('region_id'))
+            getUrl.searchParams.set('quarter', urlParams.get('quarter'))
 
 
             //sum of each value in sector and category
@@ -251,14 +251,31 @@
                 return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
             }
             //
+            $(document).ready(function() {
+                $.ajax({
+                    type: 'GET',
+                    url: getUrl.href,
+                    dataType: 'json',
+                    success: function (data) {
+                        setTimeout(function () {
+                            // console.log(data.data)
+                            localStorage.setItem("data", JSON.stringify(data.data))
+                            getAdhb(data.data)
+                        })
+                    }
+                })
+                // getAdhb()
+            })
+
             //change
             $(document).ready(function() {
                 let tbody = $('#rekon-view').find('tbody')
+                var datas = JSON.parse(localStorage.getItem('data'))
                 $('#nav-distribusi').on('click', function(e) {
                     e.preventDefault()
                     $('.loader').removeClass('d-none')
                     setTimeout(function() {
-                        getAdhb()
+                        getAdhb(datas)
                         $('tbody td:nth-child(n+2):nth-child(-n+6)').removeClass(function(index,
                             className) {
                             return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
@@ -284,7 +301,7 @@
                     e.preventDefault()
                     $('.loader').removeClass('d-none')
                     setTimeout(function() {
-                        getAdhb()
+                        getAdhb(datas)
                         $('.loader').addClass('d-none')
                     }, 500)
                 })
@@ -293,7 +310,7 @@
                     e.preventDefault()
                     $('.loader').removeClass('d-none')
                     setTimeout(function() {
-                        getAdhk()
+                        getAdhk(datas)
                         $('.loader').addClass('d-none')
                     }, 500)
                 })
@@ -303,7 +320,7 @@
                     e.preventDefault()
                     $('.loader').removeClass('d-none')
                     setTimeout(function() {
-                        getGrowth()
+                        getGrowth(datas)
                         $('.loader').addClass('d-none')
                     }, 500)
                 })
@@ -313,7 +330,7 @@
                     e.preventDefault()
                     $('.loader').removeClass('d-none')
                     setTimeout(function() {
-                        getIndex()
+                        getIndex(datas)
                         $('.loader').addClass('d-none')
                     }, 500)
                 })
@@ -323,7 +340,7 @@
                     e.preventDefault()
                     $('.loader').removeClass('d-none')
                     setTimeout(function() {
-                        let laju = getIndex()
+                        let laju = getIndex(datas)
                         getLaju(laju)
                         $('.loader').addClass('d-none')
                     }, 500)
@@ -331,12 +348,6 @@
             })
 
             //summarise
-
-
-            $(document).ready(function() {
-                
-                getAdhb()
-            })
 
             $(document).on('select2:open', () => {
                 document.querySelector('.select2-search__field').focus();

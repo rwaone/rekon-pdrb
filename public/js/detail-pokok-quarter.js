@@ -105,7 +105,7 @@ function getIdx(adhb, adhk) {
     return result > 0 ? result.toFixed(2) : "";
 }
 
-function getAdhb() {
+function getAdhb(data) {
     $("tbody td:nth-child(n+2):nth-child(-n+6)").removeClass(function (
         index,
         className
@@ -115,7 +115,7 @@ function getAdhb() {
     $("tbody td:nth-child(n+2):nth-child(-n+6)").addClass("view-adhb");
     for (let q = 1; q <= 4; q++) {
         for (let i = 1; i <= 55; i++) {
-            let X = adhb_data[`pdrb-${q}`][i - 1];
+            let X = data[`pdrb-${q}`][i - 1]['adhb'];
             let Y = String(X).replaceAll(/[.]/g, ",");
             $(`#value-${i}-${q}`).text(Y);
         }
@@ -124,7 +124,7 @@ function getAdhb() {
     getTotal();
 }
 
-function getAdhk() {
+function getAdhk(data) {
     $("tbody td:nth-child(n+2):nth-child(-n+6)").removeClass(function (
         index,
         className
@@ -134,7 +134,7 @@ function getAdhk() {
     $("tbody td:nth-child(n+2):nth-child(-n+6)").addClass("view-adhk");
     for (let q = 1; q <= 4; q++) {
         for (let i = 1; i <= 55; i++) {
-            let X = adhk_data[`pdrb-${q}`][i - 1];
+            let X = data[`pdrb-${q}`][i - 1]['adhk'];
             let Y = String(X).replaceAll(/[.]/g, ",");
             $(`#value-${i}-${q}`).text(Y);
         }
@@ -143,7 +143,7 @@ function getAdhk() {
     getTotal();
 }
 
-function getGrowth() {
+function getGrowth(data) {
     $("tbody td:nth-child(n+2):nth-child(-n+6)").removeClass(function (
         index,
         className
@@ -155,7 +155,7 @@ function getGrowth() {
     let growth = [];
     for (let q = 1; q <= 4; q++) {
         for (let i = 1; i <= 55; i++) {
-            $(`#value-${i}-${q}`).text(adhk_data[`pdrb-${q}`][i - 1]);
+            $(`#value-${i}-${q}`).text(data[`pdrb-${q}`][i - 1]['adhk']);
         }
     }
     getSummarise();
@@ -184,7 +184,7 @@ function getGrowth() {
     });
 }
 
-function getIndex() {
+function getIndex(data) {
     $("tbody td:nth-child(n+2):nth-child(-n+6)").removeClass(function (
         index,
         className
@@ -197,7 +197,7 @@ function getIndex() {
     let idx = [];
     for (let q = 1; q <= 4; q++) {
         for (let i = 1; i <= 55; i++) {
-            $(`#value-${i}-${q}`).text(adhb_data[`pdrb-${q}`][i - 1]);
+            $(`#value-${i}-${q}`).text(data[`pdrb-${q}`][i - 1]['adhb']);
         }
     }
     getSummarise();
@@ -210,7 +210,7 @@ function getIndex() {
     });
     for (let q = 1; q <= 4; q++) {
         for (let i = 1; i <= 55; i++) {
-            $(`#value-${i}-${q}`).text(adhk_data[`pdrb-${q}`][i - 1]);
+            $(`#value-${i}-${q}`).text(data[`pdrb-${q}`][i - 1]['adhk']);
         }
     }
     getSummarise();

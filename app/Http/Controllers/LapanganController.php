@@ -153,43 +153,14 @@ class LapanganController extends Controller
         $period_id = $request->query('period_id');
         $region_id = $request->query('region_id');
         $quarter = $request->query('quarter');
-
         $subsectors = Subsector::where('type', 'Lapangan Usaha')->get();
-        $period = Period::where('id', $period_id)->first();
-        $year_ = $period->year;
-        $quarters = [1, 2, 3, 4];
         $cat = Category::pluck('code')->toArray();
         $catString = implode(", ", $cat);
-        if ($quarter == 'Y') {
-        } elseif (in_array($quarter, $quarters)) {
-            $periods = [];
-            foreach ($quarters as $item) {
-                $per = Period::select('id')->where('quarter', $item)->where('year', $year_)->first();
-                if ($per) {
-                    array_push($periods, $per->id);
-                } else {
-                    array_push($periods, 0);
-                }
-            }
-            foreach ($periods as $key => $item) {
-                $datas['pdrb-' . ($key + 1)] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $item)->where('region_id', $region_id)->orderBy('subsector_id')->get();
-            }
 
-            $adhk = [];
-            $adhb = [];
-            foreach ($datas as $key => $item) {
-                $adhk[$key] = $item->pluck('adhk')->toArray();
-                $adhb[$key] = $item->pluck('adhb')->toArray();
-            }
-            $adhk = json_encode($adhk);
-            $adhb = json_encode($adhb);
-            return view('lapangan.detail-pokok-quarter', [
-                'subsectors' => $subsectors,
-                'cat' => $catString,
-                'adhk' => $adhk,
-                'adhb' => $adhb,
-            ]);
-        }
+        return view('lapangan.detail-pokok-quarter', [
+            'subsectors' => $subsectors,
+            'cat' => $catString,
+        ]);
     }
 
     public function getDetail(Request $request)

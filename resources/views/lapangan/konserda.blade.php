@@ -351,6 +351,7 @@
     <x-slot name="script">
         <!-- Additional JS resources -->
         <script src="{{ url('') }}/plugins/select2/js/select2.full.min.js"></script>
+        <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
         <script src="{{ asset('js/konserda.js') }}"></script>
         <script src="{{ asset('js/konserda-lapangan.js') }}"></script>
         <script src="{{ asset('js/download.js') }}"></script>
