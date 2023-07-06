@@ -64,7 +64,8 @@ Route::get('pengeluaran/fenomena', [PengeluaranController::class, 'fenomena'])->
 // Route::get('pengeluaran/getKonserda/{period_id}', [PengeluaranController::class, 'getKonserda'])->middleware(['auth', 'verified']);
 Route::get('pengeluaran/getKonserda', [PengeluaranController::class, 'getKonserda'])->middleware(['auth', 'verified'])->name('pengeluaran.getKonserda');
 Route::get('pengeluaran/daftarPokok', [PengeluaranController::class, 'daftarPokok'])->middleware(['auth', 'verified']);
-Route::get('pengeluaran/detailPokok', [PengeluaranController::class, 'detailPokok'])->middleware(['auth', 'verified'])->name('pengeluaran.detail');
+Route::get('pengeluaran/detailPokok', [PengeluaranController::class, 'detailPokok'])->middleware(['auth', 'verified'])->name('pengeluaran.detail');;
+Route::get('pengeluaran/getDetail', [PengeluaranController::class, 'getDetail'])->middleware(['auth', 'verified'])->name('pengeluaran.getDetail');
 
 
 Route::post('konserda/year', [PeriodController::class, 'konserdaYear'])->name('konserdaYear');

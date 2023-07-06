@@ -173,7 +173,7 @@ class LapanganController extends Controller
         $quarters = [1, 2, 3, 4];
         $periods = [];
         foreach ($quarters as $item) {
-            $per = Period::select('id')->where('quarter', $item)->where('year', $year_)->first();
+            $per = Period::select('id')->where('quarter', $item)->where('type', 'Lapangan Usaha')->where('year', $year_)->first();
             if ($per) {
                 array_push($periods, $per->id);
             } else {

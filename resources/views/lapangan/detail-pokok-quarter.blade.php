@@ -49,7 +49,13 @@
         <div id="my-cat" data-cat="{{ json_encode($cat) }}"></div>
     </x-slot>
     <div class="card mb-3" id="view-body">
-        <div class="card-body">
+        <div class="card-body pt-2">
+            <nav class="navbar p-0">
+                <ul class="nav-item ml-auto">
+                    <button class="btn btn-success" id="download-all" data-toogle="tooltip" data-placement="bottom"
+                        title="Download All"><i class="bi bi-file-earmark-arrow-down-fill"></i></button>
+                </ul>
+            </nav>
             <nav class="navbar d-flex justify-content-center">
                 <ul class="nav nav-tabs d-flex">
                     <a class="nav-item nav-link" id="nav-adhb" href="">ADHB</a>
@@ -87,10 +93,10 @@
                                     </td>
                                     <td id="categories-{{ $item->sector->category->code }}-2" class="categories values">
                                     </td>
-                                    <td id="categories-{{ $item->sector->category->code }}-3"
-                                        class="categories values"></td>
-                                    <td id="categories-{{ $item->sector->category->code }}-4"
-                                        class="categories values"></td>
+                                    <td id="categories-{{ $item->sector->category->code }}-3" class="categories values">
+                                    </td>
+                                    <td id="categories-{{ $item->sector->category->code }}-4" class="categories values">
+                                    </td>
                                     <td class="total-column text-bold"></td>
                                 </tr>
                             @endif
@@ -206,7 +212,9 @@
     <x-slot name="script">
         <!-- Additional JS resources -->
         <script src="{{ url('') }}/plugins/select2/js/select2.full.min.js"></script>
+        <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
         <script src="{{ asset('js/detail-pokok-quarter.js') }}"></script>
+        <script src="{{ asset('js/download.js') }}"></script>
         <script>
             $(document).on('focus', '.select2-selection', function(e) {
                 $(this).closest(".select2-container").siblings('select:enabled').select2('open');
@@ -221,134 +229,7 @@
             getUrl.searchParams.set('region_id', urlParams.get('region_id'))
             getUrl.searchParams.set('quarter', urlParams.get('quarter'))
 
-
-            //sum of each value in sector and category
-            function calculateSector(sector) {
-                let sum = 0;
-                // let sector = sector.replaceAll(",","");
-                $(`.${sector}`).each(function(index) {
-                    let X = $(this).text().replaceAll(/[A-Za-z.]/g, '');
-                    let Y = X.replaceAll(/[,]/g, '.')
-                    sum += Y > 0 ? Number(Y) : 0;
-                });
-                return sum;
-            }
-
-            //change the value of inputed number to Rupiah 
-            function formatRupiah(angka, prefix) {
-                var number_string = String(angka).replace(/[^,\d]/g, '').toString(),
-                    split = number_string.split(','),
-                    sisa = split[0].length % 3,
-                    rupiah = split[0].substr(0, sisa),
-                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
-                if (ribuan) {
-                    separator = sisa ? '.' : '';
-                    rupiah += separator + ribuan.join('.');
-                }
-
-                rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-                return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
-            }
-            //
-            $(document).ready(function() {
-                $.ajax({
-                    type: 'GET',
-                    url: getUrl.href,
-                    dataType: 'json',
-                    success: function (data) {
-                        setTimeout(function () {
-                            // console.log(data.data)
-                            localStorage.setItem("data", JSON.stringify(data.data))
-                            getAdhb(data.data)
-                        })
-                    }
-                })
-                // getAdhb()
-            })
-
-            //change
-            $(document).ready(function() {
-                let tbody = $('#rekon-view').find('tbody')
-                var datas = JSON.parse(localStorage.getItem('data'))
-                $('#nav-distribusi').on('click', function(e) {
-                    e.preventDefault()
-                    $('.loader').removeClass('d-none')
-                    setTimeout(function() {
-                        getAdhb(datas)
-                        $('tbody td:nth-child(n+2):nth-child(-n+6)').removeClass(function(index,
-                            className) {
-                            return (className.match(/(^|\s)view-\S+/g) || []).join(' ')
-                        })
-                        for (let q = 1; q <= 5; q++) {
-                            for (let i = 0; i <= 55; i++) {
-                                $(`#value-${i}-${q}`).addClass(`view-distribusi-${q}`)
-                                $(`#sector-${i}-${q}`).addClass(`view-distribusi-${q}`)
-                            }
-                            for (let index of catArray) {
-                                $(`#categories-${index}-${q}`).addClass(`view-distribusi-${q}`)
-                            }
-                        }
-                        tbody.find('.total-column').each(function() {
-                            $(this).addClass('view-distribusi-total')
-                        })
-                        getDist()
-                        $('.loader').addClass('d-none')
-                    }, 500)
-                })
-
-                $('#nav-adhb').on('click', function(e) {
-                    e.preventDefault()
-                    $('.loader').removeClass('d-none')
-                    setTimeout(function() {
-                        getAdhb(datas)
-                        $('.loader').addClass('d-none')
-                    }, 500)
-                })
-
-                $('#nav-adhk').on('click', function(e) {
-                    e.preventDefault()
-                    $('.loader').removeClass('d-none')
-                    setTimeout(function() {
-                        getAdhk(datas)
-                        $('.loader').addClass('d-none')
-                    }, 500)
-                })
-
-                //belum tau gimana
-                $('#nav-pertumbuhan').on('click', function(e) {
-                    e.preventDefault()
-                    $('.loader').removeClass('d-none')
-                    setTimeout(function() {
-                        getGrowth(datas)
-                        $('.loader').addClass('d-none')
-                    }, 500)
-                })
-
-                //indeks implisit adhb/adhk
-                $('#nav-indeks').on('click', function(e) {
-                    e.preventDefault()
-                    $('.loader').removeClass('d-none')
-                    setTimeout(function() {
-                        getIndex(datas)
-                        $('.loader').addClass('d-none')
-                    }, 500)
-                })
-
-                //laju index
-                $('#nav-laju').on('click', function(e) {
-                    e.preventDefault()
-                    $('.loader').removeClass('d-none')
-                    setTimeout(function() {
-                        let laju = getIndex(datas)
-                        getLaju(laju)
-                        $('.loader').addClass('d-none')
-                    }, 500)
-                })
-            })
-
-            //summarise
-
+            
             $(document).on('select2:open', () => {
                 document.querySelector('.select2-search__field').focus();
             });

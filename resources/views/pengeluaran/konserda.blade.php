@@ -164,19 +164,29 @@
     <div class="card mb-3 d-none" id="view-body">
         <div class="card-body">
             <nav class="navbar">
+                <ul class="nav-item ml-auto">
+                    <button class="btn btn-warning" id="download-csv" data-toogle="tooltip" data-placement="bottom"
+                        title="Download"><i class="bi bi-file-earmark-arrow-down"></i></button>
+                    <button class="btn btn-success" id="download-all" data-toogle="tooltip" data-placement="bottom"
+                        title="Download All"><i class="bi bi-file-earmark-arrow-down-fill"></i></button>
+                    <button class="btn btn-primary" id="change-query" onclick="switchPlay('1')" data-toogle="tooltip"
+                        data-placement="bottom" title="Tukar Posisi Kolom"><i class="bi bi-toggles"></i></button>
+                </ul>
+            </nav>
+            <nav class="navbar justify-content-center">
                 <ul class="nav nav-tabs d-flex">
                     <a class="nav-item nav-link" id="nav-adhb" href="">ADHB</a>
                     <a class="nav-item nav-link" id="nav-adhk" href="">ADHK</a>
-                    <a class="nav-item nav-link" id="nav-distribusi" href="">Struktur Dalam</a>
-                    <a class="nav-item nav-link" id="nav-struktur-antar" href="">Struktur Antar</a>
-                    <a class="nav-item nav-link" id="nav-pertumbuhan" href="">Pertumbuhan</a>
+                    <a class="nav-item nav-link" id="nav-distribusi" href="">S.Dalam</a>
+                    <a class="nav-item nav-link" id="nav-struktur-antar" href="">S.Antar</a>
+                    <a class="nav-item nav-link" id="nav-pertumbuhan-year" href="">Growth (Y to Y)</a>
+                    <a class="nav-item nav-link" id="nav-pertumbuhan-quarter" href="">Growth (Q to Q)</a>
+                    <a class="nav-item nav-link" id="nav-pertumbuhan-cumulative" href="">Growth (C to
+                        C)</a>
                     <a class="nav-item nav-link" id="nav-indeks" href="">Indeks Implisit</a>
-                    <a class="nav-item nav-link" id="nav-laju" href="">Laju Implisit</a>
-                </ul>
-                <ul class="nav-item ml-auto">
-                    <button class="btn btn-success" id="download-csv">Download</button>
-                    <button class="btn btn-primary" id="change-query" onclick="switchPlay('1')">Tukar Posisi
-                        Kolom</button>
+                    <a class="nav-item nav-link" id="nav-laju-year" href="">Laju Implisit (Y to Y)</a>
+                    <a class="nav-item nav-link" id="nav-laju-quarter" href="">Laju Implisit (Q to Q)</a>
+                    <a class="nav-item nav-link" id="nav-laju-cumulative" href="">Laju Implisit (C to C)</a>
                 </ul>
             </nav>
             <div class="table-container">

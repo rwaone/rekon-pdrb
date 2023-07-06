@@ -166,9 +166,12 @@
         <div class="card-body">
             <nav class="navbar">
                 <ul class="nav-item ml-auto">
-                    <button class="btn btn-success" id="download-csv">Download</button>
-                    <button class="btn btn-primary" id="change-query" onclick="switchPlay('1')">Tukar Posisi
-                        Kolom</button>
+                    <button class="btn btn-warning" id="download-csv" data-toogle="tooltip" data-placement="bottom"
+                        title="Download"><i class="bi bi-file-earmark-arrow-down"></i></button>
+                    <button class="btn btn-success" id="download-all" data-toogle="tooltip" data-placement="bottom"
+                        title="Download All"><i class="bi bi-file-earmark-arrow-down-fill"></i></button>
+                    <button class="btn btn-primary" id="change-query" onclick="switchPlay('1')" data-toogle="tooltip"
+                        data-placement="bottom" title="Tukar Posisi Kolom"><i class="bi bi-toggles"></i></button>
                 </ul>
             </nav>
             <nav class="navbar justify-content-center">
@@ -363,7 +366,11 @@
             let catArray = cat.split(", ")
             let rowComponent = 55
             const url_key = new URL('{{ route('lapangan-usaha.getKonserda') }}')
+            $(function() {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
 
+            
             // const csvData = convertToCSV()
             $(document).ready(function() {
                 $('#type').on('change', function() {

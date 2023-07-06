@@ -229,7 +229,7 @@ $(document).ready(function () {
                     $(".loader").addClass("d-none");
                     showOff();
                     if (data.before === null || data.before.length === 0) {
-                        alert("Data tahun lalu tidak ada");
+                        alert("Data kuarter sebelumnya tidak ada");
                     } else {
                         let first = getIndex(data.data, "lapangan");
                         let before = getIndex(data.before, "lapangan");
@@ -344,7 +344,7 @@ $(document).ready(function () {
                     $(".loader").addClass("d-none");
                     showOff();
                     if (data.before === null || data.before.length === 0) {
-                        alert("Data tahun lalu tidak ada");
+                        alert("Data kuarter sebelumnya tidak ada");
                     } else {
                         getGrowth(data.data, data.before, "lapangan");
                         switchPlay("2");

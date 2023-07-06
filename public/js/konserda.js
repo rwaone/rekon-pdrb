@@ -563,6 +563,13 @@ $("#download-csv").on("click", function (e) {
     }, 200);
 });
 
+$("#download-all").on("click", async function (e) {
+    e.preventDefault();
+    $(".loader").removeClass("d-none");
+    await downloadExcel();
+    $(".loader").addClass("d-none");
+});
+
 //sum of each value in sector and category
 function calculateSector(sector) {
     let sum = 0;
@@ -596,7 +603,5 @@ function formatRupiah(angka, prefix) {
     return prefix == undefined ? rupiah : rupiah ? "Rp. " + rupiah : "";
 }
 //
-
-
 
 //filter
