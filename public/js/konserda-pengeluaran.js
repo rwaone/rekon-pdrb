@@ -1,46 +1,57 @@
 function getStored(type) {
-    const dataStored = localStorage.getItem('dataPengeluaran')
+    const dataStored = localStorage.getItem("dataPengeluaran");
     if (dataStored) {
-        let data = JSON.parse(dataStored)
-        getAdhb(data, type)
-        $('#view-body').removeClass('d-none')
+        let data = JSON.parse(dataStored);
+        getAdhb(data, type);
+        $("#view-body").removeClass("d-none");
     }
+}
+
+function fetchData(type) {
+    let period_id;
+    if ($("#period").val() !== "") {
+        period_id = $("#period").val();
+        sessionStorage.setItem("filters", period_id);
+    } else {
+        period_id = sessionStorage.getItem("filters");
+    }
+    url_key.searchParams.set("period_id", encodeURIComponent(period_id));
+    url_key.searchParams.set("type", encodeURIComponent(type));
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            type: "GET",
+            url: url_key.href,
+            dataType: "json",
+            success: function (data) {
+                resolve(data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                reject(errorThrown);
+            },
+        });
+    });
 }
 
 //get the data
 $(document).ready(function () {
-    $("#showData").click(function (e) {
+    $("#showData").click(async function (e) {
         e.preventDefault();
+        $(".loader").removeClass("d-none");
+        $("#nav-adhb").addClass("active");
+        $(".loader").removeClass("d-none");
 
-        const period_id = $("#period").val();
-        // const url_key = new URL('{{ route("pengeluaran-usaha.getKonserda") }}')
-        url_key.searchParams.set("period_id", encodeURIComponent(period_id));
-        url_key.searchParams.set("type", encodeURIComponent("show"));
-
-        $.ajax({
-            beforeSend: function () {
-                $(".loader").removeClass("d-none");
-            },
-            type: "GET",
-            // url: 'getKonserda/' + period_id,
-            url: url_key.href,
-            dataType: "json",
-            success: function (data) {
-                setTimeout(function () {
-                    console.log(data);
-                    getAdhb(data.data, "pengeluaran");
-                    $(".loader").addClass("d-none");
-                    $("#view-body").removeClass("d-none");
-                }, 200);
-                localStorage.setItem("dataLU", JSON.stringify(data.data));
-                localStorage.setItem("filters", period_id);
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                $(".loader").addClass("d-none");
-                localStorage.clear();
-                alert("Error : Pilihan Error");
-            },
-        });
+        try {
+            const data = await fetchData("show");
+            console.log(data);
+            getAdhb(data.data, "pengeluaran");
+            $(".loader").addClass("d-none");
+            $("#view-body").removeClass("d-none");
+            sessionStorage.setItem("dataLU", JSON.stringify(data.data));
+        } catch (e) {
+            $(".loader").addClass("d-none");
+            sessionStorage.clear();
+            alert("Error : " + e.message);
+        }
     });
 
     $("#refresh").click(function () {

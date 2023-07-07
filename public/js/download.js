@@ -74,48 +74,10 @@ function downloadCSV(csvData, filename) {
     downloadLink.click();
 }
 
-function fetchDownload() {
+function fetchDownload(type) {
     const period_id = $("#period").val();
     url_key.searchParams.set("period_id", encodeURIComponent(period_id));
-    url_key.searchParams.set("type", encodeURIComponent("show"));
-    return new Promise(function (resolve, reject) {
-        $.ajax({
-            type: "GET",
-            url: url_key.href,
-            dataType: "json",
-            success: function (data) {
-                resolve(data);
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                reject(errorThrown);
-            },
-        });
-    });
-}
-
-function fetchDownloadYear() {
-    const period_id = $("#period").val();
-    url_key.searchParams.set("period_id", encodeURIComponent(period_id));
-    url_key.searchParams.set("type", encodeURIComponent("year"));
-    return new Promise(function (resolve, reject) {
-        $.ajax({
-            type: "GET",
-            url: url_key.href,
-            dataType: "json",
-            success: function (data) {
-                resolve(data);
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                reject(errorThrown);
-            },
-        });
-    });
-}
-
-function fetchDownloadCumulative() {
-    const period_id = $("#period").val();
-    url_key.searchParams.set("period_id", encodeURIComponent(period_id));
-    url_key.searchParams.set("type", encodeURIComponent("cumulative"));
+    url_key.searchParams.set("type", encodeURIComponent(type));
     return new Promise(function (resolve, reject) {
         $.ajax({
             type: "GET",
@@ -135,15 +97,15 @@ async function downloadExcel() {
     // Your JSON data
     let list = [];
     try {
-        const data = await fetchDownload();
+        const data = await fetchDownload("show");
         //adhb
-        getAdhb(data.data, "lapangan");
+        getAdhb(data.data, types);
         list["adhb_json"] = getReady();
         //adhk
-        getAdhk(data.data, "lapangan");
+        getAdhk(data.data, types);
         list["adhk_json"] = getReady();
         //struktur-dalam
-        getAdhb(data.data, "lapangan");
+        getAdhb(data.data, types);
         $("#rekon-view tbody td").removeClass(function (index, className) {
             return (className.match(/(^|\s)view-\S+/g) || []).join(" ");
         });
@@ -162,41 +124,41 @@ async function downloadExcel() {
         getDist();
         list["sdalam_json"] = getReady();
         //struktur-antar
-        getAntar(data.data, "lapangan");
+        getAntar(data.data, types);
         list["santar_json"] = getReady();
         //indeks-implisit
-        getIndex(data.data, "lapangan");
+        getIndex(data.data, types);
         list["index_json"] = getReady();
 
         //growth-qtoq
         if (data.before === null || data.before.length === 0) {
             alert("Data kuarter sebelumnya tidak ada");
         } else {
-            getGrowth(data.data, data.before, "lapangan");
+            getGrowth(data.data, data.before, types);
             list["growthQ_json"] = getReady();
             //laju-qtoq
-            let firstQ = getIndex(data.data, "lapangan");
-            let beforeQ = getIndex(data.before, "lapangan");
+            let firstQ = getIndex(data.data, types);
+            let beforeQ = getIndex(data.before, types);
             getLaju(firstQ, beforeQ);
             list["lajuQ_json"] = getReady();
         }
 
-        const dataYear = await fetchDownloadYear();
+        const dataYear = await fetchDownload("year");
 
         //growth-ytoy
         if (dataYear.before === null || dataYear.before.length === 0) {
             alert("Data tahun lalu tidak ada");
         } else {
-            getGrowth(dataYear.data, dataYear.before, "lapangan");
+            getGrowth(dataYear.data, dataYear.before, types);
             list["growthY_json"] = getReady();
             //laju-ytoy
-            let firstY = getIndex(dataYear.data, "lapangan");
-            let beforeY = getIndex(dataYear.before, "lapangan");
+            let firstY = getIndex(dataYear.data, types);
+            let beforeY = getIndex(dataYear.before, types);
             getLaju(firstY, beforeY);
             list["lajuY_json"] = getReady();
         }
 
-        const dataCumulative = await fetchDownloadCumulative();
+        const dataCumulative = await fetchDownload("cumulative");
 
         //growth-CtoC
         if (
@@ -205,16 +167,16 @@ async function downloadExcel() {
         ) {
             alert("Data tahun lalu tidak ada");
         } else {
-            getGrowth(dataCumulative.data, dataCumulative.before, "lapangan");
+            getGrowth(dataCumulative.data, dataCumulative.before, types);
             list["growthC_json"] = getReady();
             //laju-ytoy
-            let firstC = getIndex(dataCumulative.data, "lapangan");
-            let beforeC = getIndex(dataCumulative.before, "lapangan");
+            let firstC = getIndex(dataCumulative.data, types);
+            let beforeC = getIndex(dataCumulative.before, types);
             getLaju(firstC, beforeC);
             list["lajuC_json"] = getReady();
         }
         showOff();
-        getStored("lapangan");
+        getStored(types);
         $(".nav-item").removeClass("active");
         $("#nav-adhb").addClass("active");
 
@@ -266,7 +228,7 @@ function downloadKonserda() {
         list["ADHB"] = getReady();
         getAdhk(datas);
         list["ADHK"] = getReady();
-        let tbody = $('#rekon-view').find('tbody')
+        let tbody = $("#rekon-view").find("tbody");
         $("tbody td:nth-child(n+2):nth-child(-n+6)").removeClass(function (
             index,
             className
@@ -315,7 +277,7 @@ function downloadKonserda() {
         var a = document.createElement("a");
         var url = URL.createObjectURL(blob);
         a.href = url;
-        a.download ="downloaded-data.xlsx";
+        a.download = "downloaded-data.xlsx";
 
         // Append the link to the document and trigger the download
         document.body.appendChild(a);

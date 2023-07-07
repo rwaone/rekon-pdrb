@@ -325,20 +325,27 @@ function formatRupiah(angka, prefix) {
     rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
     return prefix == undefined ? rupiah : rupiah ? "Rp. " + rupiah : "";
 }
-//
-$(document).ready(function () {
-    $.ajax({
-        type: "GET",
-        url: getUrl.href,
-        dataType: "json",
-        success: function (data) {
-            setTimeout(function () {
+
+function fetchData() {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            type: "GET",
+            url: getUrl.href,
+            dataType: "json",
+            success: function (data) {
+                resolve(data);
                 // console.log(data.data)
                 localStorage.setItem("data", JSON.stringify(data.data));
-                getAdhb(data.data);
-            });
-        },
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                reject(errorThrown);
+            },
+        });
     });
+}
+$(document).ready(async function () {
+    const data = await fetchData();
+    getAdhb(data.data);
 });
 
 //change

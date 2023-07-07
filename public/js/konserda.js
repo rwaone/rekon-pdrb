@@ -1,3 +1,515 @@
+//dropDown
+$(document).ready(function () {
+    $("#type").on("change", function () {
+        let pdrb_type = $(this).val();
+        if (pdrb_type) {
+            $.ajax({
+                type: "POST",
+                // url: "{{ route('konserdaYear') }}",
+                url: url_konserda_year.href,
+                data: {
+                    type: pdrb_type,
+                    // _token: '{{ csrf_token() }}',
+                    _token: tokens,
+                },
+                dataType: "json",
+
+                success: function (result) {
+                    $("#year").empty();
+                    $("#year").append(
+                        '<option value="">-- Pilih Tahun --</option>'
+                    );
+                    $.each(result.years, function (key, value) {
+                        $("#year").append(
+                            '<option value="' +
+                                value.year +
+                                '">' +
+                                value.year +
+                                "</option>"
+                        );
+                    });
+                },
+            });
+        } else {
+            $("#year").empty();
+            $("#year").append('<option value="">-- Pilih Tahun --</option>');
+            $("#quarter").empty();
+            $("#quarter").append(
+                '<option value="" selected>-- Pilih Triwulan --</option>'
+            );
+            $("#period").empty();
+            $("#period").append(
+                '<option value="" selected>-- Pilih Putaran --</option>'
+            );
+        }
+    });
+
+    $("#year").on("change", function () {
+        var pdrb_type = $("#type").val();
+        var pdrb_year = this.value;
+        if (pdrb_year) {
+            $.ajax({
+                type: "POST",
+                // url: "{{ route('konserdaQuarter') }}",
+                url: url_konserda_quarter.href,
+                data: {
+                    type: pdrb_type,
+                    year: pdrb_year,
+                    // _token: '{{ csrf_token() }}',
+                    _token: tokens,
+                },
+                dataType: "json",
+
+                success: function (result) {
+                    $("#quarter").empty();
+                    $("#quarter").append(
+                        '<option value="" selected>-- Pilih Triwulan --</option>'
+                    );
+                    $.each(result.quarters, function (key, value) {
+                        var description =
+                            value.quarter == "F"
+                                ? "Lengkap"
+                                : value.quarter == "T"
+                                ? "Tahunan"
+                                : "Triwulan " + value.quarter;
+                        $("#quarter").append(
+                            '<option value="' +
+                                value.quarter +
+                                '">' +
+                                description +
+                                "</option>"
+                        );
+                    });
+                },
+            });
+        } else {
+            $("#quarter").empty();
+            $("#quarter").append(
+                '<option value="" selected>-- Pilih Triwulan --</option>'
+            );
+            $("#period").empty();
+            $("#period").append(
+                '<option value="" selected>-- Pilih Putaran --</option>'
+            );
+        }
+    });
+
+    $("#quarter").on("change", function () {
+        var pdrb_type = $("#type").val();
+        var pdrb_year = $("#year").val();
+        var pdrb_quarter = this.value;
+        if (pdrb_quarter) {
+            $.ajax({
+                type: "POST",
+                // url: "{{ route('konserdaPeriod') }}",
+                url: url_konserda_periode.href,
+                data: {
+                    type: pdrb_type,
+                    year: pdrb_year,
+                    quarter: pdrb_quarter,
+                    // _token: '{{ csrf_token() }}',
+                    _token: tokens,
+                },
+                dataType: "json",
+
+                success: function (result) {
+                    $("#period").empty();
+                    $("#period").append(
+                        '<option value="" selected>-- Pilih Putaran --</option>'
+                    );
+                    $.each(result.periods, function (key, value) {
+                        $("#period").append(
+                            '<option value="' +
+                                value.id +
+                                '">' +
+                                value.description +
+                                "</option>"
+                        );
+                    });
+                },
+            });
+        } else {
+            $("#period").empty();
+            $("#period").append(
+                '<option value="" selected>-- Pilih Putaran --</option>'
+            );
+        }
+    });
+});
+
+function getStored(type) {
+    const dataStored = sessionStorage.getItem("dataLU");
+    if (dataStored) {
+        let data = JSON.parse(dataStored);
+        getAdhb(data, type);
+        $("#view-body").removeClass("d-none");
+    }
+}
+
+function fetchData(type) {
+    let period_id;
+    if ($("#period").val() !== "") {
+        period_id = $("#period").val();
+        sessionStorage.setItem("filters", period_id);
+    } else {
+        period_id = sessionStorage.getItem("filters");
+    }
+    url_key.searchParams.set("period_id", encodeURIComponent(period_id));
+    url_key.searchParams.set("type", encodeURIComponent(type));
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            type: "GET",
+            url: url_key.href,
+            dataType: "json",
+            success: function (data) {
+                resolve(data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                reject(errorThrown);
+            },
+        });
+    });
+}
+
+//get the data
+$(document).ready(function () {
+    $("#showData").click(async function (e) {
+        e.preventDefault();
+        $(".loader").removeClass("d-none");
+        $("#nav-adhb").addClass("active");
+        $(".loader").removeClass("d-none");
+
+        try {
+            const data = await fetchData("show");
+            console.log(data);
+            getAdhb(data.data, types);
+            $(".loader").addClass("d-none");
+            $("#view-body").removeClass("d-none");
+            sessionStorage.setItem("dataLU", JSON.stringify(data.data));
+        } catch (e) {
+            $(".loader").addClass("d-none");
+            sessionStorage.clear();
+            alert("Error : " + e.message);
+        }
+    });
+
+    $("#refresh").click(function () {
+        sessionStorage.clear();
+        $("#view-body").addClass("d-none");
+    });
+});
+
+//change
+$(document).ready(function () {
+    $("#nav-distribusi").on("click", function (e) {
+        e.preventDefault();
+        $(".nav-item").removeClass("active");
+        $(this).addClass("active");
+        $(".loader").removeClass("d-none");
+        setTimeout(function () {
+            getStored(types);
+            $("#rekon-view tbody td").removeClass(function (index, className) {
+                return (className.match(/(^|\s)view-\S+/g) || []).join(" ");
+            });
+            for (let q = 1; q <= 16; q++) {
+                for (let i = 0; i <= rowComponent; i++) {
+                    $(`#value-${i}-${q}`).addClass(`view-distribusi-${q}`);
+                    $(`#sector-${i}-${q}`).addClass(`view-distribusi-${q}`);
+                }
+                for (let index of catArray) {
+                    $(`#categories-${index}-${q}`).addClass(
+                        `view-distribusi-${q}`
+                    );
+                }
+            }
+            $("#rekon-view tbody td:nth-child(2)").each(function () {
+                $(this).addClass(`view-distribusi-totalKabkot`);
+            });
+            $(".loader").addClass("d-none");
+            showOff();
+            getDist();
+            switchPlay("2");
+        }, 500);
+    });
+
+    $("#nav-adhb").on("click", function (e) {
+        e.preventDefault();
+        $(".nav-item").removeClass("active");
+        $(this).addClass("active");
+        $(".loader").removeClass("d-none");
+        setTimeout(function () {
+            $(".loader").addClass("d-none");
+            showOff();
+            getStored(types);
+            switchPlay("2");
+        }, 200);
+    });
+
+    $("#nav-adhk").on("click", async function (e) {
+        e.preventDefault();
+        $(".nav-item").removeClass("active");
+        $(this).addClass("active");
+        $(".loader").removeClass("d-none");
+        try {
+            let data = JSON.parse(sessionStorage.getItem("AdhkStored"));
+            if (!data) {
+                data = await fetchData("show");
+                sessionStorage.setItem("AdhkStored", JSON.stringify(data));
+            }
+            showOff();
+            getAdhk(data.data, types);
+            switchPlay("2");
+            $(".loader").addClass("d-none");
+        } catch (e) {
+            $(".loader").addClass("d-none");
+            alert("Error : " + e.message);
+        }
+    });
+
+    //indeks implisit adhb/adhk
+    $("#nav-indeks").on("click", async function (e) {
+        e.preventDefault();
+        $(".nav-item").removeClass("active");
+        $(this).addClass("active");
+        $(".loader").removeClass("d-none");
+        try {
+            let data = JSON.parse(sessionStorage.getItem("IndeksStored"));
+            if (!data) {
+                data = await fetchData("show");
+                sessionStorage.setItem("IndeksStored", JSON.stringify(data));
+            }
+            showOff();
+            getIndex(data.data, types);
+            switchPlay("2");
+            $(".loader").addClass("d-none");
+        } catch (e) {
+            $(".loader").addClass("d-none");
+            alert("Error : " + e.message);
+        }
+    });
+
+    $("#nav-laju-year").on("click", async function (e) {
+        e.preventDefault();
+        $(".nav-item").removeClass("active");
+        $(this).addClass("active");
+        $(".loader").removeClass("d-none");
+        try {
+            let data = JSON.parse(sessionStorage.getItem("laju-year-stored"));
+            if (!data) {
+                data = await fetchData("year");
+                sessionStorage.setItem(
+                    "laju-year-stored",
+                    JSON.stringify(data)
+                );
+            }
+            showOff();
+            if (data.before === null || data.before.length === 0) {
+                alert("Data tahun lalu tidak ada");
+            } else {
+                let first = getIndex(data.data, types);
+                let before = getIndex(data.before, types);
+                getLaju(first, before);
+                switchPlay("2");
+            }
+            $(".loader").addClass("d-none");
+        } catch (e) {
+            $(".loader").addClass("d-none");
+            alert("Error : " + e.message);
+        }
+    });
+
+    $("#nav-laju-quarter").on("click", async function (e) {
+        e.preventDefault();
+        $(".nav-item").removeClass("active");
+        $(this).addClass("active");
+        $(".loader").removeClass("d-none");
+        try {
+            let data = JSON.parse(
+                sessionStorage.getItem("laju-quarter-stored")
+            );
+            if (!data) {
+                data = await fetchData("quarter");
+                sessionStorage.setItem(
+                    "laju-quarter-stored",
+                    JSON.stringify(data)
+                );
+            }
+            showOff();
+            if (data.before === null || data.before.length === 0) {
+                alert("Data kuarter sebelumnya tidak ada");
+            } else {
+                let first = getIndex(data.data, types);
+                let before = getIndex(data.before, types);
+                getLaju(first, before);
+                switchPlay("2");
+            }
+            $(".loader").addClass("d-none");
+        } catch (e) {
+            $(".loader").addClass("d-none");
+            alert("Error : " + e.message);
+        }
+    });
+
+    $("#nav-laju-cumulative").on("click", async function (e) {
+        e.preventDefault();
+        $(".nav-item").removeClass("active");
+        $(this).addClass("active");
+        $(".loader").removeClass("d-none");
+        try {
+            let data = JSON.parse(
+                sessionStorage.getItem("laju-cumulative-stored")
+            );
+            if (!data) {
+                data = await fetchData("cumulative");
+                sessionStorage.setItem(
+                    "laju-cumulative-stored",
+                    JSON.stringify(data)
+                );
+            }
+            showOff();
+            if (data.before === null || data.before.length === 0) {
+                alert("Data tahun lalu tidak ada");
+            } else {
+                let first = getIndex(data.data, types);
+                let before = getIndex(data.before, types);
+                getLaju(first, before);
+                switchPlay("2");
+            }
+            $(".loader").addClass("d-none");
+        } catch (e) {
+            $(".loader").addClass("d-none");
+            alert("Error : " + e.message);
+        }
+    });
+
+    //growth
+    $("#nav-pertumbuhan-year").on("click", async function (e) {
+        e.preventDefault();
+        $(".nav-item").removeClass("active");
+        $(this).addClass("active");
+        $(".loader").removeClass("d-none");
+        try {
+            let data = JSON.parse(sessionStorage.getItem("growth-year-stored"));
+            if (!data) {
+                data = await fetchData("year");
+                sessionStorage.setItem(
+                    "growth-year-stored",
+                    JSON.stringify(data)
+                );
+            }
+            showOff();
+            if (data.before === null || data.before.length === 0) {
+                alert("Data tahun lalu tidak ada");
+            } else {
+                getGrowth(data.data, data.before, types);
+                switchPlay("2");
+            }
+            $(".loader").addClass("d-none");
+        } catch (e) {
+            $(".loader").addClass("d-none");
+            alert("Error : " + e.message);
+        }
+    });
+
+    $("#nav-pertumbuhan-quarter").on("click", async function (e) {
+        e.preventDefault();
+        $(".nav-item").removeClass("active");
+        $(this).addClass("active");
+        $(".loader").removeClass("d-none");
+        try {
+            let data = JSON.parse(
+                sessionStorage.getItem("growth-quarter-stored")
+            );
+            if (!data) {
+                data = await fetchData("quarter");
+                sessionStorage.setItem(
+                    "growth-quarter-stored",
+                    JSON.stringify(data)
+                );
+            }
+            showOff();
+            if (data.before === null || data.before.length === 0) {
+                alert("Data kuarter sebelumnya tidak ada");
+            } else {
+                getGrowth(data.data, data.before, types);
+                switchPlay("2");
+            }
+            $(".loader").addClass("d-none");
+        } catch (e) {
+            $(".loader").addClass("d-none");
+            alert("Error : " + e.message);
+        }
+    });
+
+    $("#nav-pertumbuhan-cumulative").on("click", async function (e) {
+        e.preventDefault();
+        $(".nav-item").removeClass("active");
+        $(this).addClass("active");
+        $(".loader").removeClass("d-none");
+        try {
+            let data = JSON.parse(
+                sessionStorage.getItem("growth-cumulative-stored")
+            );
+            if (!data) {
+                data = await fetchData("cumulative");
+                sessionStorage.setItem(
+                    "growth-cumulative-stored",
+                    JSON.stringify(data)
+                );
+            }
+            showOff();
+            if (data.before === null || data.before.length === 0) {
+                alert("Data tahun lalu tidak ada");
+            } else {
+                getGrowth(data.data, data.before, types);
+                switchPlay("2");
+            }
+            $(".loader").addClass("d-none");
+        } catch (e) {
+            $(".loader").addClass("d-none");
+            alert("Error : " + e.message);
+        }
+    });
+    //struktur antar
+    $("#nav-struktur-antar").on("click", async function (e) {
+        e.preventDefault();
+        $(".nav-item").removeClass("active");
+        $(this).addClass("active");
+        $(".loader").removeClass("d-none");
+        try {
+            let data = JSON.parse(sessionStorage.getItem("santar-stored"));
+            if (!data) {
+                data = await fetchData("show");
+                sessionStorage.setItem("santar-stored", JSON.stringify(data));
+            }
+            showOff();
+            getAntar(data.data, types);
+            switchPlay("2");
+            $("#change-query").prop("disabled", true);
+            $(".loader").addClass("d-none");
+        } catch (e) {
+            $(".loader").addClass("d-none");
+            alert("Error : " + e.message);
+        }
+    });
+});
+
+window.addEventListener("beforeunload", function () {
+    sessionStorage.clear();
+});
+
+setTimeout(function () {
+    sessionStorage.clear();
+}, 5 * 60 * 1000);
+
+$(document).ready(function () {
+    // getStored('lapangan')
+    getTotalKabkot();
+    $("#change-query").click(function () {
+        $(this).prop("disabled", true);
+    });
+});
+
 function switchPlay(type) {
     if (type === "1") {
         let tr = $("#rekon-view tbody tr");
@@ -38,7 +550,7 @@ function getSummarise(type) {
     $(".values").each(function () {
         $(this).text(formatRupiah($(this).text(), "Rp "));
     });
-    if (type === "lapangan") {
+    if (type === "lapangan-usaha") {
         rowComponent = 55;
         let sum = 0;
         for (let q = 1; q <= 16; q++) {
@@ -296,7 +808,7 @@ function selisih(type) {
 }
 
 function getAdhb(data, type) {
-    if (type === "lapangan") {
+    if (type === "lapangan-usaha") {
         rowComponent = 55;
     } else if (type === "pengeluaran") {
         rowComponent = 14;
@@ -321,7 +833,7 @@ function getAdhb(data, type) {
 }
 
 function getAdhk(data, type) {
-    if (type === "lapangan") {
+    if (type === "lapangan-usaha") {
         rowComponent = 55;
     } else if (type === "pengeluaran") {
         rowComponent = 14;
@@ -346,7 +858,7 @@ function getAdhk(data, type) {
 }
 
 function getGrowth(data, before, type) {
-    if (type === "lapangan") {
+    if (type === "lapangan-usaha") {
         rowComponent = 55;
     } else if (type === "pengeluaran") {
         rowComponent = 14;
@@ -408,7 +920,7 @@ function getGrowth(data, before, type) {
 }
 
 function getIndex(data, type) {
-    if (type === "lapangan") {
+    if (type === "lapangan-usaha") {
         rowComponent = 55;
     } else if (type === "pengeluaran") {
         rowComponent = 14;
@@ -566,8 +1078,13 @@ $("#download-csv").on("click", function (e) {
 $("#download-all").on("click", async function (e) {
     e.preventDefault();
     $(".loader").removeClass("d-none");
-    await downloadExcel();
-    $(".loader").addClass("d-none");
+    try {
+        await downloadExcel();
+        $(".loader").addClass("d-none");
+    } catch (e) {
+        $(".loader").addClass("d-none");
+        alert("Error: " + e.message);
+    }
 });
 
 //sum of each value in sector and category
