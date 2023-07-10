@@ -105,13 +105,19 @@ function getIdx(adhb, adhk) {
     return result > 0 ? result.toFixed(2) : "";
 }
 
-function getAdhb(data) {
+function getAdhb(data, type) {
+    if (type === "lapangan-usaha") {
+        rowComponent = 55;
+    } else if (type === "pengeluaran") {
+        rowComponent = 14;
+    }
     $("tbody td:nth-child(n+2):nth-child(-n+6)").removeClass(function (
         index,
         className
     ) {
         return (className.match(/(^|\s)view-\S+/g) || []).join(" ");
     });
+    console.log(data);
     $("tbody td:nth-child(n+2):nth-child(-n+6)").addClass("view-adhb");
     for (let q = 1; q <= 4; q++) {
         for (let i = 1; i <= 55; i++) {

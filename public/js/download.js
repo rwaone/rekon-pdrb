@@ -26,9 +26,9 @@ function getReady() {
         komponens.push(data);
     });
 
-    contents.forEach(function (row, index) {
-        row.Komponen = row.Komponen.trim();
-    });
+    // contents.forEach(function (row, index) {
+    //     row.Komponen = row.Komponen.trim();
+    // });
 
     if (komponens.length > 0) {
         komponens.forEach(function (row, index) {
@@ -93,9 +93,45 @@ function fetchDownload(type) {
     });
 }
 
-async function downloadExcel() {
+function downloadExcel(data) {
+    var workbook = XLSX.utils.book_new();
+    var worksheet = XLSX.utils.json_to_sheet(data);
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet 1");
+
+    // Convert the workbook to a binary Excel file
+    var excelFile = XLSX.write(workbook, { type: "binary" });
+
+    // Convert the binary Excel file to a Blob
+    var blob = new Blob([s2ab(excelFile)], {
+        type: "application/octet-stream",
+    });
+
+    // Create a download link
+    var a = document.createElement("a");
+    var url = URL.createObjectURL(blob);
+    a.href = url;
+    const types = $("#select2-type-container").html();
+    const years = $("#select2-year-container").html();
+    const quarters = $("#select2-quarter-container").html();
+    const periods = $("#select2-period-container").html();
+    a.download = types + "-" + years + "-" + quarters + "-" + periods + ".xlsx";
+
+    // Append the link to the document and trigger the download
+    document.body.appendChild(a);
+    a.click();
+
+    // Clean up
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+async function downloadExcelAll() {
     // Your JSON data
     let list = [];
+    const types = $("#select2-type-container").html();
+    const years = $("#select2-year-container").html();
+    const quarters = $("#select2-quarter-container").html();
+    const periods = $("#select2-period-container").html();
     try {
         const data = await fetchDownload("show");
         //adhb
@@ -201,10 +237,6 @@ async function downloadExcel() {
         var a = document.createElement("a");
         var url = URL.createObjectURL(blob);
         a.href = url;
-        const types = $("#select2-type-container").html();
-        const years = $("#select2-year-container").html();
-        const quarters = $("#select2-quarter-container").html();
-        const periods = $("#select2-period-container").html();
         a.download =
             types + "-" + years + "-" + quarters + "-" + periods + ".xlsx";
 

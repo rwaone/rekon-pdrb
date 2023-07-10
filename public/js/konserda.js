@@ -397,6 +397,7 @@ $(document).ready(function () {
                     JSON.stringify(data)
                 );
             }
+            console.log(data);
             showOff();
             if (data.before === null || data.before.length === 0) {
                 alert("Data tahun lalu tidak ada");
@@ -1069,9 +1070,10 @@ $("#download-csv").on("click", function (e) {
     $(".loader").removeClass("d-none");
     setTimeout(function () {
         let datas = getReady();
-        const csvData = convertToCSV(datas);
+        // const csvData = convertToCSV(datas);
         $(".loader").addClass("d-none");
-        downloadCSV(csvData, "download-data.csv");
+        // downloadCSV(csvData, "download-data.csv");
+        downloadExcel(datas);
     }, 200);
 });
 
@@ -1079,7 +1081,7 @@ $("#download-all").on("click", async function (e) {
     e.preventDefault();
     $(".loader").removeClass("d-none");
     try {
-        await downloadExcel();
+        await downloadExcelAll();
         $(".loader").addClass("d-none");
     } catch (e) {
         $(".loader").addClass("d-none");

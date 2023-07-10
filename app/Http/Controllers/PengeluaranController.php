@@ -30,9 +30,9 @@ class PengeluaranController extends Controller
                 $quarter_before = $quarter_check->quarter - 1;
                 if ($quarter_before == 0) {
                     $quarter_before = 4;
-                    $period_before = Period::where('year', $period_now->year - 1)->where('quarter', $quarter_before)->first();
+                    $period_before = Period::where('status', 'Final')->where('type', 'Pengeluaran')->where('year', $period_now->year - 1)->where('quarter', $quarter_before)->first();
                 } else {
-                    $period_before = Period::where('year', $period_now->year)->where('quarter', $quarter_before)->first();
+                    $period_before = Period::where('status', 'Final')->where('type', 'Pengeluaran')->where('year', $period_now->year)->where('quarter', $quarter_before)->first();
                 }
             }
             $datas = [];
@@ -46,7 +46,7 @@ class PengeluaranController extends Controller
                 }
             }
         } elseif ($typeof == 'year') {
-            $period_before = Period::where('year', $period_now->year - 1)->where('quarter', $quarter_check->quarter)->first();
+            $period_before = Period::where('status', 'Final')->where('type', 'Pengeluaran')->where('year', $period_now->year - 1)->where('quarter', $quarter_check->quarter)->first();
             $datas = [];
             foreach ($regions as $region) {
                 $datas['pdrb-' . $region->id] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_id)->where('region_id', $region->id)->orderBy('subsector_id')->get();
@@ -58,7 +58,7 @@ class PengeluaranController extends Controller
                 }
             }
         } elseif ($typeof == 'cumulative') {
-            $period_before = Period::where('year', $period_now->year - 1)->where('quarter', '<=', $quarter_check->quarter)->pluck('id')->toArray();
+            $period_before = Period::where('status', 'Final')->where('type', 'Pengeluaran')->where('year', $period_now->year - 1)->where('quarter', '<=', $quarter_check->quarter)->pluck('id')->toArray();
             $period_cumulative_now = Period::where('year', $period_now->year)->where('quarter', '<=', $quarter_check->quarter)->pluck('id')->toArray();
             $datas = [];
             foreach ($regions as $region) {
@@ -170,6 +170,7 @@ class PengeluaranController extends Controller
         $quarter = $request->query('quarter');
         $period = Period::where('id', $period_id)->first();
         $year_ = $period->year;
+        // var_dump($year_);
         $quarters = [1, 2, 3, 4];
         $periods = [];
         foreach ($quarters as $item) {
@@ -185,7 +186,7 @@ class PengeluaranController extends Controller
         }
         return response()->json([
             'data' => $datas,
-            'periodes' => $periods
+            // 'periodes' => $periods
         ]);
     }
 

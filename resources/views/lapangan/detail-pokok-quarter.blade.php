@@ -225,6 +225,7 @@
             let catArray = cat.split(", ")
             let urlParams = new URLSearchParams(window.location.search)
             let getUrl = new URL('{{ route('lapangan-usaha.getDetail') }}')
+            const types = url_key.pathname.split('/')[1]
             getUrl.searchParams.set('period_id', urlParams.get('period_id'))
             getUrl.searchParams.set('region_id', urlParams.get('region_id'))
             getUrl.searchParams.set('quarter', urlParams.get('quarter'))
