@@ -58,7 +58,7 @@
         <li class="breadcrumb-item active">Daftar Tabel Pokok</li>
     </x-slot>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-3">
             {{-- <div class="card">
                 <div class="card-body">
                     <table class="table table-bordered" id="view-main-table">
@@ -87,7 +87,7 @@
                 </div>
             </div> --}}
         </div>
-        <div class="col-md-6">
+        <div class="col-md-9">
             <div class="card">
                 <div class="card-body">
                     <table class="table table-bordered" id="view-quarter-table">
@@ -96,6 +96,7 @@
                             <th>Kabupaten/Kota</th>
                             <th>Tahun</th>
                             <th>Triwulan</th>
+                            <th>Putaran</th>
                             <th>Liat</th>
                         </thead>
                         <tbody>
@@ -106,6 +107,7 @@
                                         <td>{{ $item->region->name }}</td>
                                         <td class="text-center">{{ $item->period->year }}</td>
                                         <td class="text-center">{{ $item->quarter }}</td>
+                                        <td class="text-center">{{ $item->period->description }}</td>
                                         <td class="text-center">
                                             <input value="{{ $item->period->id . '-' . $item->quarter }}"
                                                 class="hiddenInput" hidden>

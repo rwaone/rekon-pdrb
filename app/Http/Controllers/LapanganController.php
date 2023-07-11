@@ -62,50 +62,87 @@ class LapanganController extends Controller
                 $quarter_before = $quarter_check->quarter - 1;
                 if ($quarter_before == 0) {
                     $quarter_before = 4;
-                    $period_before = Period::where('status', 'Final')->where('type', 'Pengeluaran')->where('year', $period_now->year - 1)->where('quarter', $quarter_before)->first();
+                    $period_before = Period::where('status', 'Final')->where('type', 'Lapangan Usaha')->where('year', $period_now->year - 1)->where('quarter', $quarter_before)->first();
                 } else {
-                    $period_before = Period::where('status', 'Final')->where('type', 'Pengeluaran')->where('year', $period_now->year)->where('quarter', $quarter_before)->first();
+                    $period_before = Period::where('status', 'Final')->where('type', 'Lapangan Usaha')->where('year', $period_now->year)->where('quarter', $quarter_before)->first();
                 }
             }
             $datas = [];
             foreach ($regions as $region) {
-                $datas['pdrb-' . $region->id] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_id)->where('region_id', $region->id)->orderBy('subsector_id')->get();
+                $datas['pdrb-' . $region->id] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_id)->where('region_id', $region->id)->where('quarter', $quarter_check->quarter)->orderBy('subsector_id')->get();
             }
             $befores = [];
             if ($period_before) {
                 foreach ($regions as $region) {
-                    $befores['pdrb-' . $region->id] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_before->id)->where('region_id', $region->id)->orderBy('subsector_id')->get();
+                    $befores['pdrb-' . $region->id] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_before->id)->where('quarter', $quarter_before)->where('region_id', $region->id)->orderBy('subsector_id')->get();
                 }
             }
+            // APA ITU HARUS CEK KUARTER NYA?!
         } elseif ($typeof == 'year') {
-            $period_before = Period::where('status', 'Final')->where('type', 'Pengeluaran')->where('year', $period_now->year - 1)->where('quarter', $quarter_check->quarter)->first();
+            $period_before = Period::where('status', 'Final')->where('type', 'Lapangan Usaha')->where('year', $period_now->year - 1)->where('quarter', 4)->first();
+            // $period_before = Period::where('status', 'Final')->where('type', 'Lapangan Usaha')->where('year', $period_now->year - 1)->where('quarter', $quarter_check->quarter)->first();
             $datas = [];
             foreach ($regions as $region) {
-                $datas['pdrb-' . $region->id] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_id)->where('region_id', $region->id)->orderBy('subsector_id')->get();
+                $datas['pdrb-' . $region->id] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_id)->where('quarter', $quarter_check->quarter)->where('region_id', $region->id)->orderBy('subsector_id')->get();
             }
             $befores = [];
             if ($period_before) {
                 foreach ($regions as $region) {
-                    $befores['pdrb-' . $region->id] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_before->id)->where('region_id', $region->id)->orderBy('subsector_id')->get();
+                    $befores['pdrb-' . $region->id] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_before->id)->where('quarter', $quarter_check->quarter)->where('region_id', $region->id)->orderBy('subsector_id')->get();
                 }
             }
+            //KACAU KUMULATIFNYA!!
         } elseif ($typeof == 'cumulative') {
-            $period_before = Period::where('status', 'Final')->where('type', 'Pengeluaran')->where('year', $period_now->year - 1)->where('quarter', '<=', $quarter_check->quarter)->pluck('id')->toArray();
-            $period_cumulative_now = Period::where('year', $period_now->year)->where('quarter', '<=', $quarter_check->quarter)->pluck('id')->toArray();
+            // $period_before = Period::where('status', 'Final')->where('type', 'Lapangan Usaha')->where('year', $period_now->year - 1)->where('quarter', '<=', $quarter_check->quarter)->pluck('id')->toArray();
+            $period_before = Period::where('status', 'Final')->where('type', 'Lapangan Usaha')->where('year', $period_now->year - 1)->where('quarter', 4)->pluck('id')->toArray();
+            // $period_cumulative_now = Period::where('year', $period_now->year)->where('quarter', '<=', $quarter_check->quarter)->pluck('id')->toArray();
+            switch ($quarter_check->quarter) {
+                case 4:
+                    $quarter_cumulative = range(1, 4);
+                    break;
+                case 3:
+                    $quarter_cumulative = range(1, 3);
+                    break;
+                case 2:
+                    $quarter_cumulative = range(1, 2);
+                    break;
+                default:
+                    $quarter_cumulative = [1];
+                    break;
+            }
+
             $datas = [];
+            // foreach ($regions as $region) {
+            //     $datas['pdrb-' . $region->id] = Pdrb::selectRaw('subsector_id, sum(adhb) as adhb, sum(adhk) as adhk')
+            //         ->whereIn('period_id', $period_cumulative_now)
+            //         ->where('region_id', $region->id)
+            //         ->groupBy('subsector_id')
+            //         ->get();
+            // }
             foreach ($regions as $region) {
                 $datas['pdrb-' . $region->id] = Pdrb::selectRaw('subsector_id, sum(adhb) as adhb, sum(adhk) as adhk')
-                    ->whereIn('period_id', $period_cumulative_now)
+                    ->where('period_id', $period_id)
+                    ->whereIn('quarter', $quarter_cumulative)
                     ->where('region_id', $region->id)
                     ->groupBy('subsector_id')
                     ->get();
             }
 
             $befores = [];
+            // if ($period_before) {
+            //     foreach ($regions as $region) {
+            //         $befores['pdrb-' . $region->id] = Pdrb::selectRaw('subsector_id, sum(adhb) as adhb, sum(adhk) as adhk')
+            //             ->whereIn('period_id', $period_before)
+            //             ->where('region_id', $region->id)
+            //             ->groupBy('subsector_id')
+            //             ->get();
+            //     }
+            // }
             if ($period_before) {
                 foreach ($regions as $region) {
                     $befores['pdrb-' . $region->id] = Pdrb::selectRaw('subsector_id, sum(adhb) as adhb, sum(adhk) as adhk')
-                        ->whereIn('period_id', $period_before)
+                        ->where('period_id', $period_before)
+                        ->whereIn('quarter', $quarter_cumulative)
                         ->where('region_id', $region->id)
                         ->groupBy('subsector_id')
                         ->get();
@@ -129,13 +166,16 @@ class LapanganController extends Controller
         }
         $number = 1;
         if (Auth::user()->satker_id == 1) {
-            $daftar_2 = Pdrb::select('region_id', 'period_id', 'quarter')->where('type', 'Lapangan Usaha')->where('region_id', '1')->whereNotIn('quarter', ['Y'])->groupBy('region_id', 'period_id', 'quarter')->get();
+            $daftar_2 = Pdrb::select('region_id', 'period_id', 'quarter', 'year')
+                ->where('type', 'Lapangan Usaha')->whereNotIn('quarter', ['Y'])
+                ->groupBy('region_id', 'period_id', 'quarter', 'year')
+                ->orderBy('year', 'desc')->orderBy('quarter', 'desc')->orderBy('region_id')->get();
             foreach ($daftar_2 as $item) {
                 $item->number = $number;
                 $number++;
             }
         } else {
-            $daftar_2 = Pdrb::select('region_id', 'period_id', 'quarter')->where('type', 'Lapangan Usaha')->whereNotIn('region_id', ['1'])->whereNotIn('quarter', ['Y'])->groupBy('region_id', 'period_id', 'quarter')->get();
+            $daftar_2 = Pdrb::select('region_id', 'period_id', 'quarter', 'year')->where('type', 'Lapangan Usaha')->where('region_id', Auth::user()->satker_id)->whereNotIn('quarter', ['Y'])->groupBy('region_id', 'period_id', 'quarter')->orderBy('year')->get();
             foreach ($daftar_2 as $item) {
                 $item->number = $number;
                 $number++;

@@ -29,7 +29,7 @@
                 text-align: center !important;
             }
 
-            #rekon-view tr:not(:last-child):not(:nth-last-child(2)) td:not(:first-child) {
+            #rekon-view tr:not(:last-child) td:not(:first-child) {
                 text-align: right;
             }
 
@@ -49,7 +49,13 @@
         <div id="my-cat" data-cat="{{ json_encode($cat) }}"></div>
     </x-slot>
     <div class="card mb-3" id="view-body">
-        <div class="card-body">
+        <div class="card-body pt-2">
+            <nav class="navbar p-0">
+                <ul class="nav-item ml-auto">
+                    <button class="btn btn-success" id="download-all" data-toogle="tooltip" data-placement="bottom"
+                        title="Download All"><i class="bi bi-file-earmark-arrow-down-fill"></i></button>
+                </ul>
+            </nav>
             <nav class="navbar d-flex justify-content-center">
                 <ul class="nav nav-tabs d-flex">
                     <a class="nav-item nav-link" id="nav-adhb" href="">ADHB</a>
@@ -70,6 +76,7 @@
                             <th>Triwulan II</th>
                             <th>Triwulan III</th>
                             <th>Triwulan IV</th>
+                            <th>Total</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -85,6 +92,7 @@
                                     <td id="sector-{{ $index + 1 }}-2" class="values"></td>
                                     <td id="sector-{{ $index + 1 }}-3" class="values"></td>
                                     <td id="sector-{{ $index + 1 }}-4" class="values"></td>
+                                    <td class="total-column text-bold"></td>
                                 </tr>
                             @endif
                             @if ($item->code != null)
@@ -95,18 +103,19 @@
                                             {{ $item->code . '. ' . $item->name }}
                                         </p>
                                     </td>
-                                    <td id="{{ 'value-' . $item->id . '-1' }}"
+                                    <td id="{{ 'value-' . $index + 1 . '-1' }}"
                                         class="values {{ 'categories-' . $item->sector->category->code }}-1 {{ 'sector-Q1-' . $item->sector_id }} {{ 'category-Q1-' . $item->sector->category_id }}">
                                     </td>
-                                    <td id="{{ 'value-' . $item->id . '-2' }}"
+                                    <td id="{{ 'value-' . $index + 1 . '-2' }}"
                                         class="values {{ 'categories-' . $item->sector->category->code }}-2 {{ 'sector-Q2-' . $item->sector_id }} {{ 'category-Q2-' . $item->sector->category_id }}">
                                     </td>
-                                    <td id="{{ 'value-' . $item->id . '-3' }}"
+                                    <td id="{{ 'value-' . $index + 1 . '-3' }}"
                                         class="values {{ 'categories-' . $item->sector->category->code }}-3 {{ 'sector-Q3-' . $item->sector_id }} {{ 'category-Q3-' . $item->sector->category_id }}">
                                     </td>
-                                    <td id="{{ 'value-' . $item->id . '-4' }}"
+                                    <td id="{{ 'value-' . $index + 1 . '-4' }}"
                                         class="values {{ 'categories-' . $item->sector->category->code }}-4 {{ 'sector-Q4-' . $item->sector_id }} {{ 'category-Q4-' . $item->sector->category_id }}">
                                     </td>
+                                    <td class="total-column"></td>                                    
                                 </tr>
                             @elseif ($item->code == null && $item->sector->code != null)
                                 <tr>
@@ -116,18 +125,19 @@
                                             {{ $item->sector->code . '. ' . $item->sector->name }}
                                         </p>
                                     </td>
-                                    <td id="{{ 'value-' . $item->id . '-1' }}"
-                                        class="values {{ 'categories-' . $item->sector->category->code }}-1 {{ 'sector-Q1-' . $item->sector_id }} {{ 'category-Q1-' . $item->sector->category_id }}">
+                                    <td id="{{ 'value-' . $index + 1 . '-1' }}"
+                                        class="values text-bold pdrb-total-1 {{ 'categories-' . $item->sector->category->code }}-1 {{ 'sector-Q1-' . $item->sector_id }} {{ 'category-Q1-' . $item->sector->category_id }}">
                                     </td>
-                                    <td id="{{ 'value-' . $item->id . '-2' }}"
-                                        class="values {{ 'categories-' . $item->sector->category->code }}-2 {{ 'sector-Q2-' . $item->sector_id }} {{ 'category-Q2-' . $item->sector->category_id }}">
+                                    <td id="{{ 'value-' . $index + 1 . '-2' }}"
+                                        class="values text-bold pdrb-total-2 {{ 'categories-' . $item->sector->category->code }}-2 {{ 'sector-Q2-' . $item->sector_id }} {{ 'category-Q2-' . $item->sector->category_id }}">
                                     </td>
-                                    <td id="{{ 'value-' . $item->id . '-3' }}"
-                                        class="values {{ 'categories-' . $item->sector->category->code }}-3 {{ 'sector-Q3-' . $item->sector_id }} {{ 'category-Q3-' . $item->sector->category_id }}">
+                                    <td id="{{ 'value-' . $index + 1 . '-3' }}"
+                                        class="values text-bold pdrb-total-3 {{ 'categories-' . $item->sector->category->code }}-3 {{ 'sector-Q3-' . $item->sector_id }} {{ 'category-Q3-' . $item->sector->category_id }}">
                                     </td>
-                                    <td id="{{ 'value-' . $item->id . '-4' }}"
-                                        class="values {{ 'categories-' . $item->sector->category->code }}-4 {{ 'sector-Q4-' . $item->sector_id }} {{ 'category-Q4-' . $item->sector->category_id }}">
+                                    <td id="{{ 'value-' . $index + 1 . '-4' }}"
+                                        class="values text-bold pdrb-total-4 {{ 'categories-' . $item->sector->category->code }}-4 {{ 'sector-Q4-' . $item->sector_id }} {{ 'category-Q4-' . $item->sector->category_id }}">
                                     </td>
+                                    <td class="total-column text-bold"></td>
                                 </tr>
                             @elseif ($item->code == null && $item->sector->code == null)
                                 <tr>
@@ -135,32 +145,22 @@
                                         <label class="" style="margin-bottom:0rem;"
                                             for="{{ $item->sector->category->code . '_' . $item->name }}">{{ $item->sector->category->code . '. ' . $item->name }}</label>
                                     </td>
-                                    <td id="{{ 'value-' . $item->id . '-1' }}"
+                                    <td id="{{ 'value-' . $index + 1 . '-1' }}"
                                         class="values {{ 'categories-' . $item->sector->category->code }}-1 {{ 'sector-Q1' . $item->sector_id }} {{ 'category-Q1' . $item->sector->category_id }} text-bold pdrb-total-1">
                                     </td>
-                                    <td id="{{ 'value-' . $item->id . '-2' }}"
+                                    <td id="{{ 'value-' . $index + 1 . '-2' }}"
                                         class="values {{ 'categories-' . $item->sector->category->code }}-2 {{ 'sector-Q2' . $item->sector_id }} {{ 'category-Q2' . $item->sector->category_id }} text-bold pdrb-total-2">
                                     </td>
-                                    <td id="{{ 'value-' . $item->id . '-3' }}"
+                                    <td id="{{ 'value-' . $index + 1 . '-3' }}"
                                         class="values {{ 'categories-' . $item->sector->category->code }}-3 {{ 'sector-Q3' . $item->sector_id }} {{ 'category-Q3' . $item->sector->category_id }} text-bold pdrb-total-3">
                                     </td>
-                                    <td id="{{ 'value-' . $item->id . '-4' }}"
+                                    <td id="{{ 'value-' . $index + 1 . '-4' }}"
                                         class="values {{ 'categories-' . $item->sector->category->code }}-4 {{ 'sector-Q4' . $item->sector_id }} {{ 'category-Q4' . $item->sector->category_id }} text-bold pdrb-total-4">
                                     </td>
+                                    <td class="total-column text-bold"></td>
                                 </tr>
                             @endif
                         @endforeach
-                        <tr class="PDRB-footer text-center"
-                            style="background-color: steelblue; color:aliceblue; font-weight: bold;">
-                            <td>
-                                <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto
-                                    (PDRB) Nonmigas </p>
-                            </td>
-                            <td id="total-nonmigas-1" style="margin-bottom:0rem;"></td>
-                            <td id="total-nonmigas-2" style="margin-bottom:0rem;"></td>
-                            <td id="total-nonmigas-3" style="margin-bottom:0rem;"></td>
-                            <td id="total-nonmigas-4" style="margin-bottom:0rem;"></td>
-                        </tr>
                         <tr class="PDRB-footer text-center"
                             style="background-color: steelblue; color:aliceblue; font-weight: bold;">
                             <td>
@@ -171,6 +171,7 @@
                             <td id="total-2" style="margin-bottom:0rem;"></td>
                             <td id="total-3" style="margin-bottom:0rem;"></td>
                             <td id="total-4" style="margin-bottom:0rem;"></td>
+                            <td class="total-column" style="margin-bottom:0rem;"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -191,7 +192,7 @@
             let catArray = cat.split(", ")
             let urlParams = new URLSearchParams(window.location.search)
             let getUrl = new URL('{{ route('pengeluaran.getDetail') }}')
-            const types = url_key.pathname.split('/')[1]
+            const types = getUrl.pathname.split('/')[1]
             getUrl.searchParams.set('period_id', urlParams.get('period_id'))
             getUrl.searchParams.set('region_id', urlParams.get('region_id'))
             getUrl.searchParams.set('quarter', urlParams.get('quarter'))

@@ -549,7 +549,7 @@ function switchPlay(type) {
 
 function getSummarise(type) {
     $(".values").each(function () {
-        $(this).text(formatRupiah($(this).text(), "Rp "));
+        $(this).text(formatRupiah($(this).text()));
     });
     if (type === "lapangan-usaha") {
         rowComponent = 55;
@@ -561,13 +561,10 @@ function getSummarise(type) {
                     .replaceAll(/[A-Za-z.]/g, "");
                 // let X = $(`#value-${i}`).text()
                 let Y = X.replaceAll(/[,]/g, ".");
-                sum += Y > 0 ? Number(Y) : 0;
+                sum += Number(Y);
             }
             $(`#sector-1-${q}`).text(
-                formatRupiah(
-                    String(sum.toFixed(2)).replaceAll(/[.]/g, ","),
-                    "Rp "
-                )
+                formatRupiah(String(sum.toFixed(2)).replaceAll(/[.]/g, ","))
             );
             sum = sum - sum;
         }
@@ -578,14 +575,11 @@ function getSummarise(type) {
                     .text()
                     .replaceAll(/[A-Za-z.]/g, "");
                 let Y = X.replaceAll(/[,]/g, ".");
-                sum += Y > 0 ? Number(Y) : 0;
+                sum += Number(Y);
             }
 
             $(`#sector-14-${q}`).text(
-                formatRupiah(
-                    String(sum.toFixed(2)).replaceAll(/[.]/g, ","),
-                    "Rp "
-                )
+                formatRupiah(String(sum.toFixed(2)).replaceAll(/[.]/g, ","))
             );
             sum = sum - sum;
         }
@@ -596,7 +590,7 @@ function getSummarise(type) {
                     `categories-${index}-${q}`
                 ).toFixed(2);
                 let que = String(jumlah).replaceAll(/[.]/g, ",");
-                $(`#categories-${index}-${q}`).text(formatRupiah(que, "Rp "));
+                $(`#categories-${index}-${q}`).text(formatRupiah(que));
                 $(`#categories-${index}-${q}`).addClass(
                     `text-bold pdrb-total-${q}`
                 );
@@ -607,14 +601,11 @@ function getSummarise(type) {
             let nonmigas =
                 simpleSum(`#value-10-${q}`) + simpleSum(`#value-15-${q}`);
             $(`#total-${q}`).text(
-                formatRupiah(String(pdrb).replaceAll(/[.]/g, ","), "Rp ")
+                formatRupiah(String(pdrb).replaceAll(/[.]/g, ","))
             );
             let pdrbNonmigas = (pdrb - nonmigas).toFixed(2);
             $(`#total-nonmigas-${q}`).text(
-                formatRupiah(
-                    String(pdrbNonmigas).replaceAll(/[.]/g, ","),
-                    "Rp "
-                )
+                formatRupiah(String(pdrbNonmigas).replaceAll(/[.]/g, ","))
             );
         }
     } else if (type === "pengeluaran") {
@@ -626,13 +617,10 @@ function getSummarise(type) {
                     .text()
                     .replaceAll(/[A-Za-z.]/g, "");
                 let Y = X.replaceAll(/[,]/g, ".");
-                sum += Y > 0 ? Number(Y) : 0;
+                sum += Number(Y);
             }
             $(`#sector-1-${q}`).text(
-                formatRupiah(
-                    String(sum.toFixed(2)).replaceAll(/[.]/g, ","),
-                    "Rp "
-                )
+                formatRupiah(String(sum.toFixed(2)).replaceAll(/[.]/g, ","))
             );
             $(`#sector-1-${q}`).addClass(`text-bold pdrb-total-${q}`);
             sum = sum - sum;
@@ -644,33 +632,30 @@ function getSummarise(type) {
                     .text()
                     .replaceAll(/[A-Za-z.]/g, "");
                 let Y = X.replaceAll(/[,]/g, ".");
-                sum += Y > 0 ? Number(Y) : 0;
+                sum += Number(Y);
             }
 
             $(`#sector-10-${q}`).text(
-                formatRupiah(
-                    String(sum.toFixed(2)).replaceAll(/[.]/g, ","),
-                    "Rp "
-                )
+                formatRupiah(String(sum.toFixed(2)).replaceAll(/[.]/g, ","))
             );
             $(`#sector-10-${q}`).addClass(`text-bold pdrb-total-${q}`);
             sum = sum - sum;
         }
         sum = sum - sum;
         for (let q = 1; q <= 16; q++) {
-            for (let i = 13; i <= 14; i++) {
-                let X = $(`#value-${i}-${q}`)
-                    .text()
-                    .replaceAll(/[A-Za-z.]/g, "");
-                let Y = X.replaceAll(/[,]/g, ".");
-                sum += Y > 0 ? Number(Y) : 0;
-            }
+            let Exports = $(`#value-13-${q}`)
+                .text()
+                .replaceAll(/[A-Za-z.]/g, "")
+                .replaceAll(/[,]/g, ".");
+            let Imports = $(`#value-14-${q}`)
+                .text()
+                .replaceAll(/[A-Za-z.]/g, "")
+                .replaceAll(/[,]/g, ".");
+
+            let Nets = Exports - Imports;
 
             $(`#sector-13-${q}`).text(
-                formatRupiah(
-                    String(sum.toFixed(2)).replaceAll(/[.]/g, ","),
-                    "Rp "
-                )
+                formatRupiah(String(Nets.toFixed(2)).replaceAll(/[.]/g, ","))
             );
             $(`#sector-13-${q}`).addClass(`text-bold pdrb-total-${q}`);
             sum = sum - sum;
@@ -679,7 +664,7 @@ function getSummarise(type) {
         for (let q = 1; q <= 16; q++) {
             let pdrb = calculateSector(`pdrb-total-${q}`).toFixed(2);
             $(`#total-${q}`).text(
-                formatRupiah(String(pdrb).replaceAll(/[.]/g, ","), "Rp ")
+                formatRupiah(String(pdrb).replaceAll(/[.]/g, ","))
             );
         }
     }
@@ -696,8 +681,10 @@ function simpleSum(atri) {
 function distribusi(values, index) {
     let X = simpleSum(values);
     let Y = simpleSum(`#total-${index}`);
-    let score = Y > 0 ? (X / Y) * 100 : 0;
-    return score > 0 ? score.toFixed(2) : 0;
+    // let score = Y > 0 ? (X / Y) * 100 : 0;
+    // return score > 0 ? score.toFixed(2) : 0;
+    let score = (X / Y) * 100;
+    return score.toFixed(2);
 }
 
 function getDist() {
@@ -714,7 +701,8 @@ function getDist() {
         let id = "#" + $(this).attr("id");
         let X = simpleSum(id);
         let Y = simpleSum("#totalKabkot-migas");
-        let score = Y > 0 ? (X / Y) * 100 : 0;
+        let score = (X / Y) * 100;
+        // let score = Y > 0 ? (X / Y) * 100 : 0;
         $(this).text(score.toFixed(2));
     });
     let Y = simpleSum("#totalKabkot-migas");
@@ -726,8 +714,10 @@ function getDist() {
 }
 
 function getIdx(adhb, adhk) {
-    let result = adhb > 0 ? (adhb / adhk) * 100 : "";
-    return result > 0 ? result.toFixed(2) : "";
+    // let result = adhb > 0 ? (adhb / adhk) * 100 : "";
+    // return result > 0 ? result.toFixed(2) : "";
+    let result = (adhb / adhk) * 100;
+    return result.toFixed(2);
 }
 
 function diskrepansi() {
@@ -748,7 +738,10 @@ function diskrepansi() {
                 .replaceAll(/[A-Za-z.]/g, "")
                 .replaceAll(/[,]/g, ".")
         );
-        let score = X > 0 ? ((Y - X) / X) * 100 : 0;
+        // let score = X > 0 ? ((Y - X) / X) * 100 : 0;
+        let score = ((Y - X) / X) * 100;
+        
+        // console.log(Y, X, score);
         $(this).addClass("text-right");
         if (score > 5 || score < -5) {
             $(this).css("background-color", "#DB3131");
@@ -757,7 +750,13 @@ function diskrepansi() {
             $(this).css("background-color", "#E6ED18");
             $(this).css("color", "black");
         }
-        $(this).text(score.toFixed(2));
+        if (isNaN(score)) {
+            score = "-";
+            $(this).text(score);
+        } else {
+            $(this).text(score.toFixed(5));
+        }
+        // $(this).text(score.toFixed(5));
     });
     $("#head-purpose").text("Cek Diskrepansi");
 }
@@ -909,9 +908,10 @@ function getGrowth(data, before, type) {
 
     for (let i = 0; i < adhk_now.length; i++) {
         let score =
-            adhk_before[i] > 0
-                ? ((adhk_now[i] / adhk_before[i]) * 100 - 100).toFixed(2)
-                : "-";
+            // adhk_before[i] > 0
+            //     ? ((adhk_now[i] / adhk_before[i]) * 100 - 100).toFixed(2)
+            //     : "-";
+            ((adhk_now[i] / adhk_before[i]) * 100 - 100).toFixed(2);
         growth.push(score);
     }
     $("#rekon-view tbody td:not(:first-child)").each(function (index) {
@@ -1025,9 +1025,10 @@ function getLaju(first, before) {
     let growth = [];
     for (let i = 0; i < first.length; i++) {
         let score =
-            before[i] > 0
-                ? ((first[i] / before[i]) * 100 - 100).toFixed(2)
-                : "";
+            // before[i] > 0
+            //     ? ((first[i] / before[i]) * 100 - 100).toFixed(2)
+            //     : "";
+            ((first[i] / before[i]) * 100 - 100).toFixed(2);
         growth.push(score);
     }
     $("#rekon-view tbody td:not(:first-child)").each(function (index) {
@@ -1056,10 +1057,7 @@ function getTotalKabkot() {
             table
                 .find("tr:nth-child(" + row + ") td:nth-child(2)")
                 .text(
-                    formatRupiah(
-                        String(sum.toFixed(2)).replaceAll(/[.]/g, ","),
-                        "Rp "
-                    )
+                    formatRupiah(String(sum.toFixed(2)).replaceAll(/[.]/g, ","))
                 );
         }
     });
@@ -1098,7 +1096,8 @@ function calculateSector(sector) {
             .text()
             .replaceAll(/[A-Za-z.]/g, "");
         let Y = X.replaceAll(/[,]/g, ".");
-        sum += Y > 0 ? Number(Y) : 0;
+        // sum += Y > 0 ? Number(Y) : 0;
+        sum += Number(Y);
     });
     return sum;
 }
@@ -1106,9 +1105,16 @@ function calculateSector(sector) {
 //change the value of inputed number to Rupiah
 function formatRupiah(angka, prefix) {
     var number_string = String(angka)
-            .replace(/[^,\d]/g, "")
+            .replace(/[^\-,\d]/g, "")
             .toString(),
-        split = number_string.split(","),
+        isNegative = false;
+
+    if (number_string.startsWith("-")) {
+        isNegative = true;
+        number_string = number_string.substr(1);
+    }
+
+    var split = number_string.split(","),
         sisa = split[0].length % 3,
         rupiah = split[0].substr(0, sisa),
         ribuan = split[0].substr(sisa).match(/\d{3}/gi);
@@ -1119,8 +1125,14 @@ function formatRupiah(angka, prefix) {
     }
 
     rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+
+    if (isNegative) {
+        rupiah = "-" + rupiah;
+    }
+
     return prefix == undefined ? rupiah : rupiah ? "Rp. " + rupiah : "";
 }
+
 //
 
 //filter

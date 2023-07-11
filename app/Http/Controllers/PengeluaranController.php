@@ -37,7 +37,7 @@ class PengeluaranController extends Controller
             }
             $datas = [];
             foreach ($regions as $region) {
-                $datas['pdrb-' . $region->id] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_id)->where('region_id', $region->id)->orderBy('subsector_id')->get();
+                $datas['pdrb-' . $region->id] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $period_id)->where('region_id', $region->id)->where('quarter', $quarter_check->quarter)->orderBy('subsector_id')->get();
             }
             $befores = [];
             if ($period_before) {
@@ -97,13 +97,16 @@ class PengeluaranController extends Controller
         }
         $number = 1;
         if (Auth::user()->satker_id == 1) {
-            $daftar_2 = Pdrb::select('region_id', 'period_id', 'quarter')->where('type', 'Pengeluaran')->where('region_id', '1')->whereNotIn('quarter', ['Y'])->groupBy('region_id', 'period_id', 'quarter')->get();
+            $daftar_2 = Pdrb::select('region_id', 'period_id', 'quarter', 'year')
+            ->where('type', 'Pengeluaran')->whereNotIn('quarter', ['Y'])
+            ->groupBy('region_id', 'period_id', 'quarter', 'year')
+            ->orderBy('year', 'desc')->orderBy('quarter', 'desc')->orderBy('region_id')->get();
             foreach ($daftar_2 as $item) {
                 $item->number = $number;
                 $number++;
             }
         } else {
-            $daftar_2 = Pdrb::select('region_id', 'period_id', 'quarter')->where('type', 'Pengeluaran')->whereNotIn('region_id', ['1'])->whereNotIn('quarter', ['Y'])->groupBy('region_id', 'period_id', 'quarter')->get();
+            $daftar_2 = Pdrb::select('region_id', 'period_id', 'quarter', 'year')->where('type', 'Pengeluaran')->where('region_id', Auth::user()->satker_id)->whereNotIn('quarter', ['Y'])->groupBy('region_id', 'period_id', 'quarter')->orderBy('year')->get();
             foreach ($daftar_2 as $item) {
                 $item->number = $number;
                 $number++;

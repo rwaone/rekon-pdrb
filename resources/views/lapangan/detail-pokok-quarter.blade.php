@@ -29,7 +29,7 @@
                 text-align: center !important;
             }
 
-            #rekon-view tr:not(:last-child):not(:nth-last-child(2)) td:not(:first-child) {
+            #rekon-view tr:not(:last-child) td:not(:first-child) {
                 text-align: right;
             }
 
@@ -184,18 +184,6 @@
                             style="background-color: steelblue; color:aliceblue; font-weight: bold;">
                             <td>
                                 <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto
-                                    (PDRB) Nonmigas </p>
-                            </td>
-                            <td id="total-nonmigas-1" style="margin-bottom:0rem;"></td>
-                            <td id="total-nonmigas-2" style="margin-bottom:0rem;"></td>
-                            <td id="total-nonmigas-3" style="margin-bottom:0rem;"></td>
-                            <td id="total-nonmigas-4" style="margin-bottom:0rem;"></td>
-                            <td class="total-column" style="margin-bottom:0rem;"></td>
-                        </tr>
-                        <tr class="PDRB-footer text-center"
-                            style="background-color: steelblue; color:aliceblue; font-weight: bold;">
-                            <td>
-                                <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto
                                     (PDRB) </p>
                             </td>
                             <td id="total-1" style="margin-bottom:0rem;"></td>
@@ -225,7 +213,7 @@
             let catArray = cat.split(", ")
             let urlParams = new URLSearchParams(window.location.search)
             let getUrl = new URL('{{ route('lapangan-usaha.getDetail') }}')
-            const types = url_key.pathname.split('/')[1]
+            const types = getUrl.pathname.split('/')[1]
             getUrl.searchParams.set('period_id', urlParams.get('period_id'))
             getUrl.searchParams.set('region_id', urlParams.get('region_id'))
             getUrl.searchParams.set('quarter', urlParams.get('quarter'))
