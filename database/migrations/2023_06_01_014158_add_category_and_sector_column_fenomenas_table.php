@@ -12,7 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('fenomenas', function (Blueprint $table) {
-            $table->foreignId('sector_id')->after('region_id');
+            $table->char('type', 25)->after('id');
+            $table->year('year')->after('type');
+            $table->char('quarter', 1)->after('year');
+            $table->foreignId('sector_id')->after('region_id')->nullable(true);
             $table->foreignId('category_id')->after('region_id');
         });
     }
