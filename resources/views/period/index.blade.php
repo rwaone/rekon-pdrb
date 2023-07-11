@@ -104,7 +104,7 @@
 
         <div class="modal fade" id="modal-lg">
             <div class="modal-dialog modal-lg">
-                <form action="/period" method="post">
+                <form id="periodForm" action="/period" method="post">
                     @csrf
                     <div class="modal-content">
                         <div class="modal-header">
@@ -151,11 +151,22 @@
                                 </select>
                                 <div class="help-block"></div>
                             </div>
-
+                            {{-- 
                             <div class="form-group">
                                 <label for="description-text" class="col-form-label">Keterangan:</label>
                                 <input type="text" class="form-control" id="description-text" name="description"
                                     placeholder="Keterangan Putaran">
+                            </div> --}}
+
+                            <div class="form-group">
+                                <label for="description-text" class="col-form-label">Keterangan Putaran:</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Putaran ke-</span>
+                                    </div>
+                                    <input type="text" class="form-control" id="description-text"
+                                        name="description" placeholder="Angka Putaran">
+                                </div>
                             </div>
 
                             <div class="form-group">
@@ -174,7 +185,7 @@
                         </div>
                         <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-                            <button type="submit" class="btn btn-success">Simpan</button>
+                            <button id="periodSubmit" type="submit" class="btn btn-success">Simpan</button>
                         </div>
                     </div>
                 </form>

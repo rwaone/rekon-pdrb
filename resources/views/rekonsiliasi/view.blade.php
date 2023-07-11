@@ -67,6 +67,55 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
+    <div class="modal fade" id="copy-modal">
+
+        <div class="modal-dialog modal-md">
+            <form id="copyDataForm">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Salin Data Sebelumnya</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <label class="col-form-label" for="year-copy">Tahun:</label>
+                            <select id="year-copy" class="form-control select2bs4" style="width: 100%;" name="yearCopy">
+                                <option value="" disabled selected>Pilih Tahun</option>
+                            </select>
+                            <div class="help-block"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-form-label" for="quarter-copy">Triwulan:</label>
+                            <select id="quarter-copy" class="form-control select2bs4" style="width: 100%;"
+                                name="quarterCopy">
+                                <option value="" disabled selected>Pilih Triwulan</option>
+                            </select>
+                            <div class="help-block"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-form-label" for="period-copy">Periode:</label>
+                            <select id="period-copy" class="form-control select2bs4" style="width: 100%;"
+                                name="periodCopy">
+                                <option value="" disabled selected>Pilih Putaran</option>
+                            </select>
+                            <div class="help-block"></div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button id="copySubmit" type="button" class="btn btn-success float-right">Salin</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <x-slot name="script">
         <!-- Additional JS resources -->
         <script src="{{ url('') }}/plugins/select2/js/select2.full.min.js"></script>
@@ -163,6 +212,11 @@
                                 $('#year').append('<option value="' + value.year + '">' +
                                     value.year + '</option>');
                             });
+                            $.each(result.years, function(key, value) {
+                                $('#year-copy').append('<option value="' + value.year +
+                                    '">' +
+                                    value.year + '</option>');
+                            });
                             $('#quarter').append(
                                 '<option value="" disabled selected> Pilih Triwulan </option>');
                             $('#period').append(
@@ -203,6 +257,37 @@
                     })
                 });
 
+                $('#year-copy').on('change', function() {
+                    var pdrb_type = $('#type').val();
+                    var pdrb_year = this.value;
+                    $("#quarter-copy").html('');
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ route('fetchQuarter') }}',
+                        data: {
+                            type: pdrb_type,
+                            year: pdrb_year,
+                            _token: '{{ csrf_token() }}',
+                        },
+                        dataType: 'json',
+
+                        success: function(result) {
+                            $('#quarter-copy').html(
+                                '<option value="" selected> Pilih Triwulan </option>');
+                            $.each(result.quarters, function(key, value) {
+                                var description = (value.quarter == 'Y') ? 'Tahunan' :
+                                    'Triwulan ' + value.quarter;
+                                $('#quarter-copy').append('<option value="' + value
+                                    .quarter +
+                                    '">' + description + '</option>');
+                            });
+                            $('#period-copy').append(
+                                '<option value="" selected> Pilih Periode </option>');
+                        },
+                    })
+                });
+
                 $('#quarter').on('change', function() {
                     var pdrb_type = $('#type').val();
                     var pdrb_year = $('#year').val();
@@ -226,6 +311,36 @@
                             $('#period').html('<option value="" selected> Pilih Periode </option>');
                             $.each(result.periods, function(key, value) {
                                 $('#period').append('<option value="' + value.id + '">' +
+                                    value.description + ' (' + value.status + ')' +
+                                    '</option>');
+                            });
+                        },
+                    })
+                });
+
+                $('#quarter-copy').on('change', function() {
+                    var pdrb_type = $('#type').val();
+                    var pdrb_year = $('#year-copy').val();
+                    var pdrb_quarter = this.value;
+                    $("#period-copy").html('');
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ route('fetchPeriod') }}',
+                        data: {
+                            type: pdrb_type,
+                            year: pdrb_year,
+                            quarter: pdrb_quarter,
+                            _token: '{{ csrf_token() }}',
+                        },
+                        dataType: 'json',
+
+                        success: function(result) {
+                            $('#period-copy').html(
+                                '<option value="" selected> Pilih Periode </option>');
+                            $.each(result.periods, function(key, value) {
+                                $('#period-copy').append('<option value="' + value.id +
+                                    '">' +
                                     value.description + ' (' + value.status + ')' +
                                     '</option>');
                             });
@@ -431,6 +546,79 @@
                     });
                 }
 
+                $("#copySubmit").on('click', function() {
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ route('copyData') }}',
+                        data: {
+                            filter: $('#filterForm').serializeArray().reduce(function(obj, item) {
+                                obj[item.name] = item.value;
+                                return obj;
+                            }, {}),
+                            copy: $('#copyDataForm').serializeArray().reduce(function(obj, item) {
+                                obj[item.name] = item.value;
+                                return obj;
+                            }, {}),
+                            _token: '{{ csrf_token() }}',
+                        },
+
+                        success: function(result) {
+                            console.log(result);
+                            if ($('#price_base').val() == 'adhk') {
+                                $.each(result, function(quarter, value) {
+                                    $.each(value, function(key, value) {
+                                        pdrbValue = ((value.adhk != null) ?
+                                            formatRupiah(
+                                                value.adhk
+                                                .replace('.', ','),
+                                                'Rp. ') : formatRupiah(0,
+                                                'Rp. '));
+                                        $('input[name=value_' + quarter + '_' +
+                                            value
+                                            .subsector_id + ']').val(
+                                            pdrbValue);
+                                        $('input[name=id_' + quarter + '_' + value
+                                            .subsector_id + ']').val(
+                                            value.id);
+                                    });
+                                });
+
+                            } else {
+                                $.each(result, function(quarter, value) {
+                                    $.each(value, function(key, value) {
+                                        pdrbValue = ((value.adhb != null) ?
+                                            formatRupiah(
+                                                value.adhb
+                                                .replace('.', ','),
+                                                'Rp. ') : formatRupiah(0,
+                                                'Rp. '));
+                                        $('input[name=value_' + quarter + '_' +
+                                            value
+                                            .subsector_id + ']').val(
+                                            pdrbValue);
+                                        $('input[name=id_' + quarter + '_' + value
+                                            .subsector_id + ']').val(
+                                            value.id);
+                                    });
+                                });
+                            }
+
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Berhasil',
+                                text: 'Data berhasil disalin.'
+                            })
+                        },
+                    })
+                });
+
                 $("#singleFormSave").on('click', function() {
                     $.ajax({
                         type: 'POST',
@@ -469,7 +657,6 @@
                         obj[item.name] = item.value;
                         return obj;
                     }, {});
-                    console.log(input)
                     $.ajax({
                         type: 'POST',
                         url: '{{ route('saveFullData') }}',
@@ -486,6 +673,7 @@
                         },
 
                         success: function(result) {
+                            console.log(result)
                             const Toast = Swal.mixin({
                                 toast: true,
                                 position: 'top-end',

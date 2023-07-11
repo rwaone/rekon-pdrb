@@ -22,7 +22,8 @@ class DatabaseSeeder extends Seeder
             SatkerSeeder::class,
             SectorSeeder::class,
             SubsectorSeeder::class,
-            UserSeeder::class
+            UserSeeder::class,
+            PengeluaranSeeder::class,
         ]);
     }
 }

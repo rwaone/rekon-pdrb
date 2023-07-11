@@ -139,6 +139,18 @@ class PdrbController extends Controller
         ]);
     }
 
+    public function copyData(Request $request)
+    {
+        $filter = $request->filter;
+        $copy = $request->copy;
+        $fullData = [];
+    
+        for ($index = 1; $index <= $copy['quarterCopy']; $index++) {
+            $data[$index] = Pdrb::where('period_id', $copy['periodCopy'])->where('region_id', $filter['region_id'])->where('quarter', $index)->orderBy('subsector_id')->get();
+        }
+        return response()->json($data);
+    }
+
     public function getFullData(Request $request)
     {
         $filter = $request->filter;
@@ -224,20 +236,13 @@ class PdrbController extends Controller
         $input = $request->input;
         $subsectors = Subsector::where('type', $filter['type'])->orderBy('id')->get();
         $data = [];
-        $dataSeries = [
-            '1',
-            '2',
-            '3',
-            '4',
-        ];
 
-        foreach ($dataSeries as $key) {
+        for ($index = 1; $index <= $filter['quarter']; $index++) {
             foreach ($subsectors as $subsector) {
-                $inputData = (float) str_replace(',', '.', str_replace('.', '', str_replace('Rp. ', '', $input['value_' . $key . '_' . $subsector->id])));
-                // return response()->json($inputData);
-
-                Pdrb::where('id', $input['id_' . $key . '_' . $subsector->id])->update([$filter['price_base'] => $inputData]);
-                // $inputData['id'] = $input['id_'.$x];
+                $inputData = (float) str_replace(',', '.', str_replace('.', '', str_replace('Rp. ', '', $input['value_' . $index . '_' . $subsector->id])));
+                
+                Pdrb::where('id', $input['id_' . $index . '_' . $subsector->id])->update([$filter['price_base'] => $inputData]);
+               
                 array_push($data, $inputData);
             }
         }

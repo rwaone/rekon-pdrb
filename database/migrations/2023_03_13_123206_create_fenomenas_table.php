@@ -15,11 +15,9 @@ return new class extends Migration
     {
         Schema::create('fenomenas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('period_id');
             $table->foreignId('region_id');
-            $table->foreignId('subsector_id');
+            $table->foreignId('subsector_id')->nullable(true);
             $table->text('description');
-            $table->string('file');
             $table->timestamps();
         });
     }

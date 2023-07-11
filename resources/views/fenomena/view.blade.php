@@ -19,6 +19,14 @@
             .table tr:nth-child(even) {
                 background-color: ;
             }
+
+            #btn-back-to-top {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                display: none;
+                border-radius: 100%
+            }
         </style>
     </x-slot>
 
@@ -33,11 +41,20 @@
         @include('fenomena.single-form')
     </div>
 
+
+    <!-- Back to top button -->
+    <button type="button" class="btn btn-light btn-floating btn-lg" id="btn-back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     <x-slot name="script">
         <!-- Additional JS resources -->
         <script src="{{ url('') }}/plugins/select2/js/select2.full.min.js"></script>
         <script src="{{ url('') }}/plugins/datatables/jquery.dataTables.min.js"></script>
         <script>
+            //Get the button
+            let mybutton = document.getElementById("btn-back-to-top");
+
             $(document).on('focus', '.select2-selection', function(e) {
                 $(this).closest(".select2-container").siblings('select:enabled').select2('open');
             })
@@ -99,7 +116,7 @@
                         $('#fenomenaFormContainer').removeClass('d-none');
                         showFenomena();
                     } else {
-                        $('#fenomenaSingleForm')[0].reset();
+                        $('#fenomenaForm')[0].reset();
                         $('#fenomenaFormContainer').addClass('d-none');
                     }
                 });
@@ -120,32 +137,18 @@
                         success: function(result) {
 
                             console.log(result);
-                            $('#singleForm')[0].reset();
-                            if ($('#price_base').val() == 'adhk') {
-                                $.each(result, function(key, value) {
-                                    pdrbValue = ((value.adhk != null) ? formatRupiah(value.adhk
-                                        .replace('.', ','),
-                                        'Rp. ') : formatRupiah(0,
-                                        'Rp. '));
-                                    $('input[name=value_' + value.subsector_id + ']').val(
-                                        pdrbValue);
-                                    $('input[name=id_' + value.subsector_id + ']').val(
-                                        value.id);
-                                });
+                            
+                            $('#fenomenaForm')[0].reset();
 
-                            } else {
+                            $.each(result, function(key, value) {
+                                sector_id = (value.sector_id != null) ? value.sector_id : 'NULL';
+                                subsector_id = (value.subsector_id != null) ? value.subsector_id : 'NULL';
+                                $('textarea[name=value_' + value.category_id + '_' + sector_id + '_' + subsector_id + ']').val(
+                                    value.description);
+                                $('input[name=id_' + value.category_id + '_' + sector_id + '_' + subsector_id + ']').val(
+                                    value.id);
+                            });
 
-                                $.each(result, function(key, value) {
-                                    pdrbValue = ((value.adhb != null) ? formatRupiah(value.adhb
-                                        .replace('.', ','),
-                                        'Rp. ') : formatRupiah(0,
-                                        'Rp. '));
-                                    $('input[name=value_' + value.subsector_id + ']').val(
-                                        pdrbValue);
-                                    $('input[name=id_' + value.subsector_id + ']').val(
-                                        value.id);
-                                });
-                            }
 
                             const Toast = Swal.mixin({
                                 toast: true,
@@ -159,21 +162,27 @@
                                 title: 'Berhasil',
                                 text: 'Data berhasil ditampilkan.'
                             })
+
+                            $('.loader').addClass('d-none')
                         },
                     });
                 };
 
-                $("#singleFormSave").on('click', function() {
-                    // console.log(data);
+                $("#fenomenaSave").on('click', function() {
+                    fenomena = $('#fenomenaForm').serializeArray().reduce(function(obj, item) {
+                                obj[item.name] = item.value;
+                                return obj;
+                            }, {}),
+                    console.log(fenomena);
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route('saveSingleData') }}',
+                        url: '{{ route('saveFenomena') }}',
                         data: {
                             filter: $('#filterForm').serializeArray().reduce(function(obj, item) {
                                 obj[item.name] = item.value;
                                 return obj;
                             }, {}),
-                            input: $('#singleForm').serializeArray().reduce(function(obj, item) {
+                            fenomena: $('#fenomenaForm').serializeArray().reduce(function(obj, item) {
                                 obj[item.name] = item.value;
                                 return obj;
                             }, {}),

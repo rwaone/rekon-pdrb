@@ -1,4 +1,7 @@
-<form class="form-horizontal" id="fenomenaSingleForm">
+
+<form class="form-horizontal" id="fenomenaForm" method="post">
+    <input type="text" name="value"
+    id="fenomenaText" class="form-control">
     <div class="card-body p-3 table-responsive">
         <table class="table table-striped table-bordered" id="rekonsiliasi-table-single">
             <thead class="text-center" style="background-color: #09c140; color:aliceblue;">
@@ -17,8 +20,11 @@
                                 <label class="col" style="margin-bottom:0rem;"
                                     for="">{{ $subsector->sector->category->code . '. ' . $subsector->sector->category->name }}</label>
                             </td>
+                            <input type="hidden" name="id_{{ $subsector->sector->category->id .'_NULL_NULL'}}">
+                            <input type="hidden" name="subsector_{{ $subsector->sector->category->id .'_NULL_NULL'}}"
+                                value="{{ $subsector->sector->category->id .'_NULL_NULL'}}">
                             <td class="categories">
-                                <textarea name="{{ $subsector->sector->category->id }}"
+                                <textarea name="value_{{ $subsector->sector->category->id .'_NULL_NULL'}}"
                                     id="fenomena_{{ $subsector->sector->category->id }}" class="form-control" rows="4" cols="50" 
                                     aria-required="true"></textarea>
                             </td>
@@ -30,9 +36,12 @@
                                 <p class="col ml-4" style="margin-bottom:0rem;" for="">
                                     {{ $subsector->sector->code . '. ' . $subsector->sector->name }}</p>
                             </td>
+                            <input type="hidden" name="id_{{ $subsector->sector->category->id .'_' . $subsector->sector->id . '_NULL' }}">
+                            <input type="hidden" name="subsector_{{ $subsector->sector->category->id .'_' . $subsector->sector->id . '_NULL' }}"
+                                value="{{ $subsector->sector->category->id .'_' . $subsector->sector->id . '_NULL' }}">
                             <td>
                                 <textarea type="text"
-                                    name="{{ $subsector->sector->code . '_' . $subsector->sector->category->code }}"
+                                    name="value_{{ $subsector->sector->category->id .'_' . $subsector->sector->id . '_NULL' }}"
                                     id="fenomena_{{ $subsector->sector->category->id . '_'  . $subsector->sector->id}}"
                                     class="form-control" rows="4" cols="50"  aria-required="true"></textarea>
                             </td>
@@ -45,11 +54,11 @@
                                     for="{{ $subsector->code }}_{{ $subsector->name }}">
                                     {{ $subsector->code . '. ' . $subsector->name }}</p>
                             </td>
-                            <input type="hidden" name="id_{{ $subsector->id }}">
-                            <input type="hidden" name="subsector_{{ $subsector->id }}"
-                                value="{{ $subsector->id }}">
+                            <input type="hidden" name="id_{{ $subsector->sector->category->id .'_' . $subsector->sector->id . '_' . $subsector->id }}">
+                            <input type="hidden" name="subsector_{{ $subsector->sector->category->id .'_' . $subsector->sector->id . '_' . $subsector->id }}"
+                                value="{{ $subsector->sector->category->id .'_' . $subsector->sector->id . '_' . $subsector->id }}">
                             <td>
-                                <textarea name="value_{{ $subsector->id }}"
+                                <textarea name="value_{{ $subsector->sector->category->id .'_' . $subsector->sector->id . '_' . $subsector->id }}"
                                     id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
                                     class="form-control" rows="4" cols="50"
                                     aria-required="true"></textarea>
@@ -62,11 +71,11 @@
                                     for="{{ $subsector->sector->code . '_' . $subsector->sector->name }}">
                                     {{ $subsector->sector->code . '. ' . $subsector->sector->name }}</p>
                             </td>
-                            <input type="hidden" name="id_{{ $subsector->id }}">
-                            <input type="hidden" name="subsector_{{ $subsector->id }}"
-                                value="{{ $subsector->id }}">
+                            <input type="hidden" name="id_{{ $subsector->sector->category->id .'_' . $subsector->sector->id . '_' . $subsector->id }}">
+                            <input type="hidden" name="subsector_{{ $subsector->sector->category->id .'_' . $subsector->sector->id . '_' . $subsector->id }}"
+                                value="{{ $subsector->sector->category->id .'_' . $subsector->sector->id . '_' . $subsector->id }}">
                             <td>
-                                <textarea name="value_{{ $subsector->id }}"
+                                <textarea name="value_{{ $subsector->sector->category->id .'_' . $subsector->sector->id . '_' . $subsector->id }}"
                                     id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
                                     class="form-control" rows="4" cols="50" 
                                     aria-required="true"></textarea>
@@ -78,11 +87,11 @@
                                 <label class="col" style="margin-bottom:0rem;"
                                     for="{{ $subsector->sector->category->code . '_' . $subsector->name }}">{{ $subsector->sector->category->code . '. ' . $subsector->name }}</label>
                             </td>
-                            <input type="hidden" name="id_{{ $subsector->id }}">
-                            <input type="hidden" name="subsector_{{ $subsector->id }}"
-                                value="{{ $subsector->id }}">
+                            <input type="hidden" name="id_{{ $subsector->sector->category->id .'_' . $subsector->sector->id . '_' . $subsector->id }}">
+                            <input type="hidden" name="subsector_{{ $subsector->sector->category->id .'_' . $subsector->sector->id . '_' . $subsector->id }}"
+                                value="{{ $subsector->sector->category->id .'_' . $subsector->sector->id . '_' . $subsector->id }}">
                             <td>
-                                <textarea type="text" name="value_{{ $subsector->id }}"
+                                <textarea type="text" name="value_{{ $subsector->sector->category->id .'_' . $subsector->sector->id . '_' . $subsector->id }}"
                                     id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
                                     class="form-control" rows="4" cols="50"
                                     aria-required="true"></textarea>
@@ -116,7 +125,7 @@
     </div>
     <div class="card-footer d-flex pr-3">
         <div class="ml-auto">
-            <button id="singleFormSave" type="button" class="btn btn-success">Simpan</button>
+            <button id="fenomenaSave" type="button" class="btn btn-success">Simpan</button>
         </div>
     </div>
 </form>
