@@ -29,7 +29,7 @@
                         class="nav-link {{ Request::is('monitoring') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
-                            Monitoring Upload Tabel
+                            Monitoring
                         </p>
                     </a>
                 </li>

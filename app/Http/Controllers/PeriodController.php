@@ -143,6 +143,24 @@ class PeriodController extends Controller
         return response()->json($data);
     }
 
+    public function fetchActiveYear(Request $request)
+    {
+        $data['years'] = Period::where('type',$request->type)->where('status','Aktif')->groupBy('year')->orderBy('year','DESC')->get('year');
+        return response()->json($data);
+    }
+
+    public function fetchActiveQuarter(Request $request)
+    {
+        $data['quarters'] = Period::where('type', $request->type)->where('year',$request->year)->where('status','Aktif')->groupBy('quarter')->get('quarter');
+        return response()->json($data);
+    }
+    
+    public function fetchActivePeriod(Request $request)
+    {
+        $data['periods'] = Period::where('type', $request->type)->where('year',$request->year)->where('quarter', $request->quarter)->where('status','Aktif')->get();
+        return response()->json($data);
+    }
+
     public function konserdaYear(Request $request)
     {
         $data['years'] = Period::where('type',$request->type)->where('status', 'Final')->groupBy('year')->orderBy('year','DESC')->get('year');
