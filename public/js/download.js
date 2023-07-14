@@ -42,6 +42,9 @@ function getReady() {
         }
         return merged;
     } else {
+        contents.forEach(function (row, index) {
+            row.Komponen = row.Komponen.trim();
+        })
         return contents;
     }
 }
@@ -254,11 +257,12 @@ async function downloadExcelAll() {
 
 function downloadKonserda() {
     let list = [];
-    var datas = JSON.parse(localStorage.getItem("data"));
+    var datas = JSON.parse(sessionStorage.getItem("data"));
+    var befores = JSON.parse(sessionStorage.getItem("before"));
     try {
-        getAdhb(datas);
+        getAdhb(datas,types);
         list["ADHB"] = getReady();
-        getAdhk(datas);
+        getAdhk(datas,types);
         list["ADHK"] = getReady();
         let tbody = $("#rekon-view").find("tbody");
         $("tbody td:nth-child(n+2):nth-child(-n+6)").removeClass(function (
@@ -281,13 +285,13 @@ function downloadKonserda() {
         });
         getDist();
         list["DISTRIBUSI"] = getReady();
-        getGrowth(datas);
+        getGrowth(datas,befores,types);
         list["GROWTH"] = getReady();
-        let laju = getIndex(datas);
+        let laju = getIndex(datas,types);
         list["INDEX"] = getReady();
         getLaju(laju);
         list["LAJU"] = getReady();
-        getAdhb(datas);
+        getAdhb(datas,types);
 
         var workbook = XLSX.utils.book_new();
         for (let key in list) {
