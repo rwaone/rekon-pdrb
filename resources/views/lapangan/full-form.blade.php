@@ -1,4 +1,9 @@
 <div class="card-header">
+    <ul class="nav nav-pills ml-auto p-2">
+        <li class="nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">Tab 1</a></li>
+        <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">Tab 2</a></li>
+        <li class="nav-item"><a class="nav-link" href="#tab_3" data-toggle="tab">Tab 3</a></li>
+    </ul>
     <div class="card-tools">
         <button id="copyButton" type="button" class="btn btn-warning" data-toggle="modal" data-target="#copy-modal">
             <i class="fas fa-copy"></i> Salin Data

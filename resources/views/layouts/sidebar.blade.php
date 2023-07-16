@@ -52,6 +52,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ url('lapangan-usaha/daftarPokok') }}"
+                                class="nav-link {{ Request::is('lapangan-usaha/daftarPokok') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Tabel Pokok</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ url('lapangan-usaha/konserda') }}"
                                 class="nav-link {{ Request::is('lapangan-usaha/konserda') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
@@ -63,13 +70,6 @@
                                 class="nav-link {{ Request::is('lapangan-usaha/fenomena') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Fenomena</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('lapangan-usaha/daftarPokok') }}"
-                                class="nav-link {{ Request::is('lapangan-usaha/daftarPokok') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Daftar Tabel Pokok</p>
                             </a>
                         </li>
                     </ul>
@@ -93,6 +93,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ url('pengeluaran/daftarPokok') }}"
+                                class="nav-link {{ Request::is('pengeluaran/daftarPokok') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Tabel Pokok</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ url('pengeluaran/konserda') }}"
                                 class="nav-link {{ Request::is('pengeluaran/konserda') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
@@ -104,13 +111,6 @@
                                 class="nav-link {{ Request::is('pengeluaran/fenomena') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Fenomena</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('pengeluaran/daftarPokok') }}"
-                                class="nav-link {{ Request::is('pengeluaran/daftarPokok') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Daftar Tabel Pokok</p>
                             </a>
                         </li>
                     </ul>

@@ -147,7 +147,7 @@ $(document).ready(function () {
                         $.each(v2.split('\t'), function (i3, v3) {
                             var row = y + i2, col = x + i3;
                             obj['cell-' + row + '-' + col] = v3
-                            $this.closest('table').find('tr:eq(' + row + ') td:eq(' + col + ') input').val(formatRupiah(v3, 'Rp '));
+                            $this.closest('table').find('tr:eq(' + row + ') td:eq(' + col + ') input:not(:hidden)').val(formatRupiah(v3, 'Rp '));
                         });
                     });
 

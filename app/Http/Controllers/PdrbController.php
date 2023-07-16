@@ -247,6 +247,6 @@ class PdrbController extends Controller
             }
         }
 
-        return response()->json($data);
+        return response()->json('Data berhasil disimpan');
     }
 }
