@@ -7,6 +7,7 @@ use App\Http\Controllers\PeriodController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FenomenaController;
 use App\Http\Controllers\LapanganController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PengeluaranController;
 
 /*
@@ -20,13 +21,9 @@ use App\Http\Controllers\PengeluaranController;
 |
 */
 
-Route::get('/', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified']);
+Route::get('/', [DashboardController::class, 'dashboard'])->middleware(['auth', 'verified']);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -77,6 +74,9 @@ Route::post('konserda/period', [PeriodController::class, 'konserdaPeriod'])->nam
 Route::post('fetch/year', [PeriodController::class, 'fetchYear'])->name('fetchYear');
 Route::post('fetch/quarter', [PeriodController::class, 'fetchQuarter'])->name('fetchQuarter');
 Route::post('fetch/period', [PeriodController::class, 'fetchPeriod'])->name('fetchPeriod');
+Route::post('fetch/active-year', [PeriodController::class, 'fetcActiveYear'])->name('fetchActiveYear');
+Route::post('fetch/active-quarter', [PeriodController::class, 'fetchActiveQuarter'])->name('fetchActiveQuarter');
+Route::post('fetch/active-period', [PeriodController::class, 'fetchActivePeriod'])->name('fetchActivePeriod');
 Route::resource('period', PeriodController::class)->middleware(['auth', 'verified', 'admin']);
 
 Route::resource('user', UserController::class)->middleware(['auth', 'verified', 'admin']);

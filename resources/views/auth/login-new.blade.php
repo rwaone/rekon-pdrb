@@ -29,7 +29,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <img src="{{ url('') }}/login-page/images/undraw_remotely_2j6y.svg" alt="Image"
+                    <img src="{{ url('') }}/login-page/images/bg-1.png" alt="Image"
                         class="img-fluid">
                 </div>
                 <div class="col-md-6 contents">
