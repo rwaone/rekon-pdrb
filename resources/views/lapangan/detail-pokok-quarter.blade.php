@@ -76,7 +76,7 @@
                             <th>Triwulan II</th>
                             <th>Triwulan III</th>
                             <th>Triwulan IV</th>
-                            <th>Total</th>
+                            <th class="total-column">Total</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -1,6 +1,6 @@
 function getSummarise(type) {
     $(".values").each(function () {
-        $(this).text(formatRupiah($(this).text(), "Rp "));
+        $(this).text(formatRupiah($(this).text()));
     });
     if (type === "lapangan-usaha") {
         rowComponent = 55;
@@ -15,10 +15,7 @@ function getSummarise(type) {
                 sum += Number(Y);
             }
             $(`#sector-1-${q}`).text(
-                formatRupiah(
-                    String(sum.toFixed(2)).replaceAll(/[.]/g, ","),
-                    "Rp "
-                )
+                formatRupiah(String(sum.toFixed(2)).replaceAll(/[.]/g, ","))
             );
             sum = sum - sum;
         }
@@ -33,10 +30,7 @@ function getSummarise(type) {
             }
 
             $(`#sector-14-${q}`).text(
-                formatRupiah(
-                    String(sum.toFixed(2)).replaceAll(/[.]/g, ","),
-                    "Rp "
-                )
+                formatRupiah(String(sum.toFixed(2)).replaceAll(/[.]/g, ","))
             );
             sum = sum - sum;
         }
@@ -47,7 +41,7 @@ function getSummarise(type) {
                     `categories-${index}-${q}`
                 ).toFixed(2);
                 let que = String(jumlah).replaceAll(/[.]/g, ",");
-                $(`#categories-${index}-${q}`).text(formatRupiah(que, "Rp "));
+                $(`#categories-${index}-${q}`).text(formatRupiah(que));
                 $(`#categories-${index}-${q}`).addClass(
                     `text-bold pdrb-total-${q}`
                 );
@@ -58,14 +52,11 @@ function getSummarise(type) {
             let nonmigas =
                 simpleSum(`#value-10-${q}`) + simpleSum(`#value-15-${q}`);
             $(`#total-${q}`).text(
-                formatRupiah(String(pdrb).replaceAll(/[.]/g, ","), "Rp ")
+                formatRupiah(String(pdrb).replaceAll(/[.]/g, ","))
             );
             let pdrbNonmigas = (pdrb - nonmigas).toFixed(2);
             $(`#total-nonmigas-${q}`).text(
-                formatRupiah(
-                    String(pdrbNonmigas).replaceAll(/[.]/g, ","),
-                    "Rp "
-                )
+                formatRupiah(String(pdrbNonmigas).replaceAll(/[.]/g, ","))
             );
         }
     } else if (type === "pengeluaran") {
@@ -80,10 +71,7 @@ function getSummarise(type) {
                 sum += Number(Y);
             }
             $(`#sector-1-${q}`).text(
-                formatRupiah(
-                    String(sum.toFixed(2)).replaceAll(/[.]/g, ","),
-                    "Rp "
-                )
+                formatRupiah(String(sum.toFixed(2)).replaceAll(/[.]/g, ","))
             );
             $(`#sector-1-${q}`).addClass(`text-bold pdrb-total-${q}`);
             sum = sum - sum;
@@ -99,10 +87,7 @@ function getSummarise(type) {
             }
 
             $(`#sector-10-${q}`).text(
-                formatRupiah(
-                    String(sum.toFixed(2)).replaceAll(/[.]/g, ","),
-                    "Rp "
-                )
+                formatRupiah(String(sum.toFixed(2)).replaceAll(/[.]/g, ","))
             );
             $(`#sector-10-${q}`).addClass(`text-bold pdrb-total-${q}`);
             sum = sum - sum;
@@ -121,10 +106,7 @@ function getSummarise(type) {
             let Nets = Exports - Imports;
 
             $(`#sector-13-${q}`).text(
-                formatRupiah(
-                    String(Nets.toFixed(2)).replaceAll(/[.]/g, ","),
-                    "Rp "
-                )
+                formatRupiah(String(Nets.toFixed(2)).replaceAll(/[.]/g, ","))
             );
             $(`#sector-13-${q}`).addClass(`text-bold pdrb-total-${q}`);
             sum = sum - sum;
@@ -133,18 +115,22 @@ function getSummarise(type) {
         for (let q = 1; q <= 4; q++) {
             let pdrb = calculateSector(`pdrb-total-${q}`).toFixed(2);
             $(`#total-${q}`).text(
-                formatRupiah(String(pdrb).replaceAll(/[.]/g, ","), "Rp ")
+                formatRupiah(String(pdrb).replaceAll(/[.]/g, ","))
             );
         }
     }
 }
-
 function simpleSum(atri) {
     let X = $(`${atri}`)
         .text()
         .replaceAll(/[A-Za-z.]/g, "");
     let Y = X.replaceAll(/[,]/g, ".");
     return Number(Y);
+}
+
+function showOff() {
+    $("#rekon-view thead th").removeClass("d-none");
+    $("#rekon-view tbody td").removeClass("d-none");
 }
 
 function distribusi(values, index) {
@@ -188,8 +174,8 @@ function getIdx(adhb, adhk) {
 }
 
 function getAdhb(data, type) {
-    console.log(type);
-    console.log(data);
+    // console.log(type);
+    // console.log(data);
     if (type === "lapangan-usaha") {
         rowComponent = 55;
     } else if (type === "pengeluaran") {
@@ -237,12 +223,8 @@ function getAdhk(data, type) {
     getTotal();
 }
 
-function getGrowth(data, type) {
-    if (type === "lapangan-usaha") {
-        rowComponent = 55;
-    } else if (type === "pengeluaran") {
-        rowComponent = 14;
-    }
+function getGrowth(data, befores, type) {
+    const rowComponent = type === "lapangan-usaha" ? 55 : 14;
     $("tbody td:nth-child(n+2):nth-child(-n+6)").removeClass(function (
         index,
         className
@@ -250,45 +232,73 @@ function getGrowth(data, type) {
         return (className.match(/(^|\s)view-\S+/g) || []).join(" ");
     });
     $("tbody td:nth-child(n+2):nth-child(-n+6)").addClass("view-pertumbuhan");
-    let idx_adhk = [];
-    let growth = [];
+
+    const details = [];
+    const growth = [];
+    const before = [];
+
+    const getCells = (columnIndex) => {
+        const cells = [];
+        $("tbody tr").each(function () {
+            const value = $(this).find("td").eq(columnIndex).text();
+            cells.push(
+                Number(
+                    value.replaceAll(/[A-Za-z.]/g, "").replaceAll(/[,]/g, ".")
+                )
+            );
+        });
+        return cells;
+    };
+
     for (let q = 1; q <= 4; q++) {
         for (let i = 1; i <= rowComponent; i++) {
             $(`#value-${i}-${q}`).text(data[`pdrb-${q}`][i - 1]["adhk"]);
         }
     }
     getSummarise(types);
-    $("tbody td:not(:first-child):not(:last-child)").each(function () {
-        let X = $(this)
+
+    for (let i = 1; i <= 4; i++) {
+        details[i] = getCells(i);
+    }
+
+    $("tbody td:nth-child(2)").each(function () {
+        for (let i = 1; i <= rowComponent; i++) {
+            $(`#value-${i}-1`).text(befores["pdrb-before"][i - 1]["adhk"]);
+        }
+    });
+    getSummarise(types);
+    $("tbody td:nth-child(2)").each(function () {
+        const X = $(this)
             .text()
-            .replaceAll(/[A-Za-z.]/g, "");
-        let Y = X.replaceAll(/[,]/g, ".");
-        idx_adhk.push(Number(Y));
+            .replaceAll(/[A-Za-z.]/g, "")
+            .replaceAll(/[,]/g, ".");
+        before.push(Number(X));
     });
 
-    for (let i = 0; i < idx_adhk.length; i++) {
-        if (i % 4 != 0 && i > 0) {
-            let score =
-                idx_adhk[i - 1] > 0
-                    ? ((idx_adhk[i] / idx_adhk[i - 1]) * 100 - 100).toFixed(2)
-                    : "";
-            growth.push(score);
-        } else {
-            score = "-";
-            growth.push(score);
-        }
+    for (let i = 1; i <= 4; i++) {
+        const result = details[i].map((value, j) => {
+            let score;
+            if (i === 1) {
+                score = ((value / before[j]) * 100 - 100).toFixed(2);
+            } else {
+                score = ((value / details[i - 1][j]) * 100 - 100).toFixed(2);
+            }
+            return !isFinite(score) || isNaN(score) ? "-" : score;
+        });
+        growth[i] = result;
     }
-    $("tbody td:not(:first-child):not(:last-child)").each(function (index) {
-        $(this).text(growth[index]);
-    });
+
+    for (let q = 1; q <= 4; q++) {
+        $("tbody tr").each(function (index) {
+            $(this).find("td").eq(q).text(growth[q][index]);
+        });
+    }
+
+    $(".total-column").addClass("d-none");
 }
 
-function getIndex(data, type) {
-    if (type === "lapangan-usaha") {
-        rowComponent = 55;
-    } else if (type === "pengeluaran") {
-        rowComponent = 14;
-    }
+function getIndex(data, befores, type) {
+    const rowComponent = type === "lapangan-usaha" ? 55 : 14;
     $("tbody td:nth-child(n+2):nth-child(-n+6)").removeClass(function (
         index,
         className
@@ -296,9 +306,24 @@ function getIndex(data, type) {
         return (className.match(/(^|\s)view-\S+/g) || []).join(" ");
     });
     $("tbody td:nth-child(n+2):nth-child(-n+6)").addClass("view-indeks");
-    let idx_adhb = [];
-    let idx_adhk = [];
-    let idx = [];
+
+    const idx_adhb = [];
+    const idx_adhk = [];
+    const idx = [];
+
+    const getCells = (columnIndex) => {
+        const cells = [];
+        $("tbody tr").each(function () {
+            const value = $(this).find("td").eq(columnIndex).text();
+            cells.push(
+                Number(
+                    value.replaceAll(/[A-Za-z.]/g, "").replaceAll(/[,]/g, ".")
+                )
+            );
+        });
+        return cells;
+    };
+
     for (let q = 1; q <= 4; q++) {
         for (let i = 1; i <= rowComponent; i++) {
             $(`#value-${i}-${q}`).text(data[`pdrb-${q}`][i - 1]["adhb"]);
@@ -306,13 +331,9 @@ function getIndex(data, type) {
     }
     getSummarise(types);
     getTotal();
-    $("tbody td:not(:first-child)").each(function () {
-        let X = $(this)
-            .text()
-            .replaceAll(/[A-Za-z.]/g, "");
-        let Y = X.replaceAll(/[,]/g, ".");
-        idx_adhb.push(Number(Y));
-    });
+    for (let i = 1; i <= 5; i++) {
+        idx_adhb[i] = getCells(i);
+    }
     for (let q = 1; q <= 4; q++) {
         for (let i = 1; i <= rowComponent; i++) {
             $(`#value-${i}-${q}`).text(data[`pdrb-${q}`][i - 1]["adhk"]);
@@ -320,20 +341,48 @@ function getIndex(data, type) {
     }
     getSummarise(types);
     getTotal();
-    $("tbody td:not(:first-child)").each(function () {
-        let X = $(this)
-            .text()
-            .replaceAll(/[A-Za-z.]/g, "");
-        let Y = X.replaceAll(/[,]/g, ".");
-        idx_adhk.push(Number(Y));
-    });
-    console.log(idx_adhk[4],idx_adhb[4])
-    for (let i = 0; i < idx_adhb.length; i++) {
-        idx.push(getIdx(idx_adhb[i], idx_adhk[i]));
+    for (let i = 1; i <= 5; i++) {
+        idx_adhk[i] = getCells(i);
     }
-    $("tbody td:not(:first-child)").each(function (index) {
-        $(this).text(idx[index]);
+    for (let i = 1; i <= 5; i++) {
+        const result = idx_adhb[i].map((value, j) => {
+            const score = getIdx(value, idx_adhk[i][j]);
+            return !isFinite(score) || isNaN(score) ? "-" : score;
+        });
+        idx[i] = result;
+    }
+    $("tbody td:nth-child(2)").each(function () {
+        for (let i = 1; i <= rowComponent; i++) {
+            $(`#value-${i}-1`).text(befores["pdrb-before"][i - 1]["adhb"]);
+        }
     });
+    getSummarise(types);
+    getTotal();
+    idx_adhb["before"] = getCells(1);
+    $("tbody td:nth-child(2)").each(function () {
+        for (let i = 1; i <= rowComponent; i++) {
+            $(`#value-${i}-1`).text(befores["pdrb-before"][i - 1]["adhk"]);
+        }
+    });
+    getSummarise(types);
+    getTotal();
+    idx_adhk["before"] = getCells(1);
+
+    const result = idx_adhb["before"].map((value, j) => {
+        const score = getIdx(value, idx_adhk["before"][j]);
+        return !isFinite(score) || isNaN(score) ? "-" : score;
+    });
+    idx["before"] = result;
+
+    for (let q = 1; q <= 4; q++) {
+        $("tbody tr").each(function (index) {
+            $(this).find("td").eq(q).text(idx[q][index]);
+        });
+    }
+    $("tbody tr").each(function (index) {
+        $(this).find("td").eq(5).text(idx[5][index]);
+    });
+
     return idx;
 }
 
@@ -345,21 +394,27 @@ function getLaju(laju) {
         return (className.match(/(^|\s)view-\S+/g) || []).join(" ");
     });
     $("tbody td:nth-child(n+2):nth-child(-n+6)").addClass("view-laju");
-    let growth = [];
-    laju = laju.filter((item) => item !== "");
-    for (let i = 0; i < laju.length; i++) {
-        if (i % 4 != 0 && i > 0) {
-            let score = ((laju[i] / laju[i - 1]) * 100 - 100).toFixed(2);
-            growth.push(score);
-        } else {
-            score = "-";
-            growth.push(score);
-        }
+
+    const growth = [];
+    for (let i = 1; i <= 4; i++) {
+        const result = laju[i].map((value, j) => {
+            let score;
+            if (i === 1) {
+                score = ((value / laju["before"][j]) * 100 - 100).toFixed(2);
+            } else {
+                score = ((value / laju[i - 1][j]) * 100 - 100).toFixed(2);
+            }
+            return !isFinite(score) || isNaN(score) ? "-" : score;
+        });
+        growth[i] = result;
     }
 
-    $("tbody td:not(:first-child):not(:last-child)").each(function (index) {
-        $(this).text(growth[index]);
-    });
+    $(".total-column").addClass("d-none");
+    for (let q = 1; q <= 4; q++) {
+        $("tbody tr").each(function (index) {
+            $(this).find("td").eq(q).text(growth[q][index]);
+        });
+    }
 }
 
 function getTotal() {
@@ -382,10 +437,7 @@ function getTotal() {
             table
                 .find("tr:nth-child(" + row + ") td:last-child")
                 .text(
-                    formatRupiah(
-                        String(sum.toFixed(2)).replaceAll(/[.]/g, ","),
-                        "Rp "
-                    )
+                    formatRupiah(String(sum.toFixed(2)).replaceAll(/[.]/g, ","))
                 );
         }
     });
@@ -406,7 +458,7 @@ function calculateSector(sector) {
             .text()
             .replaceAll(/[A-Za-z.]/g, "");
         let Y = X.replaceAll(/[,]/g, ".");
-        sum +=  Number(Y);
+        sum += Number(Y);
     });
     return sum;
 }
@@ -414,9 +466,16 @@ function calculateSector(sector) {
 //change the value of inputed number to Rupiah
 function formatRupiah(angka, prefix) {
     var number_string = String(angka)
-            .replace(/[^,\d]/g, "")
+            .replace(/[^\-,\d]/g, "")
             .toString(),
-        split = number_string.split(","),
+        isNegative = false;
+
+    if (number_string.startsWith("-")) {
+        isNegative = true;
+        number_string = number_string.substr(1);
+    }
+
+    var split = number_string.split(","),
         sisa = split[0].length % 3,
         rupiah = split[0].substr(0, sisa),
         ribuan = split[0].substr(sisa).match(/\d{3}/gi);
@@ -427,6 +486,11 @@ function formatRupiah(angka, prefix) {
     }
 
     rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+
+    if (isNegative) {
+        rupiah = "-" + rupiah;
+    }
+
     return prefix == undefined ? rupiah : rupiah ? "Rp. " + rupiah : "";
 }
 
@@ -438,8 +502,9 @@ function fetchData() {
             dataType: "json",
             success: function (data) {
                 resolve(data);
-                // console.log(data.data)
-                localStorage.setItem("data", JSON.stringify(data.data));
+                console.log(data);
+                sessionStorage.setItem("data", JSON.stringify(data.data));
+                sessionStorage.setItem("before", JSON.stringify(data.before));
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 reject(errorThrown);
@@ -455,7 +520,9 @@ $(document).ready(async function () {
 //change
 $(document).ready(function () {
     let tbody = $("#rekon-view").find("tbody");
-    var datas = JSON.parse(localStorage.getItem("data"));
+    var datas = JSON.parse(sessionStorage.getItem("data"));
+    var befores = JSON.parse(sessionStorage.getItem("before"));
+
     $("#nav-distribusi").on("click", function (e) {
         e.preventDefault();
         $(".loader").removeClass("d-none");
@@ -482,6 +549,8 @@ $(document).ready(function () {
                 $(this).addClass("view-distribusi-total");
             });
             getDist();
+
+            showOff();
             $(".loader").addClass("d-none");
         }, 500);
     });
@@ -491,6 +560,7 @@ $(document).ready(function () {
         $(".loader").removeClass("d-none");
         setTimeout(function () {
             getAdhb(datas, types);
+            showOff();
             $(".loader").addClass("d-none");
         }, 500);
     });
@@ -500,6 +570,7 @@ $(document).ready(function () {
         $(".loader").removeClass("d-none");
         setTimeout(function () {
             getAdhk(datas, types);
+            showOff();
             $(".loader").addClass("d-none");
         }, 500);
     });
@@ -509,7 +580,7 @@ $(document).ready(function () {
         e.preventDefault();
         $(".loader").removeClass("d-none");
         setTimeout(function () {
-            getGrowth(datas, types);
+            getGrowth(datas, befores, types);
             $(".loader").addClass("d-none");
         }, 500);
     });
@@ -519,7 +590,8 @@ $(document).ready(function () {
         e.preventDefault();
         $(".loader").removeClass("d-none");
         setTimeout(function () {
-            getIndex(datas, types);
+            getIndex(datas, befores, types);
+            showOff();
             $(".loader").addClass("d-none");
         }, 500);
     });
@@ -529,7 +601,7 @@ $(document).ready(function () {
         e.preventDefault();
         $(".loader").removeClass("d-none");
         setTimeout(function () {
-            let laju = getIndex(datas, types);
+            let laju = getIndex(datas, befores, types);
             getLaju(laju);
             $(".loader").addClass("d-none");
         }, 500);
