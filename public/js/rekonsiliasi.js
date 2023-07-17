@@ -236,8 +236,8 @@ $(document).ready(function() {
                     $.each(result, function(key, value) {
                         pdrbValue = ((value.adhk != null) ? formatRupiah(value.adhk
                             .replace('.', ','),
-                            'Rp. ') : formatRupiah(0,
-                            'Rp. '));
+                            '') : formatRupiah(0,
+                            ''));
                         $('input[name=value_' + value.subsector_id + ']').val(
                             pdrbValue);
                         $('input[name=id_' + value.subsector_id + ']').val(
@@ -249,8 +249,8 @@ $(document).ready(function() {
                     $.each(result, function(key, value) {
                         pdrbValue = ((value.adhb != null) ? formatRupiah(value.adhb
                             .replace('.', ','),
-                            'Rp. ') : formatRupiah(0,
-                            'Rp. '));
+                            '') : formatRupiah(0,
+                            ''));
                         $('input[name=value_' + value.subsector_id + ']').val(
                             pdrbValue);
                         $('input[name=id_' + value.subsector_id + ']').val(
@@ -297,8 +297,8 @@ $(document).ready(function() {
                             pdrbValue = ((value.adhk != null) ? formatRupiah(
                                 value.adhk
                                 .replace('.', ','),
-                                'Rp. ') : formatRupiah(0,
-                                'Rp. '));
+                                '') : formatRupiah(0,
+                                ''));
                             $('input[name=value_' + quarter + '_' + value
                                 .subsector_id + ']').val(
                                 pdrbValue);
@@ -314,8 +314,8 @@ $(document).ready(function() {
                             pdrbValue = ((value.adhb != null) ? formatRupiah(
                                 value.adhb
                                 .replace('.', ','),
-                                'Rp. ') : formatRupiah(0,
-                                'Rp. '));
+                                '') : formatRupiah(0,
+                                ''));
                             $('input[name=value_' + quarter + '_' + value
                                 .subsector_id + ']').val(
                                 pdrbValue);
@@ -383,8 +383,8 @@ $(document).ready(function() {
                                 formatRupiah(
                                     value.adhk
                                     .replace('.', ','),
-                                    'Rp. ') : formatRupiah(0,
-                                    'Rp. '));
+                                    '') : formatRupiah(0,
+                                    ''));
                             $('input[name=value_' + quarter + '_' +
                                 value
                                 .subsector_id + ']').val(
@@ -402,8 +402,8 @@ $(document).ready(function() {
                                 formatRupiah(
                                     value.adhb
                                     .replace('.', ','),
-                                    'Rp. ') : formatRupiah(0,
-                                    'Rp. '));
+                                    '') : formatRupiah(0,
+                                    ''));
                             $('input[name=value_' + quarter + '_' +
                                 value
                                 .subsector_id + ']').val(

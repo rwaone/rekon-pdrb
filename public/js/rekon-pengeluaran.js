@@ -20,7 +20,7 @@ $(document).ready(function () {
         $currentRow.find('td:not(:last-child) input:not(:hidden)').each(function () {
             let X = $(this).val().replaceAll(/[A-Za-z.]/g, '')
             let Y = X.replaceAll(/[,]/g, '.')
-            sum += Y > 0 ? Number(Y) : 0
+            sum += Number(Y)
         })
         let sumRp = String(sum.toFixed(2)).replaceAll(/[.]/g, ',')
         $lastCol.find('input').val(formatRupiah(sumRp, 'Rp '))
@@ -33,7 +33,7 @@ $(document).ready(function () {
                 if (!$(this).hasClass('category-Y-X')) {
                     let X = $(this).val().replaceAll(/[A-Za-z.]/g, '')
                     let Y = X.replaceAll(/[,]/g, '.')
-                    sum += Y > 0 ? Number(Y) : 0
+                    sum += Number(Y)
                 }
             })
             let sumSection = String(sum.toFixed(2)).replaceAll(/[.]/g, ',')
@@ -48,7 +48,7 @@ $(document).ready(function () {
                 if (cell.hasClass('sectors')) {
                     let X = cell.find('input:not(:hidden)').val().replaceAll(/[A-Za-z.]/g, '')
                     let Y = X.replaceAll(/[,]/g, '.')
-                    sum += Y > 0 ? Number(Y) : 0
+                    sum += Number(Y)
                 }
             }
             let pdrbs = sum.toFixed(2)
@@ -72,7 +72,7 @@ $(document).ready(function () {
             if (cell.hasClass('sectors')) {
                 let X = cell.find('input:not(:hidden)').val().replaceAll(/[A-Za-z.]/g, '')
                 let Y = X.replaceAll(/[,]/g, '.')
-                sum += Y > 0 ? Number(Y) : 0
+                sum += Number(Y)
             }
         }
         let sumPDRB = String(sum.toFixed(2)).replaceAll(/[.]/g, ',')

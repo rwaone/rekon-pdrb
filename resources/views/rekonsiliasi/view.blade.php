@@ -34,7 +34,6 @@
             #rekonsiliasi-table .PDRB-footer td p {
                 text-align: center !important;
             }
-
         </style>
     </x-slot>
 
@@ -46,6 +45,17 @@
     @include('rekonsiliasi.filter')
 
     <span class="loader d-none"></span>
+
+    <div class="card">
+        <ul class="nav nav-pills p-2">
+            <li class="nav-item"><a class="nav-link active" href="#tab-adhb" data-toggle="tab">ADHB</a></li>
+            <li class="nav-item"><a class="nav-link" href="#tab-adhk" data-toggle="tab">ADHK</a></li>
+            <li class="nav-item"><a class="nav-link" href="#tab-distribusi" data-toggle="tab">Distribusi</a></li>
+            <li class="nav-item"><a class="nav-link" href="#tab-pertumbuhan" data-toggle="tab">Pertumbuhan</a></li>
+            <li class="nav-item"><a class="nav-link" href="#tab-indeks-implisit" data-toggle="tab">Indeks Implisit</a></li>
+            <li class="nav-item"><a class="nav-link" href="#tab-laju-implisit" data-toggle="tab">Laju Implisit</a></li>
+        </ul>
+    </div>
 
     @if ($type == 'Lapangan Usaha')
         <div id="fullFormContainer" class="card d-none">@include('lapangan.full-form')</div>
@@ -116,7 +126,6 @@
         <script src="{{ asset('js/rekon-pengeluaran.js') }}"></script>
         <script src="{{ asset('js/rekonsiliasi.js') }}"></script>
         <script>
-
             const tokens = '{{ csrf_token() }}'
             const url_fetch_year = new URL("{{ route('fetchYear') }}")
             const url_fetch_quarter = new URL("{{ route('fetchQuarter') }}")
@@ -136,21 +145,34 @@
 
             //change the value of inputed number to Rupiah 
             function formatRupiah(angka, prefix) {
-                var number_string = String(angka).replace(/[^,\d]/g, '').toString(),
-                    split = number_string.split(','),
+                var number_string = String(angka)
+                    .replace(/[^\-,\d]/g, "")
+                    .toString(),
+                    isNegative = false;
+
+                if (number_string.startsWith("-")) {
+                    isNegative = true;
+                    number_string = number_string.substr(1);
+                }
+
+                var split = number_string.split(","),
                     sisa = split[0].length % 3,
                     rupiah = split[0].substr(0, sisa),
                     ribuan = split[0].substr(sisa).match(/\d{3}/gi);
 
                 if (ribuan) {
-                    separator = sisa ? '.' : '';
-                    rupiah += separator + ribuan.join('.');
+                    separator = sisa ? "." : "";
+                    rupiah += separator + ribuan.join(".");
                 }
 
-                rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-                return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+                rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+
+                if (isNegative) {
+                    rupiah = "-" + rupiah;
+                }
+
+                return prefix == undefined ? rupiah : rupiah ? "" + rupiah : "";
             }
-            //
             //
 
             $(document).on('select2:open', () => {
@@ -166,7 +188,6 @@
                     theme: 'bootstrap4'
                 })
             });
-
         </script>
     </x-slot>
 </x-dashboard-Layout>
