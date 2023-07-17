@@ -48,7 +48,7 @@
                     <div class="help-block"></div>
                 </div>
 
-                <div class="form-group row">
+                {{-- <div class="form-group row">
                     <label class="col-sm-2 col-form-label" for="price_base">Basis Harga:</label>
                     <select class="form-control col-sm-9 select2bs4" name="price_base" id="price_base" required>
                         <option value="">Pilih Basis Harga</option>
@@ -56,7 +56,7 @@
                         <option value='adhk'>Atas Dasar Harga Konstan</option>
                     </select>
                     <div class="help-block"></div>
-                </div>
+                </div> --}}
                 <!-- /.card-body -->
                 {{-- <button id="filterSubmit" type="button" class="btn btn-info float-right">Tampilkan</button> --}}
             </div>

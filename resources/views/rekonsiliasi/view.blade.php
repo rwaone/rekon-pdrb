@@ -46,23 +46,24 @@
 
     <span class="loader d-none"></span>
 
-    <div class="card">
+    <div class="card d-none" id="navList">
         <ul class="nav nav-pills p-2">
-            <li class="nav-item"><a class="nav-link active" href="#tab-adhb" data-toggle="tab">ADHB</a></li>
-            <li class="nav-item"><a class="nav-link" href="#tab-adhk" data-toggle="tab">ADHK</a></li>
-            <li class="nav-item"><a class="nav-link" href="#tab-distribusi" data-toggle="tab">Distribusi</a></li>
-            <li class="nav-item"><a class="nav-link" href="#tab-pertumbuhan" data-toggle="tab">Pertumbuhan</a></li>
-            <li class="nav-item"><a class="nav-link" href="#tab-indeks-implisit" data-toggle="tab">Indeks Implisit</a></li>
-            <li class="nav-item"><a class="nav-link" href="#tab-laju-implisit" data-toggle="tab">Laju Implisit</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" id="nav-adhb">ADHB</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" id="nav-adhk">ADHK</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" id="nav-distribusi">Distribusi</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" id="nav-qtoq">Q to Q</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" id="nav-ytoy">Y to Y</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" id="nav-ctoc">C to C</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" id="nav-idx-implisit">Indeks Implisit</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" id="nav-laju">Laju Implisit</a></li>
         </ul>
     </div>
 
     @if ($type == 'Lapangan Usaha')
-        <div id="fullFormContainer" class="card d-none">@include('lapangan.full-form')</div>
-        <div id="singleFormContainer" class="card d-none">@include('lapangan.single-form')</div>
+        <div id="adhbFormContainer" class="card d-none">@include('lapangan.adhb-form')</div>
+        <div id="adhkFormContainer" class="card d-none">@include('lapangan.adhk-form')</div>
     @elseif ($type == 'Pengeluaran')
         <div id="fullFormContainer" class="card d-none">@include('pengeluaran.full-form')</div>
-        <div id="singleFormContainer" class="card d-none">@include('pengeluaran.single-form')</div>
     @endif
 
     <!-- Back to top button -->

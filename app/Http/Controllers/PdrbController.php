@@ -241,7 +241,7 @@ class PdrbController extends Controller
             foreach ($subsectors as $subsector) {
                 $inputData = (float) str_replace(',', '.', str_replace('.', '', str_replace('Rp. ', '', $input['value_' . $index . '_' . $subsector->id])));
                 
-                Pdrb::where('id', $input['id_' . $index . '_' . $subsector->id])->update([$filter['price_base'] => $inputData]);
+                Pdrb::where('id', $input['id_' . $index . '_' . $subsector->id])->update([$request->price_base => $inputData]);
                
                 array_push($data, $inputData);
             }
