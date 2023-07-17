@@ -24,8 +24,11 @@
             <div class="card card-primary card-outline">
                 <div class="card-body box-profile">
                     <div class="text-center">
-                        <img class="profile-user-img img-fluid img-circle"
-                            src="{{ asset('storage/' . $user->pegawai->foto) }}" alt="User profile picture">
+                        {{-- <img class="profile-user-img img-fluid img-circle"
+                            src="{{ asset('storage/' . $user->pegawai->foto) }}" alt="User profile picture"> --}}
+                            <img class="profile-user-img img-fluid img-circle"
+                                src="{{ url('') }}/dist/img/user2-160x160.jpg" alt="User profile picture">
+                            
                     </div>
                     <h3 class="profile-username text-center"> {{$user->name}} </h3>
                     <p class="text-muted text-center">{{ $user->role }}</p>
@@ -52,31 +55,21 @@
                 </div>
 
                 <div class="card-body">
-                    <strong><i class="fas fa-circle mr-1"></i>Jabatan</strong>
+                    <strong><i class="fas fa-circle mr-1"></i> Username</strong>
                     <p class="text-muted">
-                        {{ $user->pegawai->jabatan->nama }}
+                        {{ $user->username }}
                     </p>
                     <hr>
-                    <strong><i class="fas fa-circle mr-1"></i> NIP</strong>
+                    <strong><i class="fas fa-circle mr-1"></i> Email</strong>
                     <p class="text-muted">
-                        {{ $user->pegawai->nip_lama . ' - ' . $user->pegawai->nip_baru }}
+                        {{ $user->email }}
                     </p>
                     <hr>
-                    <strong><i class="fas fa-briefcase mr-1"></i> Pangkat Golongan</strong>
+                    <strong><i class="fas fa-circle mr-1"></i>Satuan Kerja</strong>
                     <p class="text-muted">
-                        {{ $user->pegawai->golongan->pangkat . ' ' . $user->pegawai->golongan->golongan }}
+                        {{ $user->satker->name }}
                     </p>
                     <hr>
-                    <strong><i class="fas fa-map-marker-alt mr-1"></i> Satuan Kerja</strong>
-                    <p class="text-muted">
-                        {{ $user->pegawai->satker->nama }}
-                    </p>
-                    <hr>
-                    <strong><i class="fas fa-user-tie mr-1"></i> Atasan Langsung</strong>
-                    <p class="text-muted">{{ $user->pegawai->atasan->nama }}</p>
-                    <hr>
-                    <strong><i class="far fa-file-alt mr-1"></i> Status</strong>
-                    <p class="text-muted">{{ $user->pegawai->status }}</p>
                 </div>
 
             </div>
@@ -96,8 +89,9 @@
                     <div class="tab-content">
 
                         <div class="active tab-pane" id="settings">
-                            <form class="form-horizontal" action="/updatePassword" method="post">
+                            <form class="form-horizontal" action="/password" method="post">
                                 @csrf
+                                @method('put')
 
                                 @if (session()->has('error'))
                                     <div class="alert alert-danger alert-dismissible">
