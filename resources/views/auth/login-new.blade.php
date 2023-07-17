@@ -35,7 +35,9 @@
                 <div class="col-md-6 contents">
                     <div class="row justify-content-center">
                         <div class="col-md-8">
-                            <div class="mb-4">
+                            <div class="mb-2">
+                                <img src="{{ url('') }}/dist/img/karlota-logo-long.png" alt="Image"
+                                    class="img-fluid">
                                 {{-- <h4>Sign In</h4> --}}
                             </div>
                             <form method="POST" action="{{ route('login') }}">
@@ -63,7 +65,7 @@
 
                                 <input type="submit" value="Log In" class="btn btn-block btn-success">
 
-                                <span class="d-block text-center my-4 text-muted">&mdash; or login with &mdash;</span>
+                                {{-- <span class="d-block text-center my-4 text-muted">&mdash; or login with &mdash;</span>
 
                                 <div class="text-center social-login">
                                     <a href="#" class="facebook">
@@ -74,7 +76,7 @@
                                     </a>
                                     <a href="#" class="google">
                                         <span class="icon-google mr-3"></span>
-                                    </a>
+                                    </a> --}}
                                 </div>
                             </form>
                         </div>
