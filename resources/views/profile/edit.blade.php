@@ -27,7 +27,7 @@
                         {{-- <img class="profile-user-img img-fluid img-circle"
                             src="{{ asset('storage/' . $user->pegawai->foto) }}" alt="User profile picture"> --}}
                             <img class="profile-user-img img-fluid img-circle"
-                                src="{{ url('') }}/dist/img/user2-160x160.jpg" alt="User profile picture">
+                                src="{{ url('') }}/dist/img/avatar5.jpg" alt="User profile picture">
                             
                     </div>
                     <h3 class="profile-username text-center"> {{$user->name}} </h3>
