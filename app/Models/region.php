@@ -28,4 +28,15 @@ class Region extends Model
 
         return $region;
     }
+
+    public static function getMyRegionId()
+    {
+        if (auth()->user()->satker_id == 1){
+            $region = Region::all();
+        } else {
+            $region = Region::where('satker_id', auth()->user()->satker_id)->get('id');
+        }
+
+        return $region;
+    }
 }
