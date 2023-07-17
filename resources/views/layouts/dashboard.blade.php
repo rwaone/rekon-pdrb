@@ -49,14 +49,18 @@
                             </ol>
                         </div>
                     </div>
-                </div><!-- /.container-fluid -->
+                </div>
+                <!-- /.container-fluid -->
             </section>
 
             <!-- Main content -->
             <section class="content">
-            <span class="loader d-none"></span>
+                <span class="loader d-none"></span>
                 <div class="container-fluid">
-                <div></div><div></div><div></div><div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
                     {{ $slot }}
                 </div>
 
