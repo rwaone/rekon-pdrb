@@ -161,8 +161,8 @@
         </div>
     </div>
     <span class="loader d-none"></span>
-    {{-- <div class="card mb-3 d-none" id="view-body"> --}}
-    <div class="card mb-3" id="view-body">
+    <div class="card mb-3 d-none" id="view-body">
+    {{-- <div class="card mb-3" id="view-body"> --}}
         <div class="card-body">
             <nav class="navbar">
                 <ul class="nav-item ml-auto">

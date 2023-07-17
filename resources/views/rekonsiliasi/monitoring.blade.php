@@ -44,30 +44,6 @@
             </table>
         </div>
     </div>
-    <div class="card">
-        <div class="card-body p-2">
-            <h4>Monitoring Pemasukan Tabel PDRB Tahunan</h4>
-            <table class="table table-bordered table-striped" id="monitoring-kuarter">
-                <thead>
-                    <th>Kabupaten/Kota</th>
-                    @foreach ($daftar_years as $year)
-                    <th>Putaran ke {{ $year->description }}</th>
-                    @endforeach
-                </thead>
-                <tbody>
-                    @foreach ($regions as $index => $item)
-                    <tr>
-                        <td>{{ $item->name }}</td>
-                        @foreach ($daftar_years as $year => $items)
-                        <td>{{ $data_regions_years[$index][$year] }}</td>
-                        @endforeach
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
-
 
     <x-slot name="script">
         <!-- Additional JS resources -->
