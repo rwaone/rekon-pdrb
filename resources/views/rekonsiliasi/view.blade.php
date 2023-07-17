@@ -38,7 +38,7 @@
     </x-slot>
 
     <x-slot name="breadcrumb">
-        <li class="breadcrumb-item active">Rekonsiliasi</li>
+        <li class="breadcrumb-item active">Entri Rekonsiliasi</li>
     </x-slot>
     <div id="my-cat" data-cat="{{ json_encode($cat) }}"></div>
 
