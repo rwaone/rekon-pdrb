@@ -260,8 +260,9 @@ class PengeluaranController extends Controller
         $befores = [];
         if ($period_before){
             $befores['pdrb-before'] = Pdrb::select('subsector_id', 'adhk', 'adhb')
-            ->where('period_id', $period_before)
+            ->where('period_id', $period_before->id)
             ->where('quarter', 4)
+            ->where('region_id', $region_id)
             ->get();
         } else {
             $befores = 'kosong';
@@ -276,7 +277,7 @@ class PengeluaranController extends Controller
         }
         return response()->json([
             'data' => $datas,
-            'before' => $befores
+            'before' => $befores,
         ]);
     }
 

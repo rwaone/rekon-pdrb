@@ -260,26 +260,36 @@ function getGrowth(data, befores, type) {
     for (let i = 1; i <= 4; i++) {
         details[i] = getCells(i);
     }
-
-    $("tbody td:nth-child(2)").each(function () {
-        for (let i = 1; i <= rowComponent; i++) {
-            $(`#value-${i}-1`).text(befores["pdrb-before"][i - 1]["adhk"]);
-        }
-    });
-    getSummarise(types);
-    $("tbody td:nth-child(2)").each(function () {
-        const X = $(this)
-            .text()
-            .replaceAll(/[A-Za-z.]/g, "")
-            .replaceAll(/[,]/g, ".");
-        before.push(Number(X));
-    });
+    let status;
+    status = 2;
+    if (befores === "kosong") {
+        status = 1;
+    }
+    if (status === 2) {
+        $("tbody td:nth-child(2)").each(function () {
+            for (let i = 1; i <= rowComponent; i++) {
+                $(`#value-${i}-1`).text(befores["pdrb-before"][i - 1]["adhk"]);
+            }
+        });
+        getSummarise(types);
+        $("tbody td:nth-child(2)").each(function () {
+            const X = $(this)
+                .text()
+                .replaceAll(/[A-Za-z.]/g, "")
+                .replaceAll(/[,]/g, ".");
+            before.push(Number(X));
+        });
+    }
 
     for (let i = 1; i <= 4; i++) {
         const result = details[i].map((value, j) => {
             let score;
             if (i === 1) {
-                score = ((value / before[j]) * 100 - 100).toFixed(2);
+                if (status === 2) {
+                    score = ((value / before[j]) * 100 - 100).toFixed(2);
+                } else {
+                    score = "-";
+                }
             } else {
                 score = ((value / details[i - 1][j]) * 100 - 100).toFixed(2);
             }
@@ -295,6 +305,9 @@ function getGrowth(data, befores, type) {
     }
 
     $(".total-column").addClass("d-none");
+    if (befores === "kosong") {
+        alert("Data Tahun Lalu Belum Final");
+    }
 }
 
 function getIndex(data, befores, type) {
@@ -351,28 +364,32 @@ function getIndex(data, befores, type) {
         });
         idx[i] = result;
     }
-    $("tbody td:nth-child(2)").each(function () {
-        for (let i = 1; i <= rowComponent; i++) {
-            $(`#value-${i}-1`).text(befores["pdrb-before"][i - 1]["adhb"]);
-        }
-    });
-    getSummarise(types);
-    getTotal();
-    idx_adhb["before"] = getCells(1);
-    $("tbody td:nth-child(2)").each(function () {
-        for (let i = 1; i <= rowComponent; i++) {
-            $(`#value-${i}-1`).text(befores["pdrb-before"][i - 1]["adhk"]);
-        }
-    });
-    getSummarise(types);
-    getTotal();
-    idx_adhk["before"] = getCells(1);
+    if (!(befores === "kosong")) {
+        $("tbody td:nth-child(2)").each(function () {
+            for (let i = 1; i <= rowComponent; i++) {
+                $(`#value-${i}-1`).text(befores["pdrb-before"][i - 1]["adhb"]);
+            }
+        });
+        getSummarise(types);
+        getTotal();
+        idx_adhb["before"] = getCells(1);
+        $("tbody td:nth-child(2)").each(function () {
+            for (let i = 1; i <= rowComponent; i++) {
+                $(`#value-${i}-1`).text(befores["pdrb-before"][i - 1]["adhk"]);
+            }
+        });
+        getSummarise(types);
+        getTotal();
+        idx_adhk["before"] = getCells(1);
 
-    const result = idx_adhb["before"].map((value, j) => {
-        const score = getIdx(value, idx_adhk["before"][j]);
-        return !isFinite(score) || isNaN(score) ? "-" : score;
-    });
-    idx["before"] = result;
+        const result = idx_adhb["before"].map((value, j) => {
+            const score = getIdx(value, idx_adhk["before"][j]);
+            return !isFinite(score) || isNaN(score) ? "-" : score;
+        });
+        idx["before"] = result;
+    } else {
+        idx["before"] = "kosong";
+    }
 
     for (let q = 1; q <= 4; q++) {
         $("tbody tr").each(function (index) {
@@ -394,7 +411,6 @@ function getLaju(laju) {
         return (className.match(/(^|\s)view-\S+/g) || []).join(" ");
     });
     $("tbody td:nth-child(n+2):nth-child(-n+6)").addClass("view-laju");
-
     const growth = [];
     for (let i = 1; i <= 4; i++) {
         const result = laju[i].map((value, j) => {
@@ -410,6 +426,9 @@ function getLaju(laju) {
     }
 
     $(".total-column").addClass("d-none");
+    if (laju["before"] === "kosong") {
+        alert("Data Tahun Lalu Belum Final");
+    }
     for (let q = 1; q <= 4; q++) {
         $("tbody tr").each(function (index) {
             $(this).find("td").eq(q).text(growth[q][index]);

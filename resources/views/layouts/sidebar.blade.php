@@ -35,7 +35,7 @@
                 </li>
                 <li
                     class="nav-item {{ Request::is('lapangan-usaha*') ? 'menu-open' : '' }}">
-                    <a href="../widgets.html"
+                    <a href=""
                         class="nav-link {{ Request::is('lapangan-usaha*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
@@ -76,7 +76,7 @@
                 </li>
                 <li
                     class="nav-item {{ Request::is('pengeluaran*') ? 'menu-open' : '' }}">
-                    <a href="../widgets.html"
+                    <a href=""
                         class="nav-link {{ Request::is('pengeluaran*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-coins"></i>
                         <p>
