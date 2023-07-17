@@ -19,6 +19,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <title>{{ config('app.name', 'Laravel') }}</title>
+    <link rel="icon" href="{{ url('') }}/dist/img/karlota-logo.png">
 </head>
 
 <body>
