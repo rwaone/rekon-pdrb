@@ -389,9 +389,6 @@ $(document).ready(function() {
                                 value
                                 .subsector_id + ']').val(
                                 pdrbValue);
-                            $('input[name=id_' + quarter + '_' + value
-                                .subsector_id + ']').val(
-                                value.id);
                         });
                     });
 
@@ -408,9 +405,6 @@ $(document).ready(function() {
                                 value
                                 .subsector_id + ']').val(
                                 pdrbValue);
-                            $('input[name=id_' + quarter + '_' + value
-                                .subsector_id + ']').val(
-                                value.id);
                         });
                     });
                 }
