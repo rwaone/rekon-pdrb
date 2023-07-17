@@ -107,12 +107,12 @@
                                         <td class="text-center">{{ $item->number }}</td>
                                         <td>{{ $item->region->name }}</td>
                                         <td class="text-center">{{ $item->period->year }}</td>
-                                        <td class="text-center">{{ $item->quarter }}</td>
+                                        <td class="text-center">{{ $item->period->quarter }}</td>
                                         <td class="text-center">{{ $item->period->description }}</td>
                                         <td class="text-center">
                                             <input value="{{ $item->period->id . '-' . $item->quarter }}"
                                                 class="hiddenInput" hidden>
-                                            <a href="{{ route('pengeluaran.detail', ['period_id' => $item->period->id, 'region_id' => $item->region_id, 'quarter' => $item->quarter]) }}"
+                                            <a href="{{ route('pengeluaran.detail', ['period_id' => $item->period->id, 'region_id' => $item->region_id, 'quarter' => $item->period->quarter]) }}"
                                                 class="btn btn-primary">
                                                 <span class="bi bi-check2-square"></span>
                                             </a>
