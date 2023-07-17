@@ -427,17 +427,17 @@ $(document).ready(function () {
 
     }
 
-    function allSumPDRBLapus($price_base) {
+    function allSumPDRBLapus(price_base) {
         for (let i = 1; i < 5; i++) {
 
-            let jumlah = calculateSector(`${price_base}-sector-Q${i}-1`).toFixed(2);
+            let jumlah = calculateSector(price_base + `-sector-Q${i}-1`).toFixed(2);
             let que = String(jumlah).replaceAll(/[.]/g, ',');
-            $(`#${price_base}_1_A_Q${i}`).val(formatRupiah(que, ''));
+            $(`#`+ price_base + `_1_A_Q${i}`).val(formatRupiah(que, ''));
 
 
-            jumlah = calculateSector(`${price_base}-sector-Q${i}-8`).toFixed(2);
+            jumlah = calculateSector(price_base + `-sector-Q${i}-8`).toFixed(2);
             que = String(jumlah).replaceAll(/[.]/g, ',');
-            $(`#${price_base}_1_C_Q${i}`).val(formatRupiah(que, ''))
+            $(`#`+ price_base + `_1_C_Q${i}`).val(formatRupiah(que, ''))
 
             for (let j = 1; j < 18; j++) {
 
