@@ -24,7 +24,7 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="{{ url('monitoring') }}"
                         class="nav-link {{ Request::is('monitoring') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-table"></i>
@@ -32,7 +32,7 @@
                             Monitoring
                         </p>
                     </a>
-                </li>
+                </li> --}}
                 <li
                     class="nav-item {{ Request::is('lapangan-usaha*') ? 'menu-open' : '' }}">
                     <a href=""

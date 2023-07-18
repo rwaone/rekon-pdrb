@@ -46,7 +46,7 @@
 
     <span class="loader d-none"></span>
 
-    <div class="card">
+    <div class="card d-none">
         <ul class="nav nav-pills p-2">
             <li class="nav-item"><a class="nav-link active" href="#tab-adhb" data-toggle="tab">ADHB</a></li>
             <li class="nav-item"><a class="nav-link" href="#tab-adhk" data-toggle="tab">ADHK</a></li>
