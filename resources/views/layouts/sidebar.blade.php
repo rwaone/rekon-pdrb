@@ -62,7 +62,7 @@
                             <a href="{{ url('lapangan-usaha/konserda') }}"
                                 class="nav-link {{ Request::is('lapangan-usaha/konserda') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>>Hasil Rekon</p>
+                                <p>Hasil Rekon</p>
                             </a>
                         </li>
                         <li class="nav-item">
