@@ -24,19 +24,16 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ url('monitoring') }}"
-                        class="nav-link {{ Request::is('monitoring') ? 'active' : '' }}">
+                {{-- <li class="nav-item">
+                    <a href="{{ url('monitoring') }}" class="nav-link {{ Request::is('monitoring') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
                             Monitoring
                         </p>
                     </a>
-                </li>
-                <li
-                    class="nav-item {{ Request::is('lapangan-usaha*') ? 'menu-open' : '' }}">
-                    <a href=""
-                        class="nav-link {{ Request::is('lapangan-usaha*') ? 'active' : '' }}">
+                </li> --}}
+                <li class="nav-item {{ Request::is('lapangan-usaha*') ? 'menu-open' : '' }}">
+                    <a href="" class="nav-link {{ Request::is('lapangan-usaha*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             Lapangan Usaha
@@ -72,12 +69,19 @@
                                 <p>Fenomena</p>
                             </a>
                         </li>
+                        @if (auth()->user()->satker_id == 1)
+                            <li class="nav-item">
+                                <a href="{{ url('lapangan-usaha/monitoring') }}"
+                                    class="nav-link {{ Request::is('lapangan-usaha/monitoring') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Monitoring</p>
+                                </a>
+                            </li>
+                        @endif
                     </ul>
                 </li>
-                <li
-                    class="nav-item {{ Request::is('pengeluaran*') ? 'menu-open' : '' }}">
-                    <a href=""
-                        class="nav-link {{ Request::is('pengeluaran*') ? 'active' : '' }}">
+                <li class="nav-item {{ Request::is('pengeluaran*') ? 'menu-open' : '' }}">
+                    <a href="" class="nav-link {{ Request::is('pengeluaran*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-coins"></i>
                         <p>
                             Pengeluaran
@@ -115,7 +119,7 @@
                         </li>
                     </ul>
                 </li>
-                
+
                 @can('admin')
                     <li class="nav-header">PENGATURAN</li>
                     <li class="nav-item">

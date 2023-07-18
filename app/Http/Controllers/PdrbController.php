@@ -95,9 +95,10 @@ class PdrbController extends Controller
 
     public function monitoring()
     {
-        $quarter = ['F', 1, 2, 3, 4];
+        $quarter = [ 1, 2, 3, 4];
         $regions = Region::getMyRegion();
         // $this_year = date('Y');
+        $year_active = Period::where('status', 'Aktif')->get('year');
         $this_year = 2017;
         $daftar_quarters = Period::select('id', 'year', 'type', 'description')->where('year', $this_year)->whereIn('status', ['Selesai', 'Aktif'])->whereIn('quarter', $quarter)->get();
         $data_regions_quarters = [];
@@ -131,6 +132,7 @@ class PdrbController extends Controller
         }
 
         return view('rekonsiliasi.monitoring', [
+            'year_active' => $year_active,
             'daftar_quarters' => $daftar_quarters,
             'daftar_years' => $daftar_years,
             'regions' => $regions,
