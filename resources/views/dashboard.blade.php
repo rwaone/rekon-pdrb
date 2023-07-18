@@ -60,6 +60,9 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @if ($periods == NULL)
+                        <td> Tidak ada data </td>
+                    @endif
                     @foreach ($periods as $period)
                         <tr>
                             <td class="text-center">{{ $loop->iteration }}</td>
