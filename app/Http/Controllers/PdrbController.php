@@ -186,64 +186,22 @@ class PdrbController extends Controller
         return response()->json($fullData);
     }
 
-    public function getSingleData(Request $request)
-    {
-        $filter = $request->filter;
-        $subsectors = Subsector::where('type', $filter['type'])->orderBy('id')->get();
-        $data = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->orderBy('subsector_id')->get();
-        if (sizeof($data) != 0) {
-            return response()->json($data);
-        } else {
-            $inputData = [];
-            $timestamp = date('Y-m-d H:i:s');
-            foreach ($subsectors as $subsector) {
-                $singleData = [
-                    'subsector_id' => $subsector->id,
-                    'type' => $filter['type'],
-                    'year' => $filter['year'],
-                    'quarter' => $filter['quarter'],
-                    'period_id' => $filter['period_id'],
-                    'region_id' => $filter['region_id'],
-                    'created_at' => $timestamp,
-                    'updated_at' => $timestamp,
-                ];
-                array_push($inputData, $singleData);
-            }
-            Pdrb::insert($inputData);
-            // Pdrb::create($inputData);
-            $data = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->orderBy('subsector_id')->get();
-            return response()->json($data);
-        }
-    }
-
-    public function saveSingleData(Request $request)
-    {
-        $filter = $request->filter;
-        $input = $request->input;
-        $subsectors = Subsector::where('type', $filter['type'])->orderBy('id')->get();
-        $data = [];
-
-        foreach ($subsectors as $subsector) {
-            $inputData = (float) str_replace(',', '.', str_replace('.', '', str_replace('Rp. ', '', $input['value_' . $subsector->id])));
-            Pdrb::where('id', $input['id_' . $subsector->id])->update([$filter['price_base'] => $inputData]);
-        }
-        return response()->json($request);
-    }
-
     public function saveFullData(Request $request)
     {
         $filter = $request->filter;
-        $input = $request->input;
+        $adhb = $request->adhb;
+        $adhk = $request->adhk;
         $subsectors = Subsector::where('type', $filter['type'])->orderBy('id')->get();
         $data = [];
 
         for ($index = 1; $index <= $filter['quarter']; $index++) {
             foreach ($subsectors as $subsector) {
-                $inputData = (float) str_replace(',', '.', str_replace('.', '', str_replace('Rp. ', '', $input['value_' . $index . '_' . $subsector->id])));
+                $adhb_data = (float) str_replace(',', '.', str_replace('.', '', str_replace('Rp. ', '', $adhb['adhb_value_' . $index . '_' . $subsector->id])));
+                $adhk_data = (float) str_replace(',', '.', str_replace('.', '', str_replace('Rp. ', '', $adhk['adhk_value_' . $index . '_' . $subsector->id])));
                 
-                Pdrb::where('id', $input['id_' . $index . '_' . $subsector->id])->update([$request->price_base => $inputData]);
+                Pdrb::where('id', $adhb['id_' . $index . '_' . $subsector->id])->update(['adhb' => $adhb_data, 'adhk' => $adhk_data]);
                
-                array_push($data, $inputData);
+                array_push($data, ['adhb' => $adhb_data ,'adhk' => $adhk_data]);
             }
         }
 

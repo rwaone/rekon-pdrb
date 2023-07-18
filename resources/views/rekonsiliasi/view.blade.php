@@ -56,12 +56,15 @@
             <li class="nav-item"><a class="nav-link" href="#" id="nav-ctoc">C to C</a></li>
             <li class="nav-item"><a class="nav-link" href="#" id="nav-idx-implisit">Indeks Implisit</a></li>
             <li class="nav-item"><a class="nav-link" href="#" id="nav-laju">Laju Implisit</a></li>
+            <div class="ml-auto">
+                <button id="fullFormSave" type="button" class="btn btn-success">Simpan</button>
+            </div>
         </ul>
     </div>
 
     @if ($type == 'Lapangan Usaha')
-        <div id="adhbFormContainer" class="card d-none">@include('lapangan.adhb-form')</div>
-        <div id="adhkFormContainer" class="card d-none">@include('lapangan.adhk-form')</div>
+        <div id="adhbFormContainer" class="card form-container d-none">@include('lapangan.adhb-form')</div>
+        <div id="adhkFormContainer" class="card form-container d-none">@include('lapangan.adhk-form')</div>
     @elseif ($type == 'Pengeluaran')
         <div id="fullFormContainer" class="card d-none">@include('pengeluaran.full-form')</div>
     @endif
@@ -111,9 +114,12 @@
                             <div class="help-block"></div>
                         </div>
 
+                        
+                        <input type="hidden" id="copy-price-base">
+
                     </div>
                     <div class="modal-footer">
-                        <button id="copySubmit" type="button" class="btn btn-success float-right">Salin</button>
+                        <button onclick="" id="copySubmit" type="button" class="btn btn-success float-right">Salin</button>
                     </div>
                 </div>
             </form>

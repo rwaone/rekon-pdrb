@@ -27,7 +27,7 @@ $(document).ready(function () {
 
     tr.on('blur', 'td input', function (e) {
         let $currentRow = $(this).closest('tr')
-        let $totalCol = $currentRow.find('td:last').prev()
+        let $totalCol = $currentRow.find('td:last')
         let sum = 0
         $currentRow.find('input:not(:hidden):not(:disabled)').each(function () {
             let X = $(this).val().replaceAll(/[A-Za-z.]/g, '')
@@ -106,50 +106,7 @@ $(document).ready(function () {
             totalCell.text(formatRupiah(sumPDRB, ''))
         }
     });
-    //
 
-    //Single-Form Sum Last Column
-    let tableSingle = $('#rekonsiliasi-table-single')
-    let tbodySingle = tableSingle.find('tbody')
-    let trSingle = tbodySingle.find('tr')
-
-    trSingle.on('blur', 'td input', function (e) {
-        let numRows = trSingle.length - 2
-        let sum = 0
-        let pdrb = 0
-        let nonmigas = 0
-        for (let row = 0; row < numRows; row++) {
-            let cell = $('#rekonsiliasi-table-single tr').eq(row + 1).find('td').eq(1)
-            if (cell.hasClass('categories')) {
-                let X = cell.find('input').val().replaceAll(/[A-Za-z.]/g, '')
-                let Y = X.replaceAll(/[,]/g, '.')
-                sum += Number(Y)
-            }
-            for (let index of catLast) {
-                if (cell.find(`input[id^='adhk___${index}']`).length > 0) {
-                    let X = cell.find(`input[id^='adhk___${index}']`).val().replaceAll(
-                        /[A-Za-z.]/g, '')
-                    let Y = X.replaceAll(/[,]/g, '.')
-                    pdrb += Number(Y)
-                }
-            }
-            if (cell.find('input').attr('id').includes('adhk__1_B') || cell.find('input').attr(
-                'id').includes('adhk_b_1_C')) {
-                let X = cell.find('input').val().replaceAll(/[A-Za-z.]/g, '')
-                let Y = X.replaceAll(/[,]/g, '.')
-                nonmigas += Number(Y)
-            }
-        }
-        let pdrbs = sum + pdrb
-        let PdrbNonmigas = pdrbs - nonmigas
-        let sumPDRB = String(pdrbs.toFixed(2)).replaceAll(/[.]/g, ',')
-        let sumPDRBnm = String(PdrbNonmigas.toFixed(2)).replaceAll(/[.]/g, ',')
-        let totalnm = $('#rekonsiliasi-table-single tr').last().prev().find('td').eq(1)
-        let totalCell = $('#rekonsiliasi-table-single tr').last().find('td').eq(1)
-        totalnm.text(formatRupiah(sumPDRBnm, ''))
-        totalCell.text(formatRupiah(sumPDRB, ''))
-    })
-    //
 
     //single and full, sum for every category and sector
     for (let i = 1; i < 5; i++) {
@@ -203,7 +160,7 @@ $(document).ready(function () {
         $('#adhk_1_C').val(formatRupiah(que, ''));
     })
 
-    $('#rekonsiliasi-table').on('paste', 'input', function (e) {
+    $('#adhb-table').on('paste', 'input', function (e) {
         const $this = $(this);
         // let panjang_ndas = $('thead').children().length
         $.each(e.originalEvent.clipboardData.items, function (i, v) {
@@ -225,15 +182,15 @@ $(document).ready(function () {
             }
         });
         return false;
-    });
+    });    
 
-    $('#rekonsiliasi-table-single').on('paste', 'input', function (e) {
+    $('#adhk-table').on('paste', 'input', function (e) {
         const $this = $(this);
         // let panjang_ndas = $('thead').children().length
         $.each(e.originalEvent.clipboardData.items, function (i, v) {
             if (v.type === 'text/plain') {
                 v.getAsString(function (text) {
-                    var x = $this.closest('td').index() - 2,
+                    var x = $this.closest('td').index(),
                         y = $this.closest('tr').index() + 1,
                         obj = {};
                     text = text.trim('\r\n');
@@ -241,7 +198,7 @@ $(document).ready(function () {
                         $.each(v2.split('\t'), function (i3, v3) {
                             var row = y + i2, col = x + i3;
                             obj['cell-' + row + '-' + col] = v3
-                            $this.closest('table').find('tr:eq(' + row + ') td:eq(' + col + ') input').val(formatRupiah(v3, ''));
+                            $this.closest('table').find('tr:eq(' + row + ') td:eq(' + col + ') input:not(:hidden)').val(formatRupiah(v3, ''));
                         });
                     });
 
