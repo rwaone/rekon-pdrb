@@ -117,6 +117,15 @@
                                 <p>Fenomena</p>
                             </a>
                         </li>
+                        @if (auth()->user()->satker_id == 1)
+                            <li class="nav-item">
+                                <a href="{{ url('pengeluaran/monitoring') }}"
+                                    class="nav-link {{ Request::is('pengeluaran/monitoring') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Monitoring</p>
+                                </a>
+                            </li>
+                        @endif
                     </ul>
                 </li>
 
