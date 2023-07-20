@@ -99,6 +99,51 @@ class FenomenaController extends Controller
         //
     }
 
+    public function viewAll()
+    {
+        $filter = [
+            'type' => '',
+            'year' => '',
+            'quarter' => '',
+            'price_base' => '',
+        ];
+
+        $regions = Region::where('id', '>', 1)->get();
+        $cat = Category::pluck('code')->toArray();
+        $catString = implode(", ", $cat);
+        $subsectors = Subsector::all();
+        return view('fenomena.view-all', [
+            'regions' => $regions,
+            'subsectors' => $subsectors,
+            'cat' => $catString,
+            'years' => isset($years) ? $years : NULL,
+            'quarters'  => isset($quarters) ? $quarters : NULL,
+            'filter' => isset($filter) ? $filter : ['type' => ''],
+        ]);
+    }
+
+    public function getData(Request $request)
+    {
+        $types = $request->query('type');
+        $years = $request->query('year');
+        $quarters = $request->query('quarter');
+
+        $regions = Region::select('id')->where('id', '>', 1)->get();
+        $datas = [];
+        foreach ($regions as $region) {
+            $datas['fenomena-' . $region->id] = Fenomena::where('region_id', $region->id)
+                ->where('type', $types)
+                ->where('year', $years)
+                ->where('quarter', $quarters)->get();
+        }
+        $parameter = [
+            'type' => $types,
+            'years' => $years,
+            'quarter' => $quarters
+        ];
+        return response()->json($datas);
+    }
+
     public function getFenomena(Request $request)
     {
         $filter = $request->filter;
@@ -167,18 +212,18 @@ class FenomenaController extends Controller
             if (($subsector->code != null && $subsector->code == 'a' && $subsector->sector->code == '1') || ($subsector->code == null && $subsector->sector->code == '1')) {
                 $id = $fenomena['id_' . $subsector->sector->category->id . '_NULL_NULL'];
                 $value = $fenomena['value_' . $subsector->sector->category->id . '_NULL_NULL'];
-                Fenomena::where('id', $id)->update(['description'=> $value]);
+                Fenomena::where('id', $id)->update(['description' => $value]);
             }
 
             if ($subsector->code != null && $subsector->code == 'a') {
                 $id = $fenomena['id_' . $subsector->sector->category->id . '_' . $subsector->sector->id . '_NULL'];
                 $value = $fenomena['value_' . $subsector->sector->category->id . '_' . $subsector->sector->id . '_NULL'];
-                Fenomena::where('id', $id)->update(['description'=> $value]);
+                Fenomena::where('id', $id)->update(['description' => $value]);
             }
-            
+
             $id = $fenomena['id_' . $subsector->sector->category->id . '_' . $subsector->sector->id . '_' . $subsector->id];
             $value = $fenomena['value_' . $subsector->sector->category->id . '_' . $subsector->sector->id . '_' . $subsector->id];
-            Fenomena::where('id', $id)->update(['description'=> $value]);
+            Fenomena::where('id', $id)->update(['description' => $value]);
         }
 
         return response()->json();

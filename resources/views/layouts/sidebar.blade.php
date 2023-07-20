@@ -28,7 +28,7 @@
                     <a href="{{ url('monitoring') }}" class="nav-link {{ Request::is('monitoring') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
-                            Monitoring
+                            Monitoring PDRB
                         </p>
                     </a>
                 </li> --}}
@@ -52,7 +52,7 @@
                             <a href="{{ url('lapangan-usaha/daftarPokok') }}"
                                 class="nav-link {{ Request::is('lapangan-usaha/daftarPokok') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Tabel Pokok</p>
+                                <p>Daftar Tabel Pokok</p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -66,7 +66,14 @@
                             <a href="{{ url('lapangan-usaha/fenomena') }}"
                                 class="nav-link {{ Request::is('lapangan-usaha/fenomena') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Fenomena</p>
+                                <p>Entri Fenomena</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('fenomena/viewAll') }}"
+                                class="nav-link {{ Request::is('fenomena/viewAll') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Lihat Fenomena</p>
                             </a>
                         </li>
                         @if (auth()->user()->satker_id == 1)
@@ -74,7 +81,7 @@
                                 <a href="{{ url('lapangan-usaha/monitoring') }}"
                                     class="nav-link {{ Request::is('lapangan-usaha/monitoring') ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Monitoring</p>
+                                    <p>Monitoring PDRB</p>
                                 </a>
                             </li>
                         @endif
@@ -100,7 +107,7 @@
                             <a href="{{ url('pengeluaran/daftarPokok') }}"
                                 class="nav-link {{ Request::is('pengeluaran/daftarPokok') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Tabel Pokok</p>
+                                <p>Daftar Tabel Pokok</p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -114,7 +121,7 @@
                             <a href="{{ url('pengeluaran/fenomena') }}"
                                 class="nav-link {{ Request::is('pengeluaran/fenomena') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Fenomena</p>
+                                <p>Entri Fenomena</p>
                             </a>
                         </li>
                         @if (auth()->user()->satker_id == 1)
@@ -122,7 +129,7 @@
                                 <a href="{{ url('pengeluaran/monitoring') }}"
                                     class="nav-link {{ Request::is('pengeluaran/monitoring') ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Monitoring</p>
+                                    <p>Monitoring PDRB</p>
                                 </a>
                             </li>
                         @endif
