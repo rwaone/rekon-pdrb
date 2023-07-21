@@ -46,6 +46,9 @@ Route::post('fenomena/get', [FenomenaController::class, 'getFenomena'])->middlew
 Route::post('fenomena/save', [FenomenaController::class, 'saveFenomena'])->middleware(['auth', 'verified'])->name('saveFenomena');
 Route::get('fenomena/viewAll', [FenomenaController::class, 'viewAll'])->middleware(['auth', 'verified'])->name('viewAll');
 Route::get('fenomena/getData', [FenomenaController::class, 'getData'])->middleware(['auth', 'verified'])->name('fenomena.getData');
+Route::get('fenomena/monitoring', [FenomenaController::class, 'monitoring'])->middleware(['auth', 'verified']);
+Route::get('fenomena/getMonitoring', [FenomenaController::class, 'getMonitoring'])->middleware(['auth', 'verified'])->name('fenomena.getMonitoring');
+
 Route::resource('fenomena', FenomenaController::class)->middleware(['auth', 'verified']);
 
 //Lapangan
@@ -79,7 +82,6 @@ Route::post('konserda/period', [PeriodController::class, 'konserdaPeriod'])->nam
 
 Route::post('fenomena/year', [PeriodController::class, 'fenomenaYear'])->name('fenomenaYear');
 Route::post('fenomena/quarter', [PeriodController::class, 'fenomenaQuarter'])->name('fenomenaQuarter');
-
 
 Route::post('fetch/year', [PeriodController::class, 'fetchYear'])->name('fetchYear');
 Route::post('fetch/quarter', [PeriodController::class, 'fetchQuarter'])->name('fetchQuarter');

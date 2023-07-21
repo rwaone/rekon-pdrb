@@ -190,9 +190,100 @@ $(document).ready(function () {
             });
             return false;
         });
+    } else {
+        $("#type").on("change", function () {
+            let pdrb_type = $(this).val();
+            if (pdrb_type) {
+                $.ajax({
+                    type: "POST",
+                    url: url_fenomena_year,
+                    data: {
+                        type: pdrb_type,
+                        _token: tokens,
+                    },
+                    dataType: "json",
+
+                    success: function (result) {
+                        $("#year").empty();
+                        $("#year").append(
+                            '<option value="">-- Pilih Tahun --</option>'
+                        );
+                        $.each(result.years, function (key, value) {
+                            $("#year").append(
+                                '<option value="' +
+                                    value.year +
+                                    '">' +
+                                    value.year +
+                                    "</option>"
+                            );
+                        });
+                    },
+                });
+            } else {
+                $("#year").empty();
+                $("#year").append(
+                    '<option value="">-- Pilih Tahun --</option>'
+                );
+                $("#quarter").empty();
+                $("#quarter").append(
+                    '<option value="" selected>-- Pilih Triwulan --</option>'
+                );
+            }
+        });
+
+        $("#year").on("change", function () {
+            var pdrb_type = $("#type").val();
+            var pdrb_year = this.value;
+            if (pdrb_year) {
+                $.ajax({
+                    type: "POST",
+                    url: url_fenomena_quarter,
+                    data: {
+                        type: pdrb_type,
+                        year: pdrb_year,
+                        _token: tokens,
+                    },
+                    dataType: "json",
+
+                    success: function (result) {
+                        console.log(result);
+                        $("#quarter").empty();
+                        $("#quarter").append(
+                            '<option value="" selected>-- Pilih Triwulan --</option>'
+                        );
+                        $.each(result.quarters, function (key, value) {
+                            var description =
+                                value.quarter == "F"
+                                    ? "Lengkap"
+                                    : value.quarter == "T"
+                                    ? "Tahunan"
+                                    : "Triwulan " + value.quarter;
+                            $("#quarter").append(
+                                '<option value="' +
+                                    value.quarter +
+                                    '">' +
+                                    description +
+                                    "</option>"
+                            );
+                        });
+                    },
+                });
+            } else {
+                $("#quarter").empty();
+                $("#quarter").append(
+                    '<option value="" selected>-- Pilih Triwulan --</option>'
+                );
+            }
+        });
     }
 });
 function fetchData() {
+    const types = $("#type").val();
+    const years = $("#year").val();
+    const quarters = $("#quarter").val();
+    url_key.searchParams.set("type", types);
+    url_key.searchParams.set("year", encodeURIComponent(years));
+    url_key.searchParams.set("quarter", encodeURIComponent(quarters));
     return new Promise(function (resolve, reject) {
         $.ajax({
             type: "GET",
@@ -208,28 +299,61 @@ function fetchData() {
     });
 }
 
-function showData() {
-    const types = $("#type").val();
-    const years = $("#year").val();
-    const quarters = $("#quarter").val();
-    url_key.searchParams.set("type", types);
-    url_key.searchParams.set("year", encodeURIComponent(years));
-    url_key.searchParams.set("quarter", encodeURIComponent(quarters));
-    $.ajax({
-        type: "GET",
-        url: url_key.href,
-        dataType: "json",
-        success: function (data) {
-            console.log(data);
-            for (i = 1; i <= 15; i++) {
-                let cells = [];
-                $("#rekon-view tbody tr").each(function (index) {
-                    $(this)
-                        .find("td")
-                        .eq(i - 1)
-                        .text(data[`fenomena-${i + 1}`][index]["description"]);
-                });
+$("#download-all").on("click", function (e) {
+    e.preventDefault();
+    $(".loader").removeClass("d-none");
+    setTimeout(function () {
+        let datas = getReady();
+        // const csvData = convertToCSV(datas);
+        $(".loader").addClass("d-none");
+        // downloadCSV(csvData, "download-data.csv");
+        downloadExcel(datas);
+    }, 200);
+});
+
+$("#showData").click(async function (e) {
+    e.preventDefault();
+    $(".loader").removeClass("d-none");
+    $(".loader").removeClass("d-none");
+    $("#view-body").removeClass("d-none");
+    let types = $("#type").val();
+    types = types.replace(/\s/g, "");
+
+    try {
+        const data = await fetchData();
+        console.log(data);
+        $(".loader").addClass("d-none");
+        $("#view-body").removeClass("d-none");
+        for (i = 1; i <= 15; i++) {
+            $(`#rekon-view tbody tr.${types}`).each(function (index) {
+                $(this)
+                    .find("td span")
+                    .eq(i - 1)
+                    .text(data[`fenomena-${i + 1}`][index]["description"]);
+            });
+        }
+        $("#komponen tbody tr").each(function (index) {
+            if (!$(this).hasClass(`${types}`)) {
+                $(this).addClass("d-none");
+            } else {
+                $(this).removeClass("d-none");
             }
-        },
-    });
-}
+        });
+        $("#rekon-view tbody tr").each(function (index) {
+            if (!$(this).hasClass(`${types}`)) {
+                $(this).addClass("d-none");
+            } else {
+                $(this).removeClass("d-none");
+            }
+        });
+    } catch (e) {
+        $(".loader").addClass("d-none");
+        sessionStorage.clear();
+        alert("Error : " + e.message);
+    }
+});
+
+$("#refresh").click(function () {
+    sessionStorage.clear();
+    $("#view-body").addClass("d-none");
+});

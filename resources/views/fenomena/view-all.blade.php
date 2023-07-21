@@ -16,8 +16,11 @@
             }
 
             #komponen tbody tr {
-                max-height: 48px !important;
-                min-height: 48px !important;
+                /* max-height: 48px !important;
+                min-height: 48px !important; */
+                /* max-height: 100px !important; */
+                /* min-height: 100px !important; */
+                height: 100px;
             }
 
             .table td {
@@ -26,7 +29,7 @@
 
             #komponen {
                 table-layout: fixed;
-                width: 500px;
+                width: 300px;
                 /* display: inline-block; */
                 background: #f9fafc;
                 border-right: 1px solid #e6eaf0;
@@ -50,18 +53,43 @@
                 /* display: inline-block; */
                 overflow-x: auto;
                 vertical-align: top;
-                width: calc(100% - 500px);
+                width: calc(100% - 300px);
             }
 
             .table-data-wrapper table {
                 border-left: 0;
             }
 
-            .table-data-wrapper td,
             .table-data-wrapper th {
-                min-width: 180px;
-                max-width: 180px;
+                min-width: 480px;
+                max-width: 480px;
+            }
+
+            .table-data-wrapper td {
+                min-width: 480px;
+                max-width: 480px;
                 padding: 0rem !important;
+                word-break:break-all;
+                cursor: pointer;
+            }
+            
+            .table-data-wrapper td span {
+                display:block;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                /* white-space: nowrap; */
+                padding-left: 1.2rem;
+                
+            }
+
+            .table-data-wrapper td:hover span {
+                /* overflow: visible; */
+                /* height: auto; */
+                background-color:whitesmoke ! important;
+                contain: paint;
+                display: inline-flex;
+                min-width: 100%;
+                /* text-align: right ! important; */
             }
 
             .table-data-wrapper td:not(:last-child),
@@ -84,13 +112,10 @@
             }
 
             #rekon-view tbody tr {
-                /* height: 48px; */
+                height: 100px;
                 padding: 0rem !important;
             }
 
-            .sum-of-kabkot {
-                text-align: right;
-            }
 
             thead tr,
             tbody tr:not(:last-child) {
@@ -104,64 +129,66 @@
         <li class="breadcrumb-item active">Konserda</li>
         <div id="my-cat" data-cat="{{ json_encode($cat) }}"></div>
     </x-slot>
-    <div class="card mb-3 p-0">
-        <div class="card-body">
-            <form>
-                @csrf
-                <div class="row">
-                    <div class="col-md-2">
-                        <select class="form-control select2bs4" id="type" name="type">
-                            <option value="" selected>-- Pilih Jenis PDRB --</option>
-                            <option {{ old('type', $filter['type']) == 'Lapangan Usaha' ? 'selected' : '' }}
-                                value='Lapangan Usaha'>Lapangan Usaha</option>
-                            <option value="Pengeluaran">Pengeluaran</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <select class="form-control select2bs4" id="year" name="year">
-                            <option value="" selected>-- Pilih Tahun --</option>
-                            @if ($years)
-                                @foreach ($years as $year)
-                                    <option {{ old('year', $filter['year']) == $year->year ? 'selected' : '' }}
-                                        value="{{ $year->year }}">{{ $year->year }}</option>
-                                @endforeach
-                            @endif
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <select class="form-control select2bs4" id="quarter" name="quarter">
-                            <option value="" selected>-- Pilih Triwulan --</option>
-                            @if ($quarters)
-                                @foreach ($quarters as $quarter)
-                                    <option
-                                        {{ old('quarter', $filter['quarter']) == $quarter->quarter ? 'selected' : '' }}
-                                        value="{{ $quarter->quarter }}">
-                                        {{ $quarter->quarter == 'F' ? 'Lengkap' : ($quarter->quarter == 'T' ? 'Tahunan' : 'Triwulan ' . $quarter->quarter) }}
-                                    </option>
-                                @endforeach
-                            @endif
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <button class="btn btn-info col-md-10" id="showData">Tampilkan Data</button>
-                        <div class="btn btn-danger col-md-1" id="refresh"><i class="bi bi-x-lg"></i></div>
-                    </div>
+    <div class="row">
+        <div class="col-2 col-md-2 col-sm-2">
+        </div>
+        <div class="col-10 col-md-10 col-sm-10">
+            <div class="card mb-3 p-0">
+                <div class="card-body">
+                    <form>
+                        @csrf
+                        <div class="row">
+                            <div class="col-md">
+                                <select class="form-control select2bs4" id="type" name="type">
+                                    <option value="" selected>-- Pilih Jenis PDRB --</option>
+                                    <option {{ old('type', $filter['type']) == 'Lapangan Usaha' ? 'selected' : '' }}
+                                        value='Lapangan Usaha'>Lapangan Usaha</option>
+                                    <option value="Pengeluaran">Pengeluaran</option>
+                                </select>
+                            </div>
+                            <div class="col-md">
+                                <select class="form-control select2bs4" id="year" name="year">
+                                    <option value="" selected>-- Pilih Tahun --</option>
+                                    @if ($years)
+                                        @foreach ($years as $year)
+                                            <option {{ old('year', $filter['year']) == $year->year ? 'selected' : '' }}
+                                                value="{{ $year->year }}">{{ $year->year }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
+                            <div class="col-md">
+                                <select class="form-control select2bs4" id="quarter" name="quarter">
+                                    <option value="" selected>-- Pilih Triwulan --</option>
+                                    @if ($quarters)
+                                        @foreach ($quarters as $quarter)
+                                            <option
+                                                {{ old('quarter', $filter['quarter']) == $quarter->quarter ? 'selected' : '' }}
+                                                value="{{ $quarter->quarter }}">
+                                                {{ $quarter->quarter == 'F' ? 'Lengkap' : ($quarter->quarter == 'T' ? 'Tahunan' : 'Triwulan ' . $quarter->quarter) }}
+                                            </option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
+                            <div class="col-md">
+                                <button class="btn btn-info col-md-10" id="showData">Tampilkan Data</button>
+                                <div class="btn btn-danger" id="refresh"><i class="bi bi-x-lg"></i></div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
     <span class="loader d-none"></span>
-    <div class="card mb-3" id="view-body">
+    <div class="card mb-3 d-none" id="view-body">
         {{-- <div class="card mb-3" id="view-body"> --}}
         <div class="card-body">
             <nav class="navbar">
                 <ul class="nav-item ml-auto">
-                    <button class="btn btn-warning" id="download-csv" data-toogle="tooltip" data-placement="bottom"
-                        title="Download"><i class="bi bi-file-earmark-arrow-down"></i></button>
                     <button class="btn btn-success" id="download-all" data-toogle="tooltip" data-placement="bottom"
                         title="Download All"><i class="bi bi-file-earmark-arrow-down-fill"></i></button>
-                    <button class="btn btn-primary" id="change-query" onclick="switchPlay('1')" data-toogle="tooltip"
-                        data-placement="bottom" title="Tukar Posisi Kolom"><i class="bi bi-toggles"></i></button>
                 </ul>
             </nav>
             <div class="table-container">
@@ -178,7 +205,7 @@
                                     @if (
                                         ($item->code != null && $item->code == 'a' && $item->sector->code == '1') ||
                                             ($item->code == null && $item->sector->code == '1'))
-                                        <tr>
+                                        <tr class="{{ str_replace(' ', '', $item->type) }}">
                                             <td class="first-columns">
                                                 <label style="margin-bottom:0rem;"
                                                     for="">{{ $item->sector->category->code . '. ' . $item->sector->category->name }}</label>
@@ -186,7 +213,7 @@
                                         </tr>
                                     @endif
                                     @if ($item->code != null && $item->code == 'a')
-                                        <tr>
+                                        <tr class="{{ str_replace(' ', '', $item->type) }}">
                                             <td class="first-columns">
                                                 <p class="ml-4" style="margin-bottom:0rem;" for="">
                                                     {{ $item->sector->code . '. ' . $item->sector->name }}
@@ -195,7 +222,7 @@
                                         </tr>
                                     @endif
                                     @if ($item->code != null)
-                                        <tr>
+                                        <tr class="{{ str_replace(' ', '', $item->type) }}">
                                             <td class="first-columns">
                                                 <p class=" ml-5" style="margin-bottom:0rem;"
                                                     for="{{ $item->code }}_{{ $item->name }}">
@@ -204,7 +231,7 @@
                                             </td>
                                         </tr>
                                     @elseif ($item->code == null && $item->sector->code != null)
-                                        <tr>
+                                        <tr class="{{ str_replace(' ', '', $item->type) }}">
                                             <td class="first-columns">
                                                 <p class=" ml-4" style="margin-bottom:0rem;"
                                                     for="{{ $item->sector->code . '_' . $item->sector->name }}">
@@ -213,7 +240,7 @@
                                             </td>
                                         </tr>
                                     @elseif ($item->code == null && $item->sector->code == null)
-                                        <tr>
+                                        <tr class="{{ str_replace(' ', '', $item->type) }}">
                                             <td class="first-columns">
                                                 <label class="" style="margin-bottom:0rem;"
                                                     for="{{ $item->sector->category->code . '_' . $item->name }}">{{ $item->sector->category->code . '. ' . $item->name }}</label>
@@ -238,49 +265,47 @@
                                     @if (
                                         ($item->code != null && $item->code == 'a' && $item->sector->code == '1') ||
                                             ($item->code == null && $item->sector->code == '1'))
-                                        <tr>
+                                        <tr class="{{ str_replace(' ', '', $item->type) }}">
                                             @foreach ($regions as $region)
                                                 <td id="categories-{{ $item->sector->category->code . '-' . $region->id }}"
-                                                    class="categories text-right values other-columns {{ str_replace(' ', '', $item->type) }}
-">
+                                                    class="categories text-left values other-columns"><span></span>
                                                 </td>
                                             @endforeach
                                         </tr>
                                     @endif
                                     @if ($item->code != null && $item->code == 'a')
-                                        <tr>
+                                        <tr class="{{ str_replace(' ', '', $item->type) }}">
                                             @foreach ($regions as $region)
                                                 <td id="sector-{{ $index + 1 }}-{{ $region->id }}"
-                                                    class="text-right values other-columns {{ str_replace(' ', '', $item->type) }}
-">
+                                                    class="text-left values other-columns"><span></span>
                                                 </td>
                                             @endforeach
                                         </tr>
                                     @endif
                                     @if ($item->code != null)
-                                        <tr>
+                                        <tr class="{{ str_replace(' ', '', $item->type) }}">
                                             @foreach ($regions as $region)
                                                 <td id="{{ 'value-' . $item->id }}-{{ $region->id }}"
-                                                    class="text-right values other-columns {{ str_replace(' ', '', $item->type) }}
- {{ 'categories-' . $item->sector->category->code }}-{{ $region->id }}">
+                                                    class="text-left values other-columns {{ 'categories-' . $item->sector->category->code }}-{{ $region->id }}">
+                                                    <span></span>
                                                 </td>
                                             @endforeach
                                         </tr>
                                     @elseif ($item->code == null && $item->sector->code != null)
-                                        <tr>
+                                        <tr class="{{ str_replace(' ', '', $item->type) }}">
                                             @foreach ($regions as $region)
                                                 <td id="{{ 'value-' . $item->id }}-{{ $region->id }}"
-                                                    class="text-right values other-columns {{ str_replace(' ', '', $item->type) }}
- {{ 'categories-' . $item->sector->category->code }}-{{ $region->id }}">
+                                                    class="text-left values other-columns {{ 'categories-' . $item->sector->category->code }}-{{ $region->id }}">
+                                                    <span></span>
                                                 </td>
                                             @endforeach
                                         </tr>
                                     @elseif ($item->code == null && $item->sector->code == null)
-                                        <tr>
+                                        <tr class="{{ str_replace(' ', '', $item->type) }}">
                                             @foreach ($regions as $region)
                                                 <td id="{{ 'value-' . $item->id }}-{{ $region->id }}"
-                                                    class="text-right values other-columns {{ str_replace(' ', '', $item->type) }}
- {{ 'categories-' . $item->sector->category->code }}-{{ $region->id }} text-bold pdrb-total-{{ $region->id }}">
+                                                    class="text-left values other-columns {{ 'categories-' . $item->sector->category->code }}-{{ $region->id }} text-bold pdrb-total-{{ $region->id }}">
+                                                    <span></span>
                                                 </td>
                                             @endforeach
                                         </tr>
@@ -307,94 +332,12 @@
             let catArray = cat.split(", ")
 
             const url_key = new URL('{{ route('fenomena.getData') }}')
-            const url_fetch_year = new URL("{{ route('fetchYear') }}")
+            const url_fenomena_year = new URL("{{ route('fenomenaYear') }}")
+            const url_fenomena_quarter = new URL("{{ route('fenomenaQuarter') }}")
             const tokens = '{{ csrf_token() }}'
-            const url_fetch_quarter = new URL("{{ route('fetchQuarter') }}")
-            const url_fetch_periode = new URL("{{ route('fetchPeriod') }}")
 
             $(function() {
                 $('[data-toggle="tooltip"]').tooltip()
-            })
-
-            $(document).ready(function() {
-                $("#type").on("change", function() {
-                    let pdrb_type = $(this).val();
-                    if (pdrb_type) {
-                        $.ajax({
-                            type: "POST",
-                            url: "{{ route('fenomenaYear') }}",
-                            // url: url_konserda_year.href,
-                            data: {
-                                type: pdrb_type,
-                                // _token: '{{ csrf_token() }}',
-                                _token: tokens,
-                            },
-                            dataType: "json",
-
-                            success: function(result) {
-                                // console.log(result);
-                                $("#year").empty();
-                                $("#year").append(
-                                    '<option value="">-- Pilih Tahun --</option>'
-                                );
-                                $.each(result.years, function(key, value) {
-                                    $("#year").append(
-                                        '<option value="' + value.year + '">' + value
-                                        .year + "</option>"
-                                    );
-                                });
-                            },
-                        });
-                    } else {
-                        $("#year").empty();
-                        $("#year").append('<option value="">-- Pilih Tahun --</option>');
-                        $("#quarter").empty();
-                        $("#quarter").append(
-                            '<option value="" selected>-- Pilih Triwulan --</option>'
-                        );
-                    }
-                });
-
-                $("#year").on("change", function() {
-                    var pdrb_type = $("#type").val();
-                    var pdrb_year = this.value;
-                    if (pdrb_year) {
-                        $.ajax({
-                            type: "POST",
-                            url: "{{ route('fenomenaQuarter') }}",
-                            // url: url_konserda_quarter.href,
-                            data: {
-                                type: pdrb_type,
-                                year: pdrb_year,
-                                // _token: '{{ csrf_token() }}',
-                                _token: tokens,
-                            },
-                            dataType: "json",
-
-                            success: function(result) {
-                                console.log(result);
-                                $("#quarter").empty();
-                                $("#quarter").append(
-                                    '<option value="" selected>-- Pilih Triwulan --</option>'
-                                );
-                                $.each(result.quarters, function(key, value) {
-                                    var description = value.quarter == "F" ? "Lengkap" :
-                                        value.quarter == "T" ? "Tahunan" : "Triwulan " +
-                                        value.quarter;
-                                    $("#quarter").append(
-                                        '<option value="' + value.quarter + '">' +
-                                        description + "</option>"
-                                    );
-                                });
-                            },
-                        });
-                    } else {
-                        $("#quarter").empty();
-                        $("#quarter").append(
-                            '<option value="" selected>-- Pilih Triwulan --</option>'
-                        );
-                    }
-                });
             })
 
             $(document).on('select2:open', () => {

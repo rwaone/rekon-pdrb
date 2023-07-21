@@ -65,7 +65,7 @@
                             <tbody>
                                 @foreach ($regions as $region => $item)
                                     <tr>
-                                        <td>{{ $region }}</td>
+                                        <td class = "pl-2">{{ $region }}</td>
                                         <td>{{ $item['adhk'] }}</td>
                                         <td>{{ $item['adhb'] }}</td>
                                     </tr>

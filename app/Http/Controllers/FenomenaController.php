@@ -228,4 +228,46 @@ class FenomenaController extends Controller
 
         return response()->json();
     }
+
+    public function monitoring()
+    {
+        $filter = [
+            'type' => '',
+            'year' => '',
+            'quarter' => '',
+        ];
+        $regions = Region::getMyRegion();
+        return view('fenomena.monitoring', [
+            'regions' => $regions,
+            'years' => isset($years) ? $years : NULL,
+            'filter' => isset($filter) ? $filter : ['type' => ''],
+        ]);
+    }
+
+    public function getMonitoring()
+    {
+        $regions = Region::getMyRegion();
+        $year_active = Fenomena::distinct()->get('year');
+        $monitoring_quarter = [];
+        foreach ($year_active as $year) {
+            $quarter_active = Fenomena::distinct()->get('quarter');
+            foreach ($quarter_active as $quarters) {
+                foreach ($regions as $region) {
+                    $data = Fenomena::where('region_id', $region->id)
+                        ->where('quarter', $quarters->quarter)
+                        ->where('year', $year->year)->pluck('description');
+                    if ($data->contains(null)) {
+                        $data = 0;
+                    } else {
+                        $data = 1;
+                    }
+                    $monitoring_quarter[$year->year][$quarters->quarter][$region->name]['description'] = $data;
+                }
+            }
+        }
+
+        return view('fenomena.monitoring', [
+            'monitoring_quarter' => $monitoring_quarter
+        ]);
+    }
 }

@@ -32,9 +32,16 @@ function getReady() {
 
     if (komponens.length > 0) {
         komponens.forEach(function (row, index) {
-            row.Komponen = row.Komponen.trim();
+            // row.Komponen = row.Komponen.trim();
+            for (let key in row) {
+                row[key] = row[key].trim();
+            }
         });
-
+        contents.forEach(function (row, index) {
+            for (let key in row) {
+                row[key] = row[key].trim();
+            }
+        });
         let merged = [];
         for (let i = 0; i < komponens.length; i++) {
             let mergeds = { ...komponens[i], ...contents[i] };
@@ -43,8 +50,11 @@ function getReady() {
         return merged;
     } else {
         contents.forEach(function (row, index) {
-            row.Komponen = row.Komponen.trim();
-        })
+            // row.Komponen = row.Komponen.trim();
+            for (let key in row) {
+                row[key] = row[key].trim();
+            }
+        });
         return contents;
     }
 }
@@ -260,9 +270,9 @@ function downloadKonserda() {
     var datas = JSON.parse(sessionStorage.getItem("data"));
     var befores = JSON.parse(sessionStorage.getItem("before"));
     try {
-        getAdhb(datas,types);
+        getAdhb(datas, types);
         list["ADHB"] = getReady();
-        getAdhk(datas,types);
+        getAdhk(datas, types);
         list["ADHK"] = getReady();
         let tbody = $("#rekon-view").find("tbody");
         $("tbody td:nth-child(n+2):nth-child(-n+6)").removeClass(function (
@@ -285,13 +295,13 @@ function downloadKonserda() {
         });
         getDist();
         list["DISTRIBUSI"] = getReady();
-        getGrowth(datas,befores,types);
+        getGrowth(datas, befores, types);
         list["GROWTH"] = getReady();
-        let laju = getIndex(datas,types);
+        let laju = getIndex(datas, types);
         list["INDEX"] = getReady();
         getLaju(laju);
         list["LAJU"] = getReady();
-        getAdhb(datas,types);
+        getAdhb(datas, types);
 
         var workbook = XLSX.utils.book_new();
         for (let key in list) {
