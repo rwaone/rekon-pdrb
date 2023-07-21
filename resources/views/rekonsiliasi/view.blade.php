@@ -65,6 +65,7 @@
     @if ($type == 'Lapangan Usaha')
         <div id="adhbFormContainer" class="card form-container d-none">@include('lapangan.adhb-form')</div>
         <div id="adhkFormContainer" class="card form-container d-none">@include('lapangan.adhk-form')</div>
+        <div id="tableFormContainer" class="card form-container">@include('lapangan.rekon-table')</div>
     @elseif ($type == 'Pengeluaran')
         <div id="fullFormContainer" class="card d-none">@include('pengeluaran.full-form')</div>
     @endif

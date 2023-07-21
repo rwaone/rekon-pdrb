@@ -201,6 +201,24 @@ $(document).ready(function () {
         showForm('adhk');
     });
 
+    $('#nav-distribusi').click(function () {
+        showTable();
+    });
+
+    function showTable() {
+        $('.loader').removeClass('d-none');
+        $('.form-container').addClass('d-none');
+        $('#tableFormContainer').removeClass('d-none');
+        $('.nav-link').removeClass('active');
+        $('#nav-distribusi').addClass('active');
+        var value = $('#adhb_A_Q4').val();
+        $('#value_A_Q4').html(value);
+        setTimeout(function () {
+            
+            $('.loader').addClass('d-none');
+        }, 200);
+    };
+
     function showForm(price_base) {
 
         $('.loader').removeClass('d-none');
