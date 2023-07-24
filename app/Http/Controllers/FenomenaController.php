@@ -236,38 +236,36 @@ class FenomenaController extends Controller
             'year' => '',
             'quarter' => '',
         ];
-        $regions = Region::getMyRegion();
+        $regions = Region::where('id', '>', 1)->get();
         return view('fenomena.monitoring', [
             'regions' => $regions,
             'years' => isset($years) ? $years : NULL,
+            'quarters'  => isset($quarters) ? $quarters : NULL,
             'filter' => isset($filter) ? $filter : ['type' => ''],
         ]);
     }
 
-    public function getMonitoring()
+    public function getMonitoring(Request $request)
     {
-        $regions = Region::getMyRegion();
+        $types = $request->query('type');
+        $years = $request->query('year');
+        $quarters = $request->query('quarter');
+
+        $regions = Region::where('id', '>', 1)->get();
         $year_active = Fenomena::distinct()->get('year');
         $monitoring_quarter = [];
-        foreach ($year_active as $year) {
-            $quarter_active = Fenomena::distinct()->get('quarter');
-            foreach ($quarter_active as $quarters) {
-                foreach ($regions as $region) {
-                    $data = Fenomena::where('region_id', $region->id)
-                        ->where('quarter', $quarters->quarter)
-                        ->where('year', $year->year)->pluck('description');
-                    if ($data->contains(null)) {
-                        $data = 0;
-                    } else {
-                        $data = 1;
-                    }
-                    $monitoring_quarter[$year->year][$quarters->quarter][$region->name]['description'] = $data;
-                }
+        foreach ($regions as $region) {
+            $data = Fenomena::where('region_id', $region->id)
+                ->where('quarter', $quarters)
+                ->where('year', $years)->pluck('description');
+            if ($data->contains(null)) {
+                $data = 0;
+            } else {
+                $data = 1;
             }
+            $monitoring_quarter[$years][$quarters][$region->name]['description'] = $data;
         }
 
-        return view('fenomena.monitoring', [
-            'monitoring_quarter' => $monitoring_quarter
-        ]);
+        return response()->json($monitoring_quarter);
     }
 }

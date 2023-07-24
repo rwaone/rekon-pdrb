@@ -1,5 +1,7 @@
+var links = window.location.pathname.split("/")[1];
+var paramsLink = window.location.pathname.split("/")[2];
+
 $(document).ready(function () {
-    let links = window.location.pathname.split("/")[1];
     if (links !== "fenomena") {
         $("#type").on("change", function () {
             var pdrb_type = this.value;
@@ -277,6 +279,7 @@ $(document).ready(function () {
         });
     }
 });
+
 function fetchData() {
     const types = $("#type").val();
     const years = $("#year").val();
@@ -296,6 +299,53 @@ function fetchData() {
                 reject(errorThrown, textStatus);
             },
         });
+    });
+}
+if (paramsLink == "monitoring") {
+    $("#showData").on("click", async function (e) {
+        e.preventDefault();
+        try {
+            const data = await fetchData();
+
+            const year_fenomena = Object.keys(data)[0];
+            const quarter_fenomena = Object.keys(data[year_fenomena])[0];
+            const type_fenomena = $("#type").val();
+
+            $("#year_fenomena").text(year_fenomena);
+            $("#quarter_fenomena").text(quarter_fenomena);
+            $("#type_fenomena").text(type_fenomena);
+
+            const kotakey = Object.keys(data[year_fenomena][quarter_fenomena]);
+
+            for (let i = 1; i <= 15; i++) {
+                $(`#value-${i}`).text(
+                    data[year_fenomena][quarter_fenomena][kotakey[i - 1]][
+                        "description"
+                    ]
+                );
+            }
+            $("#monitoring-kuarter tbody tr td").each(function () {
+                if ($(this).text() === "0") {
+                    $(this).html(
+                        '<i class="bi bi-x-circle-fill" style = "color: red;"></i>'
+                    );
+                    $(this).addClass("text-center");
+                }
+                if ($(this).text() === "1") {
+                    $(this).html(
+                        '<i class="bi bi-check-circle-fill" style = "color: green;"></i>'
+                    );
+                    $(this).addClass("text-center");
+                }
+            });
+        } catch (error) {
+            error.message;
+        }
+        $(".loader").removeClass("d-none");
+        setTimeout(() => {
+            $(".loader").addClass("d-none");
+            $("#showTime").removeClass("d-none");
+        }, 500);
     });
 }
 
@@ -321,7 +371,6 @@ $("#showData").click(async function (e) {
 
     try {
         const data = await fetchData();
-        console.log(data);
         $(".loader").addClass("d-none");
         $("#view-body").removeClass("d-none");
         for (i = 1; i <= 15; i++) {

@@ -25,9 +25,9 @@
     </x-slot>
 
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-4 col-md-4 col-sm-4">
         </div>
-        <div class="col-md-4">
+        <div class="col-8 col-md-8 col-sm-8">
             <div class="card">
                 <div class="card-body">
                     <div class="row">
@@ -50,7 +50,21 @@
                                 @endif
                             </select>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md">
+                            <select class="form-control select2bs4" id="quarter" name="quarter">
+                                <option value="" selected>-- Pilih Triwulan --</option>
+                                @if ($quarters)
+                                    @foreach ($quarters as $quarter)
+                                        <option
+                                            {{ old('quarter', $filter['quarter']) == $quarter->quarter ? 'selected' : '' }}
+                                            value="{{ $quarter->quarter }}">
+                                            {{ $quarter->quarter == 'F' ? 'Lengkap' : ($quarter->quarter == 'T' ? 'Tahunan' : 'Triwulan ' . $quarter->quarter) }}
+                                        </option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </div>
+                        <div class="col-md">
                             <button class="btn btn-info col-md-10" id="showData"><i class="bi bi-search"></i></button>
                         </div>
                     </div>
@@ -59,23 +73,22 @@
         </div>
     </div>
     <span class="loader d-none"></span>
-    <div id="" class="views">
-        <h4 class="ml-2">Monitoring Pemasukan Tabel PDRB Lapangan Usaha Tahun</h4>
+    <div id="showTime" class="d-none">
+        <h4 class="ml-2">Monitoring Pemasukan Fenomena PDRB <span id="type_fenomena"></span> <span id="year_fenomena"></span></h4>
         <div class="card p-4">
-            <h5>Kuarter</h5>
+            <h5>Kuarter <span id="quarter_fenomena"></span>
+            </h5>
             <div class="card-body p-0">
                 <table class="table table-bordered table-striped" id="monitoring-kuarter">
                     <thead>
                         <th>Kabupaten/Kota</th>
-                        <th>ADHK</th>
-                        <th>ADHB</th>
+                        <th>Cek</th>
                     </thead>
                     <tbody>
-                        @foreach ($regions as $region)
+                        @foreach ($regions as $index => $region)
                             <tr>
-                                <td class="pl-2">{{ $region->name }}</td>
-                                <td></td>
-                                <td></td>
+                                <td id="region-{{ $region->name }}" class="pl-2">{{ $region->name }}</td>
+                                <td id="value-{{ $index+1 }}"></td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -88,95 +101,14 @@
     <x-slot name="script">
         <!-- Additional JS resources -->
         <script src="{{ url('') }}/plugins/select2/js/select2.full.min.js"></script>
-        {{-- <script src="{{ asset('js/fenomena.js') }}"</script> --}}
+        <script src="{{ asset('js/fenomena.js') }}"></script>
         <script>
             const url_fenomena_year = new URL("{{ route('fenomenaYear') }}")
+            const url_fenomena_quarter = new URL("{{ route('fenomenaQuarter') }}")
             const tokens = '{{ csrf_token() }}'
             const url_key = new URL('{{ route('fenomena.getMonitoring') }}')
-            $("#type").on("change", function() {
-                let pdrb_type = $(this).val();
-                if (pdrb_type) {
-                    $.ajax({
-                        type: "POST",
-                        url: url_fenomena_year,
-                        data: {
-                            type: pdrb_type,
-                            _token: tokens,
-                        },
-                        dataType: "json",
 
-                        success: function(result) {
-                            $("#year").empty();
-                            $("#year").append(
-                                '<option value="">-- Pilih Tahun --</option>'
-                            );
-                            $.each(result.years, function(key, value) {
-                                $("#year").append(
-                                    '<option value="' +
-                                    value.year +
-                                    '">' +
-                                    value.year +
-                                    "</option>"
-                                );
-                            });
-                        },
-                    });
-                } else {
-                    $("#year").empty();
-                    $("#year").append(
-                        '<option value="">-- Pilih Tahun --</option>'
-                    );
-                }
-            });
 
-            function fetchData() {
-                const types = $('#type').val();
-                const years = $('#year').val();
-                url_key.searchParams.set("type", types);
-                url_key.searchParams.set("year", encodeURIComponent(years));
-                return new Promise(function (resolve, reject){
-                    $.ajax({
-                        type: 'GET',
-                        url: url_key.href,
-                        dataType: 'json',
-                        success: function(data) {
-                            resolve(data);
-                        }, 
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            reject(errorThrown);
-                        }
-                    })
-                })
-            }
-
-            $('#showData').on('click', async function(e) {
-                e.preventDefault();
-                try {
-                    const data = await fetchData();
-                } catch (error) {
-                    
-                }
-                $('.loader').removeClass('d-none');
-                setTimeout(() => {
-                    $('.views').each(function() {
-                        $(this).addClass('d-none');
-                    });
-                    let showIndex = $('#year').val();
-                    $(`#${showIndex}`).removeClass('d-none');
-                    $('.loader').addClass('d-none');
-                }, 500);
-            });
-
-            $('#monitoring-kuarter tbody tr td').each(function() {
-                if ($(this).text() === '0') {
-                    $(this).html('<i class="bi bi-x-circle-fill" style = "color: red;"></i>');
-                    $(this).addClass('text-center')
-                }
-                if ($(this).text() === '1') {
-                    $(this).html('<i class="bi bi-check-circle-fill" style = "color: green;"></i>');
-                    $(this).addClass('text-center')
-                }
-            })
             $(document).on('select2:open', () => {
                 document.querySelector('.select2-search__field').focus();
             });

@@ -135,6 +135,15 @@
                     <p>Lihat Fenomena</p>
                 </a>
             </li>
+            @if (auth()->user()->satker_id == 1)
+            <li class="nav-item">
+                <a href="{{ url('fenomena/monitoring') }}"
+                    class="nav-link {{ Request::is('fenomena/monitoring') ? 'active' : '' }}">
+                    <i class="far fa-star-half nav-icon"></i>
+                    <p>Monitoring Fenomena</p>
+                </a>
+            </li>
+            @endif
 
                 @can('admin')
                     <li class="nav-header">PENGATURAN</li>
