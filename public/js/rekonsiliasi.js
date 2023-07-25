@@ -211,8 +211,8 @@ $(document).ready(function () {
         $('#tableFormContainer').removeClass('d-none');
         $('.nav-link').removeClass('active');
         $('#nav-distribusi').addClass('active');
-        var value = $('#adhb_A_Q4').val();
-        $('#value_A_Q4').html(value);
+        
+        $('#value_A_Q4').html($('#adhb_A_Q4').val());
         setTimeout(function () {
             
             $('.loader').addClass('d-none');
@@ -277,14 +277,6 @@ $(document).ready(function () {
                 });
 
                 ($('#type').val() == 'Pengeluaran') ? allSumPDRBPengeluaran('adhb') : allSumPDRBLapus('adhb');
-
-
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000
-                });
 
                 Toast.fire({
                     icon: 'success',
@@ -373,14 +365,6 @@ $(document).ready(function () {
 
                 $('.loader').addClass('d-none')
 
-
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000
-                });
-
                 Toast.fire({
                     icon: 'success',
                     title: 'Berhasil',
@@ -411,13 +395,7 @@ $(document).ready(function () {
             },
 
             success: function (result) {
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000
-                });
-
+                
                 Toast.fire({
                     icon: 'success',
                     title: 'Berhasil',

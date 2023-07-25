@@ -8,7 +8,6 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <link rel="stylesheet" href="{{ url('') }}/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
         <link rel="stylesheet" href="{{ url('') }}/plugins/select2/css/select2.min.css">
-        <script></script>
         <style type="text/css">
             .table td {
                 vertical-align: middle;
@@ -115,12 +114,13 @@
                             <div class="help-block"></div>
                         </div>
 
-                        
+
                         <input type="hidden" id="copy-price-base">
 
                     </div>
                     <div class="modal-footer">
-                        <button onclick="" id="copySubmit" type="button" class="btn btn-success float-right">Salin</button>
+                        <button onclick="" id="copySubmit" type="button"
+                            class="btn btn-success float-right">Salin</button>
                     </div>
                 </div>
             </form>
@@ -143,6 +143,14 @@
             const url_get_single_data = new URL("{{ route('getSingleData') }}")
             const url_get_full_data = new URL("{{ route('getFullData') }}")
             const url_copy_data = new URL("{{ route('copyData') }}")
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+
             //Get the button
             let mybutton = document.getElementById("btn-back-to-top");
 
