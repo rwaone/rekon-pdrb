@@ -143,8 +143,7 @@ class PdrbController extends Controller
     {
         $filter = $request->filter;
         $copy = $request->copy;
-        $fullData = [];
-    
+
         for ($index = 1; $index <= $copy['quarterCopy']; $index++) {
             $data[$index] = Pdrb::where('period_id', $copy['periodCopy'])->where('region_id', $filter['region_id'])->where('quarter', $index)->orderBy('subsector_id')->get();
         }
@@ -155,35 +154,40 @@ class PdrbController extends Controller
     {
         $filter = $request->filter;
         $subsectors = Subsector::where('type', $filter['type'])->get();
-        $fullData = [];
-    
-        for ($index = 1; $index <= $filter['quarter']; $index++) {
-            $data[$index] = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->where('quarter', $index)->orderBy('subsector_id')->get();
-            if (sizeof($data[$index]) == 0) {
-                $inputData = [];
-                $timestamp = date('Y-m-d H:i:s');
-                foreach ($subsectors as $subsector) {
-                    $singleData = [
-                        'subsector_id' => $subsector->id,
-                        'type' => $filter['type'],
-                        'year' => $filter['year'],
-                        'quarter' => $index,
-                        'period_id' => $filter['period_id'],
-                        'region_id' => $filter['region_id'],
-                        'created_at' => $timestamp,
-                        'updated_at' => $timestamp,
-                    ];
-                    array_push($inputData, $singleData);
-                }
+        $previous_periodId = Period::where('year', $filter['year'] - 1)->where('quarter', 4)->where('status', 'Final')->first()->id;
+        $current_data = [];
+        $previous_data = [];
 
-                Pdrb::insert($inputData);
-                $fullData[$index] = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->where('quarter', $index)->orderBy('subsector_id')->get();
-            } else {
-                $fullData[$index] = $data[$index];
+        for ($index = 1; $index <= 4; $index++) {
+            $previous_data[$index] = Pdrb::where('period_id', $previous_periodId)->where('region_id', $filter['region_id'])->where('quarter', $index)->orderBy('subsector_id')->get();
+            if ($index <= $filter['quarter']) {
+                $query_data[$index] = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->where('quarter', $index)->orderBy('subsector_id')->get();
+                if (sizeof($query_data[$index]) == 0) {
+                    $inputData = [];
+                    $timestamp = date('Y-m-d H:i:s');
+                    foreach ($subsectors as $subsector) {
+                        $singleData = [
+                            'subsector_id' => $subsector->id,
+                            'type' => $filter['type'],
+                            'year' => $filter['year'],
+                            'quarter' => $index,
+                            'period_id' => $filter['period_id'],
+                            'region_id' => $filter['region_id'],
+                            'created_at' => $timestamp,
+                            'updated_at' => $timestamp,
+                        ];
+                        array_push($inputData, $singleData);
+                    }
+
+                    Pdrb::insert($inputData);
+                    $current_data[$index] = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->where('quarter', $index)->orderBy('subsector_id')->get();
+                } else {
+                    $current_data[$index] = $query_data[$index];
+                }
             }
-            $fullData['Y'] = PDRB::where('region_id', $filter['region_id'])->where('quarter', 'Y')->orderBy('subsector_id')->get();
         }
-        return response()->json($fullData);
+
+        return response()->json(['current_data' => $current_data, 'previous_data' => $previous_data]);
     }
 
     public function saveFullData(Request $request)
@@ -198,10 +202,10 @@ class PdrbController extends Controller
             foreach ($subsectors as $subsector) {
                 $adhb_data = (float) str_replace(',', '.', str_replace('.', '', str_replace('Rp. ', '', $adhb['adhb_value_' . $index . '_' . $subsector->id])));
                 $adhk_data = (float) str_replace(',', '.', str_replace('.', '', str_replace('Rp. ', '', $adhk['adhk_value_' . $index . '_' . $subsector->id])));
-                
+
                 Pdrb::where('id', $adhb['id_' . $index . '_' . $subsector->id])->update(['adhb' => $adhb_data, 'adhk' => $adhk_data]);
-               
-                array_push($data, ['adhb' => $adhb_data ,'adhk' => $adhk_data]);
+
+                array_push($data, ['adhb' => $adhb_data, 'adhk' => $adhk_data]);
             }
         }
 

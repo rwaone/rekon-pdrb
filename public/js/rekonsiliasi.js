@@ -171,11 +171,8 @@ $(document).ready(function () {
     });
 
     $('#region_id').change(function () {
-        $('#price_base').val('').change();
         $('#navList').removeClass('d-none');
         $('.nav-link').removeClass('active');
-        $('#nav-adhb').addClass('active');
-        getFullData();
         $('input[name*=id_]').prop('disabled', false);
         $('input[name*=adhk_value_]').prop('disabled', false);
         $('input[name*=adhb_value_]').prop('disabled', false);
@@ -187,8 +184,8 @@ $(document).ready(function () {
                 $('input[name*=adhb_value_' + index + '_]').prop('disabled', true);
             }
         }
-        $('input[name*=adhk_value_Y]').prop('disabled', true);
-        $('input[name*=adhb_value_Y]').prop('disabled', true);
+        getFullData();
+        $('#nav-adhb').addClass('active');
         $('#adhbFormContainer').removeClass('d-none');
 
     });
@@ -202,6 +199,8 @@ $(document).ready(function () {
     });
 
     $('#nav-distribusi').click(function () {
+        const previous_data = JSON.parse(sessionStorage.getItem('previous_data'));
+        console.log(previous_data);
         showTable();
     });
 
@@ -235,7 +234,7 @@ $(document).ready(function () {
     };
 
     function getFullData() {
-        $('.loader').removeClass('d-none')
+        $('.loader').removeClass('d-none');
         $.ajax({
             type: 'POST',
             url: url_get_full_data.href,
@@ -248,7 +247,8 @@ $(document).ready(function () {
             },
 
             success: function (result) {
-                $.each(result, function (quarter, value) {
+                console.log(result);
+                $.each(result.current_data, function (quarter, value) {
                     $.each(value, function (key, value) {
                         adhkValue = ((value.adhk != null) ? formatRupiah(
                             value.adhk
@@ -278,6 +278,18 @@ $(document).ready(function () {
 
                 ($('#type').val() == 'Pengeluaran') ? allSumPDRBPengeluaran('adhb') : allSumPDRBLapus('adhb');
 
+<<<<<<< Updated upstream
+=======
+                sessionStorage.setItem('previous_data', JSON.stringify(result.previous_data));
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+
+>>>>>>> Stashed changes
                 Toast.fire({
                     icon: 'success',
                     title: 'Berhasil',

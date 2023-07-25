@@ -238,19 +238,19 @@
                             (PDRB) Nonmigas </p>
                     </td>
                     <td>
-                        <p class="col mt-1 mb-1" id="total-nonmigas-Q1" style="margin-bottom:0rem;"></p>
+                        <p class="col mt-1 mb-1" id="adhb-total-nonmigas-Q1" style="margin-bottom:0rem;"></p>
                     </td>
                     <td>
-                        <p class="col mt-1 mb-1" id="total-nonmigas-Q2" style="margin-bottom:0rem;"></p>
+                        <p class="col mt-1 mb-1" id="adhb-total-nonmigas-Q2" style="margin-bottom:0rem;"></p>
                     </td>
                     <td>
-                        <p class="col mt-1 mb-1" id="total-nonmigas-Q3" style="margin-bottom:0rem;"></p>
+                        <p class="col mt-1 mb-1" id="adhb-total-nonmigas-Q3" style="margin-bottom:0rem;"></p>
                     </td>
                     <td>
-                        <p class="col mt-1 mb-1" id="total-nonmigas-Q4" style="margin-bottom:0rem;"></p>
+                        <p class="col mt-1 mb-1" id="adhb-total-nonmigas-Q4" style="margin-bottom:0rem;"></p>
                     </td>
                     <td>
-                        <p class="col mt-1 mb-1" id="total-nonmigas-T" style="margin-bottom:0rem;"></p>
+                        <p class="col mt-1 mb-1" id="adhb-total-nonmigas-T" style="margin-bottom:0rem;"></p>
                     </td>
                 </tr>
                 <tr class="PDRB-footer text-center"
@@ -260,19 +260,19 @@
                             (PDRB) </p>
                     </td>
                     <td>
-                        <p class="col mt-1 mb-1" id="total-Q1" style="margin-bottom:0rem;"></p>
+                        <p class="col mt-1 mb-1" id="adhb-total-Q1" style="margin-bottom:0rem;"></p>
                     </td>
                     <td>
-                        <p class="col mt-1 mb-1" id="total-Q2" style="margin-bottom:0rem;"></p>
+                        <p class="col mt-1 mb-1" id="adhb-total-Q2" style="margin-bottom:0rem;"></p>
                     </td>
                     <td>
-                        <p class="col mt-1 mb-1" id="total-Q3" style="margin-bottom:0rem;"></p>
+                        <p class="col mt-1 mb-1" id="adhb-total-Q3" style="margin-bottom:0rem;"></p>
                     </td>
                     <td>
-                        <p class="col mt-1 mb-1" id="total-Q4" style="margin-bottom:0rem;"></p>
+                        <p class="col mt-1 mb-1" id="adhb-total-Q4" style="margin-bottom:0rem;"></p>
                     </td>
                     <td>
-                        <p class="col mt-1 mb-1" id="total-T" style="margin-bottom:0rem;"></p>
+                        <p class="col mt-1 mb-1" id="adhb-total-T" style="margin-bottom:0rem;"></p>
                     </td>
                 </tr>
             </tbody>

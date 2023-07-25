@@ -47,15 +47,20 @@
                             <p class="col ml-4" style="margin-bottom:0rem;" for="">
                                 {{ $subsector->sector->code . '. ' . $subsector->sector->name }}</p>
                         </td>
-                        <td>
+                        <td id="value_{{ $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q1' }}"
+                                    class="text-right {{ 'value-category-Q1-' . $subsector->sector->category->code }}">
                         </td>
-                        <td>
+                        <td id="value_{{ $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q2' }}"
+                                    class="text-right {{ 'value-category-Q2-' . $subsector->sector->category->code }}">
                         </td>
-                        <td>
+                        <td id="value_{{ $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q3' }}"
+                                    class="text-right {{ 'value-category-Q3-' . $subsector->sector->category->code }}">
                         </td>
-                        <td>
+                        <td id="value_{{ $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q4' }}"
+                                    class="text-right {{ 'value-category-Q4-' . $subsector->sector->category->code }}">
                         </td>
-                        <td>
+                        <td id="value_{{ $subsector->sector->code . '_' . $subsector->sector->category->code . '_T' }}"
+                                    class="text-right {{ 'value-category-T-' . $subsector->sector->category->code }}">
                         </td>
                     </tr>
                 @endif
@@ -66,15 +71,20 @@
                                 for="{{ $subsector->code }}_{{ $subsector->name }}">
                                 {{ $subsector->code . '. ' . $subsector->name }}</p>
                         </td>
-                        <td>
+                        <td  id="value_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q1' }}"
+                                    class="text-right {{ 'value-sector-Q1-' . $subsector->sector_id }} {{ 'value-category-Q1-' . $subsector->sector->category_id }} ">
                         </td>
-                        <td>
+                        <td id="value_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q2' }}"
+                                    class="text-right {{ 'value-sector-Q2-' . $subsector->sector_id }} {{ 'value-category-Q2-' . $subsector->sector->category_id }} ">
                         </td>
-                        <td>
+                        <td id="value_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q3' }}"
+                                    class="text-right {{ 'value-sector-Q3-' . $subsector->sector_id }} {{ 'value-category-Q3-' . $subsector->sector->category_id }} ">
                         </td>
-                        <td>
+                        <td id="value_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q3' }}"
+                                    class="text-right {{ 'value-sector-Q4-' . $subsector->sector_id }} {{ 'value-category-Q3-' . $subsector->sector->category_id }} ">
                         </td>
-                        <td>
+                        <td id="value_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_T' }}"
+                                    class="text-right {{ 'value-sector-T-' . $subsector->sector_id }} {{ 'value-category-T-' . $subsector->sector->category_id }} ">
                         </td>
                     </tr>
                 @elseif (
@@ -87,15 +97,20 @@
                                 for="{{ $subsector->sector->code . '_' . $subsector->sector->name }}">
                                 {{ $subsector->sector->code . '. ' . $subsector->sector->name }}</p>
                         </td>
-                        <td>
+                        <td id="value_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q1' }}"
+                                    class="text-right {{ 'value-sector-Q1-' . $subsector->sector_id }} {{ 'value-category-Q1-' . $subsector->sector->category_id }}">
                         </td>
-                        <td>
+                        <td id="value_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q2' }}"
+                                    class="text-right {{ 'value-sector-Q2-' . $subsector->sector_id }} {{ 'value-category-Q2-' . $subsector->sector->category_id }}">
                         </td>
-                        <td>
+                        <td id="value_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q3' }}"
+                                    class="text-right {{ 'value-sector-Q3-' . $subsector->sector_id }} {{ 'value-category-Q3-' . $subsector->sector->category_id }}">
                         </td>
-                        <td>
+                        <td id="value_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q4' }}"
+                                    class="text-right {{ 'value-sector-Q4-' . $subsector->sector_id }} {{ 'value-category-Q4-' . $subsector->sector->category_id }}">
                         </td>
-                        <td>
+                        <td id="value_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_T' }}"
+                                    class="text-right {{ 'value-sector-T-' . $subsector->sector_id }} {{ 'value-category-T-' . $subsector->sector->category_id }}">
                         </td>
                     </tr>
                 @elseif (
@@ -107,15 +122,20 @@
                             <label class="col" style="margin-bottom:0rem;"
                                 for="{{ $subsector->sector->category->code . '_' . $subsector->name }}">{{ $subsector->sector->category->code . '. ' . $subsector->name }}</label>
                         </td>
-                        <td>
+                        <td id="value_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q1' }}"
+                                    class="text-right {{ 'value-sector-Q1-' . $subsector->sector_id }} {{ 'value-category-Q1-' . $subsector->sector->category_id }}">
                         </td>
-                        <td>
+                        <td id="value_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q2' }}"
+                                    class="text-right {{ 'value-sector-Q2-' . $subsector->sector_id }} {{ 'value-category-Q2-' . $subsector->sector->category_id }}">
                         </td>
-                        <td>
+                        <td id="value_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q3' }}"
+                                    class="text-right {{ 'value-sector-Q3-' . $subsector->sector_id }} {{ 'value-category-Q3-' . $subsector->sector->category_id }}">
                         </td>
-                        <td>
+                        <td id="value_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q4' }}"
+                                    class="text-right {{ 'value-sector-Q4-' . $subsector->sector_id }} {{ 'value-category-Q4-' . $subsector->sector->category_id }}">
                         </td>
-                        <td>
+                        <td id="value_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_T' }}"
+                                    class="text-right {{ 'value-sector-T-' . $subsector->sector_id }} {{ 'value-category-T-' . $subsector->sector->category_id }}">
                         </td>
                     </tr>
                 @endif
@@ -126,19 +146,19 @@
                         (PDRB) Nonmigas </p>
                 </td>
                 <td>
-                    <p class="col mt-1 mb-1" id="total-nonmigas-Q1" style="margin-bottom:0rem;"></p>
+                    <p class="col mt-1 mb-1" id="value-total-nonmigas-Q1" style="margin-bottom:0rem;"></p>
                 </td>
                 <td>
-                    <p class="col mt-1 mb-1" id="total-nonmigas-Q2" style="margin-bottom:0rem;"></p>
+                    <p class="col mt-1 mb-1" id="value-total-nonmigas-Q2" style="margin-bottom:0rem;"></p>
                 </td>
                 <td>
-                    <p class="col mt-1 mb-1" id="total-nonmigas-Q3" style="margin-bottom:0rem;"></p>
+                    <p class="col mt-1 mb-1" id="value-total-nonmigas-Q3" style="margin-bottom:0rem;"></p>
                 </td>
                 <td>
-                    <p class="col mt-1 mb-1" id="total-nonmigas-Q4" style="margin-bottom:0rem;"></p>
+                    <p class="col mt-1 mb-1" id="value-total-nonmigas-Q4" style="margin-bottom:0rem;"></p>
                 </td>
                 <td>
-                    <p class="col mt-1 mb-1" id="total-nonmigas-T" style="margin-bottom:0rem;"></p>
+                    <p class="col mt-1 mb-1" id="value-total-nonmigas-T" style="margin-bottom:0rem;"></p>
                 </td>
             </tr>
             <tr class="PDRB-footer text-center" style="background-color: #09c140; color:aliceblue; font-weight: bold;">
@@ -147,19 +167,19 @@
                         (PDRB) </p>
                 </td>
                 <td>
-                    <p class="col mt-1 mb-1" id="total-Q1" style="margin-bottom:0rem;"></p>
+                    <p class="col mt-1 mb-1" id="value-total-Q1" style="margin-bottom:0rem;"></p>
                 </td>
                 <td>
-                    <p class="col mt-1 mb-1" id="total-Q2" style="margin-bottom:0rem;"></p>
+                    <p class="col mt-1 mb-1" id="value-total-Q2" style="margin-bottom:0rem;"></p>
                 </td>
                 <td>
-                    <p class="col mt-1 mb-1" id="total-Q3" style="margin-bottom:0rem;"></p>
+                    <p class="col mt-1 mb-1" id="value-total-Q3" style="margin-bottom:0rem;"></p>
                 </td>
                 <td>
-                    <p class="col mt-1 mb-1" id="total-Q4" style="margin-bottom:0rem;"></p>
+                    <p class="col mt-1 mb-1" id="value-total-Q4" style="margin-bottom:0rem;"></p>
                 </td>
                 <td>
-                    <p class="col mt-1 mb-1" id="total-T" style="margin-bottom:0rem;"></p>
+                    <p class="col mt-1 mb-1" id="value-total-T" style="margin-bottom:0rem;"></p>
                 </td>
             </tr>
         </tbody>
