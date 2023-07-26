@@ -237,19 +237,19 @@
                             (PDRB) Nonmigas </p>
                     </td>
                     <td>
-                        <p class="col mt-1 mb-1" id="adhk-total-nonmigas-Q1" style="margin-bottom:0rem;"></p>
+                        <p class="col mt-1 mb-1" id="adhk_total-nonmigas-Q1" style="margin-bottom:0rem;"></p>
                     </td>
                     <td>
-                        <p class="col mt-1 mb-1" id="adhk-total-nonmigas-Q2" style="margin-bottom:0rem;"></p>
+                        <p class="col mt-1 mb-1" id="adhk_total-nonmigas-Q2" style="margin-bottom:0rem;"></p>
                     </td>
                     <td>
-                        <p class="col mt-1 mb-1" id="adhk-total-nonmigas-Q3" style="margin-bottom:0rem;"></p>
+                        <p class="col mt-1 mb-1" id="adhk_total-nonmigas-Q3" style="margin-bottom:0rem;"></p>
                     </td>
                     <td>
-                        <p class="col mt-1 mb-1" id="adhk-total-nonmigas-Q4" style="margin-bottom:0rem;"></p>
+                        <p class="col mt-1 mb-1" id="adhk_total-nonmigas-Q4" style="margin-bottom:0rem;"></p>
                     </td>
                     <td>
-                        <p class="col mt-1 mb-1" id="adhk-total-nonmigas-T" style="margin-bottom:0rem;"></p>
+                        <p class="col mt-1 mb-1" id="adhk_total-nonmigas-T" style="margin-bottom:0rem;"></p>
                     </td>
                 </tr>
                 <tr class="PDRB-footer text-center"
@@ -259,19 +259,19 @@
                             (PDRB) </p>
                     </td>
                     <td>
-                        <p class="col mt-1 mb-1" id="adhk-total-Q1" style="margin-bottom:0rem;"></p>
+                        <p class="col mt-1 mb-1" id="adhk_total-Q1" style="margin-bottom:0rem;"></p>
                     </td>
                     <td>
-                        <p class="col mt-1 mb-1" id="adhk-total-Q2" style="margin-bottom:0rem;"></p>
+                        <p class="col mt-1 mb-1" id="adhk_total-Q2" style="margin-bottom:0rem;"></p>
                     </td>
                     <td>
-                        <p class="col mt-1 mb-1" id="adhk-total-Q3" style="margin-bottom:0rem;"></p>
+                        <p class="col mt-1 mb-1" id="adhk_total-Q3" style="margin-bottom:0rem;"></p>
                     </td>
                     <td>
-                        <p class="col mt-1 mb-1" id="adhk-total-Q4" style="margin-bottom:0rem;"></p>
+                        <p class="col mt-1 mb-1" id="adhk_total-Q4" style="margin-bottom:0rem;"></p>
                     </td>
                     <td>
-                        <p class="col mt-1 mb-1" id="adhk-total-T" style="margin-bottom:0rem;"></p>
+                        <p class="col mt-1 mb-1" id="adhk_total-T" style="margin-bottom:0rem;"></p>
                     </td>
                 </tr>
             </tbody>

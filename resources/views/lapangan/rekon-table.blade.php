@@ -80,7 +80,7 @@
                         <td id="value_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q3' }}"
                                     class="text-right {{ 'value-sector-Q3-' . $subsector->sector_id }} {{ 'value-category-Q3-' . $subsector->sector->category_id }} ">
                         </td>
-                        <td id="value_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q3' }}"
+                        <td id="value_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q4' }}"
                                     class="text-right {{ 'value-sector-Q4-' . $subsector->sector_id }} {{ 'value-category-Q3-' . $subsector->sector->category_id }} ">
                         </td>
                         <td id="value_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_T' }}"
@@ -146,19 +146,19 @@
                         (PDRB) Nonmigas </p>
                 </td>
                 <td>
-                    <p class="col mt-1 mb-1" id="value-total-nonmigas-Q1" style="margin-bottom:0rem;"></p>
+                    <p class="col mt-1 mb-1" id="value_total-nonmigas-Q1" style="margin-bottom:0rem;"></p>
                 </td>
                 <td>
-                    <p class="col mt-1 mb-1" id="value-total-nonmigas-Q2" style="margin-bottom:0rem;"></p>
+                    <p class="col mt-1 mb-1" id="value_total-nonmigas-Q2" style="margin-bottom:0rem;"></p>
                 </td>
                 <td>
-                    <p class="col mt-1 mb-1" id="value-total-nonmigas-Q3" style="margin-bottom:0rem;"></p>
+                    <p class="col mt-1 mb-1" id="value_total-nonmigas-Q3" style="margin-bottom:0rem;"></p>
                 </td>
                 <td>
-                    <p class="col mt-1 mb-1" id="value-total-nonmigas-Q4" style="margin-bottom:0rem;"></p>
+                    <p class="col mt-1 mb-1" id="value_total-nonmigas-Q4" style="margin-bottom:0rem;"></p>
                 </td>
                 <td>
-                    <p class="col mt-1 mb-1" id="value-total-nonmigas-T" style="margin-bottom:0rem;"></p>
+                    <p class="col mt-1 mb-1" id="value_total-nonmigas-T" style="margin-bottom:0rem;"></p>
                 </td>
             </tr>
             <tr class="PDRB-footer text-center" style="background-color: #09c140; color:aliceblue; font-weight: bold;">
@@ -167,19 +167,19 @@
                         (PDRB) </p>
                 </td>
                 <td>
-                    <p class="col mt-1 mb-1" id="value-total-Q1" style="margin-bottom:0rem;"></p>
+                    <p class="col mt-1 mb-1" id="value_total-Q1" style="margin-bottom:0rem;"></p>
                 </td>
                 <td>
-                    <p class="col mt-1 mb-1" id="value-total-Q2" style="margin-bottom:0rem;"></p>
+                    <p class="col mt-1 mb-1" id="value_total-Q2" style="margin-bottom:0rem;"></p>
                 </td>
                 <td>
-                    <p class="col mt-1 mb-1" id="value-total-Q3" style="margin-bottom:0rem;"></p>
+                    <p class="col mt-1 mb-1" id="value_total-Q3" style="margin-bottom:0rem;"></p>
                 </td>
                 <td>
-                    <p class="col mt-1 mb-1" id="value-total-Q4" style="margin-bottom:0rem;"></p>
+                    <p class="col mt-1 mb-1" id="value_total-Q4" style="margin-bottom:0rem;"></p>
                 </td>
                 <td>
-                    <p class="col mt-1 mb-1" id="value-total-T" style="margin-bottom:0rem;"></p>
+                    <p class="col mt-1 mb-1" id="value_total-T" style="margin-bottom:0rem;"></p>
                 </td>
             </tr>
         </tbody>

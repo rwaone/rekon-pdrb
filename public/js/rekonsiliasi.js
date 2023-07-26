@@ -200,8 +200,15 @@ $(document).ready(function () {
 
     $('#nav-distribusi').click(function () {
         const previous_data = JSON.parse(sessionStorage.getItem('previous_data'));
-        console.log(previous_data);
+        // console.log(previous_data);
         showTable();
+        $('td[id^="value"]').each(function () {
+            const value_id = this.id.replace('value_', '');
+            console.log(this.id);
+            console.log('#adhb_' + value_id);
+            console.log($('#adhb_' + value_id).val());
+            $('#value_' + value_id).html($('#adhb_' + value_id).val());
+        })
     });
 
     function showTable() {
@@ -211,7 +218,6 @@ $(document).ready(function () {
         $('.nav-link').removeClass('active');
         $('#nav-distribusi').addClass('active');
         
-        $('#value_A_Q4').html($('#adhb_A_Q4').val());
         setTimeout(function () {
             
             $('.loader').addClass('d-none');
@@ -278,18 +284,8 @@ $(document).ready(function () {
 
                 ($('#type').val() == 'Pengeluaran') ? allSumPDRBPengeluaran('adhb') : allSumPDRBLapus('adhb');
 
-<<<<<<< Updated upstream
-=======
                 sessionStorage.setItem('previous_data', JSON.stringify(result.previous_data));
 
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000
-                });
-
->>>>>>> Stashed changes
                 Toast.fire({
                     icon: 'success',
                     title: 'Berhasil',
