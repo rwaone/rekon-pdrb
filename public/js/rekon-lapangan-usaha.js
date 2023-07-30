@@ -14,7 +14,7 @@ $(document).ready(function () {
     // Your jQuery code goes here
     let cat = JSON.parse($("#my-cat").data('cat'))
     let catArray = cat.split(", ")
-    let catB = "A,B,C,D,G,H,I,K"
+    let catB = "1,2,3,4,7,8,9,11"
     let catSpecific = catB.split(",")
     let catLast = catArray.filter(value => !catSpecific.includes(value))
     // console.log(catLast)
@@ -207,23 +207,23 @@ $(document).ready(function () {
         $(`.adhb-sector-Q${i}-1`).keyup(function (e) {
             let jumlah = calculateSector(`adhb-sector-Q${i}-1`).toFixed(2);
             let que = String(jumlah).replaceAll(/[.]/g, ',');
-            $(`#adhb_1_A_Q${i}`).val(formatRupiah(que, ''));
+            $(`#adhb_1_1_Q${i}`).val(formatRupiah(que, ''));
         });
         $(`.adhb-sector-Q${i}-8`).keyup(function (e) {
             let jumlah = calculateSector(`adhb-sector-Q${i}-8`).toFixed(2);
             let que = String(jumlah).replaceAll(/[.]/g, ',');
-            $(`#adhb_1_C_Q${i}`).val(formatRupiah(que, ''))
+            $(`#adhb_8_3_Q${i}`).val(formatRupiah(que, ''))
         });
         //adhk table
         $(`.adhk-sector-Q${i}-1`).keyup(function (e) {
             let jumlah = calculateSector(`adhk-sector-Q${i}-1`).toFixed(2);
             let que = String(jumlah).replaceAll(/[.]/g, ',');
-            $(`#adhk_1_A_Q${i}`).val(formatRupiah(que, ''));
+            $(`#adhk_1_1_Q${i}`).val(formatRupiah(que, ''));
         });
         $(`.adhk-sector-Q${i}-8`).keyup(function (e) {
             let jumlah = calculateSector(`adhk-sector-Q${i}-8`).toFixed(2);
             let que = String(jumlah).replaceAll(/[.]/g, ',');
-            $(`#adhk_1_C_Q${i}`).val(formatRupiah(que, ''))
+            $(`#adhk_8_3_Q${i}`).val(formatRupiah(que, ''))
         });
 
         for (let j = 1; j < 18; j++) {

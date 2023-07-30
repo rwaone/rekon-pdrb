@@ -35,26 +35,26 @@
                             </td>
                             <td class="categories">
                                 <input disabled type="text"
-                                    id="adhb_{{ $subsector->sector->category->code . '_Q1' }}"
+                                    id="adhb_{{ $subsector->sector->category->id . '_Q1' }}"
                                     class="form-control text-right" aria-required="true">
                             </td>
                             <td class="categories">
                                 <input disabled type="text"
-                                    id="adhb_{{ $subsector->sector->category->code . '_Q2' }}"
+                                    id="adhb_{{ $subsector->sector->category->id . '_Q2' }}"
                                     class="form-control text-right" aria-required="true">
                             </td>
                             <td class="categories">
                                 <input disabled type="text"
-                                    id="adhb_{{ $subsector->sector->category->code . '_Q3' }}"
+                                    id="adhb_{{ $subsector->sector->category->id . '_Q3' }}"
                                     class="form-control text-right" aria-required="true">
                             </td>
                             <td class="categories">
                                 <input disabled type="text"
-                                    id="adhb_{{ $subsector->sector->category->code . '_Q4' }}"
+                                    id="adhb_{{ $subsector->sector->category->id . '_Q4' }}"
                                     class="form-control text-right" aria-required="true">
                             </td>
                             <td class="categories">
-                                <input disabled type="text" id="adhb_{{ $subsector->sector->category->code . '_T' }}"
+                                <input disabled type="text" id="adhb_{{ $subsector->sector->category->id . '_T' }}"
                                     class="form-control text-right" aria-required="true">
                             </td>
 
@@ -68,31 +68,31 @@
                             </td>
                             <td>
                                 <input disabled type="text"
-                                    id="adhb_{{ $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q1' }}"
+                                    id="adhb_{{ $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q1' }}"
                                     class="form-control text-right {{ 'adhb-category-Q1-' . $subsector->sector->category->code }}"
                                     aria-required="true">
                             </td>
                             <td>
                                 <input disabled type="text"
-                                    id="adhb_{{ $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q2' }}"
+                                    id="adhb_{{ $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q2' }}"
                                     class="form-control text-right {{ 'adhb-category-Q2-' . $subsector->sector->category->code }}"
                                     aria-required="true">
                             </td>
                             <td>
                                 <input disabled type="text"
-                                    id="adhb_{{ $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q3' }}"
+                                    id="adhb_{{ $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q3' }}"
                                     class="form-control text-right {{ 'adhb-category-Q3-' . $subsector->sector->category->code }}"
                                     aria-required="true">
                             </td>
                             <td>
                                 <input disabled type="text"
-                                    id="adhb_{{ $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q4' }}"
+                                    id="adhb_{{ $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q4' }}"
                                     class="form-control text-right {{ 'adhb-category-Q4-' . $subsector->sector->category->code }}"
                                     aria-required="true">
                             </td>
                             <td>
                                 <input disabled type="text" name="adhb_sum_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->sector->code . '_' . $subsector->sector->category->code . '_T' }}"
+                                    id="adhb_{{ $subsector->sector->id . '_' . $subsector->sector->category->id . '_T' }}"
                                     class="form-control text-right {{ 'adhb-category-T-' . $subsector->sector->category->code }}"
                                     aria-required="true">
                             </td>
@@ -108,34 +108,34 @@
                             <td>
                                 <input type="hidden" name="id_1_{{ $subsector->id }}">
                                 <input type="text" name="adhb_value_1_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q1' }}"
+                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q1' }}"
                                     class="form-control text-right {{  'adhb-sector-Q1-' . $subsector->sector_id }} {{ 'adhb-category-Q1-' . $subsector->sector->category_id }} "
                                     aria-required="true" tabindex="{{ $subsector->id }}">
                             </td>
                             <td>
                                 <input type="hidden" name="id_2_{{ $subsector->id }}">
                                 <input type="text" name="adhb_value_2_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q2' }}"
+                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q2' }}"
                                     class="form-control text-right {{  'adhb-sector-Q2-' . $subsector->sector_id }} {{ 'adhb-category-Q2-' . $subsector->sector->category_id }}"
                                     aria-required="true" tabindex="{{ $subsector->id + 55 }}">
                             </td>
                             <td>
                                 <input type="hidden" name="id_3_{{ $subsector->id }}">
                                 <input type="text" name="adhb_value_3_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q3' }}"
+                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q3' }}"
                                     class="form-control text-right {{  'adhb-sector-Q3-' . $subsector->sector_id }} {{ 'adhb-category-Q3-' . $subsector->sector->category_id }}"
                                     aria-required="true" tabindex="{{ $subsector->id + 110 }}">
                             </td>
                             <td>
                                 <input type="hidden" name="id_4_{{ $subsector->id }}">
                                 <input type="text" name="adhb_value_4_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q4' }}"
+                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q4' }}"
                                     class="form-control text-right {{  'adhb-sector-Q4-' . $subsector->sector_id }} {{ 'adhb-category-Q4-' . $subsector->sector->category_id }}"
                                     aria-required="true" tabindex="{{ $subsector->id + 165 }}">
                             </td>
                             <td>
                                 <input disabled type="text" name="adhb_sum_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_T' }}"
+                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_T' }}"
                                     class="form-control text-right {{  'adhb-sector-T-' . $subsector->sector_id }} {{ 'adhb-category-T-' . $subsector->sector->category_id }}"
                                     aria-required="true" tabindex="{{ $subsector->id + 220 }}">
                             </td>
@@ -153,34 +153,34 @@
                             <td>
                                 <input type="hidden" name="id_1_{{ $subsector->id }}">
                                 <input type="text" name="adhb_value_1_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q1' }}"
+                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q1' }}"
                                     class="form-control text-right {{  'adhb-sector-Q1-' . $subsector->sector_id }} {{ 'adhb-category-Q1-' . $subsector->sector->category_id }}"
                                     aria-required="true" tabindex="{{ $subsector->id }}">
                             </td>
                             <td>
                                 <input type="hidden" name="id_2_{{ $subsector->id }}">
                                 <input type="text" name="adhb_value_2_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q2' }}"
+                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q2' }}"
                                     class="form-control text-right {{  'adhb-sector-Q2-' . $subsector->sector_id }} {{ 'adhb-category-Q2-' . $subsector->sector->category_id }}"
                                     aria-required="true" tabindex="{{ $subsector->id + 55 }}">
                             </td>
                             <td>
                                 <input type="hidden" name="id_3_{{ $subsector->id }}">
                                 <input type="text" name="adhb_value_3_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q3' }}"
+                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q3' }}"
                                     class="form-control text-right {{  'adhb-sector-Q3-' . $subsector->sector_id }} {{ 'adhb-category-Q3-' . $subsector->sector->category_id }}"
                                     aria-required="true" tabindex="{{ $subsector->id + 110 }}">
                             </td>
                             <td>
                                 <input type="hidden" name="id_4_{{ $subsector->id }}">
                                 <input type="text" name="adhb_value_4_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q4' }}"
+                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q4' }}"
                                     class="form-control text-right {{  'adhb-sector-Q4-' . $subsector->sector_id }} {{ 'adhb-category-Q4-' . $subsector->sector->category_id }}"
                                     aria-required="true" tabindex="{{ $subsector->id + 165 }}">
                             </td>
                             <td>
                                 <input disabled type="text" name="adhb_sum_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_T' }}"
+                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_T' }}"
                                     class="form-control text-right {{  'adhb-sector-T-' . $subsector->sector_id }} {{ 'adhb-category-T-' . $subsector->sector->category_id }}"
                                     aria-required="true" tabindex="{{ $subsector->id + 220 }}">
                             </td>
@@ -197,34 +197,34 @@
                             <td>
                                 <input type="hidden" name="id_1_{{ $subsector->id }}">
                                 <input type="text" name="adhb_value_1_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q1' }}"
+                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q1' }}"
                                     class="form-control text-right {{  'adhb-sector-Q1-' . $subsector->sector_id }} {{ 'adhb-category-Q1-' . $subsector->sector->category_id }}"
                                     aria-required="true" tabindex="{{ $subsector->id }}">
                             </td>
                             <td>
                                 <input type="hidden" name="id_2_{{ $subsector->id }}">
                                 <input type="text" name="adhb_value_2_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q2' }}"
+                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q2' }}"
                                     class="form-control text-right {{  'adhb-sector-Q2-' . $subsector->sector_id }} {{ 'adhb-category-Q2-' . $subsector->sector->category_id }}"
                                     aria-required="true" tabindex="{{ $subsector->id + 55 }}">
                             </td>
                             <td>
                                 <input type="hidden" name="id_3_{{ $subsector->id }}">
                                 <input type="text" name="adhb_value_3_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q3' }}"
+                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q3' }}"
                                     class="form-control text-right {{  'adhb-sector-Q3-' . $subsector->sector_id }} {{ 'adhb-category-Q3-' . $subsector->sector->category_id }}"
                                     aria-required="true" tabindex="{{ $subsector->id + 110 }}">
                             </td>
                             <td>
                                 <input type="hidden" name="id_4_{{ $subsector->id }}">
                                 <input type="text" name="adhb_value_4_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Q4' }}"
+                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q4' }}"
                                     class="form-control text-right {{  'adhb-sector-Q4-' . $subsector->sector_id }} {{ 'adhb-category-Q4-' . $subsector->sector->category_id }}"
                                     aria-required="true" tabindex="{{ $subsector->id + 165 }}">
                             </td>
                             <td>
                                 <input disabled type="text" name="adhb_sum_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_T' }}"
+                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_T' }}"
                                     class="form-control text-right {{  'adhb-sector-T-' . $subsector->sector->id }} {{ 'adhb-category-T-' . $subsector->sector->category_id }}"
                                     aria-required="true" tabindex="{{ $subsector->id + 220 }}">
                             </td>

@@ -202,6 +202,9 @@ $(document).ready(function () {
         const previous_data = JSON.parse(sessionStorage.getItem('previous_data'));
         // console.log(previous_data);
         showTable();
+        for (let col = 1; col <= 5 ; col++) {
+            
+        }
         $('td[id^="value"]').each(function () {
             const value_id = this.id.replace('value_', '');
             console.log(this.id);
@@ -443,12 +446,12 @@ $(document).ready(function () {
 
             let jumlah = calculateSector(price_base + `-sector-Q${i}-1`).toFixed(2);
             let que = String(jumlah).replaceAll(/[.]/g, ',');
-            $(`#` + price_base + `_1_A_Q${i}`).val(formatRupiah(que, ''));
+            $(`#` + price_base + `_1_1_Q${i}`).val(formatRupiah(que, ''));
 
 
             jumlah = calculateSector(price_base + `-sector-Q${i}-8`).toFixed(2);
             que = String(jumlah).replaceAll(/[.]/g, ',');
-            $(`#` + price_base + `_1_C_Q${i}`).val(formatRupiah(que, ''))
+            $(`#` + price_base + `_8_3_Q${i}`).val(formatRupiah(que, ''))
 
             for (let j = 1; j < 18; j++) {
 
@@ -463,7 +466,7 @@ $(document).ready(function () {
         let table = $('#' + price_base + '-table');
         let tbody = table.find('tbody');
         let tr = tbody.find('tr');
-        let catB = "A,B,C,D,G,H,I,K"
+        let catB = "1,2,3,4,7,8,9,11"
         let catSpecific = catB.split(",")
         let catLast = catArray.filter(value => !catSpecific.includes(value))
         $('#' + price_base + '-table tr').each(function (i, j) {
