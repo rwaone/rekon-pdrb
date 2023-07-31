@@ -53,7 +53,7 @@
             <li class="nav-item"><a class="nav-link" href="#" id="nav-qtoq">Q to Q</a></li>
             <li class="nav-item"><a class="nav-link" href="#" id="nav-ytoy">Y to Y</a></li>
             <li class="nav-item"><a class="nav-link" href="#" id="nav-ctoc">C to C</a></li>
-            <li class="nav-item"><a class="nav-link" href="#" id="nav-idx-implisit">Indeks Implisit</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" id="nav-indeks">Indeks Implisit</a></li>
             <li class="nav-item"><a class="nav-link" href="#" id="nav-laju">Laju Implisit</a></li>
             <div class="ml-auto">
                 <button id="fullFormSave" type="button" class="btn btn-success">Simpan</button>
@@ -64,9 +64,9 @@
     @if ($type == 'Lapangan Usaha')
         <div id="adhbFormContainer" class="card form-container d-none">@include('lapangan.adhb-form')</div>
         <div id="adhkFormContainer" class="card form-container d-none">@include('lapangan.adhk-form')</div>
-        <div id="tableFormContainer" class="card form-container">@include('lapangan.rekon-table')</div>
-        <div id="prevadhbDataContainer" class="card form-container d-none">@include('lapangan.prev-adhb-form')</div>
-        <div id="prevadhkDataContainer" class="card form-container d-none">@include('lapangan.prev-adhk-form')</div>
+        <div id="tableFormContainer" class="card form-container d-none">@include('lapangan.rekon-table')</div>
+        <div id="prevadhbDataContainer" class="card d-none">@include('lapangan.prev-adhb-form')</div>
+        <div id="prevadhkDataContainer" class="card d-none">@include('lapangan.prev-adhk-form')</div>
     @elseif ($type == 'Pengeluaran')
         <div id="fullFormContainer" class="card d-none">@include('pengeluaran.full-form')</div>
     @endif

@@ -199,12 +199,9 @@ $(document).ready(function () {
     });
 
     $('#nav-distribusi').click(function () {
-        const previous_data = JSON.parse(sessionStorage.getItem('previous_data'));
-        // console.log(previous_data);
+        $('.nav-link').removeClass('active');
+        $('#nav-distribusi').addClass('active');
         showTable();
-        for (let col = 1; col <= 5; col++) {
-
-        }
 
         let tableRekon = $('#rekon-table');
         let tbodyRekon = tableRekon.find('tbody');
@@ -219,13 +216,145 @@ $(document).ready(function () {
                 let rekonCell = $('#rekon-table tr').eq(row + 1).find('td').eq(col)
                 let X = inputCell.find(`input[id^='adhb']`).val().replaceAll(/[A-Za-z.]/g, '')
                 let Y = Number(X.replaceAll(/[,]/g, '.'))
-                let Z = (Y/totalPDRB)*100
+                let Z = (Y / totalPDRB) * 100
                 rekonCell.text(String(Z.toFixed(2)).replaceAll(/[.]/g, ','))
             }
             let nmCell = $('#rekon-table tr').last().prev().find('td').eq(col)
             let totalCell = $('#rekon-table tr').last().find('td').eq(col)
-            nmCell.text(String(((totalnm/totalPDRB)*100).toFixed(2)).replaceAll(/[.]/g, ','))
-            totalCell.text(String(((totalPDRB/totalPDRB)*100).toFixed(2)).replaceAll(/[.]/g, ','))
+            nmCell.text(String(((totalnm / totalPDRB) * 100).toFixed(2)).replaceAll(/[.]/g, ','))
+            totalCell.text(String(((totalPDRB / totalPDRB) * 100).toFixed(2)).replaceAll(/[.]/g, ','))
+        }
+    });
+
+    $('#nav-qtoq').click(function () {
+        // const previous_data = JSON.parse(sessionStorage.getItem('previous_data'));
+        $('.nav-link').removeClass('active');
+        $('#nav-qtoq').addClass('active');
+        showTable();
+
+        let tableRekon = $('#rekon-table');
+        let tbodyRekon = tableRekon.find('tbody');
+        let trRekon = tbodyRekon.find('tr');
+
+        let numRows = trRekon.length
+        for (let col = 1; col < $('#rekon-table tr:first-child td').length; col++) {
+            for (let row = 0; row < numRows; row++) {
+                let rekonCell = $('#rekon-table tr').eq(row + 1).find('td').eq(col)
+                let currentCell = $('#adhk-table tr').eq(row + 1).find('td').eq(col)
+                if (col == 1) {
+                    var previousCell = $('#prev-adhk-table tr').eq(row + 1).find('td').eq(4)
+                } else if (col == 5) {
+                    var previousCell = $('#prev-adhk-table tr').eq(row + 1).find('td').eq(5)
+                } else {
+                    var previousCell = $('#adhk-table tr').eq(row + 1).find('td').eq(col - 1)
+                }
+                if (row == numRows - 1 || row == numRows - 2) {
+                    var currentQ = Number(currentCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    var previousQ = Number(previousCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                } else {
+                    var currentQ = Number(currentCell.find(`input[id^='adhk']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    var previousQ = Number(previousCell.find(`input[id*='adhk']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                }
+                let QtoQ = ((currentQ / previousQ) * 100) - 100
+                let QtoQval = isNaN(QtoQ) ? '-' : QtoQ.toFixed(2)
+                rekonCell.text(String(QtoQval).replaceAll(/[.]/g, ','))
+            }
+        }
+    });
+
+    $('#nav-ytoy').click(function () {
+        // const previous_data = JSON.parse(sessionStorage.getItem('previous_data'));
+        $('.nav-link').removeClass('active');
+        $('#nav-ytoy').addClass('active');
+        showTable();
+
+        let tableRekon = $('#rekon-table');
+        let tbodyRekon = tableRekon.find('tbody');
+        let trRekon = tbodyRekon.find('tr');
+
+        let numRows = trRekon.length
+        for (let col = 1; col < $('#rekon-table tr:first-child td').length; col++) {
+            for (let row = 0; row < numRows; row++) {
+                let rekonCell = $('#rekon-table tr').eq(row + 1).find('td').eq(col)
+                let currentCell = $('#adhk-table tr').eq(row + 1).find('td').eq(col)
+                let previousCell = $('#prev-adhk-table tr').eq(row + 1).find('td').eq(col)
+                if (row == numRows - 1 || row == numRows - 2) {
+                    var currentValue = Number(currentCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    var previousValue = Number(previousCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                } else {
+                    var currentValue = Number(currentCell.find(`input[id^='adhk']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    var previousValue = Number(previousCell.find(`input[id*='adhk']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                }
+                let YtoY = ((currentValue / previousValue) * 100) - 100
+                let YtoYval = isNaN(YtoY) ? '-' : YtoY.toFixed(2)
+                rekonCell.text(String(YtoYval).replaceAll(/[.]/g, ','))
+            }
+        }
+    });
+
+    $('#nav-ctoc').click(function () {
+        // const previous_data = JSON.parse(sessionStorage.getItem('previous_data'));
+        $('.nav-link').removeClass('active');
+        $('#nav-ctoc').addClass('active');
+        showTable();
+
+        let tableRekon = $('#rekon-table');
+        let tbodyRekon = tableRekon.find('tbody');
+        let trRekon = tbodyRekon.find('tr');
+
+        let numRows = trRekon.length
+        for (let col = 1; col < $('#rekon-table tr:first-child td').length; col++) {
+            for (let row = 0; row < numRows; row++) {
+                let rekonCell = $('#rekon-table tr').eq(row + 1).find('td').eq(col)
+                let sumCurrentValue = 0
+                let sumPreviousValue = 0
+                for (let length = 1; length <= col; length++) {
+                    let currentCell = $('#adhk-table tr').eq(row + 1).find('td').eq(length)
+                    let previousCell = $('#prev-adhk-table tr').eq(row + 1).find('td').eq(length)
+                    if (row == numRows - 1 || row == numRows - 2) {
+                        var currentValue = Number(currentCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                        var previousValue = Number(previousCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    } else {
+                        var currentValue = Number(currentCell.find(`input[id^='adhk']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                        var previousValue = Number(previousCell.find(`input[id*='adhk']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    }
+                    sumCurrentValue += currentValue
+                    sumPreviousValue += previousValue
+                }
+                let CtoC = ((sumCurrentValue / sumPreviousValue) * 100) - 100
+                let CtoCval = isNaN(CtoC) ? '-' : CtoC.toFixed(2)
+                rekonCell.text(String(CtoCval).replaceAll(/[.]/g, ','))
+            }
+        }
+    });
+
+    $('#nav-indeks').click(function () {
+        // const previous_data = JSON.parse(sessionStorage.getItem('previous_data'));
+        $('.nav-link').removeClass('active');
+        $('#nav-indeks').addClass('active');
+        showTable();
+
+        let tableRekon = $('#rekon-table');
+        let tbodyRekon = tableRekon.find('tbody');
+        let trRekon = tbodyRekon.find('tr');
+
+        let numRows = trRekon.length
+        for (let col = 1; col < $('#rekon-table tr:first-child td').length; col++) {
+            for (let row = 0; row < numRows; row++) {
+                let rekonCell = $('#rekon-table tr').eq(row + 1).find('td').eq(col)
+                let adhbCell = $('#adhb-table tr').eq(row + 1).find('td').eq(col)
+                let adhkkCell = $('#adhk-table tr').eq(row + 1).find('td').eq(col)
+                if (row == numRows - 1 || row == numRows - 2) {
+                    var adhbValue = Number(adhbCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    var adhkValue = Number(adhkkCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                } else {
+                    var adhbValue = Number(adhbCell.find(`input[id^='adhb']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    var adhkValue = Number(adhkkCell.find(`input[id^='adhk']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                }
+                let implisit = ((adhbValue / adhkValue) * 100)
+                let indeks = isNaN(implisit) ? '-' : implisit.toFixed(2)
+                rekonCell.text(String(indeks).replaceAll(/[.]/g, ','))
+            }
         }
     });
 
@@ -233,8 +362,6 @@ $(document).ready(function () {
         $('.loader').removeClass('d-none');
         $('.form-container').addClass('d-none');
         $('#tableFormContainer').removeClass('d-none');
-        $('.nav-link').removeClass('active');
-        $('#nav-distribusi').addClass('active');
 
         setTimeout(function () {
             $('.loader').addClass('d-none');
@@ -270,7 +397,6 @@ $(document).ready(function () {
             },
 
             success: function (result) {
-                console.log(result);
                 $.each(result.current_data, function (quarter, value) {
                     $.each(value, function (key, value) {
                         adhkValue = ((value.adhk != null) ? formatRupiah(
@@ -298,7 +424,7 @@ $(document).ready(function () {
                                 value.id);
                     });
                 });
-                
+
                 $.each(result.previous_data, function (quarter, value) {
                     $.each(value, function (key, value) {
                         adhkValue = ((value.adhk != null) ? formatRupiah(
@@ -321,7 +447,17 @@ $(document).ready(function () {
                     });
                 });
 
-                ($('#type').val() == 'Pengeluaran') ? allSumPDRBPengeluaran('adhb') : allSumPDRBLapus('adhb');
+                if ($('#type').val() == 'Pengeluaran') {
+                    allSumPDRBPengeluaran('adhb')
+                    allSumPDRBPengeluaran('adhk')
+                    allSumPDRBPengeluaran('prev-adhb')
+                    allSumPDRBPengeluaran('prev-adhk')
+                } else {
+                    allSumPDRBLapus('adhb')
+                    allSumPDRBLapus('adhk')
+                    allSumPDRBLapus('prev-adhb')
+                    allSumPDRBLapus('prev-adhk')
+                }
 
                 sessionStorage.setItem('previous_data', JSON.stringify(result.previous_data));
 
@@ -503,90 +639,100 @@ $(document).ready(function () {
         let table = $('#' + price_base + '-table');
         let tbody = table.find('tbody');
         let tr = tbody.find('tr');
-        let catB = "1,2,3,4,7,8,9,11"
-        let catSpecific = catB.split(",")
-        let catLast = catArray.filter(value => !catSpecific.includes(value))
-        $('#' + price_base + '-table tr').each(function (i, j) {
-            let $currentRow = $(this).closest('tr')
-            let $totalCol = $currentRow.find('td:last')
-            let sum = 0
-            $currentRow.find('input:not(:hidden):not(:disabled)').each(function () {
-                let X = $(this).val().replaceAll(/[A-Za-z.]/g, '')
-                let Y = X.replaceAll(/[,]/g, '.')
-
-                sum += Number(Y)
-            })
-            let sumRp = String(sum.toFixed(2)).replaceAll(/[.]/g, ',')
-            $totalCol.find('input').val(formatRupiah(sumRp, ''))
-
-            for (let index of catSpecific) {
-                let darksum = 0
-                let lightsum = 0
-
-                let row = $(`#` + price_base + `_${index}_T`).closest('tr')
-                let subsection = $(`#${price_base}_1_${index}_T`).closest('tr')
-
-                row.find('td input:not(#' + price_base + '_' + index + '_T):not(#' + price_base + '_' + index + '_Y)').each(function () {
-                    if (!$(this).hasClass(`${price_base}_${index}_T`)) {
-                        let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
-                        let Y = X.replaceAll(/[,]/g, '.');
-                        darksum += Number(Y);
-                    }
-                })
-
-                subsection.find('td input:not(#' + price_base + '_1_' + index + '_T):not(#' + price_base + '_1_' + index + '_Y)').each(function () {
-                    if (!$(this).hasClass(`${price_base}_${index}_T`)) {
-                        let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
-                        let Y = X.replaceAll(/[,]/g, '.');
-                        lightsum += Number(Y);
-                    }
-                })
-
-                let lightsumRp = String(lightsum.toFixed(2)).replaceAll(/[.]/g, ',');
-                let darksumRp = String(darksum.toFixed(2)).replaceAll(/[.]/g, ',');
-                $(`#${price_base}_1_${index}_T`).val(formatRupiah(lightsumRp, ''))
-                $(`#${price_base}_${index}_T`).val(formatRupiah(darksumRp, ''))
-            }
-
-            let numRows = tr.length - 2
+        let rows = tr.length - 2
+        for (let row = 0; row < rows; row++) {
+            let rowSum = 0
             for (let col = 1; col < $('#' + price_base + '-table tr:first-child td').length; col++) {
-                let sum = 0
-                let pdrb = 0
-                let nonmigas = 0
-                for (let row = 0; row < numRows; row++) {
+                if (col != 5) {
                     let cell = $('#' + price_base + '-table tr').eq(row + 1).find('td').eq(col)
-                    if (cell.hasClass('categories')) {
-                        let X = cell.find(`input[id^='adhb']`).val().replaceAll(/[A-Za-z.]/g, '')
-                        let Y = X.replaceAll(/[,]/g, '.')
-                        sum += Number(Y)
+                    let value = Number(cell.find(`input[id^='` + price_base + `']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    if (price_base == 'adhb') {
                     }
-                    for (let index of catLast) {
-                        if (cell.find(`input[id^='${price_base}___${index}_']`).length > 0) {
-                            let X = cell.find(`input[id^='${price_base}___${index}_']`).val().replaceAll(
-                                /[A-Za-z.]/g, '')
-                            let Y = X.replaceAll(/[,]/g, '.')
-                            pdrb += Number(Y)
-                        }
-                    }
-                    cell.find('input').each(function () {
-                        let inputId = $(this).attr('id');
-                        if (inputId && (inputId.includes(price_base + '_10_4_2_') || inputId.includes(price_base + '_15_8_3_'))) {
-                            let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
-                            let Y = X.replaceAll(/[,]/g, '.');
-                            nonmigas += Number(Y);
-                        }
-                    });
+                    rowSum += value
+                } else {
+                    let cell = $('#' + price_base + '-table tr').eq(row + 1).find('td').eq(col)
+                    let sumText = String(rowSum.toFixed(2)).replaceAll(/[.]/g, ',')
+                    cell.find(`input[id^='` + price_base + `']`).val(formatRupiah(sumText, ''))
                 }
-                let pdrbs = sum + pdrb
-                let PdrbNonmigas = pdrbs - nonmigas
-                let sumPDRB = String(pdrbs.toFixed(2)).replaceAll(/[.]/g, ',')
-                let sumPDRBnm = String(PdrbNonmigas.toFixed(2)).replaceAll(/[.]/g, ',')
-                let totalnm = $('#' + price_base + '-table tr').last().prev().find('td').eq(col)
-                let totalCell = $('#' + price_base + '-table tr').last().find('td').eq(col)
-                totalnm.text(formatRupiah(sumPDRBnm, ''))
-                totalCell.text(formatRupiah(sumPDRB, ''))
             }
-        });
+        }
+        // let catB = "1,2,3,4,7,8,9,11"
+        // let catSpecific = catB.split(",")
+        // let catLast = catArray.filter(value => !catSpecific.includes(value))
+        // $('#' + price_base + '-table tr').each(function () {
+        //     let $currentRow = $(this).closest('tr')
+        //     let $totalCol = $currentRow.find('td:last')
+        //     let sum = 0
+        //     $currentRow.find(`input[#^='`+ price_base +`']:not(:disabled)`).each(function () {
+        //         let X = $(this).val().replaceAll(/[A-Za-z.]/g, '')
+        //         let Y = X.replaceAll(/[,]/g, '.')
+        //         console.log(price_base + ' = ' + X)
+
+        //         sum += Number(Y)
+        //     })
+        //     let sumRp = String(sum.toFixed(2)).replaceAll(/[.]/g, ',')
+        //     $totalCol.find('input').val(formatRupiah(sumRp, ''))
+
+        //     for (let index of catSpecific) {
+        //         let darksum = 0
+        //         let lightsum = 0
+
+        //         let row = $(`#` + price_base + `_${index}_T`).closest('tr')
+        //         let subsection = $(`#${price_base}_1_${index}_T`).closest('tr')
+
+        //         row.find('td input:not(#' + price_base + '_' + index + '_T):not(#' + price_base + '_' + index + '_Y)').each(function () {
+        //             if (!$(this).hasClass(`${price_base}_${index}_T`)) {
+        //                 let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
+        //                 let Y = X.replaceAll(/[,]/g, '.');
+        //                 darksum += Number(Y);
+        //             }
+        //         })
+
+        //         subsection.find('td input:not(#' + price_base + '_1_' + index + '_T):not(#' + price_base + '_1_' + index + '_Y)').each(function () {
+        //             if (!$(this).hasClass(`${price_base}_${index}_T`)) {
+        //                 let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
+        //                 let Y = X.replaceAll(/[,]/g, '.');
+        //                 lightsum += Number(Y);
+        //             }
+        //         })
+
+        //         let lightsumRp = String(lightsum.toFixed(2)).replaceAll(/[.]/g, ',');
+        //         let darksumRp = String(darksum.toFixed(2)).replaceAll(/[.]/g, ',');
+        //         $(`#${price_base}_1_${index}_T`).val(formatRupiah(lightsumRp, ''))
+        //         $(`#${price_base}_${index}_T`).val(formatRupiah(darksumRp, ''))
+        //     }
+
+        let numRows = tr.length - 2
+        for (let col = 1; col < $('#' + price_base + '-table tr:first-child td').length; col++) {
+            let sum = 0
+            let pdrb = 0
+            let nonmigas = 0
+            for (let row = 0; row < numRows; row++) {
+                let cell = $('#' + price_base + '-table tr').eq(row + 1).find('td').eq(col)
+                if (cell.hasClass('categories')) {
+                    let X = cell.find(`input[id^='${price_base}']`).val().replaceAll(/[A-Za-z.]/g, '')
+                    let Y = X.replaceAll(/[,]/g, '.')
+                    sum += Number(Y)
+                }
+                cell.find('input').each(function () {
+                    let inputId = $(this).attr('id');
+                    if (inputId && (inputId.includes(price_base + '_10_4_2_') || inputId.includes(price_base + '_15_8_3_'))) {
+                        let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
+                        let Y = X.replaceAll(/[,]/g, '.');
+                        nonmigas += Number(Y);
+                    }
+                });
+            }
+            let pdrbs = sum + pdrb
+            let PdrbNonmigas = pdrbs - nonmigas
+            let sumPDRB = String(pdrbs.toFixed(2)).replaceAll(/[.]/g, ',')
+            let sumPDRBnm = String(PdrbNonmigas.toFixed(2)).replaceAll(/[.]/g, ',')
+            let totalnm = $('#' + price_base + '-table tr').last().prev().find('td').eq(col)
+            let totalCell = $('#' + price_base + '-table tr').last().find('td').eq(col)
+            totalnm.text(formatRupiah(sumPDRBnm, ''))
+            totalCell.text(formatRupiah(sumPDRB, ''))
+        }
+        // });
     }
 
 

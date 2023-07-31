@@ -179,31 +179,31 @@
                                 <label class="col" style="margin-bottom:0rem;"
                                     for="{{ $subsector->sector->category->code . '_' . $subsector->name }}">{{ $subsector->sector->category->code . '. ' . $subsector->name }}</label>
                             </td>
-                            <td>
+                            <td class="categories">
                                 <input type="text" name="prev-adhk_value_1_{{ $subsector->id }}"
                                     id="prev-adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q1' }}"
                                     class="form-control text-right {{  'prev-adhk-sector-Q1-' . $subsector->sector_id }} {{ 'prev-adhk-category-Q1-' . $subsector->sector->category_id }}"
                                     aria-required="true" tabindex="{{ $subsector->id }}">
                             </td>
-                            <td>
+                            <td class="categories">
                                 <input type="text" name="prev-adhk_value_2_{{ $subsector->id }}"
                                     id="prev-adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q2' }}"
                                     class="form-control text-right {{  'prev-adhk-sector-Q2-' . $subsector->sector_id }} {{ 'prev-adhk-category-Q2-' . $subsector->sector->category_id }}"
                                     aria-required="true" tabindex="{{ $subsector->id + 55 }}">
                             </td>
-                            <td>
+                            <td class="categories">
                                 <input type="text" name="prev-adhk_value_3_{{ $subsector->id }}"
                                     id="prev-adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q3' }}"
                                     class="form-control text-right {{  'prev-adhk-sector-Q3-' . $subsector->sector_id }} {{ 'prev-adhk-category-Q3-' . $subsector->sector->category_id }}"
                                     aria-required="true" tabindex="{{ $subsector->id + 110 }}">
                             </td>
-                            <td>
+                            <td class="categories">
                                 <input type="text" name="prev-adhk_value_4_{{ $subsector->id }}"
                                     id="prev-adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q4' }}"
                                     class="form-control text-right {{  'prev-adhk-sector-Q4-' . $subsector->sector_id }} {{ 'prev-adhk-category-Q4-' . $subsector->sector->category_id }}"
                                     aria-required="true" tabindex="{{ $subsector->id + 165 }}">
                             </td>
-                            <td>
+                            <td class="categories">
                                 <input disabled type="text" name="prev-adhk_sum_{{ $subsector->id }}"
                                     id="prev-adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_T' }}"
                                     class="form-control text-right {{  'prev-adhk-sector-T-' . $subsector->sector->id }} {{ 'prev-adhk-category-T-' . $subsector->sector->category_id }}"

@@ -54,7 +54,7 @@
                                     class="form-control text-right" aria-required="true">
                             </td>
                             <td class="categories">
-                                <input disabled type="text" id="adhk_{{ $subsector->sector->category->code . '_T' }}"
+                                <input disabled type="text" id="adhk_{{ $subsector->sector->category->id . '_T' }}"
                                     class="form-control text-right" aria-required="true">
                             </td>
                         </tr>
@@ -193,35 +193,35 @@
                                 <label class="col" style="margin-bottom:0rem;"
                                     for="{{ $subsector->sector->category->code . '_' . $subsector->name }}">{{ $subsector->sector->category->code . '. ' . $subsector->name }}</label>
                             </td>
-                            <td>
+                            <td class="categories">
                                 <input type="hidden" name="id_1_{{ $subsector->id }}">
                                 <input type="text" name="adhk_value_1_{{ $subsector->id }}"
                                     id="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q1' }}"
                                     class="form-control text-right {{ 'adhk-sector-Q1-' . $subsector->sector_id }} {{ 'adhk-category-Q1-' . $subsector->sector->category_id }}"
                                     aria-required="true" tabindex="{{ $subsector->id }}">
                             </td>
-                            <td>
+                            <td class="categories">
                                 <input type="hidden" name="id_2_{{ $subsector->id }}">
                                 <input type="text" name="adhk_value_2_{{ $subsector->id }}"
                                     id="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q2' }}"
                                     class="form-control text-right {{ 'adhk-sector-Q2-' . $subsector->sector_id }} {{ 'adhk-category-Q2-' . $subsector->sector->category_id }}"
                                     aria-required="true" tabindex="{{ $subsector->id + 55 }}">
                             </td>
-                            <td>
+                            <td class="categories">
                                 <input type="hidden" name="id_3_{{ $subsector->id }}">
                                 <input type="text" name="adhk_value_3_{{ $subsector->id }}"
                                     id="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q3' }}"
                                     class="form-control text-right {{ 'adhk-sector-Q3-' . $subsector->sector_id }} {{ 'adhk-category-Q3-' . $subsector->sector->category_id }}"
                                     aria-required="true" tabindex="{{ $subsector->id + 110 }}">
                             </td>
-                            <td>
+                            <td class="categories">
                                 <input type="hidden" name="id_4_{{ $subsector->id }}">
                                 <input type="text" name="adhk_value_4_{{ $subsector->id }}"
                                     id="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q4' }}"
                                     class="form-control text-right {{ 'adhk-sector-Q4-' . $subsector->sector_id }} {{ 'adhk-category-Q4-' . $subsector->sector->category_id }}"
                                     aria-required="true" tabindex="{{ $subsector->id + 165 }}">
                             </td>
-                            <td>
+                            <td class="categories">
                                 <input disabled type="text" name="adhk_sum_{{ $subsector->id }}"
                                     id="adhk_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_T' }}"
                                     class="form-control text-right {{ 'adhk-sector-T-' . $subsector->sector->id }} {{ 'adhk-category-T-' . $subsector->sector->category_id }}"
