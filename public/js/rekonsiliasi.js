@@ -202,16 +202,31 @@ $(document).ready(function () {
         const previous_data = JSON.parse(sessionStorage.getItem('previous_data'));
         // console.log(previous_data);
         showTable();
-        for (let col = 1; col <= 5 ; col++) {
-            
+        for (let col = 1; col <= 5; col++) {
+
         }
-        $('td[id^="value"]').each(function () {
-            const value_id = this.id.replace('value_', '');
-            console.log(this.id);
-            console.log('#adhb_' + value_id);
-            console.log($('#adhb_' + value_id).val());
-            $('#value_' + value_id).html($('#adhb_' + value_id).val());
-        })
+
+        let tableRekon = $('#rekon-table');
+        let tbodyRekon = tableRekon.find('tbody');
+        let trRekon = tbodyRekon.find('tr');
+
+        let numRows = trRekon.length - 2
+        for (let col = 1; col < $('#rekon-table tr:first-child td').length; col++) {
+            let totalnm = Number($('#adhb-table tr').last().prev().find('td').eq(col).text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+            let totalPDRB = Number($('#adhb-table tr').last().find('td').eq(col).text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+            for (let row = 0; row < numRows; row++) {
+                let inputCell = $('#adhb-table tr').eq(row + 1).find('td').eq(col)
+                let rekonCell = $('#rekon-table tr').eq(row + 1).find('td').eq(col)
+                let X = inputCell.find(`input[id^='adhb']`).val().replaceAll(/[A-Za-z.]/g, '')
+                let Y = Number(X.replaceAll(/[,]/g, '.'))
+                let Z = (Y/totalPDRB)*100
+                rekonCell.text(String(Z.toFixed(2)).replaceAll(/[.]/g, ','))
+            }
+            let nmCell = $('#rekon-table tr').last().prev().find('td').eq(col)
+            let totalCell = $('#rekon-table tr').last().find('td').eq(col)
+            nmCell.text(String(((totalnm/totalPDRB)*100).toFixed(2)).replaceAll(/[.]/g, ','))
+            totalCell.text(String(((totalPDRB/totalPDRB)*100).toFixed(2)).replaceAll(/[.]/g, ','))
+        }
     });
 
     function showTable() {
@@ -220,9 +235,8 @@ $(document).ready(function () {
         $('#tableFormContainer').removeClass('d-none');
         $('.nav-link').removeClass('active');
         $('#nav-distribusi').addClass('active');
-        
+
         setTimeout(function () {
-            
             $('.loader').addClass('d-none');
         }, 200);
     };
@@ -284,6 +298,28 @@ $(document).ready(function () {
                                 value.id);
                     });
                 });
+                
+                $.each(result.previous_data, function (quarter, value) {
+                    $.each(value, function (key, value) {
+                        adhkValue = ((value.adhk != null) ? formatRupiah(
+                            value.adhk
+                                .replace('.', ','),
+                            '') : formatRupiah(0,
+                                ''));
+                        $('input[name=prev-adhk_value_' + quarter + '_' + value
+                            .subsector_id + ']').val(
+                                adhkValue);
+
+                        adhbbValue = ((value.adhb != null) ? formatRupiah(
+                            value.adhb
+                                .replace('.', ','),
+                            '') : formatRupiah(0,
+                                ''));
+                        $('input[name=prev-adhb_value_' + quarter + '_' + value
+                            .subsector_id + ']').val(
+                                adhbbValue);
+                    });
+                });
 
                 ($('#type').val() == 'Pengeluaran') ? allSumPDRBPengeluaran('adhb') : allSumPDRBLapus('adhb');
 
@@ -299,6 +335,7 @@ $(document).ready(function () {
             },
         });
     }
+
     $('#copy-adhb').click(function () {
 
         $('#copy-price-base').val('adhb');
@@ -406,7 +443,7 @@ $(document).ready(function () {
             },
 
             success: function (result) {
-                
+
                 Toast.fire({
                     icon: 'success',
                     title: 'Berhasil',
@@ -519,7 +556,7 @@ $(document).ready(function () {
                 for (let row = 0; row < numRows; row++) {
                     let cell = $('#' + price_base + '-table tr').eq(row + 1).find('td').eq(col)
                     if (cell.hasClass('categories')) {
-                        let X = cell.find('input').val().replaceAll(/[A-Za-z.]/g, '')
+                        let X = cell.find(`input[id^='adhb']`).val().replaceAll(/[A-Za-z.]/g, '')
                         let Y = X.replaceAll(/[,]/g, '.')
                         sum += Number(Y)
                     }
@@ -533,7 +570,7 @@ $(document).ready(function () {
                     }
                     cell.find('input').each(function () {
                         let inputId = $(this).attr('id');
-                        if (inputId && (inputId.includes(price_base + '__1_B_') || inputId.includes(price_base + '_b_1_C_'))) {
+                        if (inputId && (inputId.includes(price_base + '_10_4_2_') || inputId.includes(price_base + '_15_8_3_'))) {
                             let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
                             let Y = X.replaceAll(/[,]/g, '.');
                             nonmigas += Number(Y);

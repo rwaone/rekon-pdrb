@@ -145,20 +145,15 @@
                     <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto
                         (PDRB) Nonmigas </p>
                 </td>
-                <td>
-                    <p class="col mt-1 mb-1" id="value_total-nonmigas-Q1" style="margin-bottom:0rem;"></p>
+                <td id="value_total-nonmigas-Q1" class="total-cell">
                 </td>
-                <td>
-                    <p class="col mt-1 mb-1" id="value_total-nonmigas-Q2" style="margin-bottom:0rem;"></p>
+                <td id="value_total-nonmigas-Q2" class="total-cell">
                 </td>
-                <td>
-                    <p class="col mt-1 mb-1" id="value_total-nonmigas-Q3" style="margin-bottom:0rem;"></p>
+                <td id="value_total-nonmigas-Q3" class="total-cell">
                 </td>
-                <td>
-                    <p class="col mt-1 mb-1" id="value_total-nonmigas-Q4" style="margin-bottom:0rem;"></p>
+                <td id="value_total-nonmigas-Q4" class="total-cell">
                 </td>
-                <td>
-                    <p class="col mt-1 mb-1" id="value_total-nonmigas-T" style="margin-bottom:0rem;"></p>
+                <td id="value_total-nonmigas-T" class="total-cell">
                 </td>
             </tr>
             <tr class="PDRB-footer text-center" style="background-color: #09c140; color:aliceblue; font-weight: bold;">
@@ -166,20 +161,15 @@
                     <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto
                         (PDRB) </p>
                 </td>
-                <td>
-                    <p class="col mt-1 mb-1" id="value_total-Q1" style="margin-bottom:0rem;"></p>
+                <td id="value_total-Q1" class="total-cell">
                 </td>
-                <td>
-                    <p class="col mt-1 mb-1" id="value_total-Q2" style="margin-bottom:0rem;"></p>
+                <td id="value_total-Q2" class="total-cell">
                 </td>
-                <td>
-                    <p class="col mt-1 mb-1" id="value_total-Q3" style="margin-bottom:0rem;"></p>
+                <td id="value_total-Q3" class="total-cell">
                 </td>
-                <td>
-                    <p class="col mt-1 mb-1" id="value_total-Q4" style="margin-bottom:0rem;"></p>
+                <td id="value_total-Q4" class="total-cell">
                 </td>
-                <td>
-                    <p class="col mt-1 mb-1" id="value_total-T" style="margin-bottom:0rem;"></p>
+                <td id="value_total-T" class="total-cell">
                 </td>
             </tr>
         </tbody>

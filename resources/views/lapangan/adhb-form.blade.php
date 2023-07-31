@@ -194,35 +194,35 @@
                                 <label class="col" style="margin-bottom:0rem;"
                                     for="{{ $subsector->sector->category->code . '_' . $subsector->name }}">{{ $subsector->sector->category->code . '. ' . $subsector->name }}</label>
                             </td>
-                            <td>
+                            <td class="categories">
                                 <input type="hidden" name="id_1_{{ $subsector->id }}">
                                 <input type="text" name="adhb_value_1_{{ $subsector->id }}"
                                     id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q1' }}"
                                     class="form-control text-right {{  'adhb-sector-Q1-' . $subsector->sector_id }} {{ 'adhb-category-Q1-' . $subsector->sector->category_id }}"
                                     aria-required="true" tabindex="{{ $subsector->id }}">
                             </td>
-                            <td>
+                            <td class="categories">
                                 <input type="hidden" name="id_2_{{ $subsector->id }}">
                                 <input type="text" name="adhb_value_2_{{ $subsector->id }}"
                                     id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q2' }}"
                                     class="form-control text-right {{  'adhb-sector-Q2-' . $subsector->sector_id }} {{ 'adhb-category-Q2-' . $subsector->sector->category_id }}"
                                     aria-required="true" tabindex="{{ $subsector->id + 55 }}">
                             </td>
-                            <td>
+                            <td class="categories">
                                 <input type="hidden" name="id_3_{{ $subsector->id }}">
                                 <input type="text" name="adhb_value_3_{{ $subsector->id }}"
                                     id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q3' }}"
                                     class="form-control text-right {{  'adhb-sector-Q3-' . $subsector->sector_id }} {{ 'adhb-category-Q3-' . $subsector->sector->category_id }}"
                                     aria-required="true" tabindex="{{ $subsector->id + 110 }}">
                             </td>
-                            <td>
+                            <td class="categories">
                                 <input type="hidden" name="id_4_{{ $subsector->id }}">
                                 <input type="text" name="adhb_value_4_{{ $subsector->id }}"
                                     id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q4' }}"
                                     class="form-control text-right {{  'adhb-sector-Q4-' . $subsector->sector_id }} {{ 'adhb-category-Q4-' . $subsector->sector->category_id }}"
                                     aria-required="true" tabindex="{{ $subsector->id + 165 }}">
                             </td>
-                            <td>
+                            <td class="categories">
                                 <input disabled type="text" name="adhb_sum_{{ $subsector->id }}"
                                     id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_T' }}"
                                     class="form-control text-right {{  'adhb-sector-T-' . $subsector->sector->id }} {{ 'adhb-category-T-' . $subsector->sector->category_id }}"
@@ -237,20 +237,15 @@
                         <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto
                             (PDRB) Nonmigas </p>
                     </td>
-                    <td>
-                        <p class="col mt-1 mb-1" id="adhb_total-nonmigas-Q1" style="margin-bottom:0rem;"></p>
+                    <td id="adhb_total-nonmigas-Q1" class="total-cell">
                     </td>
-                    <td>
-                        <p class="col mt-1 mb-1" id="adhb_total-nonmigas-Q2" style="margin-bottom:0rem;"></p>
+                    <td id="adhb_total-nonmigas-Q2" class="total-cell">
                     </td>
-                    <td>
-                        <p class="col mt-1 mb-1" id="adhb_total-nonmigas-Q3" style="margin-bottom:0rem;"></p>
+                    <td id="adhb_total-nonmigas-Q3" class="total-cell">
                     </td>
-                    <td>
-                        <p class="col mt-1 mb-1" id="adhb_total-nonmigas-Q4" style="margin-bottom:0rem;"></p>
+                    <td id="adhb_total-nonmigas-Q4" class="total-cell">
                     </td>
-                    <td>
-                        <p class="col mt-1 mb-1" id="adhb_total-nonmigas-T" style="margin-bottom:0rem;"></p>
+                    <td id="adhb_total-nonmigas-T" class="total-cell">
                     </td>
                 </tr>
                 <tr class="PDRB-footer text-center"
@@ -259,20 +254,15 @@
                         <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto
                             (PDRB) </p>
                     </td>
-                    <td>
-                        <p class="col mt-1 mb-1" id="adhb_total-Q1" style="margin-bottom:0rem;"></p>
+                    <td id="adhb_total-Q1" class="total-cell">
                     </td>
-                    <td>
-                        <p class="col mt-1 mb-1" id="adhb_total-Q2" style="margin-bottom:0rem;"></p>
+                    <td id="adhb_total-Q2" class="total-cell">
                     </td>
-                    <td>
-                        <p class="col mt-1 mb-1" id="adhb_total-Q3" style="margin-bottom:0rem;"></p>
+                    <td id="adhb_total-Q3" class="total-cell">
                     </td>
-                    <td>
-                        <p class="col mt-1 mb-1" id="adhb_total-Q4" style="margin-bottom:0rem;"></p>
+                    <td id="adhb_total-Q4" class="total-cell">
                     </td>
-                    <td>
-                        <p class="col mt-1 mb-1" id="adhb_total-T" style="margin-bottom:0rem;"></p>
+                    <td id="adhb_total-T" class="total-cell">
                     </td>
                 </tr>
             </tbody>

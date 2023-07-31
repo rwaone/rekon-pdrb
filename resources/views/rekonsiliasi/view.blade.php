@@ -65,6 +65,8 @@
         <div id="adhbFormContainer" class="card form-container d-none">@include('lapangan.adhb-form')</div>
         <div id="adhkFormContainer" class="card form-container d-none">@include('lapangan.adhk-form')</div>
         <div id="tableFormContainer" class="card form-container">@include('lapangan.rekon-table')</div>
+        <div id="prevadhbDataContainer" class="card form-container d-none">@include('lapangan.prev-adhb-form')</div>
+        <div id="prevadhkDataContainer" class="card form-container d-none">@include('lapangan.prev-adhk-form')</div>
     @elseif ($type == 'Pengeluaran')
         <div id="fullFormContainer" class="card d-none">@include('pengeluaran.full-form')</div>
     @endif

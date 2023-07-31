@@ -26,11 +26,6 @@ $(document).ready(function () {
     let trADHB = tbodyADHB.find('tr');
 
     trADHB.on('blur', 'td input', function (e) {
-        console.log('cat ' + cat);
-        console.log('catArray ' + catArray);
-        console.log('catBatch ' + catB);
-        console.log('catSpecific ' + catSpecific);
-        console.log('catLast ' + catLast);
         let $currentRow = $(this).closest('tr')
         let $totalCol = $currentRow.find('td:last')
         let sum = 0
@@ -44,7 +39,6 @@ $(document).ready(function () {
         $totalCol.find('input').val(formatRupiah(sumRp, ''))
 
         for (let index of catSpecific) {
-            console.log(index);
             let darksum = 0
             let lightsum = 0
 
@@ -81,28 +75,20 @@ $(document).ready(function () {
             for (let row = 0; row < numRows; row++) {
                 let cell = $('#adhb-table tr').eq(row + 1).find('td').eq(col)
                 if (cell.hasClass('categories')) {
-                    let X = cell.find('input').val().replaceAll(/[A-Za-z.]/g, '')
+                    let X = cell.find(`input[id^='adhb']`).val().replaceAll(/[A-Za-z.]/g, '')
                     let Y = X.replaceAll(/[,]/g, '.')
                     sum += Number(Y)
                 }
-                for (let index of catLast) {
-                    if (cell.find(`input[id^='adhb___${index}_']`).length > 0) {
-                        let X = cell.find(`input[id^='adhb___${index}_']`).val().replaceAll(
-                            /[A-Za-z.]/g, '')
-                        let Y = X.replaceAll(/[,]/g, '.')
-                        pdrb += Number(Y)
-                    }
-                }
                 cell.find('input').each(function () {
                     let inputId = $(this).attr('id');
-                    if (inputId && (inputId.includes('adhb__1_B_') || inputId.includes('adhb_b_1_C_'))) {
+                    if (inputId && (inputId.includes('adhb_10_4_2_') || inputId.includes('adhb_15_8_3_'))) {
                         let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
                         let Y = X.replaceAll(/[,]/g, '.');
                         nonmigas += Number(Y);
                     }
                 });
             }
-            let pdrbs = sum + pdrb
+            let pdrbs = sum
             let PdrbNonmigas = pdrbs - nonmigas
             let sumPDRB = String(pdrbs.toFixed(2)).replaceAll(/[.]/g, ',')
             let sumPDRBnm = String(PdrbNonmigas.toFixed(2)).replaceAll(/[.]/g, ',')
@@ -168,21 +154,13 @@ $(document).ready(function () {
             for (let row = 0; row < numRows; row++) {
                 let cell = $('#adhk-table tr').eq(row + 1).find('td').eq(col)
                 if (cell.hasClass('categories')) {
-                    let X = cell.find('input').val().replaceAll(/[A-Za-z.]/g, '')
+                    let X = cell.find(`input[id^='adhk']`).val().replaceAll(/[A-Za-z.]/g, '')
                     let Y = X.replaceAll(/[,]/g, '.')
                     sum += Number(Y)
                 }
-                for (let index of catLast) {
-                    if (cell.find(`input[id^='adhk___${index}_']`).length > 0) {
-                        let X = cell.find(`input[id^='adhk___${index}_']`).val().replaceAll(
-                            /[A-Za-z.]/g, '')
-                        let Y = X.replaceAll(/[,]/g, '.')
-                        pdrb += Number(Y)
-                    }
-                }
                 cell.find('input').each(function () {
                     let inputId = $(this).attr('id');
-                    if (inputId && (inputId.includes('adhk__1_B_') || inputId.includes('adhk_b_1_C_'))) {
+                    if (inputId && (inputId.includes('adhk_10_4_2_') || inputId.includes('adhk_15_8_3_'))) {
                         let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
                         let Y = X.replaceAll(/[,]/g, '.');
                         nonmigas += Number(Y);
