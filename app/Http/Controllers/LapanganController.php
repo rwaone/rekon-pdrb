@@ -15,7 +15,7 @@ class LapanganController extends Controller
     //
     public function rekonsiliasi()
     {
-        $cat = Category::pluck('code')->toArray();
+        $cat = Category::pluck('id')->toArray();
         $catString = implode(", ", $cat);
         $regions = Region::getMyRegion();
         $type = 'Lapangan Usaha';
