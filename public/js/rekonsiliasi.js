@@ -423,7 +423,11 @@ $(document).ready(function () {
         $('#nav-' + price_base).addClass('active');
 
         setTimeout(function () {
-            allSumPDRBLapus(price_base);
+            if ($('#type').val() == 'Pengeluaran'){
+                allSumPDRBPengeluaran(price_base);
+            } else {
+                allSumPDRBLapus(price_base);
+            }
             $('.loader').addClass('d-none');
         }, 200);
 
@@ -496,8 +500,8 @@ $(document).ready(function () {
                 if ($('#type').val() == 'Pengeluaran') {
                     allSumPDRBPengeluaran('adhb')
                     allSumPDRBPengeluaran('adhk')
-                    allSumPDRBPengeluaran('prev-adhb')
-                    allSumPDRBPengeluaran('prev-adhk')
+                    // allSumPDRBPengeluaran('prev-adhb')
+                    // allSumPDRBPengeluaran('prev-adhk')
                 } else {
                     allSumPDRBLapus('adhb')
                     allSumPDRBLapus('adhk')
@@ -635,27 +639,48 @@ $(document).ready(function () {
         });
     });
 
-    function allSumPDRBPengeluaran() {
+    function allSumPDRBPengeluaran(price_base) {
 
         for (let i = 1; i <= 4; i++) {
 
-            let jumlah = calculateSector(`sector-Q${i}-49`).toFixed(2);
+            let jumlah = calculateSector(price_base + `sector-Q${i}-49`).toFixed(2);
             let que = String(jumlah).replaceAll(/[.]/g, ',');
-            $(`#adhk_1_X_Q${i}`).val(formatRupiah(que, ''));
+            $(`#` + price_base + `_1_X_Q${i}`).val(formatRupiah(que, ''));
 
             jumlah = calculateSector(`sector-Q${i}-52`).toFixed(2);
             que = String(jumlah).replaceAll(/[.]/g, ',');
-            $(`#adhk_4_X_Q${i}`).val(formatRupiah(que, ''))
+            $(`#` + price_base + `_4_X_Q${i}`).val(formatRupiah(que, ''))
 
-            let X = $(`#adhk_a_6_X_Q${i}`).val().replaceAll(/[A-Za-z.]/g, '');
+            let X = $(`#` + price_base + `_a_6_X_Q${i}`).val().replaceAll(/[A-Za-z.]/g, '');
 
-            let I = $(`#adhk_b_6_X_Q${i}`).val().replaceAll(/[A-Za-z.]/g, '');
+            let I = $(`#` + price_base + `_b_6_X_Q${i}`).val().replaceAll(/[A-Za-z.]/g, '');
             let XM = X.replaceAll(/[,]/g, '.')
             let IM = I.replaceAll(/[,]/g, '.')
-            sum = Number(XM) - Number(IM);
-            $(`#adhk_6_X_Q${i}`).val(formatRupiah(sum, ''))
+            let sumXI = Number(XM) - Number(IM);
+            let valueXI = String(sumXI.toFixed(2)).replaceAll(/[.]/g, ',')
+            $(`#` + price_base + `_6_X_Q${i}`).val(formatRupiah(valueXI, ''))
 
+        }
 
+        let table = $('#' + price_base + '-table-pengeluaran');
+        let tbody = table.find('tbody');
+        let tr = tbody.find('tr');
+        let rows = tr.length - 1
+        for (let row = 0; row < rows; row++) {
+            let rowSum = 0
+            for (let col = 1; col < $('#' + price_base + '-table-pengeluaran tr:first-child td').length; col++) {
+                if (col != 5) {
+                    let cell = $('#' + price_base + '-table-pengeluaran tr').eq(row + 1).find('td').eq(col)
+                    let value = Number(cell.find(`input[id^='` + price_base + `']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    if (price_base == 'adhb') {
+                    }
+                    rowSum += value
+                } else {
+                    let cell = $('#' + price_base + '-table-pengeluaran tr').eq(row + 1).find('td').eq(col)
+                    let sumText = String(rowSum.toFixed(2)).replaceAll(/[.]/g, ',')
+                    cell.find(`input[id^='` + price_base + `']`).val(formatRupiah(sumText, ''))
+                }
+            }
         }
 
     }
@@ -702,51 +727,6 @@ $(document).ready(function () {
                 }
             }
         }
-        // let catB = "1,2,3,4,7,8,9,11"
-        // let catSpecific = catB.split(",")
-        // let catLast = catArray.filter(value => !catSpecific.includes(value))
-        // $('#' + price_base + '-table tr').each(function () {
-        //     let $currentRow = $(this).closest('tr')
-        //     let $totalCol = $currentRow.find('td:last')
-        //     let sum = 0
-        //     $currentRow.find(`input[#^='`+ price_base +`']:not(:disabled)`).each(function () {
-        //         let X = $(this).val().replaceAll(/[A-Za-z.]/g, '')
-        //         let Y = X.replaceAll(/[,]/g, '.')
-        //         console.log(price_base + ' = ' + X)
-
-        //         sum += Number(Y)
-        //     })
-        //     let sumRp = String(sum.toFixed(2)).replaceAll(/[.]/g, ',')
-        //     $totalCol.find('input').val(formatRupiah(sumRp, ''))
-
-        //     for (let index of catSpecific) {
-        //         let darksum = 0
-        //         let lightsum = 0
-
-        //         let row = $(`#` + price_base + `_${index}_T`).closest('tr')
-        //         let subsection = $(`#${price_base}_1_${index}_T`).closest('tr')
-
-        //         row.find('td input:not(#' + price_base + '_' + index + '_T):not(#' + price_base + '_' + index + '_Y)').each(function () {
-        //             if (!$(this).hasClass(`${price_base}_${index}_T`)) {
-        //                 let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
-        //                 let Y = X.replaceAll(/[,]/g, '.');
-        //                 darksum += Number(Y);
-        //             }
-        //         })
-
-        //         subsection.find('td input:not(#' + price_base + '_1_' + index + '_T):not(#' + price_base + '_1_' + index + '_Y)').each(function () {
-        //             if (!$(this).hasClass(`${price_base}_${index}_T`)) {
-        //                 let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
-        //                 let Y = X.replaceAll(/[,]/g, '.');
-        //                 lightsum += Number(Y);
-        //             }
-        //         })
-
-        //         let lightsumRp = String(lightsum.toFixed(2)).replaceAll(/[.]/g, ',');
-        //         let darksumRp = String(darksum.toFixed(2)).replaceAll(/[.]/g, ',');
-        //         $(`#${price_base}_1_${index}_T`).val(formatRupiah(lightsumRp, ''))
-        //         $(`#${price_base}_${index}_T`).val(formatRupiah(darksumRp, ''))
-        //     }
 
         let numRows = tr.length - 2
         for (let col = 1; col < $('#' + price_base + '-table tr:first-child td').length; col++) {
@@ -778,7 +758,6 @@ $(document).ready(function () {
             totalnm.text(formatRupiah(sumPDRBnm, ''))
             totalCell.text(formatRupiah(sumPDRB, ''))
         }
-        // });
     }
 
 

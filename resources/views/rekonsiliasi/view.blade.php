@@ -68,7 +68,8 @@
         <div id="prevadhbDataContainer" class="card d-none">@include('lapangan.prev-adhb-form')</div>
         <div id="prevadhkDataContainer" class="card d-none">@include('lapangan.prev-adhk-form')</div>
     @elseif ($type == 'Pengeluaran')
-        <div id="fullFormContainer" class="card d-none">@include('pengeluaran.full-form')</div>
+        <div id="fullFormContainer" class="card">@include('pengeluaran.adhb-form')</div>
+        <div id="fullFormContainer" class="card">@include('pengeluaran.adhk-form')</div>
     @endif
 
     <!-- Back to top button -->
