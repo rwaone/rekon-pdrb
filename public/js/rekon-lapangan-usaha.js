@@ -39,7 +39,7 @@ $(document).ready(function () {
                     }
                 }
             }
-            
+
             let numRows = tr.length - 2
             for (let col = 1; col < $('#' + price_base + '-table tr:first-child td').length; col++) {
                 let sum = 0
@@ -71,119 +71,67 @@ $(document).ready(function () {
                 totalCell.text(formatRupiah(sumPDRB, ''))
             }
         })
-    })
 
-    //single and full, sum for every category and sector
-    for (let i = 1; i < 5; i++) {
-        //adhb table
-        $(`.adhb-sector-Q${i}-1`).keyup(function (e) {
-            let jumlah = calculateSector(`adhb-sector-Q${i}-1`).toFixed(2);
-            let que = String(jumlah).replaceAll(/[.]/g, ',');
-            $(`#adhb_1_1_Q${i}`).val(formatRupiah(que, ''));
-        });
-        $(`.adhb-sector-Q${i}-8`).keyup(function (e) {
-            let jumlah = calculateSector(`adhb-sector-Q${i}-8`).toFixed(2);
-            let que = String(jumlah).replaceAll(/[.]/g, ',');
-            $(`#adhb_8_3_Q${i}`).val(formatRupiah(que, ''))
-        });
-        //adhk table
-        $(`.adhk-sector-Q${i}-1`).keyup(function (e) {
-            let jumlah = calculateSector(`adhk-sector-Q${i}-1`).toFixed(2);
-            let que = String(jumlah).replaceAll(/[.]/g, ',');
-            $(`#adhk_1_1_Q${i}`).val(formatRupiah(que, ''));
-        });
-        $(`.adhk-sector-Q${i}-8`).keyup(function (e) {
-            let jumlah = calculateSector(`adhk-sector-Q${i}-8`).toFixed(2);
-            let que = String(jumlah).replaceAll(/[.]/g, ',');
-            $(`#adhk_8_3_Q${i}`).val(formatRupiah(que, ''))
-        });
-
-        for (let j = 1; j < 18; j++) {
+        //single and full, sum for every category and sector
+        for (let i = 1; i < 5; i++) {
             //adhb table
-            $(`.adhb-category-Q${i}-${j}`).keyup(function (e) {
-                let jumlah = calculateSector(`adhb-category-Q${i}-${j}`).toFixed(2);
+            $(`.` + price_base + `-sector-Q${i}-1`).keyup(function (e) {
+                let jumlah = calculateSector(price_base + `-sector-Q${i}-1`).toFixed(2);
                 let que = String(jumlah).replaceAll(/[.]/g, ',');
-                $(`#adhb_${catArray[j - 1]}_Q${i}`).val(formatRupiah(que, ''))
+                $(`#` + price_base + `_1_1_Q${i}`).val(formatRupiah(que, ''));
             });
-            $(`.adhb-category-${j}`).keyup(function (e) {
-                let jumlah = calculateSector(`adhb-category-${j}`).toFixed(2);
+            $(`.` + price_base + `-sector-Q${i}-8`).keyup(function (e) {
+                let jumlah = calculateSector(price_base + `-sector-Q${i}-8`).toFixed(2);
                 let que = String(jumlah).replaceAll(/[.]/g, ',');
-                $(`#adhb_${catArray[j - 1]}`).val(formatRupiah(que, ''))
+                $(`#` + price_base + `_8_3_Q${i}`).val(formatRupiah(que, ''))
             });
 
-            //adhk table
-            $(`.adhk-category-Q${i}-${j}`).keyup(function (e) {
-                let jumlah = calculateSector(`adhk-category-Q${i}-${j}`).toFixed(2);
-                let que = String(jumlah).replaceAll(/[.]/g, ',');
-                $(`#adhk_${catArray[j - 1]}_Q${i}`).val(formatRupiah(que, ''))
-            });
-            $(`.adhk-category-${j}`).keyup(function (e) {
-                let jumlah = calculateSector(`adhk-category-${j}`).toFixed(2);
-                let que = String(jumlah).replaceAll(/[.]/g, ',');
-                $(`#adhk_${catArray[j - 1]}`).val(formatRupiah(que, ''))
-            });
-        }
-        for (let j = 1; j < 54; j++) {
-            $(`.adhb-sector-Q${i}-${j}`).keyup(function (e) {
-                $(this).val(formatRupiah($(this).val(), ''))
-                var charCode = (e.which) ? e.which : event.keyCode
-                if (String.fromCharCode(charCode).match(/[^0-9.,]/g))
-                    return false;
-            })
-            $(`.adhk-sector-Q${i}-${j}`).keyup(function (e) {
-                $(this).val(formatRupiah($(this).val(), ''))
-                var charCode = (e.which) ? e.which : event.keyCode
-                if (String.fromCharCode(charCode).match(/[^0-9.,]/g))
-                    return false;
-            })
-        }
-    }
-
-    $('#adhb-table').on('paste', 'input', function (e) {
-        const $this = $(this);
-        // let panjang_ndas = $('thead').children().length
-        $.each(e.originalEvent.clipboardData.items, function (i, v) {
-            if (v.type === 'text/plain') {
-                v.getAsString(function (text) {
-                    var x = $this.closest('td').index(),
-                        y = $this.closest('tr').index() + 1,
-                        obj = {};
-                    text = text.trim('\r\n');
-                    $.each(text.split('\r\n'), function (i2, v2) {
-                        $.each(v2.split('\t'), function (i3, v3) {
-                            var row = y + i2, col = x + i3;
-                            obj['cell-' + row + '-' + col] = v3
-                            $this.closest('table').find('tr:eq(' + row + ') td:eq(' + col + ') input:not(:hidden)').val(formatRupiah(v3, ''));
-                        });
-                    });
-
+            for (let j = 1; j < 18; j++) {
+                //adhb table
+                $(`.` + price_base + `-category-Q${i}-${j}`).keyup(function (e) {
+                    let jumlah = calculateSector(price_base + `-category-Q${i}-${j}`).toFixed(2);
+                    let que = String(jumlah).replaceAll(/[.]/g, ',');
+                    $(`#` + price_base + `_${catArray[j - 1]}_Q${i}`).val(formatRupiah(que, ''))
                 });
-            }
-        });
-        return false;
-    });
-
-    $('#adhk-table').on('paste', 'input', function (e) {
-        const $this = $(this);
-        // let panjang_ndas = $('thead').children().length
-        $.each(e.originalEvent.clipboardData.items, function (i, v) {
-            if (v.type === 'text/plain') {
-                v.getAsString(function (text) {
-                    var x = $this.closest('td').index(),
-                        y = $this.closest('tr').index() + 1,
-                        obj = {};
-                    text = text.trim('\r\n');
-                    $.each(text.split('\r\n'), function (i2, v2) {
-                        $.each(v2.split('\t'), function (i3, v3) {
-                            var row = y + i2, col = x + i3;
-                            obj['cell-' + row + '-' + col] = v3
-                            $this.closest('table').find('tr:eq(' + row + ') td:eq(' + col + ') input:not(:hidden)').val(formatRupiah(v3, ''));
-                        });
-                    });
-
+                $(`.` + price_base + `-category-${j}`).keyup(function (e) {
+                    let jumlah = calculateSector(price_base + `-category-${j}`).toFixed(2);
+                    let que = String(jumlah).replaceAll(/[.]/g, ',');
+                    $(`#` + price_base + `_${catArray[j - 1]}`).val(formatRupiah(que, ''))
                 });
+
             }
+            for (let j = 1; j < 54; j++) {
+                $(`.` + price_base + `-sector-Q${i}-${j}`).keyup(function (e) {
+                    $(this).val(formatRupiah($(this).val(), ''))
+                    var charCode = (e.which) ? e.which : event.keyCode
+                    if (String.fromCharCode(charCode).match(/[^0-9.,]/g))
+                        return false;
+                })
+            }
+        }
+
+        $('#' + price_base + '-table').on('paste', 'input', function (e) {
+            const $this = $(this);
+            // let panjang_ndas = $('thead').children().length
+            $.each(e.originalEvent.clipboardData.items, function (i, v) {
+                if (v.type === 'text/plain') {
+                    v.getAsString(function (text) {
+                        var x = $this.closest('td').index(),
+                            y = $this.closest('tr').index() + 1,
+                            obj = {};
+                        text = text.trim('\r\n');
+                        $.each(text.split('\r\n'), function (i2, v2) {
+                            $.each(v2.split('\t'), function (i3, v3) {
+                                var row = y + i2, col = x + i3;
+                                obj['cell-' + row + '-' + col] = v3
+                                $this.closest('table').find('tr:eq(' + row + ') td:eq(' + col + ') input:not(:hidden)').val(formatRupiah(v3, ''));
+                            });
+                        });
+
+                    });
+                }
+            });
+            return false;
         });
-        return false;
-    });
+    })
 })

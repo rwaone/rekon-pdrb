@@ -47,14 +47,16 @@
 
     <div class="card d-none" id="navList">
         <ul class="nav nav-pills p-2">
-            <li class="nav-item"><a class="nav-link" href="#" id="nav-adhb">ADHB</a></li>
-            <li class="nav-item"><a class="nav-link" href="#" id="nav-adhk">ADHK</a></li>
-            <li class="nav-item"><a class="nav-link" href="#" id="nav-distribusi">Distribusi</a></li>
-            <li class="nav-item"><a class="nav-link" href="#" id="nav-qtoq">Q to Q</a></li>
-            <li class="nav-item"><a class="nav-link" href="#" id="nav-ytoy">Y to Y</a></li>
-            <li class="nav-item"><a class="nav-link" href="#" id="nav-ctoc">C to C</a></li>
-            <li class="nav-item"><a class="nav-link" href="#" id="nav-indeks">Indeks Implisit</a></li>
-            <li class="nav-item"><a class="nav-link" href="#" id="nav-laju">Laju Implisit</a></li>
+            <li class="nav-item"><a class="nav-link" type="button" id="nav-adhb">ADHB</a></li>
+            <li class="nav-item"><a class="nav-link" type="button" id="nav-adhk">ADHK</a></li>
+            <li class="nav-item"><a class="nav-link" type="button" id="nav-distribusi">Distribusi</a></li>
+            <li class="nav-item"><a class="nav-link" type="button" id="nav-qtoq">Growth (Q to Q)</a></li>
+            <li class="nav-item"><a class="nav-link" type="button" id="nav-ytoy">Growth (Y to Y)</a></li>
+            <li class="nav-item"><a class="nav-link" type="button" id="nav-ctoc">Growth (C to C)</a></li>
+            <li class="nav-item"><a class="nav-link" type="button" id="nav-indeks">Indeks Implisit</a></li>
+            <li class="nav-item"><a class="nav-link" type="button" id="nav-lajuQ">Laju Implisit (Q to Q)</a></li>
+            <li class="nav-item"><a class="nav-link" type="button" id="nav-lajuC">Laju Implisit (C to C)</a></li>
+            <li class="nav-item"><a class="nav-link" type="button" id="nav-lajuY">Laju Implisit (Y to Y)</a></li>
             <div class="ml-auto">
                 <button id="fullFormSave" type="button" class="btn btn-success">Simpan</button>
             </div>
@@ -68,8 +70,11 @@
         <div id="prevadhbDataContainer" class="card d-none">@include('lapangan.prev-adhb-form')</div>
         <div id="prevadhkDataContainer" class="card d-none">@include('lapangan.prev-adhk-form')</div>
     @elseif ($type == 'Pengeluaran')
-        <div id="fullFormContainer" class="card">@include('pengeluaran.adhb-form')</div>
-        <div id="fullFormContainer" class="card">@include('pengeluaran.adhk-form')</div>
+        <div id="adhbFormContainer" class="card form-container d-none">@include('pengeluaran.adhb-form')</div>
+        <div id="adhkFormContainer" class="card form-container d-none">@include('pengeluaran.adhk-form')</div>
+        <div id="tableFormContainer" class="card form-container d-none">@include('pengeluaran.rekon-table')</div>
+        <div id="prevadhbDataContainer" class="card d-none">@include('pengeluaran.prev-adhb-form')</div>
+        <div id="prevadhkDataContainer" class="card d-none">@include('pengeluaran.prev-adhk-form')</div>
     @endif
 
     <!-- Back to top button -->
@@ -133,8 +138,11 @@
     <x-slot name="script">
         <!-- Additional JS resources -->
         <script src="{{ url('') }}/plugins/select2/js/select2.full.min.js"></script>
-        <script src="{{ asset('js/rekon-lapangan-usaha.js') }}"></script>
-        <script src="{{ asset('js/rekon-pengeluaran.js') }}"></script>
+        @if ($type == 'Lapangan Usaha')
+            <script src="{{ asset('js/rekon-lapangan-usaha.js') }}"></script>
+        @elseif ($type == 'Pengeluaran')
+            <script src="{{ asset('js/rekon-pengeluaran.js') }}"></script>
+        @endif
         <script src="{{ asset('js/rekonsiliasi.js') }}"></script>
         <script>
             const tokens = '{{ csrf_token() }}'

@@ -206,11 +206,19 @@ $(document).ready(function () {
         let tableRekon = $('#rekon-table');
         let tbodyRekon = tableRekon.find('tbody');
         let trRekon = tbodyRekon.find('tr');
-
-        let numRows = trRekon.length - 2
+        
+        let numRows = ($('#type').val() == 'Lapangan Usaha') ? trRekon.length - 2 : trRekon.length - 1
+        
         for (let col = 1; col < $('#rekon-table tr:first-child td').length; col++) {
             let totalnm = Number($('#adhb-table tr').last().prev().find('td').eq(col).text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+            let nmCell = $('#rekon-table tr').last().prev().find('td').eq(col)
+            
             let totalPDRB = Number($('#adhb-table tr').last().find('td').eq(col).text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+            let totalCell = $('#rekon-table tr').last().find('td').eq(col)
+            
+            nmCell.text(String(((totalnm / totalPDRB) * 100).toFixed(2)).replaceAll(/[.]/g, ','))
+            totalCell.text(String(((totalPDRB / totalPDRB) * 100).toFixed(2)).replaceAll(/[.]/g, ','))
+
             for (let row = 0; row < numRows; row++) {
                 let inputCell = $('#adhb-table tr').eq(row + 1).find('td').eq(col)
                 let rekonCell = $('#rekon-table tr').eq(row + 1).find('td').eq(col)
@@ -219,10 +227,6 @@ $(document).ready(function () {
                 let Z = (Y / totalPDRB) * 100
                 rekonCell.text(String(Z.toFixed(2)).replaceAll(/[.]/g, ','))
             }
-            let nmCell = $('#rekon-table tr').last().prev().find('td').eq(col)
-            let totalCell = $('#rekon-table tr').last().find('td').eq(col)
-            nmCell.text(String(((totalnm / totalPDRB) * 100).toFixed(2)).replaceAll(/[.]/g, ','))
-            totalCell.text(String(((totalPDRB / totalPDRB) * 100).toFixed(2)).replaceAll(/[.]/g, ','))
         }
     });
 
@@ -237,10 +241,13 @@ $(document).ready(function () {
         let trRekon = tbodyRekon.find('tr');
 
         let numRows = trRekon.length
+        let lastInputRow = ($('#type').val() == 'Lapangan Usaha') ? trRekon.length - 2 : trRekon.length - 1
+
         for (let col = 1; col < $('#rekon-table tr:first-child td').length; col++) {
             for (let row = 0; row < numRows; row++) {
                 let rekonCell = $('#rekon-table tr').eq(row + 1).find('td').eq(col)
                 let currentCell = $('#adhk-table tr').eq(row + 1).find('td').eq(col)
+
                 if (col == 1) {
                     var previousCell = $('#prev-adhk-table tr').eq(row + 1).find('td').eq(4)
                 } else if (col == 5) {
@@ -248,13 +255,15 @@ $(document).ready(function () {
                 } else {
                     var previousCell = $('#adhk-table tr').eq(row + 1).find('td').eq(col - 1)
                 }
-                if (row == numRows - 1 || row == numRows - 2) {
+
+                if (row >= lastInputRow) {
                     var currentQ = Number(currentCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                     var previousQ = Number(previousCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                 } else {
                     var currentQ = Number(currentCell.find(`input[id^='adhk']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                     var previousQ = Number(previousCell.find(`input[id*='adhk']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                 }
+
                 let QtoQ = ((currentQ / previousQ) * 100) - 100
                 let QtoQval = isNaN(QtoQ) ? '-' : QtoQ.toFixed(2)
                 rekonCell.text(String(QtoQval).replaceAll(/[.]/g, ','))
@@ -273,12 +282,14 @@ $(document).ready(function () {
         let trRekon = tbodyRekon.find('tr');
 
         let numRows = trRekon.length
+        let lastInputRow = ($('#type').val() == 'Lapangan Usaha') ? trRekon.length - 2 : trRekon.length - 1
+
         for (let col = 1; col < $('#rekon-table tr:first-child td').length; col++) {
             for (let row = 0; row < numRows; row++) {
                 let rekonCell = $('#rekon-table tr').eq(row + 1).find('td').eq(col)
                 let currentCell = $('#adhk-table tr').eq(row + 1).find('td').eq(col)
                 let previousCell = $('#prev-adhk-table tr').eq(row + 1).find('td').eq(col)
-                if (row == numRows - 1 || row == numRows - 2) {
+                if (row >= lastInputRow) {
                     var currentValue = Number(currentCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                     var previousValue = Number(previousCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                 } else {
@@ -303,6 +314,8 @@ $(document).ready(function () {
         let trRekon = tbodyRekon.find('tr');
 
         let numRows = trRekon.length
+        let lastInputRow = ($('#type').val() == 'Lapangan Usaha') ? trRekon.length - 2 : trRekon.length - 1
+
         for (let col = 1; col < $('#rekon-table tr:first-child td').length; col++) {
             for (let row = 0; row < numRows; row++) {
                 let rekonCell = $('#rekon-table tr').eq(row + 1).find('td').eq(col)
@@ -311,7 +324,7 @@ $(document).ready(function () {
                 for (let length = 1; length <= col; length++) {
                     let currentCell = $('#adhk-table tr').eq(row + 1).find('td').eq(length)
                     let previousCell = $('#prev-adhk-table tr').eq(row + 1).find('td').eq(length)
-                    if (row == numRows - 1 || row == numRows - 2) {
+                    if (row >= lastInputRow) {
                         var currentValue = Number(currentCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                         var previousValue = Number(previousCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                     } else {
@@ -339,12 +352,14 @@ $(document).ready(function () {
         let trRekon = tbodyRekon.find('tr');
 
         let numRows = trRekon.length
+        let lastInputRow = ($('#type').val() == 'Lapangan Usaha') ? trRekon.length - 2 : trRekon.length - 1
+
         for (let col = 1; col < $('#rekon-table tr:first-child td').length; col++) {
             for (let row = 0; row < numRows; row++) {
                 let rekonCell = $('#rekon-table tr').eq(row + 1).find('td').eq(col)
                 let adhbCell = $('#adhb-table tr').eq(row + 1).find('td').eq(col)
                 let adhkkCell = $('#adhk-table tr').eq(row + 1).find('td').eq(col)
-                if (row == numRows - 1 || row == numRows - 2) {
+                if (row >= lastInputRow) {
                     var adhbValue = Number(adhbCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                     var adhkValue = Number(adhkkCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                 } else {
@@ -369,6 +384,8 @@ $(document).ready(function () {
         let trRekon = tbodyRekon.find('tr');
 
         let numRows = trRekon.length
+        let lastInputRow = ($('#type').val() == 'Lapangan Usaha') ? trRekon.length - 2 : trRekon.length - 1
+
         for (let col = 1; col < $('#rekon-table tr:first-child td').length; col++) {
             for (let row = 0; row < numRows; row++) {
                 let rekonCell = $('#rekon-table tr').eq(row + 1).find('td').eq(col)
@@ -384,7 +401,7 @@ $(document).ready(function () {
                     var previousAdhbCell = $('#adhb-table tr').eq(row + 1).find('td').eq(col - 1)
                     var previousAdhkCell = $('#adhk-table tr').eq(row + 1).find('td').eq(col - 1)
                 }
-                if (row == numRows - 1 || row == numRows - 2) {
+                if (row >= lastInputRow) {
                     var adhbValue = Number(adhbCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                     var adhkValue = Number(adhkkCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                     var previousAdhbValue = Number(previousAdhbCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
@@ -500,8 +517,8 @@ $(document).ready(function () {
                 if ($('#type').val() == 'Pengeluaran') {
                     allSumPDRBPengeluaran('adhb')
                     allSumPDRBPengeluaran('adhk')
-                    // allSumPDRBPengeluaran('prev-adhb')
-                    // allSumPDRBPengeluaran('prev-adhk')
+                    allSumPDRBPengeluaran('prev-adhb')
+                    allSumPDRBPengeluaran('prev-adhk')
                 } else {
                     allSumPDRBLapus('adhb')
                     allSumPDRBLapus('adhk')
@@ -643,44 +660,60 @@ $(document).ready(function () {
 
         for (let i = 1; i <= 4; i++) {
 
-            let jumlah = calculateSector(price_base + `sector-Q${i}-49`).toFixed(2);
+            let jumlah = calculateSector(price_base + `-sector-Q${i}-49`).toFixed(2);
             let que = String(jumlah).replaceAll(/[.]/g, ',');
             $(`#` + price_base + `_1_X_Q${i}`).val(formatRupiah(que, ''));
 
-            jumlah = calculateSector(`sector-Q${i}-52`).toFixed(2);
+            jumlah = calculateSector(price_base + `-sector-Q${i}-52`).toFixed(2);
             que = String(jumlah).replaceAll(/[.]/g, ',');
             $(`#` + price_base + `_4_X_Q${i}`).val(formatRupiah(que, ''))
 
-            let X = $(`#` + price_base + `_a_6_X_Q${i}`).val().replaceAll(/[A-Za-z.]/g, '');
-
-            let I = $(`#` + price_base + `_b_6_X_Q${i}`).val().replaceAll(/[A-Za-z.]/g, '');
+            let X = $(`#` + price_base + `_a_6_X_Q${i}`).val().replaceAll(/[A-Za-z.]/g, '')
+            let I = $(`#` + price_base + `_b_6_X_Q${i}`).val().replaceAll(/[A-Za-z.]/g, '')
             let XM = X.replaceAll(/[,]/g, '.')
             let IM = I.replaceAll(/[,]/g, '.')
-            let sumXI = Number(XM) - Number(IM);
+            let sumXI = Number(XM) - Number(IM)
             let valueXI = String(sumXI.toFixed(2)).replaceAll(/[.]/g, ',')
             $(`#` + price_base + `_6_X_Q${i}`).val(formatRupiah(valueXI, ''))
 
         }
 
-        let table = $('#' + price_base + '-table-pengeluaran');
+        let table = $('#' + price_base + '-table');
         let tbody = table.find('tbody');
         let tr = tbody.find('tr');
         let rows = tr.length - 1
         for (let row = 0; row < rows; row++) {
             let rowSum = 0
-            for (let col = 1; col < $('#' + price_base + '-table-pengeluaran tr:first-child td').length; col++) {
+            for (let col = 1; col < $('#' + price_base + '-table tr:first-child td').length; col++) {
                 if (col != 5) {
-                    let cell = $('#' + price_base + '-table-pengeluaran tr').eq(row + 1).find('td').eq(col)
+                    let cell = $('#' + price_base + '-table tr').eq(row + 1).find('td').eq(col)
                     let value = Number(cell.find(`input[id^='` + price_base + `']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                     if (price_base == 'adhb') {
                     }
                     rowSum += value
                 } else {
-                    let cell = $('#' + price_base + '-table-pengeluaran tr').eq(row + 1).find('td').eq(col)
+                    let cell = $('#' + price_base + '-table tr').eq(row + 1).find('td').eq(col)
                     let sumText = String(rowSum.toFixed(2)).replaceAll(/[.]/g, ',')
                     cell.find(`input[id^='` + price_base + `']`).val(formatRupiah(sumText, ''))
                 }
             }
+        }
+
+        let numRows = tr.length - 1
+        for (let col = 1; col < $('#' + price_base + '-table tr:first-child td').length; col++) {
+            let sum = 0
+            for (let row = 0; row < numRows; row++) {
+                let cell = $('#' + price_base + '-table tr').eq(row + 1).find('td').eq(col)
+                if (cell.hasClass('sectors')) {
+                    let X = cell.find(`input[id^='` + price_base + `']`).val().replaceAll(/[A-Za-z.]/g, '')
+                    let Y = X.replaceAll(/[,]/g, '.')
+                    sum += Number(Y)
+                }
+            }
+            let pdrbs = sum.toFixed(2)
+            let sumPDRB = String(pdrbs).replaceAll(/[.]/g, ',')
+            let totalCell = $('#' + price_base + '-table tr').last().find('td').eq(col)
+            totalCell.text(formatRupiah(sumPDRB, ''))
         }
 
     }

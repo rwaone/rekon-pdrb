@@ -1,6 +1,6 @@
 <form id="adhkForm" method="post"  class="form-horizontal">
     <div class="card-body p-3">
-        <table class="table table-bordered" id="adhk-table-pengeluaran">
+        <table class="table table-bordered" id="adhk-table">
             <thead class="text-center" style="background-color: #09c140; color:aliceblue;">
                 <tr>
                     <th>Komponen</th>

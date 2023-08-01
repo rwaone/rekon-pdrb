@@ -1,183 +1,119 @@
+//sum of each value in sector and category
+function calculateSector(sector) {
+    let sum = 0;
+    // let sector = sector.replaceAll(",","");
+    $(`.${sector}`).each(function (index) {
+        let X = $(this).val().replaceAll(/[A-Za-z.]/g, '');
+        let Y = X.replaceAll(/[,]/g, '.')
+        sum += Number(Y);
+    });
+    return sum;
+}
+
 $(document).ready(function () {
-    // Your jQuery code goes here
-    let cat = JSON.parse($("#my-cat").data('cat'))
-    let catArray = cat.split(", ")
-    let catB = "A,B,C,D,G,H,I,K"
-    let catSpecific = catB.split(",")
-    let catLast = catArray.filter(value => !catSpecific.includes(value))
-    // console.log(catLast)
-    let sum = 0
-
-    //full-form last column sum
-    let table = $('#rekonsiliasi-table-pengeluaran');
-    let tbody = table.find('tbody');
-    let tr = tbody.find('tr');
-
-    tr.on('blur', 'td input', function (e) {
-        let $currentRow = $(this).closest('tr')
-        let $lastCol = $currentRow.find('td:last')
-        let sum = 0
-        $currentRow.find('td:not(:last-child) input:not(:hidden)').each(function () {
-            let X = $(this).val().replaceAll(/[A-Za-z.]/g, '')
-            let Y = X.replaceAll(/[,]/g, '.')
-            sum += Number(Y)
-        })
-        let sumRp = String(sum.toFixed(2)).replaceAll(/[.]/g, ',')
-        $lastCol.find('input').val(formatRupiah(sumRp, 'Rp '))
-
-        for (let i = 1; i <= 6; i++) {
-            let sum = 0
-            let subsection = $(`#adhk_${i}_X_Y`).closest('tr')
-
-            subsection.find('td input').each(function () {
-                if (!$(this).hasClass('category-Y-X')) {
-                    let X = $(this).val().replaceAll(/[A-Za-z.]/g, '')
-                    let Y = X.replaceAll(/[,]/g, '.')
-                    sum += Number(Y)
-                }
-            })
-            let sumSection = String(sum.toFixed(2)).replaceAll(/[.]/g, ',')
-            $(`#adhk_${i}_X_Y`).val(formatRupiah(sumSection, 'Rp '))
-        }
-
-        let numRows = tr.length - 2
-        for (let col = 1; col < $('#rekonsiliasi-table-pengeluaran tr:first-child td').length; col++) {
-            let sum = 0
-            for (let row = 0; row < numRows; row++) {
-                let cell = $('#rekonsiliasi-table-pengeluaran tr').eq(row + 1).find('td').eq(col)
-                if (cell.hasClass('sectors')) {
-                    let X = cell.find('input:not(:hidden)').val().replaceAll(/[A-Za-z.]/g, '')
-                    let Y = X.replaceAll(/[,]/g, '.')
-                    sum += Number(Y)
+    let price_list = ['adhb', 'adhk']
+    $.each(price_list, function (index, price_base) {
+        //full-form last column sum
+        let table = $('#' + price_base + '-table');
+        let tbody = table.find('tbody');
+        let tr = tbody.find('tr');
+        tr.on('blur', 'td input', function (e) {
+            let rows = tr.length - 1
+            for (let row = 0; row < rows; row++) {
+                let rowSum = 0
+                for (let col = 1; col < $('#' + price_base + '-table tr:first-child td').length; col++) {
+                    if (col != 5) {
+                        let cell = $('#' + price_base + '-table tr').eq(row + 1).find('td').eq(col)
+                        let value = Number(cell.find(`input[id^='` + price_base + `']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                        if (price_base == 'adhb') {
+                        }
+                        rowSum += value
+                    } else {
+                        let cell = $('#' + price_base + '-table tr').eq(row + 1).find('td').eq(col)
+                        let sumText = String(rowSum.toFixed(2)).replaceAll(/[.]/g, ',')
+                        cell.find(`input[id^='` + price_base + `']`).val(formatRupiah(sumText, ''))
+                    }
                 }
             }
-            let pdrbs = sum.toFixed(2)
-            let sumPDRB = String(pdrbs).replaceAll(/[.]/g, ',')
-            let totalCell = $('#rekonsiliasi-table-pengeluaran tr').last().find('td').eq(col)
-            totalCell.text(formatRupiah(sumPDRB, 'Rp '))
-        }
-    });
-    //
 
-    //Single-Form Sum Last Column
-    let tableSingle = $('#rekonsiliasi-table-single-pengeluaran')
-    let tbodySingle = tableSingle.find('tbody')
-    let trSingle = tbodySingle.find('tr')
+            let numRows = tr.length - 1
+            for (let col = 1; col < $('#' + price_base + '-table tr:first-child td').length; col++) {
+                let sum = 0
+                for (let row = 0; row < numRows; row++) {
+                    let cell = $('#' + price_base + '-table tr').eq(row + 1).find('td').eq(col)
+                    if (cell.hasClass('sectors')) {
+                        let X = cell.find(`input[id^='` + price_base + `']`).val().replaceAll(/[A-Za-z.]/g, '')
+                        let Y = X.replaceAll(/[,]/g, '.')
+                        sum += Number(Y)
+                    }
+                }
+                let pdrbs = sum.toFixed(2)
+                let sumPDRB = String(pdrbs).replaceAll(/[.]/g, ',')
+                let totalCell = $('#' + price_base + '-table tr').last().find('td').eq(col)
+                totalCell.text(formatRupiah(sumPDRB, ''))
+            }
+        });
 
-    trSingle.on('blur', 'td input', function (e) {
-        let numRows = trSingle.length - 2
-        let sum = 0
-        for (let row = 0; row < numRows; row++) {
-            let cell = $('#rekonsiliasi-table-single-pengeluaran tr').eq(row + 1).find('td').eq(1)
-            if (cell.hasClass('sectors')) {
-                let X = cell.find('input:not(:hidden)').val().replaceAll(/[A-Za-z.]/g, '')
-                let Y = X.replaceAll(/[,]/g, '.')
-                sum += Number(Y)
+        //single and full, sum for every category and sector
+        for (let i = 1; i <= 4; i++) {
+            $(`.` + price_base + `-sector-Q${i}-49`).keyup(function (e) {
+                let jumlah = calculateSector(price_base + `-sector-Q${i}-49`).toFixed(2);
+                let que = String(jumlah).replaceAll(/[.]/g, ',');
+                $(`#` + price_base + `_1_X_Q${i}`).val(formatRupiah(que, '` + price_base + `'));
+            });
+            $(`.` + price_base + `-sector-Q${i}-52`).keyup(function (e) {
+                let jumlah = calculateSector(price_base + `-sector-Q${i}-52`).toFixed(2);
+                let que = String(jumlah).replaceAll(/[.]/g, ',');
+                $(`#` + price_base + `_4_X_Q${i}`).val(formatRupiah(que, '` + price_base + `'))
+            });
+            $(`.` + price_base + `-sector-Q${i}-54`).keyup(function (e) {
+                let X = $(`#` + price_base + `_a_6_X_Q${i}`).val().replaceAll(/[A-Za-z.]/g, '')
+                let I = $(`#` + price_base + `_b_6_X_Q${i}`).val().replaceAll(/[A-Za-z.]/g, '')
+                let XM = X.replaceAll(/[,]/g, '.')
+                let IM = I.replaceAll(/[,]/g, '.')
+                let sumXI = Number(XM) - Number(IM)
+                let valueXI = String(sumXI.toFixed(2)).replaceAll(/[.]/g, ',')
+                $(`#` + price_base + `_6_X_Q${i}`).val(formatRupiah(valueXI, ''))
+            });
+
+            for (let j = 49; j <= 54; j++) {
+                $(`.` + price_base + `-sector-Q${i}-${j}`).keyup(function (e) {
+                    $(this).val(formatRupiah($(this).val(), '` + price_base + `'))
+                    var charCode = (e.which) ? e.which : event.keyCode
+                    if (String.fromCharCode(charCode).match(/[^0-9.,]/g))
+                        return false;
+                })
+                $(`.` + price_base + `-sector-${j}`).keyup(function (e) {
+                    $(this).val(formatRupiah($(this).val(), '` + price_base + `'))
+                    var charCode = (e.which) ? e.which : event.keyCode
+                    if (String.fromCharCode(charCode).match(/[^0-9.,]/g))
+                        return false;
+                })
             }
         }
-        let sumPDRB = String(sum.toFixed(2)).replaceAll(/[.]/g, ',')
-        let totalCell = $('#rekonsiliasi-table-single-pengeluaran tr').last().find('td').eq(1)
-        totalCell.text(formatRupiah(sumPDRB, 'Rp '))
-    })
-    //
 
-    //single and full, sum for every category and sector
-    for (let i = 1; i <= 4; i++) {
-        $(`.sector-Q${i}-49`).keyup(function (e) {
-            let jumlah = calculateSector(`sector-Q${i}-49`).toFixed(2);
-            let que = String(jumlah).replaceAll(/[.]/g, ',');
-            $(`#adhk_1_X_Q${i}`).val(formatRupiah(que, 'Rp '));
-        });
-        $(`.sector-Q${i}-52`).keyup(function (e) {
-            let jumlah = calculateSector(`sector-Q${i}-52`).toFixed(2);
-            let que = String(jumlah).replaceAll(/[.]/g, ',');
-            $(`#adhk_4_X_Q${i}`).val(formatRupiah(que, 'Rp '))
-        });
-        $(`.sector-Q${i}-54`).keyup(function (e) {
-            let jumlah = calculateSector(`sector-Q${i}-54`).toFixed(2);
-            let que = String(jumlah).replaceAll(/[.]/g, ',');
-            $(`#adhk_6_X_Q${i}`).val(formatRupiah(que, 'Rp '))
-        });
-
-        for (let j = 49; j <= 54; j++) {
-            $(`.sector-Q${i}-${j}`).keyup(function (e) {
-                $(this).val(formatRupiah($(this).val(), 'Rp '))
-                var charCode = (e.which) ? e.which : event.keyCode
-                if (String.fromCharCode(charCode).match(/[^0-9.,]/g))
-                    return false;
-            })
-            $(`.sector-${j}`).keyup(function (e) {
-                $(this).val(formatRupiah($(this).val(), 'Rp '))
-                var charCode = (e.which) ? e.which : event.keyCode
-                if (String.fromCharCode(charCode).match(/[^0-9.,]/g))
-                    return false;
-            })
-        }
-    }
-
-    $('.sector-49').keyup(function (e) {
-        let jumlah = calculateSector('sector-49').toFixed(2);
-        let que = String(jumlah).replaceAll(/[.]/g, ',');
-        $('#adhk_1_X').val(formatRupiah(que, 'Rp '));
-    })
-
-    $('.sector-52').keyup(function (e) {
-        let jumlah = calculateSector('sector-52').toFixed(2);
-        let que = String(jumlah).replaceAll(/[.]/g, ',');
-        $('#adhk_4_X').val(formatRupiah(que, 'Rp '));
-    })
-
-    $('.sector-54').keyup(function (e) {
-        let jumlah = calculateSector('sector-54').toFixed(2);
-        let que = String(jumlah).replaceAll(/[.]/g, ',');
-        $('#adhk_6_X').val(formatRupiah(que, 'Rp '));
-    })
-
-    $('#rekonsiliasi-table-pengeluaran').on('paste', 'input', function (e) {
-        const $this = $(this);
-        // let panjang_ndas = $('thead').children().length
-        $.each(e.originalEvent.clipboardData.items, function (i, v) {
-            if (v.type === 'text/plain') {
-                v.getAsString(function (text) {
-                    var x = $this.closest('td').index(),
-                        y = $this.closest('tr').index() + 1,
-                        obj = {};
-                    text = text.trim('\r\n');
-                    $.each(text.split('\r\n'), function (i2, v2) {
-                        $.each(v2.split('\t'), function (i3, v3) {
-                            var row = y + i2, col = x + i3;
-                            obj['cell-' + row + '-' + col] = v3
-                            $this.closest('table').find('tr:eq(' + row + ') td:eq(' + col + ') input:not(:hidden)').val(formatRupiah(v3, 'Rp '));
+        $('#' + price_base + '-table').on('paste', 'input', function (e) {
+            const $this = $(this);
+            // let panjang_ndas = $('thead').children().length
+            $.each(e.originalEvent.clipboardData.items, function (i, v) {
+                if (v.type === 'text/plain') {
+                    v.getAsString(function (text) {
+                        var x = $this.closest('td').index(),
+                            y = $this.closest('tr').index() + 1,
+                            obj = {};
+                        text = text.trim('\r\n');
+                        $.each(text.split('\r\n'), function (i2, v2) {
+                            $.each(v2.split('\t'), function (i3, v3) {
+                                var row = y + i2, col = x + i3;
+                                obj['cell-' + row + '-' + col] = v3
+                                $this.closest('table').find('tr:eq(' + row + ') td:eq(' + col + ') input:not(:hidden)').val(formatRupiah(v3, '` + price_base + `'));
+                            });
                         });
+
                     });
-
-                });
-            }
+                }
+            });
+            return false;
         });
-        return false;
-    });
-
-    $('#rekonsiliasi-table-single-pengeluaran').on('paste', 'input', function (e) {
-        const $this = $(this);
-        // let panjang_ndas = $('thead').children().length
-        $.each(e.originalEvent.clipboardData.items, function (i, v) {
-            if (v.type === 'text/plain') {
-                v.getAsString(function (text) {
-                    var x = $this.closest('td').index() - 2,
-                        y = $this.closest('tr').index() + 1,
-                        obj = {};
-                    text = text.trim('\r\n');
-                    $.each(text.split('\r\n'), function (i2, v2) {
-                        $.each(v2.split('\t'), function (i3, v3) {
-                            var row = y + i2, col = x + i3;
-                            obj['cell-' + row + '-' + col] = v3
-                            $this.closest('table').find('tr:eq(' + row + ') td:eq(' + col + ') input').val(formatRupiah(v3, 'Rp '));
-                        });
-                    });
-
-                });
-            }
-        });
-        return false;
-    });
+    })
 })

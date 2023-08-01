@@ -156,7 +156,7 @@ class PdrbController extends Controller
     {
         $filter = $request->filter;
         $subsectors = Subsector::where('type', $filter['type'])->get();
-        $previous_periodId = Period::where('year', $filter['year'] - 1)->where('quarter', 4)->where('status', 'Final')->first()->id;
+        $previous_periodId = Period::where('type', $filter['type'])->where('year', $filter['year'] - 1)->where('quarter', 4)->where('status', 'Final')->first()->id;
         $current_data = [];
         $previous_data = [];
 
