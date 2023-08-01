@@ -44,6 +44,11 @@ Route::get('monitoring', [PdrbController::class, 'monitoring'])->middleware(['au
 //Fenomena
 Route::post('fenomena/get', [FenomenaController::class, 'getFenomena'])->middleware(['auth', 'verified'])->name('getFenomena');
 Route::post('fenomena/save', [FenomenaController::class, 'saveFenomena'])->middleware(['auth', 'verified'])->name('saveFenomena');
+Route::get('fenomena/viewAll', [FenomenaController::class, 'viewAll'])->middleware(['auth', 'verified'])->name('viewAll');
+Route::get('fenomena/getData', [FenomenaController::class, 'getData'])->middleware(['auth', 'verified'])->name('fenomena.getData');
+Route::get('fenomena/monitoring', [FenomenaController::class, 'monitoring'])->middleware(['auth', 'verified']);
+Route::get('fenomena/getMonitoring', [FenomenaController::class, 'getMonitoring'])->middleware(['auth', 'verified'])->name('fenomena.getMonitoring');
+
 Route::resource('fenomena', FenomenaController::class)->middleware(['auth', 'verified']);
 
 //Lapangan
@@ -56,6 +61,8 @@ Route::get('lapangan-usaha/daftarPokok', [LapanganController::class, 'daftarPoko
 Route::get('lapangan-usaha/detailPokok', [LapanganController::class, 'detailPokok'])->middleware(['auth', 'verified'])->name('lapangan-usaha.detail');
 Route::get('lapangan-usaha/getDetail', [LapanganController::class, 'getDetail'])->middleware(['auth', 'verified'])->name('lapangan-usaha.getDetail');
 
+Route::get('lapangan-usaha/monitoring', [LapanganController::class, 'monitoring'])->middleware(['auth', 'verified']);
+
 //Pengeluaran
 Route::get('pengeluaran/rekonsiliasi', [PengeluaranController::class, 'rekonsiliasi'])->middleware(['auth', 'verified']);
 Route::get('pengeluaran/konserda', [PengeluaranController::class, 'konserda'])->middleware(['auth', 'verified']);
@@ -66,10 +73,15 @@ Route::get('pengeluaran/daftarPokok', [PengeluaranController::class, 'daftarPoko
 Route::get('pengeluaran/detailPokok', [PengeluaranController::class, 'detailPokok'])->middleware(['auth', 'verified'])->name('pengeluaran.detail');;
 Route::get('pengeluaran/getDetail', [PengeluaranController::class, 'getDetail'])->middleware(['auth', 'verified'])->name('pengeluaran.getDetail');
 
+Route::get('pengeluaran/monitoring', [PengeluaranController::class, 'monitoring'])->middleware(['auth', 'verified']);
 
 Route::post('konserda/year', [PeriodController::class, 'konserdaYear'])->name('konserdaYear');
 Route::post('konserda/quarter', [PeriodController::class, 'konserdaQuarter'])->name('konserdaQuarter');
 Route::post('konserda/period', [PeriodController::class, 'konserdaPeriod'])->name('konserdaPeriod');
+
+
+Route::post('fenomena/year', [PeriodController::class, 'fenomenaYear'])->name('fenomenaYear');
+Route::post('fenomena/quarter', [PeriodController::class, 'fenomenaQuarter'])->name('fenomenaQuarter');
 
 Route::post('fetch/year', [PeriodController::class, 'fetchYear'])->name('fetchYear');
 Route::post('fetch/quarter', [PeriodController::class, 'fetchQuarter'])->name('fetchQuarter');
@@ -78,6 +90,8 @@ Route::post('fetch/active-year', [PeriodController::class, 'fetcActiveYear'])->n
 Route::post('fetch/active-quarter', [PeriodController::class, 'fetchActiveQuarter'])->name('fetchActiveQuarter');
 Route::post('fetch/active-period', [PeriodController::class, 'fetchActivePeriod'])->name('fetchActivePeriod');
 Route::resource('period', PeriodController::class)->middleware(['auth', 'verified', 'admin']);
+
+
 
 Route::resource('user', UserController::class)->middleware(['auth', 'verified', 'admin']);
 

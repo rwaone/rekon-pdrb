@@ -306,4 +306,42 @@ class PengeluaranController extends Controller
             'filter' => isset($filter) ? $filter : ['type' => ''],
         ]);
     }
+
+    public function monitoring()
+    {
+        $quarter = [1, 2, 3, 4];
+        $regions = Region::getMyRegion();
+        $year_active = Period::where('type', 'Lapangan Usaha')->where('status', 'Aktif')->get('year');
+        $max_year = $year_active->max('year');
+        $monitoring_quarter = [];
+        foreach ($year_active as $year) {
+            $quarter_active = Period::select('id', 'quarter', 'description')->where('year', $year->year)->where('type', 'Lapangan Usaha')->whereIn('status', ['Selesai', 'Aktif'])->get();
+            foreach ($quarter_active as $quarters) {
+                foreach ($regions as $region) {
+                    $data = Pdrb::where('region_id', $region->id)->where('period_id', $quarters->id)->where('quarter', $quarters->quarter)->get(['adhk','adhb']);
+                    $data_adhb = $data->pluck('adhb');
+                    $data_adhk = $data->pluck('adhk');
+                    if ($data_adhb->contains(null)){
+                        $data_adhb = 0;
+                    } else {
+                        $data_adhb = 1;
+                    }
+                    if ($data_adhk->contains(null)){
+                        $data_adhk = 0;
+                    } else {
+                        $data_adhk = 1;
+                    }
+                    $monitoring_quarter[$year->year][$quarters->quarter][$region->name]['description'] = Period::select('description')->where('id', $quarters->id)->pluck('description');
+                    $monitoring_quarter[$year->year][$quarters->quarter][$region->name]['adhk'] = $data_adhk;
+                    $monitoring_quarter[$year->year][$quarters->quarter][$region->name]['adhb'] = $data_adhb;
+                }
+            }
+        }
+
+
+        return view('pengeluaran.monitoring', [
+            'max_year' => $max_year,
+            'monitoring_quarter' => $monitoring_quarter, 
+        ]);
+    }
 }

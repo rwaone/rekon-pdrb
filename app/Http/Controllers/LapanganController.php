@@ -160,12 +160,6 @@ class LapanganController extends Controller
     public function daftarPokok()
     {
         $number = 1;
-        $daftar_1 = Pdrb::select('region_id', 'period_id', 'quarter')->where('type', 'Lapangan Usaha')->where('quarter', 'Y')->groupBy('region_id', 'period_id', 'quarter')->orderByDesc('year')->orderBy('region_id')->get();
-        foreach ($daftar_1 as $item) {
-            $item->number = $number;
-            $number++;
-        }
-        $number = 1;
         //ini harus diperbaikin
         if (Auth::user()->satker_id == 1) {
             $daftar_2 = Pdrb::select('region_id', 'period_id', 'year')
@@ -197,7 +191,6 @@ class LapanganController extends Controller
             }
         }
         return view('lapangan.tabel-pokok', [
-            'daftar_1' => $daftar_1,
             'daftar_2' => $daftar_2,
         ]);
     }
@@ -240,10 +233,10 @@ class LapanganController extends Controller
         }
         $period = Period::where('id', $period_id)->first();
         $period_before = Period::where('year', $period->year - 1)
-        ->where('quarter', 4)
-        ->where('status', 'Final')
-        ->where('type', 'Lapangan Usaha')
-        ->first();
+            ->where('quarter', 4)
+            ->where('status', 'Final')
+            ->where('type', 'Lapangan Usaha')
+            ->first();
 
         $year_ = $period->year;
         // $quarters = [1, 2, 3, 4];
@@ -260,12 +253,12 @@ class LapanganController extends Controller
         //     $datas['pdrb-' . ($key + 1)] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $item)->where('region_id', $region_id)->orderBy('subsector_id')->get();
         // }
         $befores = [];
-        if ($period_before){
+        if ($period_before) {
             $befores['pdrb-before'] = Pdrb::select('subsector_id', 'adhk', 'adhb')
-            ->where('period_id', $period_before->id)
-            ->where('region_id', $region_id)
-            ->where('quarter', 4)
-            ->get();
+                ->where('period_id', $period_before->id)
+                ->where('region_id', $region_id)
+                ->where('quarter', 4)
+                ->get();
         } else {
             $befores = 'kosong';
         }
@@ -306,6 +299,43 @@ class LapanganController extends Controller
             'quarters'  => isset($quarters) ? $quarters : NULL,
             'periods' => isset($periods) ? $periods : NULL,
             'filter' => isset($filter) ? $filter : ['type' => ''],
+        ]);
+    }
+    public function monitoring()
+    {
+        $quarter = [1, 2, 3, 4];
+        $regions = Region::getMyRegion();
+        $year_active = Period::where('type', 'Lapangan Usaha')->where('status', 'Aktif')->get('year');
+        $max_year = $year_active->max('year');
+        $monitoring_quarter = [];
+        foreach ($year_active as $year) {
+            $quarter_active = Period::select('id', 'quarter', 'description')->where('year', $year->year)->where('type', 'Lapangan Usaha')->whereIn('status', ['Selesai', 'Aktif'])->get();
+            foreach ($quarter_active as $quarters) {
+                foreach ($regions as $region) {
+                    $data = Pdrb::where('region_id', $region->id)->where('period_id', $quarters->id)->where('quarter', $quarters->quarter)->get(['adhk','adhb']);
+                    $data_adhb = $data->pluck('adhb');
+                    $data_adhk = $data->pluck('adhk');
+                    if ($data_adhb->contains(null)){
+                        $data_adhb = 0;
+                    } else {
+                        $data_adhb = 1;
+                    }
+                    if ($data_adhk->contains(null)){
+                        $data_adhk = 0;
+                    } else {
+                        $data_adhk = 1;
+                    }
+                    $monitoring_quarter[$year->year][$quarters->quarter][$region->name]['description'] = Period::select('description')->where('id', $quarters->id)->pluck('description');
+                    $monitoring_quarter[$year->year][$quarters->quarter][$region->name]['adhk'] = $data_adhk;
+                    $monitoring_quarter[$year->year][$quarters->quarter][$region->name]['adhb'] = $data_adhb;
+                }
+            }
+        }
+
+
+        return view('lapangan.monitoring', [
+            'max_year' => $max_year,
+            'monitoring_quarter' => $monitoring_quarter, 
         ]);
     }
 }

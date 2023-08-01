@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Period;
 use App\Http\Requests\StoreperiodRequest;
 use App\Http\Requests\UpdateperiodRequest;
+use App\Models\Fenomena;
 
 class PeriodController extends Controller
 {
@@ -42,7 +43,7 @@ class PeriodController extends Controller
     public function store(StoreperiodRequest $request)
     {
         //$this->authorize('admin');
-        $range = explode(" - ",$request['date_range']);
+        $range = explode(" - ", $request['date_range']);
         $validatedData = $request->validate([
             'type' => 'required',
             'year' => 'required',
@@ -53,10 +54,10 @@ class PeriodController extends Controller
         $validatedData['started_at'] = $range[0];
         $validatedData['ended_at'] = $range[1];
         $validatedData['status'] = 'Aktif';
-        
+
         //dd($validatedData);
-        
-        if(Period::create($validatedData)){
+
+        if (Period::create($validatedData)) {
             return redirect('/period')->with('notif',  'Data telah berhasil disimpan!');
         }
     }
@@ -95,7 +96,7 @@ class PeriodController extends Controller
      */
     public function update(UpdateperiodRequest $request, period $period)
     {
-        $range = explode(" - ",$request['date_range']);
+        $range = explode(" - ", $request['date_range']);
         $validatedData = $request->validate([
             'type' => 'required',
             'year' => 'required',
@@ -106,9 +107,9 @@ class PeriodController extends Controller
 
         $validatedData['started_at'] = $range[0];
         $validatedData['ended_at'] = $range[1];
-        
+
         //dd($validatedData);
-        
+
         Period::where('id', $period->id)->update($validatedData);
         return redirect('/period')->with('notif',  'Data telah berhasil disimpan!');
     }
@@ -127,55 +128,65 @@ class PeriodController extends Controller
 
     public function fetchYear(Request $request)
     {
-        $data['years'] = Period::where('type',$request->type)->groupBy('year')->orderBy('year','DESC')->get('year');
+        $data['years'] = Period::where('type', $request->type)->groupBy('year')->orderBy('year', 'DESC')->get('year');
         return response()->json($data);
     }
 
     public function fetchQuarter(Request $request)
     {
-        $data['quarters'] = Period::where('type', $request->type)->where('year',$request->year)->groupBy('quarter')->get('quarter');
+        $data['quarters'] = Period::where('type', $request->type)->where('year', $request->year)->groupBy('quarter')->get('quarter');
         return response()->json($data);
     }
-    
+
     public function fetchPeriod(Request $request)
     {
-        $data['periods'] = Period::where('type', $request->type)->where('year',$request->year)->where('quarter', $request->quarter)->get();
+        $data['periods'] = Period::where('type', $request->type)->where('year', $request->year)->where('quarter', $request->quarter)->get();
         return response()->json($data);
     }
 
     public function fetchActiveYear(Request $request)
     {
-        $data['years'] = Period::where('type',$request->type)->where('status','Aktif')->groupBy('year')->orderBy('year','DESC')->get('year');
+        $data['years'] = Period::where('type', $request->type)->where('status', 'Aktif')->groupBy('year')->orderBy('year', 'DESC')->get('year');
         return response()->json($data);
     }
 
     public function fetchActiveQuarter(Request $request)
     {
-        $data['quarters'] = Period::where('type', $request->type)->where('year',$request->year)->where('status','Aktif')->groupBy('quarter')->get('quarter');
+        $data['quarters'] = Period::where('type', $request->type)->where('year', $request->year)->where('status', 'Aktif')->groupBy('quarter')->get('quarter');
         return response()->json($data);
     }
-    
+
     public function fetchActivePeriod(Request $request)
     {
-        $data['periods'] = Period::where('type', $request->type)->where('year',$request->year)->where('quarter', $request->quarter)->where('status','Aktif')->get();
+        $data['periods'] = Period::where('type', $request->type)->where('year', $request->year)->where('quarter', $request->quarter)->where('status', 'Aktif')->get();
         return response()->json($data);
     }
 
     public function konserdaYear(Request $request)
     {
-        $data['years'] = Period::where('type',$request->type)->where('status', 'Final')->groupBy('year')->orderBy('year','DESC')->get('year');
+        $data['years'] = Period::where('type', $request->type)->where('status', 'Final')->groupBy('year')->orderBy('year', 'DESC')->get('year');
         return response()->json($data);
     }
 
     public function konserdaQuarter(Request $request)
     {
-        $data['quarters'] = Period::where('type', $request->type)->where('status', 'Final')->where('year',$request->year)->groupBy('quarter')->get('quarter');
+        $data['quarters'] = Period::where('type', $request->type)->where('status', 'Final')->where('year', $request->year)->groupBy('quarter')->get('quarter');
         return response()->json($data);
     }
-    
+
     public function konserdaPeriod(Request $request)
     {
-        $data['periods'] = Period::where('type', $request->type)->where('status', 'Final')->where('year',$request->year)->where('quarter', $request->quarter)->get();
+        $data['periods'] = Period::where('type', $request->type)->where('status', 'Final')->where('year', $request->year)->where('quarter', $request->quarter)->get();
+        return response()->json($data);
+    }
+    public function fenomenaYear(Request $request)
+    {
+        $data['years'] = Fenomena::where('type', $request->type)->distinct()->get('year');
+        return response()->json($data);
+    }
+    public function fenomenaQuarter(Request $request)
+    {
+        $data['quarters'] = Fenomena::where('type', $request->type)->where('year', $request->year)->distinct()->get('quarter');
         return response()->json($data);
     }
 }
