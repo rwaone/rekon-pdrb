@@ -358,6 +358,52 @@ $(document).ready(function () {
         }
     });
 
+    $('#nav-laju').click(function () {
+        // const previous_data = JSON.parse(sessionStorage.getItem('previous_data'));
+        $('.nav-link').removeClass('active');
+        $('#nav-laju').addClass('active');
+        showTable();
+
+        let tableRekon = $('#rekon-table');
+        let tbodyRekon = tableRekon.find('tbody');
+        let trRekon = tbodyRekon.find('tr');
+
+        let numRows = trRekon.length
+        for (let col = 1; col < $('#rekon-table tr:first-child td').length; col++) {
+            for (let row = 0; row < numRows; row++) {
+                let rekonCell = $('#rekon-table tr').eq(row + 1).find('td').eq(col)
+                let adhbCell = $('#adhb-table tr').eq(row + 1).find('td').eq(col)
+                let adhkkCell = $('#adhk-table tr').eq(row + 1).find('td').eq(col)
+                if (col == 1) {
+                    var previousAdhbCell = $('#prev-adhb-table tr').eq(row + 1).find('td').eq(4)
+                    var previousAdhkCell = $('#prev-adhk-table tr').eq(row + 1).find('td').eq(4)
+                } else if (col == 5) {
+                    var previousAdhbCell = $('#prev-adhb-table tr').eq(row + 1).find('td').eq(5)
+                    var previousAdhkCell = $('#prev-adhk-table tr').eq(row + 1).find('td').eq(5)
+                } else {
+                    var previousAdhbCell = $('#adhb-table tr').eq(row + 1).find('td').eq(col - 1)
+                    var previousAdhkCell = $('#adhk-table tr').eq(row + 1).find('td').eq(col - 1)
+                }
+                if (row == numRows - 1 || row == numRows - 2) {
+                    var adhbValue = Number(adhbCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    var adhkValue = Number(adhkkCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    var previousAdhbValue = Number(previousAdhbCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    var previousAdhkValue = Number(previousAdhkCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                } else {
+                    var adhbValue = Number(adhbCell.find(`input[id^='adhb']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    var adhkValue = Number(adhkkCell.find(`input[id^='adhk']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    var previousAdhbValue = Number(previousAdhbCell.find(`input[id*='adhb']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    var previousAdhkValue = Number(previousAdhkCell.find(`input[id*='adhk']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                }
+                let currentImplisit = ((adhbValue / adhkValue) * 100)
+                let previousImplisit = ((previousAdhbValue / previousAdhkValue) * 100)
+                let laju = ((currentImplisit / previousImplisit) * 100) - 100
+                let value = isNaN(laju) ? '-' : laju.toFixed(2)
+                rekonCell.text(String(value).replaceAll(/[.]/g, ','))
+            }
+        }
+    });
+
     function showTable() {
         $('.loader').removeClass('d-none');
         $('.form-container').addClass('d-none');
