@@ -338,4 +338,16 @@ class LapanganController extends Controller
             'monitoring_quarter' => $monitoring_quarter, 
         ]);
     }
+
+    public function adjustment()
+    {
+        $regions = Region::getMyRegion();
+        $type = 'Lapangan Usaha';
+        $subsectors = Subsector::where('type', 'Lapangan Usaha')->get();
+        return view('adjustment.view', [
+            'regions' => $regions,
+            'subsectors' => $subsectors,
+            'type' => $type,
+        ]);
+    }
 }

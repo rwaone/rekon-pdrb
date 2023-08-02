@@ -5,6 +5,7 @@
         </button>
     </div>
 </div>
+
 <form id="adhkForm" method="post" class="form-horizontal">
     <div class="card-body p-3">
         <table class="table table-bordered table-responsive" id="adhk-table">
@@ -266,8 +267,5 @@
                 </tr>
             </tbody>
         </table>
-    </div>
-    <div class="card-footer d-flex pr-3">
-        
     </div>
 </form>

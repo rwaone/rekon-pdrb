@@ -37,41 +37,17 @@
     </x-slot>
 
     <x-slot name="breadcrumb">
-        <li class="breadcrumb-item active">Entri Rekonsiliasi</li>
+        <li class="breadcrumb-item active">Adjustment</li>
     </x-slot>
-    
-    <div id="my-cat" data-cat="{{ json_encode($cat) }}"></div>
 
-    @include('rekonsiliasi.filter') 
-
-    <div class="card save-container d-none" id="navList">
-        <ul class="nav nav-pills p-2">
-            <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-adhb">ADHB</a></li>
-            <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-adhk">ADHK</a></li>
-            <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-distribusi">Distribusi</a></li>
-            <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-qtoq">Growth (Q to Q)</a></li>
-            <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-ytoy">Growth (Y on Y)</a></li>
-            <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-ctoc">Growth (C to C)</a></li>
-            <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-indeks">Indeks Implisit</a></li>
-            <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-lajuQ">Laju Implisit (Q to Q)</a></li>
-            <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-lajuY">Laju Implisit (Y on Y)</a></li>
-        </ul>
-    </div>
+    @include('adjustment.filter')
 
     @if ($type == 'Lapangan Usaha')
-        <div id="adhbFormContainer" class="card form-container d-none"> @include('lapangan.adhb-form') </div>
-        <div id="adhkFormContainer" class="card form-container d-none"> @include('lapangan.adhk-form') </div>
-        <div id="tableFormContainer" class="card form-container d-none"> @include('lapangan.rekon-table') </div>
-        <div id="prevadhbDataContainer" class="card d-none"> @include('lapangan.prev-adhb-form') </div>
-        <div id="prevadhkDataContainer" class="card d-none"> @include('lapangan.prev-adhk-form' )</div>
+        <div class="card"></div>
     @elseif ($type == 'Pengeluaran')
-        <div id="adhbFormContainer" class="card form-container d-none"> @include('pengeluaran.adhb-form') </div>
-        <div id="adhkFormContainer" class="card form-container d-none"> @include('pengeluaran.adhk-form') </div>
-        <div id="tableFormContainer" class="card form-container d-none"> @include('pengeluaran.rekon-table') </div>
-        <div id="prevadhbDataContainer" class="card d-none"> @include('pengeluaran.prev-adhb-form') </div>
-        <div id="prevadhkDataContainer" class="card d-none"> @include('pengeluaran.prev-adhk-form') </div>
+        <div class="card"></div>
     @endif
-    
+
     <div class="card save-container d-none">
         <div class="ml-auto">
             <button id="fullFormSave" type="button" class="btn btn-success">Simpan</button>
@@ -139,21 +115,14 @@
     <x-slot name="script">
         <!-- Additional JS resources -->
         <script src="{{ url('') }}/plugins/select2/js/select2.full.min.js"></script>
-        @if ($type == 'Lapangan Usaha')
-            <script src="{{ asset('js/rekon-lapangan-usaha.js') }}"></script>
-        @elseif ($type == 'Pengeluaran')
-            <script src="{{ asset('js/rekon-pengeluaran.js') }}"></script>
-        @endif
-        <script src="{{ asset('js/rekonsiliasi.js') }}"></script>
+        <script src="{{ asset('js/adjustment.js') }}"></script>
         <script>
             const tokens = '{{ csrf_token() }}'
             const url_fetch_year = new URL("{{ route('fetchYear') }}")
             const url_fetch_quarter = new URL("{{ route('fetchQuarter') }}")
             const url_fetch_period = new URL("{{ route('fetchPeriod') }}")
-            const url_save_single_data = new URL("{{ route('saveSingleData') }}")
             const url_save_full_data = new URL("{{ route('saveFullData') }}")
-            const url_get_single_data = new URL("{{ route('getSingleData') }}")
-            const url_get_full_data = new URL("{{ route('getFullData') }}")
+            const url_get_full_data = new URL("{{ route('get-adjustment') }}")
             const url_copy_data = new URL("{{ route('copyData') }}")
 
             const Toast = Swal.mixin({

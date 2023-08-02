@@ -227,7 +227,6 @@
             <script src="{{ url('') }}/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
             <script src="{{ url('') }}/plugins/moment/moment.min.js"></script>
             <script src="{{ url('') }}/plugins/daterangepicker/daterangepicker.js"></script>
-            <script src="{{ url('') }}/plugins/moment/moment.min.js"></script>
             <script>
                 function deleteConfirm(url) {
                     $('#btn-delete').attr('action', url);

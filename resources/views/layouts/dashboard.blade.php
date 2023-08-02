@@ -55,12 +55,15 @@
 
             <!-- Main content -->
             <section class="content">
-                <span class="loader d-none"></span>
+
+                <div class="loader d-none">                                            
+                  <div class="spinner-grow text-success"></div>
+                  <div class="spinner-grow text-success"></div>
+                  <div class="spinner-grow text-success"></div>
+                  <div class="spinner-grow text-success"></div>
+                </div>
+
                 <div class="container-fluid">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
                     {{ $slot }}
                 </div>
 

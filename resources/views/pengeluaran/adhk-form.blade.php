@@ -1,3 +1,11 @@
+<div class="card-header">
+    <div class="card-tools">
+        <button id="copy-adhk" type="button" class="btn btn-warning">
+            <i class="fas fa-copy"></i> Salin Data
+        </button>
+    </div>
+</div>
+
 <form id="adhkForm" method="post"  class="form-horizontal">
     <div class="card-body p-3">
         <table class="table table-bordered" id="adhk-table">

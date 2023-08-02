@@ -49,17 +49,24 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('lapangan-usaha/daftarPokok') }}"
-                                class="nav-link {{ Request::is('lapangan-usaha/daftarPokok') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Daftar Tabel Pokok</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
                             <a href="{{ url('lapangan-usaha/konserda') }}"
                                 class="nav-link {{ Request::is('lapangan-usaha/konserda') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Hasil Rekon</p>
+                                <p>Diskrepansi</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('lapangan-usaha/adjustment') }}"
+                                class="nav-link {{ Request::is('lapangan-usaha/adjustment') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Adjustment</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('lapangan-usaha/daftarPokok') }}"
+                                class="nav-link {{ Request::is('lapangan-usaha/daftarPokok') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Tabel Pokok</p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -70,20 +77,20 @@
                             </a>
                         </li>
                         @if (auth()->user()->satker_id == 1)
-                        <li class="nav-item">
-                            <a href="{{ url('lapangan-usaha/monitoring') }}"
-                            class="nav-link {{ Request::is('lapangan-usaha/monitoring') ? 'active' : '' }}">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Monitoring PDRB</p>
-                        </a>
-                    </li>
-                    @endif
-                </ul>
-            </li>
-            <li class="nav-item {{ Request::is('pengeluaran*') ? 'menu-open' : '' }}">
-                <a href="" class="nav-link {{ Request::is('pengeluaran*') ? 'active' : '' }}">
-                    <i class="nav-icon fas fa-coins"></i>
-                    <p>
+                            <li class="nav-item">
+                                <a href="{{ url('lapangan-usaha/monitoring') }}"
+                                    class="nav-link {{ Request::is('lapangan-usaha/monitoring') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Monitoring PDRB</p>
+                                </a>
+                            </li>
+                        @endif
+                    </ul>
+                </li>
+                <li class="nav-item {{ Request::is('pengeluaran*') ? 'menu-open' : '' }}">
+                    <a href="" class="nav-link {{ Request::is('pengeluaran*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-coins"></i>
+                        <p>
                             Pengeluaran
                             <i class="fas fa-angle-left right"></i>
                         </p>
@@ -91,59 +98,59 @@
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="{{ url('pengeluaran/rekonsiliasi') }}"
-                            class="nav-link {{ Request::is('pengeluaran/rekonsiliasi') ? 'active' : '' }}">
-                            <i class="far fa-circle nav-icon"></i>
+                                class="nav-link {{ Request::is('pengeluaran/rekonsiliasi') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
                                 <p>Entri PDRB</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('pengeluaran/daftarPokok') }}"
-                            class="nav-link {{ Request::is('pengeluaran/daftarPokok') ? 'active' : '' }}">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Daftar Tabel Pokok</p>
+                            <a href="{{ url('pengeluaran/konserda') }}"
+                                class="nav-link {{ Request::is('pengeluaran/konserda') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Diskrepansi</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('pengeluaran/konserda') }}"
-                            class="nav-link {{ Request::is('pengeluaran/konserda') ? 'active' : '' }}">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Hasil Konserda</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ url('pengeluaran/fenomena') }}"
-                        class="nav-link {{ Request::is('pengeluaran/fenomena') ? 'active' : '' }}">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Entri Fenomena</p>
+                            <a href="{{ url('pengeluaran/daftarPokok') }}"
+                                class="nav-link {{ Request::is('pengeluaran/daftarPokok') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Tabel Pokok</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('pengeluaran/fenomena') }}"
+                                class="nav-link {{ Request::is('pengeluaran/fenomena') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Entri Fenomena</p>
+                            </a>
+                        </li>
+                        @if (auth()->user()->satker_id == 1)
+                            <li class="nav-item">
+                                <a href="{{ url('pengeluaran/monitoring') }}"
+                                    class="nav-link {{ Request::is('pengeluaran/monitoring') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Monitoring PDRB</p>
+                                </a>
+                            </li>
+                        @endif
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url('fenomena/viewAll') }}"
+                        class="nav-link {{ Request::is('fenomena/viewAll') ? 'active' : '' }}">
+                        <i class="far fa-star nav-icon"></i>
+                        <p>Lihat Fenomena</p>
                     </a>
                 </li>
-                        @if (auth()->user()->satker_id == 1)
-                        <li class="nav-item">
-                            <a href="{{ url('pengeluaran/monitoring') }}"
-                            class="nav-link {{ Request::is('pengeluaran/monitoring') ? 'active' : '' }}">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Monitoring PDRB</p>
+                @if (auth()->user()->satker_id == 1)
+                    <li class="nav-item">
+                        <a href="{{ url('fenomena/monitoring') }}"
+                            class="nav-link {{ Request::is('fenomena/monitoring') ? 'active' : '' }}">
+                            <i class="far fa-star-half nav-icon"></i>
+                            <p>Monitoring Fenomena</p>
                         </a>
                     </li>
-                    @endif
-                </ul>
-            </li>
-            <li class="nav-item">
-                <a href="{{ url('fenomena/viewAll') }}"
-                    class="nav-link {{ Request::is('fenomena/viewAll') ? 'active' : '' }}">
-                    <i class="far fa-star nav-icon"></i>
-                    <p>Lihat Fenomena</p>
-                </a>
-            </li>
-            @if (auth()->user()->satker_id == 1)
-            <li class="nav-item">
-                <a href="{{ url('fenomena/monitoring') }}"
-                    class="nav-link {{ Request::is('fenomena/monitoring') ? 'active' : '' }}">
-                    <i class="far fa-star-half nav-icon"></i>
-                    <p>Monitoring Fenomena</p>
-                </a>
-            </li>
-            @endif
+                @endif
 
                 @can('admin')
                     <li class="nav-header">PENGATURAN</li>

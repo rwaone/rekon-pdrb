@@ -3,10 +3,12 @@
   z-index: 1;
 }
 
+.loader-container {
+  position: fixed;
+}
+
 
 .loader {
-  width: 48px;
-  height: 48px;
   border-radius: 50%;
   display: inline-block;
   position: fixed;
@@ -14,10 +16,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 9999;
-  border: 10px solid;
-  border-color: rgba(5, 134, 181, 0.15) rgba(5, 134, 181, 0.25) rgba(5, 134, 181, 0.35) rgba(5, 134, 181, 0.5);
   box-sizing: border-box;
-  animation: rotation 1s linear infinite;
 }
 
 @keyframes rotation {

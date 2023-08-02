@@ -37,7 +37,7 @@
             }
 
             #komponen th {
-                background-color: steelblue !important;
+                background-color: #09c140 !important;
                 color: aliceblue !important;
                 text-align: center;
             }
@@ -160,9 +160,7 @@
             </form>
         </div>
     </div>
-    <span class="loader d-none"></span>
     <div class="card mb-3 d-none" id="view-body">
-    {{-- <div class="card mb-3" id="view-body"> --}}
         <div class="card-body">
             <nav class="navbar">
                 <ul class="nav-item ml-auto">
@@ -248,11 +246,11 @@
                                     @endif
                                 @endforeach
                                 <tr class="PDRB-footer text-center"
-                                    style="background-color: steelblue; color:aliceblue; font-weight: bold;">
+                                    style="background-color: #09c140; color:aliceblue; font-weight: bold;">
                                     <td>Produk Domestik Regional Bruto (PDRB) Nonmigas</td>
                                 </tr>
                                 <tr class="PDRB-footer text-center"
-                                    style="background-color: steelblue; color:aliceblue; font-weight: bold;">
+                                    style="background-color: #09c140; color:aliceblue; font-weight: bold;">
                                     <td>Produk Domestik Regional Bruto (PDRB)</td>
                                 </tr>
                             </tbody>
@@ -260,7 +258,7 @@
                     </div>
                     <div class="table-data-wrapper">
                         <table class="table table-bordered" id="rekon-view">
-                            <thead class="text-center" style="background-color: steelblue; color:aliceblue;">
+                            <thead class="text-center" style="background-color: #09c140; color:aliceblue;">
                                 <tr>
                                     <th id="head-purpose" class=""></th>
                                     <th>Total Kabupaten/Kota</th>
@@ -329,7 +327,7 @@
                                     @endif
                                 @endforeach
                                 <tr class="PDRB-footer text-right"
-                                    style="background-color: steelblue; color:aliceblue; font-weight: bold;">
+                                    style="background-color: #09c140; color:aliceblue; font-weight: bold;">
                                     <td class="text-right" id="purpose-nonmigas"></td>
                                     <td class="sum-of-kabkot text-right" id="totalKabkot-nonmigas"></td>
                                     @foreach ($regions as $region)
@@ -337,7 +335,7 @@
                                     @endforeach
                                 </tr>
                                 <tr class="PDRB-footer text-right"
-                                    style="background-color: steelblue; color:aliceblue; font-weight: bold;">
+                                    style="background-color: #09c140; color:aliceblue; font-weight: bold;">
                                     <td class="text-right" id="purpose-migas"></td>
                                     <td class="sum-of-kabkot text-right" id="totalKabkot-migas"></td>
                                     @foreach ($regions as $region)

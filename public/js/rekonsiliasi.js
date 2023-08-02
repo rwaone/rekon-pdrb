@@ -4,10 +4,10 @@ $(document).ready(function () {
     let catArray = cat.split(", ")
 
     $('#type').on('change', function () {
-        var pdrb_type = this.value;
-        $("#year").html('');
-        // $('#region_id').val('').change();
-        $('#navList').addClass('d-none');
+        var pdrb_type = this.value
+        $("#year").html('')
+        $('#region_id').val('').change()
+        closeContainer()
 
         $.ajax({
             type: 'POST',
@@ -38,11 +38,11 @@ $(document).ready(function () {
     });
 
     $('#year').on('change', function () {
-        var pdrb_type = $('#type').val();
-        var pdrb_year = this.value;
-        $("#quarter").html('');
-        // $('#region_id').val('').change();
-        $('#navList').addClass('d-none');
+        var pdrb_type = $('#type').val()
+        var pdrb_year = this.value
+        $("#quarter").html('')
+        $('#region_id').val('').change()
+        closeContainer()
 
         $.ajax({
             type: 'POST',
@@ -101,12 +101,12 @@ $(document).ready(function () {
     });
 
     $('#quarter').on('change', function () {
-        var pdrb_type = $('#type').val();
-        var pdrb_year = $('#year').val();
-        var pdrb_quarter = this.value;
-        $("#period").html('');
-        // $('#region_id').val('').change();
-        $('#navList').addClass('d-none');
+        var pdrb_type = $('#type').val()
+        var pdrb_year = $('#year').val()
+        var pdrb_quarter = this.value
+        $("#period").html('')
+        $('#region_id').val('').change()
+        closeContainer()
 
         $.ajax({
             type: 'POST',
@@ -161,33 +161,19 @@ $(document).ready(function () {
     });
 
     $('#period').change(function () {
-        // $('#region_id').val('').change();
-        $('#navList').addClass('d-none');
+        $('#region_id').val('').change()
         if ($('#period').text().includes('Aktif')) {
-            $('#fullFormSave').prop('disabled', false);
+            $('#fullFormSave').prop('disabled', false)
         } else {
-            $('#fullFormSave').prop('disabled', true);
+            $('#fullFormSave').prop('disabled', true)
         }
+        closeContainer()
     });
 
     $('#region_id').change(function () {
-        $('#navList').removeClass('d-none');
-        $('.nav-link').removeClass('active');
-        $('input[name*=id_]').prop('disabled', false);
-        $('input[name*=adhk_value_]').prop('disabled', false);
-        $('input[name*=adhb_value_]').prop('disabled', false);
-        var quarter = $('#quarter').val();
-        if (quarter < 4) {
-            for (let index = +quarter + 1; index < 5; index++) {
-                $('input[name*=id_' + index + '_]').prop('disabled', true);
-                $('input[name*=adhk_value_' + index + '_]').prop('disabled', true);
-                $('input[name*=adhb_value_' + index + '_]').prop('disabled', true);
-            }
+        if ($('#region_id').val() != '') {
+            getFullData()
         }
-        getFullData();
-        $('#nav-adhb').addClass('active');
-        $('#adhbFormContainer').removeClass('d-none');
-
     });
 
     $('#nav-adhb').click(function () {
@@ -199,23 +185,23 @@ $(document).ready(function () {
     });
 
     $('#nav-distribusi').click(function () {
-        $('.nav-link').removeClass('active');
+        $('.tab-item').removeClass('active');
         $('#nav-distribusi').addClass('active');
         showTable();
 
         let tableRekon = $('#rekon-table');
         let tbodyRekon = tableRekon.find('tbody');
         let trRekon = tbodyRekon.find('tr');
-        
+
         let numRows = ($('#type').val() == 'Lapangan Usaha') ? trRekon.length - 2 : trRekon.length - 1
-        
+
         for (let col = 1; col < $('#rekon-table tr:first-child td').length; col++) {
             let totalnm = Number($('#adhb-table tr').last().prev().find('td').eq(col).text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
             let nmCell = $('#rekon-table tr').last().prev().find('td').eq(col)
-            
+
             let totalPDRB = Number($('#adhb-table tr').last().find('td').eq(col).text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
             let totalCell = $('#rekon-table tr').last().find('td').eq(col)
-            
+
             nmCell.text(String(((totalnm / totalPDRB) * 100).toFixed(2)).replaceAll(/[.]/g, ','))
             totalCell.text(String(((totalPDRB / totalPDRB) * 100).toFixed(2)).replaceAll(/[.]/g, ','))
 
@@ -232,7 +218,7 @@ $(document).ready(function () {
 
     $('#nav-qtoq').click(function () {
         // const previous_data = JSON.parse(sessionStorage.getItem('previous_data'));
-        $('.nav-link').removeClass('active');
+        $('.tab-item').removeClass('active');
         $('#nav-qtoq').addClass('active');
         showTable();
 
@@ -273,7 +259,7 @@ $(document).ready(function () {
 
     $('#nav-ytoy').click(function () {
         // const previous_data = JSON.parse(sessionStorage.getItem('previous_data'));
-        $('.nav-link').removeClass('active');
+        $('.tab-item').removeClass('active');
         $('#nav-ytoy').addClass('active');
         showTable();
 
@@ -305,7 +291,7 @@ $(document).ready(function () {
 
     $('#nav-ctoc').click(function () {
         // const previous_data = JSON.parse(sessionStorage.getItem('previous_data'));
-        $('.nav-link').removeClass('active');
+        $('.tab-item').removeClass('active');
         $('#nav-ctoc').addClass('active');
         showTable();
 
@@ -343,7 +329,7 @@ $(document).ready(function () {
 
     $('#nav-indeks').click(function () {
         // const previous_data = JSON.parse(sessionStorage.getItem('previous_data'));
-        $('.nav-link').removeClass('active');
+        $('.tab-item').removeClass('active');
         $('#nav-indeks').addClass('active');
         showTable();
 
@@ -373,10 +359,10 @@ $(document).ready(function () {
         }
     });
 
-    $('#nav-laju').click(function () {
+    $('#nav-lajuQ').click(function () {
         // const previous_data = JSON.parse(sessionStorage.getItem('previous_data'));
-        $('.nav-link').removeClass('active');
-        $('#nav-laju').addClass('active');
+        $('.tab-item').removeClass('active');
+        $('#nav-lajuQ').addClass('active');
         showTable();
 
         let tableRekon = $('#rekon-table');
@@ -421,37 +407,103 @@ $(document).ready(function () {
         }
     });
 
-    function showTable() {
-        $('.loader').removeClass('d-none');
-        $('.form-container').addClass('d-none');
-        $('#tableFormContainer').removeClass('d-none');
+    $('#nav-lajuY').click(function () {
+        // const previous_data = JSON.parse(sessionStorage.getItem('previous_data'));
+        $('.tab-item').removeClass('active');
+        $('#nav-lajuY').addClass('active');
+        showTable();
 
+        let tableRekon = $('#rekon-table');
+        let tbodyRekon = tableRekon.find('tbody');
+        let trRekon = tbodyRekon.find('tr');
+
+        let numRows = trRekon.length
+        let lastInputRow = ($('#type').val() == 'Lapangan Usaha') ? trRekon.length - 2 : trRekon.length - 1
+
+        for (let col = 1; col < $('#rekon-table tr:first-child td').length; col++) {
+            for (let row = 0; row < numRows; row++) {
+                let rekonCell = $('#rekon-table tr').eq(row + 1).find('td').eq(col)
+                let adhbCell = $('#adhb-table tr').eq(row + 1).find('td').eq(col)
+                let adhkkCell = $('#adhk-table tr').eq(row + 1).find('td').eq(col)
+                var previousAdhbCell = $('#prev-adhb-table tr').eq(row + 1).find('td').eq(col)
+                var previousAdhkCell = $('#prev-adhk-table tr').eq(row + 1).find('td').eq(col)
+
+                if (row >= lastInputRow) {
+                    var adhbValue = Number(adhbCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    var adhkValue = Number(adhkkCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    var previousAdhbValue = Number(previousAdhbCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    var previousAdhkValue = Number(previousAdhkCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                } else {
+                    var adhbValue = Number(adhbCell.find(`input[id^='adhb']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    var adhkValue = Number(adhkkCell.find(`input[id^='adhk']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    var previousAdhbValue = Number(previousAdhbCell.find(`input[id*='adhb']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    var previousAdhkValue = Number(previousAdhkCell.find(`input[id*='adhk']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                }
+
+                let currentImplisit = ((adhbValue / adhkValue) * 100)
+                let previousImplisit = ((previousAdhbValue / previousAdhkValue) * 100)
+                let laju = ((currentImplisit / previousImplisit) * 100) - 100
+                let value = isNaN(laju) ? '-' : laju.toFixed(2)
+                rekonCell.text(String(value).replaceAll(/[.]/g, ','))
+            }
+        }
+    });
+
+    function showTable() {
+        $('.loader').removeClass('d-none')
+        $('.form-container').addClass('d-none')
+        $('#tableFormContainer').removeClass('d-none')
+        $('.save-container').removeClass('d-none')
         setTimeout(function () {
-            $('.loader').addClass('d-none');
+            $('.loader').addClass('d-none')
         }, 200);
     };
 
+    function closeContainer() {
+        $('.loader').removeClass('d-none')
+        setTimeout(function () {
+            $('.form-container').addClass('d-none')
+            $('#navList').addClass('d-none')
+            $('.loader').addClass('d-none')
+        }, 200);
+    }
+
     function showForm(price_base) {
 
-        $('.loader').removeClass('d-none');
-        $('.form-container').addClass('d-none');
-        $('#' + price_base + 'FormContainer').removeClass('d-none');
-        $('.nav-link').removeClass('active');
-        $('#nav-' + price_base).addClass('active');
+        $('.form-container').addClass('d-none')
+        $('#' + price_base + 'FormContainer').removeClass('d-none')
+        $('.save-container').removeClass('d-none')
+        
+        $('.tab-item').removeClass('active')
+        $('#nav-' + price_base).addClass('active')
 
         setTimeout(function () {
-            if ($('#type').val() == 'Pengeluaran'){
+            if ($('#type').val() == 'Pengeluaran') {
                 allSumPDRBPengeluaran(price_base);
             } else {
                 allSumPDRBLapus(price_base);
             }
-            $('.loader').addClass('d-none');
         }, 200);
 
     };
 
     function getFullData() {
+        showForm('adhb')
+
         $('.loader').removeClass('d-none');
+
+        $('input[name*=id_]').prop('disabled', false)
+        $('input[name*=adhk_value_]').prop('disabled', false)
+        $('input[name*=adhb_value_]').prop('disabled', false)
+
+        var quarter = $('#quarter').val()
+        if (quarter < 4) {
+            for (let index = +quarter + 1; index < 5; index++) {
+                $('input[name*=id_' + index + '_]').prop('disabled', true)
+                $('input[name*=adhk_value_' + index + '_]').prop('disabled', true)
+                $('input[name*=adhb_value_' + index + '_]').prop('disabled', true)
+            }
+        }
         $.ajax({
             type: 'POST',
             url: url_get_full_data.href,
@@ -525,8 +577,6 @@ $(document).ready(function () {
                     allSumPDRBLapus('prev-adhb')
                     allSumPDRBLapus('prev-adhk')
                 }
-
-                sessionStorage.setItem('previous_data', JSON.stringify(result.previous_data));
 
                 Toast.fire({
                     icon: 'success',

@@ -160,7 +160,7 @@ class PdrbController extends Controller
         $current_data = [];
         $previous_data = [];
 
-        for ($index = 1; $index <= 4; $index++) {
+        for ($index = 1; $index <= $filter['quarter']; $index++) {
             $previous_data[$index] = Pdrb::where('period_id', $previous_periodId)->where('region_id', $filter['region_id'])->where('quarter', $index)->orderBy('subsector_id')->get();
             if ($index <= $filter['quarter']) {
                 $query_data[$index] = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->where('quarter', $index)->orderBy('subsector_id')->get();
@@ -212,5 +212,15 @@ class PdrbController extends Controller
         }
 
         return response()->json($data);
+    }
+
+    public function getAdjustmentData (Request $request)
+    {
+        $filter = $request->filter;
+        $regions = Region::all();
+        foreach ($regions as $region) {
+            $adhb[$region->id] = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $region->id)->
+        }
+
     }
 }
