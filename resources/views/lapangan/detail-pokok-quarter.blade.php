@@ -45,9 +45,24 @@
     </x-slot>
 
     <x-slot name="breadcrumb">
-        <li class="breadcrumb-item active">Konserda</li>
+        <li class="breadcrumb-item active">Tabel Pokok</li>
         <div id="my-cat" data-cat="{{ json_encode($cat) }}"></div>
     </x-slot>
+    
+    <div class="card save-container" id="navList">
+        <ul class="nav nav-pills p-2">
+            <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-adhb">ADHB</a></li>
+            <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-adhk">ADHK</a></li>
+            <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-distribusi">Distribusi</a></li>
+            <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-qtoq">Growth (Q to Q)</a></li>
+            <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-ytoy">Growth (Y on Y)</a></li>
+            <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-ctoc">Growth (C to C)</a></li>
+            <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-indeks">Indeks Implisit</a></li>
+            <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-lajuQ">Laju Implisit (Q to Q)</a></li>
+            <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-lajuY">Laju Implisit (Y on Y)</a></li>
+        </ul>
+    </div>
+
     <div class="card mb-3" id="view-body">
         <div class="card-body pt-2">
             <nav class="navbar p-0">
@@ -56,19 +71,8 @@
                         title="Download All"><i class="bi bi-file-earmark-arrow-down-fill"></i></button>
                 </ul>
             </nav>
-            <nav class="navbar d-flex justify-content-center">
-                <ul class="nav nav-tabs d-flex">
-                    <a class="nav-item nav-link" id="nav-adhb" href="">ADHB</a>
-                    <a class="nav-item nav-link" id="nav-adhk" href="">ADHK</a>
-                    <a class="nav-item nav-link" id="nav-distribusi" href="">Distribusi</a>
-                    <a class="nav-item nav-link" id="nav-pertumbuhan" href="">Pertumbuhan</a>
-                    <a class="nav-item nav-link" id="nav-indeks" href="">Indeks Implisit</a>
-                    <a class="nav-item nav-link" id="nav-laju" href="">Laju Implisit</a>
-                </ul>
-            </nav>
-            <span class="loader d-none"></span>
             <div class="table-container">
-                <table class="table table-bordered" id="rekon-view">
+                <table class="table table-bordered table-responsive" id="rekon-view">
                     <thead class="text-center" style="background-color: steelblue; color:aliceblue;">
                         <tr>
                             <th>Komponen</th>

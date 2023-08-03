@@ -239,19 +239,7 @@ class LapanganController extends Controller
             ->first();
 
         $year_ = $period->year;
-        // $quarters = [1, 2, 3, 4];
         $periods = [];
-        // foreach ($quarters as $item) {
-        //     $per = Period::select('id')->where('quarter', $item)->where('type', 'Lapangan Usaha')->where('year', $year_)->first();
-        //     if ($per) {
-        //         array_push($periods, $per->id);
-        //     } else {
-        //         array_push($periods, 0);
-        //     }
-        // }
-        // foreach ($periods as $key => $item) {
-        //     $datas['pdrb-' . ($key + 1)] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $item)->where('region_id', $region_id)->orderBy('subsector_id')->get();
-        // }
         $befores = [];
         if ($period_before) {
             $befores['pdrb-before'] = Pdrb::select('subsector_id', 'adhk', 'adhb')

@@ -543,6 +543,7 @@ $(document).ready(function () {
     var befores = JSON.parse(sessionStorage.getItem("before"));
 
     $("#nav-distribusi").on("click", function (e) {
+        resetMenu('nav-distribusi');
         e.preventDefault();
         $(".loader").removeClass("d-none");
         setTimeout(function () {
@@ -575,6 +576,7 @@ $(document).ready(function () {
     });
 
     $("#nav-adhb").on("click", function (e) {
+        resetMenu('nav-adhb');
         e.preventDefault();
         $(".loader").removeClass("d-none");
         setTimeout(function () {
@@ -585,6 +587,7 @@ $(document).ready(function () {
     });
 
     $("#nav-adhk").on("click", function (e) {
+        resetMenu('nav-adhk');
         e.preventDefault();
         $(".loader").removeClass("d-none");
         setTimeout(function () {
@@ -595,7 +598,8 @@ $(document).ready(function () {
     });
 
     //belum tau gimana
-    $("#nav-pertumbuhan").on("click", function (e) {
+    $("#nav-qtoq").on("click", function (e) {
+        resetMenu('nav-qtoq');
         e.preventDefault();
         $(".loader").removeClass("d-none");
         setTimeout(function () {
@@ -606,6 +610,7 @@ $(document).ready(function () {
 
     //indeks implisit adhb/adhk
     $("#nav-indeks").on("click", function (e) {
+        resetMenu('nav-indeks');
         e.preventDefault();
         $(".loader").removeClass("d-none");
         setTimeout(function () {
@@ -616,7 +621,8 @@ $(document).ready(function () {
     });
 
     //laju index
-    $("#nav-laju").on("click", function (e) {
+    $("#nav-lajuQ").on("click", function (e) {
+        resetMenu('nav-lajuQ');
         e.preventDefault();
         $(".loader").removeClass("d-none");
         setTimeout(function () {
@@ -625,4 +631,9 @@ $(document).ready(function () {
             $(".loader").addClass("d-none");
         }, 500);
     });
+
+    function resetMenu(menu) {        
+        $('.tab-item').removeClass('active');
+        $('#'+ menu).addClass('active');
+    }
 });
