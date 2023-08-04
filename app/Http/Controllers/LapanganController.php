@@ -231,6 +231,7 @@ class LapanganController extends Controller
                 $quarter_cumulative = [1, 0, 0, 0];
                 break;
         }
+
         $period = Period::where('id', $period_id)->first();
         $period_before = Period::where('year', $period->year - 1)
             ->where('quarter', 4)
@@ -241,22 +242,22 @@ class LapanganController extends Controller
         $year_ = $period->year;
         $periods = [];
         $befores = [];
-        if ($period_before) {
-            $befores['pdrb-before'] = Pdrb::select('subsector_id', 'adhk', 'adhb')
+
+        for ($index = 1; $index <= 4; $index++) {            
+            $befores['pdrb-' . $index] = Pdrb::select('subsector_id', 'adhk', 'adhb')
                 ->where('period_id', $period_before->id)
                 ->where('region_id', $region_id)
-                ->where('quarter', 4)
+                ->where('quarter', $index)
                 ->get();
-        } else {
-            $befores = 'kosong';
-        }
 
-        foreach ($quarter_cumulative as $key => $item) {
-            $datas['pdrb-' . ($key + 1)] = Pdrb::select('subsector_id', 'adhk', 'adhb')
-                ->where('quarter', $item)
-                ->where('period_id', $period_id)
-                ->where('region_id', $region_id)
-                ->orderBy('subsector_id')->get();
+            if ($index <= $quarter) {
+                $datas['pdrb-' . $index] = Pdrb::select('subsector_id', 'adhk', 'adhb')
+                    ->where('quarter', $index)
+                    ->where('period_id', $period_id)
+                    ->where('region_id', $region_id)
+                    ->orderBy('subsector_id')
+                    ->get();
+            }
         }
         return response()->json([
             'data' => $datas,
@@ -300,15 +301,15 @@ class LapanganController extends Controller
             $quarter_active = Period::select('id', 'quarter', 'description')->where('year', $year->year)->where('type', 'Lapangan Usaha')->whereIn('status', ['Selesai', 'Aktif'])->get();
             foreach ($quarter_active as $quarters) {
                 foreach ($regions as $region) {
-                    $data = Pdrb::where('region_id', $region->id)->where('period_id', $quarters->id)->where('quarter', $quarters->quarter)->get(['adhk','adhb']);
+                    $data = Pdrb::where('region_id', $region->id)->where('period_id', $quarters->id)->where('quarter', $quarters->quarter)->get(['adhk', 'adhb']);
                     $data_adhb = $data->pluck('adhb');
                     $data_adhk = $data->pluck('adhk');
-                    if ($data_adhb->contains(null)){
+                    if ($data_adhb->contains(null)) {
                         $data_adhb = 0;
                     } else {
                         $data_adhb = 1;
                     }
-                    if ($data_adhk->contains(null)){
+                    if ($data_adhk->contains(null)) {
                         $data_adhk = 0;
                     } else {
                         $data_adhk = 1;
@@ -323,7 +324,7 @@ class LapanganController extends Controller
 
         return view('lapangan.monitoring', [
             'max_year' => $max_year,
-            'monitoring_quarter' => $monitoring_quarter, 
+            'monitoring_quarter' => $monitoring_quarter,
         ]);
     }
 

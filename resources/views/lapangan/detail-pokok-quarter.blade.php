@@ -60,6 +60,8 @@
             <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-indeks">Indeks Implisit</a></li>
             <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-lajuQ">Laju Implisit (Q to Q)</a></li>
             <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-lajuY">Laju Implisit (Y on Y)</a></li>
+            <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-sogQ">SOG (Q to Q)</a></li>
+            <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-sogY">SOG (Y on Y)</a></li>
         </ul>
     </div>
 

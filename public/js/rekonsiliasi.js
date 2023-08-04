@@ -344,13 +344,13 @@ $(document).ready(function () {
             for (let row = 0; row < numRows; row++) {
                 let rekonCell = $('#rekon-table tr').eq(row + 1).find('td').eq(col)
                 let adhbCell = $('#adhb-table tr').eq(row + 1).find('td').eq(col)
-                let adhkkCell = $('#adhk-table tr').eq(row + 1).find('td').eq(col)
+                let adhkCell = $('#adhk-table tr').eq(row + 1).find('td').eq(col)
                 if (row >= lastInputRow) {
                     var adhbValue = Number(adhbCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
-                    var adhkValue = Number(adhkkCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    var adhkValue = Number(adhkCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                 } else {
                     var adhbValue = Number(adhbCell.find(`input[id^='adhb']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
-                    var adhkValue = Number(adhkkCell.find(`input[id^='adhk']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    var adhkValue = Number(adhkCell.find(`input[id^='adhk']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                 }
                 let implisit = ((adhbValue / adhkValue) * 100)
                 let indeks = isNaN(implisit) ? '-' : implisit.toFixed(2)
@@ -376,7 +376,7 @@ $(document).ready(function () {
             for (let row = 0; row < numRows; row++) {
                 let rekonCell = $('#rekon-table tr').eq(row + 1).find('td').eq(col)
                 let adhbCell = $('#adhb-table tr').eq(row + 1).find('td').eq(col)
-                let adhkkCell = $('#adhk-table tr').eq(row + 1).find('td').eq(col)
+                let adhkCell = $('#adhk-table tr').eq(row + 1).find('td').eq(col)
                 if (col == 1) {
                     var previousAdhbCell = $('#prev-adhb-table tr').eq(row + 1).find('td').eq(4)
                     var previousAdhkCell = $('#prev-adhk-table tr').eq(row + 1).find('td').eq(4)
@@ -389,12 +389,12 @@ $(document).ready(function () {
                 }
                 if (row >= lastInputRow) {
                     var adhbValue = Number(adhbCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
-                    var adhkValue = Number(adhkkCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    var adhkValue = Number(adhkCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                     var previousAdhbValue = Number(previousAdhbCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                     var previousAdhkValue = Number(previousAdhkCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                 } else {
                     var adhbValue = Number(adhbCell.find(`input[id^='adhb']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
-                    var adhkValue = Number(adhkkCell.find(`input[id^='adhk']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    var adhkValue = Number(adhkCell.find(`input[id^='adhk']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                     var previousAdhbValue = Number(previousAdhbCell.find(`input[id*='adhb']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                     var previousAdhkValue = Number(previousAdhkCell.find(`input[id*='adhk']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                 }
@@ -424,18 +424,18 @@ $(document).ready(function () {
             for (let row = 0; row < numRows; row++) {
                 let rekonCell = $('#rekon-table tr').eq(row + 1).find('td').eq(col)
                 let adhbCell = $('#adhb-table tr').eq(row + 1).find('td').eq(col)
-                let adhkkCell = $('#adhk-table tr').eq(row + 1).find('td').eq(col)
+                let adhkCell = $('#adhk-table tr').eq(row + 1).find('td').eq(col)
                 var previousAdhbCell = $('#prev-adhb-table tr').eq(row + 1).find('td').eq(col)
                 var previousAdhkCell = $('#prev-adhk-table tr').eq(row + 1).find('td').eq(col)
 
                 if (row >= lastInputRow) {
                     var adhbValue = Number(adhbCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
-                    var adhkValue = Number(adhkkCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    var adhkValue = Number(adhkCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                     var previousAdhbValue = Number(previousAdhbCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                     var previousAdhkValue = Number(previousAdhkCell.text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                 } else {
                     var adhbValue = Number(adhbCell.find(`input[id^='adhb']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
-                    var adhkValue = Number(adhkkCell.find(`input[id^='adhk']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    var adhkValue = Number(adhkCell.find(`input[id^='adhk']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                     var previousAdhbValue = Number(previousAdhbCell.find(`input[id*='adhb']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                     var previousAdhkValue = Number(previousAdhkCell.find(`input[id*='adhk']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                 }

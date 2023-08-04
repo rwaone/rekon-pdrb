@@ -3,7 +3,7 @@
     </div>
 </div> --}}
 <div class="card-body p-3">
-    <table class="table table-bordered table-responsive" id="rekon-table">
+    <table class="table table-bordered" id="rekon-table">
         <thead class="text-center" style="background-color: #09c140; color:aliceblue;">
             <tr>
                 <th>Komponen</th>

@@ -223,7 +223,7 @@ function getAdhk(data, type) {
     getTotal();
 }
 
-function getGrowth(data, befores, type) {
+function getGrowthQ(data, befores, type) {
     const rowComponent = type === "lapangan-usaha" ? 55 : 14;
     $("tbody td:nth-child(n+2):nth-child(-n+6)").removeClass(function (
         index,
@@ -252,7 +252,7 @@ function getGrowth(data, befores, type) {
 
     for (let q = 1; q <= 4; q++) {
         for (let i = 1; i <= rowComponent; i++) {
-            $(`#value-${i}-${q}`).text(data[`pdrb-${q}`][i - 1]["adhk"]);
+            $(`#value-${i}-${q}`).text(data['pdrb-' + q][i - 1]["adhk"]);
         }
     }
     getSummarise(types);
@@ -268,7 +268,7 @@ function getGrowth(data, befores, type) {
     if (status === 2) {
         $("tbody td:nth-child(2)").each(function () {
             for (let i = 1; i <= rowComponent; i++) {
-                $(`#value-${i}-1`).text(befores["pdrb-before"][i - 1]["adhk"]);
+                $(`#value-${i}-1`).text(befores["pdrb-4"][i - 1]["adhk"]);
             }
         });
         getSummarise(types);
@@ -310,7 +310,7 @@ function getGrowth(data, befores, type) {
     }
 }
 
-function getIndex(data, befores, type) {
+function getGrowthY(data, befores, type) {
     const rowComponent = type === "lapangan-usaha" ? 55 : 14;
     $("tbody td:nth-child(n+2):nth-child(-n+6)").removeClass(function (
         index,
@@ -318,11 +318,11 @@ function getIndex(data, befores, type) {
     ) {
         return (className.match(/(^|\s)view-\S+/g) || []).join(" ");
     });
-    $("tbody td:nth-child(n+2):nth-child(-n+6)").addClass("view-indeks");
+    $("tbody td:nth-child(n+2):nth-child(-n+6)").addClass("view-pertumbuhan");
 
-    const idx_adhb = [];
-    const idx_adhk = [];
-    const idx = [];
+    const details = [];
+    const growth = [];
+    const before = [];
 
     const getCells = (columnIndex) => {
         const cells = [];
@@ -339,56 +339,318 @@ function getIndex(data, befores, type) {
 
     for (let q = 1; q <= 4; q++) {
         for (let i = 1; i <= rowComponent; i++) {
-            $(`#value-${i}-${q}`).text(data[`pdrb-${q}`][i - 1]["adhb"]);
+            $(`#value-${i}-${q}`).text(formatRupiah(data['pdrb-' + q][i - 1]["adhk"].replace('.', ',')));
+        }
+    }
+    getSummarise(types);
+
+    for (let i = 1; i <= 4; i++) {
+        details[i] = getCells(i);
+    }
+
+    let status;
+    status = 2;
+    if (befores === "kosong") {
+        status = 1;
+    }
+
+    if (status === 2) {
+        for (let q = 1; q <= 4; q++) {
+            for (let i = 1; i <= rowComponent; i++) {
+                $(`#value-${i}-${q}`).text(formatRupiah(befores['pdrb-' + q][i - 1]["adhk"].replace('.', ',')));
+            }
+        }
+        getSummarise(types);
+
+        for (let i = 1; i <= 4; i++) {
+            before[i] = getCells(i);
+        }
+
+    }
+
+    for (var i = 1; i <= 4; i++) {
+        let result = []
+        for (let j = 0; j <= details[i].length; j++) {
+
+            let score = ((details[i][j] / before[i][j]) * 100 - 100).toFixed(2);
+
+            result[j] = !isFinite(score) || isNaN(score) ? "-" : score;
+
+        }
+        growth[i] = result;
+    }
+
+    for (let q = 1; q <= 4; q++) {
+        $("tbody tr").each(function (index) {
+            $(this).find("td").eq(q).text(growth[q][index]);
+        });
+    }
+
+    $(".total-column").addClass("d-none");
+    if (befores === "kosong") {
+        alert("Data Tahun Lalu Belum Final");
+    }
+}
+
+function getGrowthC(data, befores, type) {
+    const rowComponent = type === "lapangan-usaha" ? 55 : 14;
+    $("tbody td:nth-child(n+2):nth-child(-n+6)").removeClass(function (
+        index,
+        className
+    ) {
+        return (className.match(/(^|\s)view-\S+/g) || []).join(" ");
+    });
+    $("tbody td:nth-child(n+2):nth-child(-n+6)").addClass("view-pertumbuhan");
+
+    const details = [];
+    const growth = [];
+    const before = [];
+
+    const getCells = (columnIndex) => {
+        const cells = [];
+        $("tbody tr").each(function () {
+            const value = $(this).find("td").eq(columnIndex).text();
+            cells.push(
+                Number(
+                    value.replaceAll(/[A-Za-z.]/g, "").replaceAll(/[,]/g, ".")
+                )
+            );
+        });
+        return cells;
+    };
+
+    for (let q = 1; q <= 4; q++) {
+        for (let i = 1; i <= rowComponent; i++) {
+            $(`#value-${i}-${q}`).text(formatRupiah(data['pdrb-' + q][i - 1]["adhk"].replace('.', ',')));
+        }
+    }
+    getSummarise(types);
+
+    for (let i = 1; i <= 4; i++) {
+        details[i] = getCells(i);
+    }
+
+    let status;
+    status = 2;
+    if (befores === "kosong") {
+        status = 1;
+    }
+
+    if (status === 2) {
+        for (let q = 1; q <= 4; q++) {
+            for (let i = 1; i <= rowComponent; i++) {
+                $(`#value-${i}-${q}`).text(formatRupiah(befores['pdrb-' + q][i - 1]["adhk"].replace('.', ',')));
+            }
+        }
+        getSummarise(types);
+
+        for (let i = 1; i <= 4; i++) {
+            before[i] = getCells(i);
+        }
+
+    }
+
+    for (var i = 1; i <= 4; i++) {
+        let result = []
+        for (let j = 0; j <= details[i].length; j++) {
+            let score = 0
+            let sumValue = 0
+            let sumBefore = 0
+
+            for (let length = 1; length <= i; length++) {
+                sumValue += details[length][j]
+                sumBefore += before[length][j]
+            }
+            score = ((sumValue / sumBefore) * 100 - 100).toFixed(2);
+
+            result[j] = !isFinite(score) || isNaN(score) ? "-" : score;
+        }
+        growth[i] = result;
+    }
+
+    for (let q = 1; q <= 4; q++) {
+        $("tbody tr").each(function (index) {
+            $(this).find("td").eq(q).text(growth[q][index]);
+        });
+    }
+
+    $(".total-column").addClass("d-none");
+    if (befores === "kosong") {
+        alert("Data Tahun Lalu Belum Final");
+    }
+}
+
+function getSOGY(data, befores, type) {
+    const rowComponent = type === "lapangan-usaha" ? 55 : 14;
+    $("tbody td:nth-child(n+2):nth-child(-n+6)").removeClass(function (
+        index,
+        className
+    ) {
+        return (className.match(/(^|\s)view-\S+/g) || []).join(" ");
+    });
+    $("tbody td:nth-child(n+2):nth-child(-n+6)").addClass("view-pertumbuhan");
+
+    const current = [];
+    const growth = [];
+    const previous = [];
+
+    const getCells = (columnIndex) => {
+        const cells = [];
+        $("tbody tr").each(function () {
+            const value = $(this).find("td").eq(columnIndex).text();
+            cells.push(
+                Number(
+                    value.replaceAll(/[A-Za-z.]/g, "").replaceAll(/[,]/g, ".")
+                )
+            );
+        });
+        return cells;
+    };
+
+    for (let q = 1; q <= 4; q++) {
+        for (let i = 1; i <= rowComponent; i++) {
+            $(`#value-${i}-${q}`).text(formatRupiah(data['pdrb-' + q][i - 1]["adhk"].replace('.', ',')));
+        }
+    }
+    getSummarise(types);
+
+    for (let i = 1; i <= 4; i++) {
+        current[i] = getCells(i);
+    }
+
+    let status;
+    status = 2;
+    if (befores === "kosong") {
+        status = 1;
+    }
+
+    if (status === 2) {
+        for (let q = 1; q <= 4; q++) {
+            for (let i = 1; i <= rowComponent; i++) {
+                $(`#value-${i}-${q}`).text(formatRupiah(befores['pdrb-' + q][i - 1]["adhk"].replace('.', ',')));
+            }
+        }
+        getSummarise(types);
+
+        for (let i = 1; i <= 4; i++) {
+            previous[i] = getCells(i);
+        }
+
+    }
+
+    for (var i = 1; i <= 4; i++) {
+        let result = []
+        let previous_total = [i][previous[i].length - 1]
+        for (let j = 0; j <= current[i].length; j++) {
+            
+
+            let sog = (((current[i][j] - previous[i][j])/ previous_total) * 100 - 100).toFixed(2);
+
+            result[j] = !isFinite(sog) || isNaN(sog) ? "-" : sog;
+
+        }
+        growth[i] = result;
+    }
+
+    for (let q = 1; q <= 4; q++) {
+        $("tbody tr").each(function (index) {
+            $(this).find("td").eq(q).text(growth[q][index]);
+        });
+    }
+
+    $(".total-column").addClass("d-none");
+    if (befores === "kosong") {
+        alert("Data Tahun Lalu Belum Final");
+    }
+}
+
+function getIndex(data, befores, type) {
+    const rowComponent = type === "lapangan-usaha" ? 55 : 14;
+    $("tbody td:nth-child(n+2):nth-child(-n+6)").removeClass(function (
+        index,
+        className
+    ) {
+        return (className.match(/(^|\s)view-\S+/g) || []).join(" ");
+    });
+    $("tbody td:nth-child(n+2):nth-child(-n+6)").addClass("view-indeks");
+
+    const current_adhb = [];
+    const current_adhk = [];
+    const prev_adhb = [];
+    const prev_adhk = [];
+    const idx = [];
+    const prev_idx = [];
+
+    const getCells = (columnIndex) => {
+        const cells = [];
+        $("tbody tr").each(function () {
+            const value = $(this).find("td").eq(columnIndex).text();
+            cells.push(
+                Number(
+                    value.replaceAll(/[A-Za-z.]/g, "").replaceAll(/[,]/g, ".")
+                )
+            );
+        });
+        return cells;
+    };
+
+    for (let q = 1; q <= 4; q++) {
+        for (let i = 1; i <= rowComponent; i++) {
+            $(`#value-${i}-${q}`).text(data[`pdrb-` + q][i - 1]["adhb"]);
         }
     }
     getSummarise(types);
     getTotal();
     for (let i = 1; i <= 5; i++) {
-        idx_adhb[i] = getCells(i);
+        current_adhb[i] = getCells(i);
     }
     for (let q = 1; q <= 4; q++) {
         for (let i = 1; i <= rowComponent; i++) {
-            $(`#value-${i}-${q}`).text(data[`pdrb-${q}`][i - 1]["adhk"]);
+            $(`#value-${i}-${q}`).text(data[`pdrb-` + q][i - 1]["adhk"]);
         }
     }
     getSummarise(types);
     getTotal();
     for (let i = 1; i <= 5; i++) {
-        idx_adhk[i] = getCells(i);
+        current_adhk[i] = getCells(i);
     }
     for (let i = 1; i <= 5; i++) {
-        const result = idx_adhb[i].map((value, j) => {
-            const score = getIdx(value, idx_adhk[i][j]);
+        const result = current_adhb[i].map((value, j) => {
+            const score = getIdx(value, current_adhk[i][j]);
             return !isFinite(score) || isNaN(score) ? "-" : score;
         });
         idx[i] = result;
     }
     if (!(befores === "kosong")) {
-        $("tbody td:nth-child(2)").each(function () {
+        for (let q = 1; q <= 4; q++) {
             for (let i = 1; i <= rowComponent; i++) {
-                $(`#value-${i}-1`).text(befores["pdrb-before"][i - 1]["adhb"]);
+                $(`#value-${i}-${q}`).text(befores[`pdrb-` + q][i - 1]["adhb"]);
             }
-        });
+        }
         getSummarise(types);
         getTotal();
-        idx_adhb["before"] = getCells(1);
-        $("tbody td:nth-child(2)").each(function () {
+        for (let i = 1; i <= 5; i++) {
+            prev_adhb[i] = getCells(i);
+        }
+        for (let q = 1; q <= 4; q++) {
             for (let i = 1; i <= rowComponent; i++) {
-                $(`#value-${i}-1`).text(befores["pdrb-before"][i - 1]["adhk"]);
+                $(`#value-${i}-${q}`).text(befores[`pdrb-` + q][i - 1]["adhk"]);
             }
-        });
+        }
         getSummarise(types);
         getTotal();
-        idx_adhk["before"] = getCells(1);
-
-        const result = idx_adhb["before"].map((value, j) => {
-            const score = getIdx(value, idx_adhk["before"][j]);
-            return !isFinite(score) || isNaN(score) ? "-" : score;
-        });
-        idx["before"] = result;
+        for (let i = 1; i <= 5; i++) {
+            prev_adhk[i] = getCells(i);
+        }
+        for (let i = 1; i <= 5; i++) {
+            const result = prev_adhb[i].map((value, j) => {
+                const score = getIdx(value, prev_adhk[i][j]);
+                return !isFinite(score) || isNaN(score) ? "-" : score;
+            });
+            prev_idx[i] = result;
+        }
     } else {
-        idx["before"] = "kosong";
+        prev_idx = "kosong";
     }
 
     for (let q = 1; q <= 4; q++) {
@@ -400,10 +662,10 @@ function getIndex(data, befores, type) {
         $(this).find("td").eq(5).text(idx[5][index]);
     });
 
-    return idx;
+    return [idx, prev_idx];
 }
 
-function getLaju(laju) {
+function getLajuQ(idx) {
     $("tbody td:nth-child(n+2):nth-child(-n+6)").removeClass(function (
         index,
         className
@@ -412,13 +674,15 @@ function getLaju(laju) {
     });
     $("tbody td:nth-child(n+2):nth-child(-n+6)").addClass("view-laju");
     const growth = [];
+    const current = idx[0]
+    const previous = idx[1]
     for (let i = 1; i <= 4; i++) {
-        const result = laju[i].map((value, j) => {
+        const result = current[i].map((value, j) => {
             let score;
             if (i === 1) {
-                score = ((value / laju["before"][j]) * 100 - 100).toFixed(2);
+                score = ((value / previous[4][j]) * 100 - 100).toFixed(2);
             } else {
-                score = ((value / laju[i - 1][j]) * 100 - 100).toFixed(2);
+                score = ((value / current[i - 1][j]) * 100 - 100).toFixed(2);
             }
             return !isFinite(score) || isNaN(score) ? "-" : score;
         });
@@ -426,7 +690,37 @@ function getLaju(laju) {
     }
 
     $(".total-column").addClass("d-none");
-    if (laju["before"] === "kosong") {
+    if (previous === "kosong") {
+        alert("Data Tahun Lalu Belum Final");
+    }
+    for (let q = 1; q <= 4; q++) {
+        $("tbody tr").each(function (index) {
+            $(this).find("td").eq(q).text(growth[q][index]);
+        });
+    }
+}
+
+function getLajuY(idx) {
+    $("tbody td:nth-child(n+2):nth-child(-n+6)").removeClass(function (
+        index,
+        className
+    ) {
+        return (className.match(/(^|\s)view-\S+/g) || []).join(" ");
+    });
+    $("tbody td:nth-child(n+2):nth-child(-n+6)").addClass("view-laju");
+    const growth = [];
+    const current = idx[0]
+    const previous = idx[1]
+    for (let i = 1; i <= 4; i++) {
+        const result = current[i].map((value, j) => {
+            let score = ((value / previous[i][j]) * 100 - 100).toFixed(2);
+            return !isFinite(score) || isNaN(score) ? "-" : score;
+        });
+        growth[i] = result;
+    }
+
+    $(".total-column").addClass("d-none");
+    if (previous === "kosong") {
         alert("Data Tahun Lalu Belum Final");
     }
     for (let q = 1; q <= 4; q++) {
@@ -485,8 +779,8 @@ function calculateSector(sector) {
 //change the value of inputed number to Rupiah
 function formatRupiah(angka, prefix) {
     var number_string = String(angka)
-            .replace(/[^\-,\d]/g, "")
-            .toString(),
+        .replace(/[^\-,\d]/g, "")
+        .toString(),
         isNegative = false;
 
     if (number_string.startsWith("-")) {
@@ -603,7 +897,27 @@ $(document).ready(function () {
         e.preventDefault();
         $(".loader").removeClass("d-none");
         setTimeout(function () {
-            getGrowth(datas, befores, types);
+            getGrowthQ(datas, befores, types);
+            $(".loader").addClass("d-none");
+        }, 500);
+    });
+
+    $("#nav-ytoy").on("click", function (e) {
+        resetMenu('nav-ytoy');
+        e.preventDefault();
+        $(".loader").removeClass("d-none");
+        setTimeout(function () {
+            getGrowthY(datas, befores, types);
+            $(".loader").addClass("d-none");
+        }, 500);
+    });
+
+    $("#nav-ctoc").on("click", function (e) {
+        resetMenu('nav-ctoc');
+        e.preventDefault();
+        $(".loader").removeClass("d-none");
+        setTimeout(function () {
+            getGrowthC(datas, befores, types);
             $(".loader").addClass("d-none");
         }, 500);
     });
@@ -626,14 +940,35 @@ $(document).ready(function () {
         e.preventDefault();
         $(".loader").removeClass("d-none");
         setTimeout(function () {
-            let laju = getIndex(datas, befores, types);
-            getLaju(laju);
+            let idx = getIndex(datas, befores, types);
+            getLajuQ(idx);
+            $(".loader").addClass("d-none");
+        }, 500);
+    });
+    
+    $("#nav-lajuY").on("click", function (e) {
+        resetMenu('nav-lajuY');
+        e.preventDefault();
+        $(".loader").removeClass("d-none");
+        setTimeout(function () {
+            let idx = getIndex(datas, befores, types);
+            getLajuY(idx);
             $(".loader").addClass("d-none");
         }, 500);
     });
 
-    function resetMenu(menu) {        
+    $("#nav-sogY").on("click", function (e) {
+        resetMenu('nav-sogY');
+        e.preventDefault();
+        $(".loader").removeClass("d-none");
+        setTimeout(function () {
+            getSOGY(datas, befores, types);
+            $(".loader").addClass("d-none");
+        }, 500);
+    });
+
+    function resetMenu(menu) {
         $('.tab-item').removeClass('active');
-        $('#'+ menu).addClass('active');
+        $('#' + menu).addClass('active');
     }
 });
