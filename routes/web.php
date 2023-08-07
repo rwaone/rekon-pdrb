@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FenomenaController;
 use App\Http\Controllers\LapanganController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AdjustmentController;
 use App\Http\Controllers\PengeluaranController;
 
 /*
@@ -40,7 +41,7 @@ Route::post('rekonsiliasi/get-full', [PdrbController::class, 'getFullData'])->na
 Route::post('rekonsiliasi/copy-data', [PdrbController::class, 'copyData'])->name('copyData');
 Route::resource('pdrb', PdrbController::class)->middleware(['auth', 'verified']);
 Route::get('monitoring', [PdrbController::class, 'monitoring'])->middleware(['auth', 'verified']);
-Route::post('adjustment/get-data', [PdrbController::class, 'getAdjustmentData'])->middleware(['auth', 'verified'])->name('get-adjustment');
+Route::post('adjustment/get-data', [AdjustmentController::class, 'show'])->middleware(['auth', 'verified'])->name('get-adjustment');
 
 //Fenomena
 Route::post('fenomena/get', [FenomenaController::class, 'getFenomena'])->middleware(['auth', 'verified'])->name('getFenomena');
@@ -62,7 +63,7 @@ Route::get('lapangan-usaha/daftarPokok', [LapanganController::class, 'daftarPoko
 Route::get('lapangan-usaha/detailPokok', [LapanganController::class, 'detailPokok'])->middleware(['auth', 'verified'])->name('lapangan-usaha.detail');
 Route::get('lapangan-usaha/getDetail', [LapanganController::class, 'getDetail'])->middleware(['auth', 'verified'])->name('lapangan-usaha.getDetail');
 
-Route::get('lapangan-usaha/adjustment', [LapanganController::class, 'adjustment'])->middleware(['auth', 'verified']);
+Route::get('lapangan-usaha/adjustment', [AdjustmentController::class, 'index'])->middleware(['auth', 'verified']);
 
 Route::get('lapangan-usaha/monitoring', [LapanganController::class, 'monitoring'])->middleware(['auth', 'verified']);
 

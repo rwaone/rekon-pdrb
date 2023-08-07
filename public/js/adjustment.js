@@ -96,13 +96,7 @@ $(document).ready(function () {
     });
 
     $('#period').change(function () {
-        $('#region_id').val('').change()
-    });
-
-    $('#region_id').change(function () {
-        if ($('#region_id').val() != '') {
-            getFullData()
-        }
+        $('#subsector').val('').change()
     });
 
     $('#filter-button').click(function () {
@@ -124,6 +118,7 @@ $(document).ready(function () {
             },
 
             success: function (result) {
+                console.log(result)
                 $.each(result.current_data, function (quarter, value) {
                     $.each(value, function (key, value) {
                         adhkValue = ((value.adhk != null) ? formatRupiah(
