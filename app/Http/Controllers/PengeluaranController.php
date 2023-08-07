@@ -222,58 +222,30 @@ class PengeluaranController extends Controller
         $region_id = $request->query('region_id');
         $quarter = $request->query('quarter');
 
-        switch ($quarter) {
-            case 4:
-                $quarter_cumulative = range(1, 4);
-                break;
-            case 3:
-                $quarter_cumulative = [1, 2, 3, 0];
-                break;
-            case 2:
-                $quarter_cumulative = [1, 2, 0, 0];
-                break;
-            default:
-                $quarter_cumulative = [1, 0, 0, 0];
-                break;
-        }
         $period = Period::where('id', $period_id)->first();
         $period_before = Period::where('year', $period->year - 1)
-        ->where('quarter', 4)
         ->where('status', 'Final')
         ->where('type', 'Pengeluaran')
         ->first();
 
         $year_ = $period->year;
-        // $quarters = [1, 2, 3, 4];
         $periods = [];
-        // foreach ($quarters as $item) {
-        //     $per = Period::select('id')->where('quarter', $item)->where('type', 'Lapangan Usaha')->where('year', $year_)->first();
-        //     if ($per) {
-        //         array_push($periods, $per->id);
-        //     } else {
-        //         array_push($periods, 0);
-        //     }
-        // }
-        // foreach ($periods as $key => $item) {
-        //     $datas['pdrb-' . ($key + 1)] = Pdrb::select('subsector_id', 'adhk', 'adhb')->where('period_id', $item)->where('region_id', $region_id)->orderBy('subsector_id')->get();
-        // }
-        $befores = [];
-        if ($period_before){
-            $befores['pdrb-before'] = Pdrb::select('subsector_id', 'adhk', 'adhb')
-            ->where('period_id', $period_before->id)
-            ->where('quarter', 4)
-            ->where('region_id', $region_id)
-            ->get();
-        } else {
-            $befores = 'kosong';
-        }
-
-        foreach ($quarter_cumulative as $key => $item) {
-            $datas['pdrb-' . ($key + 1)] = Pdrb::select('subsector_id', 'adhk', 'adhb')
-                ->where('quarter', $item)
-                ->where('period_id', $period_id)
+       
+        for ($index = 1; $index <= 4; $index++) {            
+            $befores['pdrb-' . $index] = Pdrb::select('subsector_id', 'adhk', 'adhb')
+                ->where('period_id', $period_before->id)
                 ->where('region_id', $region_id)
-                ->orderBy('subsector_id')->get();
+                ->where('quarter', $index)
+                ->get();
+
+            if ($index <= $quarter) {
+                $datas['pdrb-' . $index] = Pdrb::select('subsector_id', 'adhk', 'adhb')
+                    ->where('quarter', $index)
+                    ->where('period_id', $period_id)
+                    ->where('region_id', $region_id)
+                    ->orderBy('subsector_id')
+                    ->get();
+            }
         }
         return response()->json([
             'data' => $datas,

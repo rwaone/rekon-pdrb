@@ -48,7 +48,7 @@
         <div class="card"></div>
     @endif
 
-    <div class="card save-container d-none">
+    <div class="card save-container">
         <div class="ml-auto">
             <button id="fullFormSave" type="button" class="btn btn-success">Simpan</button>
         </div>

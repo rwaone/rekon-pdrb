@@ -217,21 +217,6 @@ class LapanganController extends Controller
         $region_id = $request->query('region_id');
         $quarter = $request->query('quarter');
 
-        switch ($quarter) {
-            case 4:
-                $quarter_cumulative = range(1, 4);
-                break;
-            case 3:
-                $quarter_cumulative = [1, 2, 3, 0];
-                break;
-            case 2:
-                $quarter_cumulative = [1, 2, 0, 0];
-                break;
-            default:
-                $quarter_cumulative = [1, 0, 0, 0];
-                break;
-        }
-
         $period = Period::where('id', $period_id)->first();
         $period_before = Period::where('year', $period->year - 1)
             ->where('quarter', 4)
@@ -325,18 +310,6 @@ class LapanganController extends Controller
         return view('lapangan.monitoring', [
             'max_year' => $max_year,
             'monitoring_quarter' => $monitoring_quarter,
-        ]);
-    }
-
-    public function adjustment()
-    {
-        $regions = Region::getMyRegion();
-        $type = 'Lapangan Usaha';
-        $subsectors = Subsector::where('type', 'Lapangan Usaha')->get();
-        return view('adjustment.view', [
-            'regions' => $regions,
-            'subsectors' => $subsectors,
-            'type' => $type,
         ]);
     }
 }

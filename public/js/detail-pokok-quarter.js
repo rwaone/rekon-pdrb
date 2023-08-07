@@ -452,7 +452,7 @@ function getGrowthC(data, befores, type) {
 
     for (var i = 1; i <= 4; i++) {
         let result = []
-        for (let j = 0; j <= details[i].length; j++) {
+        for (let j = 0; j < details[i].length; j++) {
             let score = 0
             let sumValue = 0
             let sumBefore = 0
@@ -464,6 +464,96 @@ function getGrowthC(data, befores, type) {
             score = ((sumValue / sumBefore) * 100 - 100).toFixed(2);
 
             result[j] = !isFinite(score) || isNaN(score) ? "-" : score;
+        }
+        growth[i] = result;
+    }
+
+    for (let q = 1; q <= 4; q++) {
+        $("tbody tr").each(function (index) {
+            $(this).find("td").eq(q).text(growth[q][index]);
+        });
+    }
+
+    $(".total-column").addClass("d-none");
+    if (befores === "kosong") {
+        alert("Data Tahun Lalu Belum Final");
+    }
+}
+
+function getSOGQ(data, befores, type) {
+    const rowComponent = type === "lapangan-usaha" ? 55 : 14;
+    $("tbody td:nth-child(n+2):nth-child(-n+6)").removeClass(function (
+        index,
+        className
+    ) {
+        return (className.match(/(^|\s)view-\S+/g) || []).join(" ");
+    });
+    $("tbody td:nth-child(n+2):nth-child(-n+6)").addClass("view-pertumbuhan");
+
+    const current = [];
+    const growth = [];
+    const previous = [];
+
+    const getCells = (columnIndex) => {
+        const cells = [];
+        $("tbody tr").each(function () {
+            const value = $(this).find("td").eq(columnIndex).text();
+            cells.push(
+                Number(
+                    value.replaceAll(/[A-Za-z.]/g, "").replaceAll(/[,]/g, ".")
+                )
+            );
+        });
+        return cells;
+    };
+
+    for (let q = 1; q <= 4; q++) {
+        for (let i = 1; i <= rowComponent; i++) {
+            $(`#value-${i}-${q}`).text(formatRupiah(data['pdrb-' + q][i - 1]["adhk"].replace('.', ',')));
+        }
+    }
+    getSummarise(types);
+
+    for (let i = 1; i <= 4; i++) {
+        current[i] = getCells(i);
+    }
+
+    let status;
+    status = 2;
+    if (befores === "kosong") {
+        status = 1;
+    }
+
+    if (status === 2) {
+        for (let q = 1; q <= 4; q++) {
+            for (let i = 1; i <= rowComponent; i++) {
+                $(`#value-${i}-${q}`).text(formatRupiah(befores['pdrb-' + q][i - 1]["adhk"].replace('.', ',')));
+            }
+        }
+        getSummarise(types);
+
+        for (let i = 1; i <= 4; i++) {
+            previous[i] = getCells(i);
+        }
+    }
+
+    for (var i = 1; i <= 4; i++) {
+        let result = []
+        let previous_total
+        if (i == 1) {
+            previous_total = previous[4][previous[i].length - 1]
+        } else {
+            previous_total = current[i-1][current[i].length - 1]
+        }
+        for (let j = 0; j < current[i].length; j++) {
+            let sog
+            if (i == 1) {
+                sog = ((100 * (current[i][j] - previous[4][j]) / previous_total)).toFixed(2);
+            } else {
+                sog = ((100 * (current[i][j] - current[i-1][j]) / previous_total)).toFixed(2);
+            }
+            result[j] = !isFinite(sog) || isNaN(sog) ? "-" : sog;
+
         }
         growth[i] = result;
     }
@@ -540,11 +630,10 @@ function getSOGY(data, befores, type) {
 
     for (var i = 1; i <= 4; i++) {
         let result = []
-        let previous_total = [i][previous[i].length - 1]
-        for (let j = 0; j <= current[i].length; j++) {
-            
+        let previous_total = previous[i][previous[i].length - 1]
+        for (let j = 0; j < current[i].length; j++) {
 
-            let sog = (((current[i][j] - previous[i][j])/ previous_total) * 100 - 100).toFixed(2);
+            let sog = ((100 * (current[i][j] - previous[i][j]) / previous_total)).toFixed(2);
 
             result[j] = !isFinite(sog) || isNaN(sog) ? "-" : sog;
 
@@ -945,7 +1034,7 @@ $(document).ready(function () {
             $(".loader").addClass("d-none");
         }, 500);
     });
-    
+
     $("#nav-lajuY").on("click", function (e) {
         resetMenu('nav-lajuY');
         e.preventDefault();
@@ -953,6 +1042,16 @@ $(document).ready(function () {
         setTimeout(function () {
             let idx = getIndex(datas, befores, types);
             getLajuY(idx);
+            $(".loader").addClass("d-none");
+        }, 500);
+    });
+
+    $("#nav-sogQ").on("click", function (e) {
+        resetMenu('nav-sogQ');
+        e.preventDefault();
+        $(".loader").removeClass("d-none");
+        setTimeout(function () {
+            getSOGQ(datas, befores, types);
             $(".loader").addClass("d-none");
         }, 500);
     });

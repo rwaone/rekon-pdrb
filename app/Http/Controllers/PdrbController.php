@@ -213,14 +213,4 @@ class PdrbController extends Controller
 
         return response()->json($data);
     }
-
-    public function getAdjustmentData (Request $request)
-    {
-        $filter = $request->filter;
-        $regions = Region::all();
-        foreach ($regions as $region) {
-            $adhb[$region->id] = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $region->id)->get();
-        }
-
-    }
 }
