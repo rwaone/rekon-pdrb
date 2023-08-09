@@ -32,7 +32,7 @@
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label" for="period_id">Periode:</label>
                     <select id="period" class="form-control col-sm-9 select2bs4" name="period_id" required>
-                        <option value="">Pilih Putaran</option>
+                        <option value="">Pilih Periode Revisi</option>
                     </select>
                     <div class="help-block"></div>
                 </div>
