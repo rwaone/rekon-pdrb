@@ -9,30 +9,6 @@
         <link rel="stylesheet" href="{{ url('') }}/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
         <link rel="stylesheet" href="{{ url('') }}/plugins/select2/css/select2.min.css">
         <style type="text/css">
-            .table td {
-                vertical-align: middle;
-                padding: 0.25rem;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                overflow: hidden;
-            }
-
-            .desc-col {
-                column-width: 100px;
-                word-wrap: break-word;
-            }
-
-            .desc-col p {
-                word-break: break-all;
-            }
-
-            #rekonsiliasi-table td {
-                word-wrap: break-word;
-            }
-
-            #rekonsiliasi-table .PDRB-footer td p {
-                text-align: center !important;
-            }
         </style>
     </x-slot>
 
@@ -43,7 +19,7 @@
     @include('adjustment.filter')
 
     @if ($type == 'Lapangan Usaha')
-        <div class="card"></div>
+        <div class="card">@include('adjustment.table')</div>
     @elseif ($type == 'Pengeluaran')
         <div class="card"></div>
     @endif

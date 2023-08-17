@@ -14,7 +14,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" for="year">Tahun:</label>
+                    <label class="col-sm-2 col-form-label" for="year">Periode Tahun:</label>
                     <select id="year" class="form-control col-sm-9 select2bs4" name="year" required>
                         <option value="">Pilih Tahun</option>
                     </select>
@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" for="quarter">Triwulan:</label>
+                    <label class="col-sm-2 col-form-label" for="quarter">Periode Triwulan:</label>
                     <select id="quarter" class="form-control col-sm-9 select2bs4" name="quarter" required>
                         <option value="">Pilih Triwulan</option>
                     </select>
@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" for="period_id">Periode:</label>
+                    <label class="col-sm-2 col-form-label" for="period_id">Periode Putaran:</label>
                     <select id="period" class="form-control col-sm-9 select2bs4" name="period_id" required>
                         <option value="">Pilih Periode Revisi</option>
                     </select>
@@ -44,6 +44,14 @@
                         @foreach ($subsectors as $subsector)
                             <option value="{{ $subsector->id }}">{{$loop->iteration . '. ' . $subsector->name }}</option>
                         @endforeach
+                    </select>
+                    <div class="help-block"></div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="quarter">Triwulan:</label>
+                    <select id="quarter" class="form-control col-sm-9 select2bs4" name="quarter" required>
+                        <option value="">Pilih Triwulan</option>
                     </select>
                     <div class="help-block"></div>
                 </div>
