@@ -48,14 +48,6 @@
                     <div class="help-block"></div>
                 </div>
 
-                <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" for="quarter">Triwulan:</label>
-                    <select id="quarter" class="form-control col-sm-9 select2bs4" name="quarter" required>
-                        <option value="">Pilih Triwulan</option>
-                    </select>
-                    <div class="help-block"></div>
-                </div>
-
                 <button id="filter-button" type="button" class="btn btn-success float-right">Tampilkan</button>
 
             </div>

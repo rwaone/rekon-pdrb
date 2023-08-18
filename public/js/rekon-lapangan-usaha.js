@@ -100,6 +100,7 @@ $(document).ready(function () {
                 });
 
             }
+            //change input value into formated accounting input
             for (let j = 1; j < 54; j++) {
                 $(`.` + price_base + `-sector-Q${i}-${j}`).keyup(function (e) {
                     $(this).val(formatRupiah($(this).val(), ''))

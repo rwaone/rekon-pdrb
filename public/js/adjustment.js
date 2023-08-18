@@ -1,5 +1,13 @@
 $(document).ready(function () {
 
+    //change input value into formated accounting input
+    $('input[type="text"]').keyup(function (e) {
+        $(this).val(formatRupiah($(this).val(), ''))
+        var charCode = (e.which) ? e.which : event.keyCode
+        if (String.fromCharCode(charCode).match(/[^0-9.,]/g))
+            return false;
+    })
+
     $('#type').on('change', function () {
         var pdrb_type = this.value
         $("#year").html('')
@@ -118,56 +126,9 @@ $(document).ready(function () {
             },
 
             success: function (result) {
-                console.log(result)
-                $.each(result.current_data, function (quarter, value) {
-                    $.each(value, function (key, value) {
-                        adhkValue = ((value.adhk != null) ? formatRupiah(
-                            value.adhk
-                                .replace('.', ','),
-                            '') : formatRupiah(0,
-                                ''));
-                        $('input[name=adhk_value_' + quarter + '_' + value
-                            .subsector_id + ']').val(
-                                adhkValue);
-                        $('input[name=id_' + quarter + '_' + value
-                            .subsector_id + ']').val(
-                                value.id);
+                console.log(result);
 
-                        adhbbValue = ((value.adhb != null) ? formatRupiah(
-                            value.adhb
-                                .replace('.', ','),
-                            '') : formatRupiah(0,
-                                ''));
-                        $('input[name=adhb_value_' + quarter + '_' + value
-                            .subsector_id + ']').val(
-                                adhbbValue);
-                        $('input[name=id_' + quarter + '_' + value
-                            .subsector_id + ']').val(
-                                value.id);
-                    });
-                });
-
-                $.each(result.previous_data, function (quarter, value) {
-                    $.each(value, function (key, value) {
-                        adhkValue = ((value.adhk != null) ? formatRupiah(
-                            value.adhk
-                                .replace('.', ','),
-                            '') : formatRupiah(0,
-                                ''));
-                        $('input[name=prev-adhk_value_' + quarter + '_' + value
-                            .subsector_id + ']').val(
-                                adhkValue);
-
-                        adhbbValue = ((value.adhb != null) ? formatRupiah(
-                            value.adhb
-                                .replace('.', ','),
-                            '') : formatRupiah(0,
-                                ''));
-                        $('input[name=prev-adhb_value_' + quarter + '_' + value
-                            .subsector_id + ']').val(
-                                adhbbValue);
-                    });
-                });
+                sessionStorage.setItem("data", JSON.stringify(result));
 
                 Toast.fire({
                     icon: 'success',
@@ -180,28 +141,30 @@ $(document).ready(function () {
         });
     });
 
-
-
-// When the user scrolls down 20px from the top of the document, show the button
-window.onscroll = function () {
-    scrollFunction();
-};
-
-function scrollFunction() {
-    if (
-        document.body.scrollTop > 20 ||
-        document.documentElement.scrollTop > 20
-    ) {
-        mybutton.style.display = "block";
-    } else {
-        mybutton.style.display = "none";
+    function fetchData(quarter){
+        var data = JSON.parse(sessionStorage.getItem("data"));
     }
-}
-// When the user clicks on the button, scroll to the top of the document
-mybutton.addEventListener("click", backToTop);
 
-function backToTop() {
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
-}
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function () {
+        scrollFunction();
+    };
+
+    function scrollFunction() {
+        if (
+            document.body.scrollTop > 20 ||
+            document.documentElement.scrollTop > 20
+        ) {
+            mybutton.style.display = "block";
+        } else {
+            mybutton.style.display = "none";
+        }
+    }
+    // When the user clicks on the button, scroll to the top of the document
+    mybutton.addEventListener("click", backToTop);
+
+    function backToTop() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
 });

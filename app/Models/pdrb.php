@@ -12,6 +12,7 @@ class Pdrb extends Model
     protected $guarded = ['id'];
 
     protected $with = ['region', 'period', 'subsector'];
+    protected $load = ['adjustment'];
    
     public function region()
     {
@@ -26,5 +27,10 @@ class Pdrb extends Model
     public function subsector()
     {
         return $this->belongsTo(Subsector::class);
+    }
+
+    public function adjustment()
+    {
+        return $this->hasOne(Adjustment::class);
     }
 }

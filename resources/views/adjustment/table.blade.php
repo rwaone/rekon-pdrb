@@ -1,3 +1,11 @@
+<div class="card-header d-flex p-0">
+    <ul class="nav nav-pills float-left p-2">
+        <li class="nav-item"><a class="nav-link active" id="#tab_1" type="button">Triwulan 1</a></li>
+        <li class="nav-item"><a class="nav-link" id="#tab_2" type="button">Triwulan 2</a></li>
+        <li class="nav-item"><a class="nav-link" id="#tab_3" type="button">Triwulan 3</a></li>
+        <li class="nav-item"><a class="nav-link" id="#tab_4" type="button">Triwulan 4</a></li>
+    </ul>
+</div>
 <div class="card-body p-3">
     <table class="table table-bordered table-responsive" id="adjust-table">
         <thead class="text-center" style="background-color: #09c140; color:aliceblue;">
@@ -14,10 +22,10 @@
             </tr>
             <tr>
                 <th style="min-width: 100px">Inisial</th>
-                <th style="min-width: 100px">Adjustment</th>
+                <th style="min-width: 120px">Adjustment</th>
                 <th style="min-width: 100px">Berjalan</th>
                 <th style="min-width: 100px">Inisial</th>
-                <th style="min-width: 100px">Adjustment</th>
+                <th style="min-width: 120px">Adjustment</th>
                 <th style="min-width: 100px">Berjalan</th>
                 <th style="min-width: 100px">Inisial</th>
                 <th style="min-width: 100px">Berjalan</th>
@@ -124,10 +132,12 @@
                     <tr>
                         <td class="first">{{ $loop->iteration - 1 . '. ' . $region->name }}</td>
                         <td class="adhb-inisial"></td>
-                        <td class="adhb-adjust"><input type="text" class="form-control text-right" name="adhb-adjust" aria-required="true"></td>
+                        <td class="adhb-adjust"><input type="text" class="form-control text-right"
+                                name="adhb-adjust" aria-required="true"></td>
                         <td class="adhk-inisial"></td>
                         <td class="adhb-berjalan"></td>
-                        <td class="adhk-adjust"><input type="text" class="form-control text-right" name="adhk-adjust" aria-required="true"></td>
+                        <td class="adhk-adjust"><input type="text" class="form-control text-right"
+                                name="adhk-adjust" aria-required="true"></td>
                         <td class="adhk-berjalan"></td>
                         <td class="qtoq-inisial"></td>
                         <td class="qtoq-berjalan"></td>

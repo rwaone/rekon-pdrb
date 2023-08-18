@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Subsector;
+use App\Models\Pdrb;
+use App\Models\Period;
 use App\Models\Region;
+use App\Models\Subsector;
 use App\Models\Adjustment;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreAdjustmentRequest;
 use App\Http\Requests\UpdateAdjustmentRequest;
-use App\Models\Pdrb;
 
 class AdjustmentController extends Controller
 {
@@ -50,13 +51,19 @@ class AdjustmentController extends Controller
     {
         $filter = $request->filter;
         $regions = Region::all();
-        $data = [];
+        $previous_period = Period::where('type', $filter['type'])->where('year', $filter['year'] - 1)->where('quarter', 4)->where('status', 'Final')->first()->id;
         foreach ($regions as $region) {
-            $data[$region->code] = Pdrb::select('id', 'adhb', 'adhk')
-                                        ->where('region_id', $region->id)
-                                        ->where('period_id', $filter['period_id'])
-                                        ->where('subsector_id', $filter['subsector'])
-                                        ->get()->toArray();
+            $data[$region->code]['current'] = Pdrb::select('id', 'adhb', 'adhk')
+                ->where('region_id', $region->id)
+                ->where('period_id', $filter['period_id'])
+                ->where('subsector_id', $filter['subsector'])
+                ->get()->toArray();
+
+            $data[$region->code]['previous'] = PDRB::select('id', 'adhb', 'adhk')
+                ->where('region_id', $region->id)
+                ->where('period_id', $previous_period)
+                ->where('subsector_id', $filter['subsector'])
+                ->get()->toArray();
         }
 
         return response()->json($data);

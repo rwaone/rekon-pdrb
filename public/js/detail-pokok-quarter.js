@@ -904,7 +904,7 @@ function fetchData() {
             dataType: "json",
             success: function (data) {
                 resolve(data);
-                console.log(data);
+                // console.log(data);
                 sessionStorage.setItem("data", JSON.stringify(data.data));
                 sessionStorage.setItem("before", JSON.stringify(data.before));
             },
