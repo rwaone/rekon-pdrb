@@ -45,7 +45,7 @@
                               @csrf
                                 <div class="form-group first">
                                     <label for="username">Username</label>
-                                    <input type="email" class="form-control" id="email" name="email">
+                                    <input type="username" class="form-control" id="username" name="username">
 
                                 </div>
                                 <div class="form-group last mb-4">
