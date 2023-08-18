@@ -50,8 +50,8 @@
 
                     <div class="form-group">
                         <label for="password_confirmation" class="col-form-label">Konfirmasi Password:</label>
-                        <input type="password_confirmation" class="form-control" id="password_confirmation" name="password_confirmation"
-                            placeholder="Password">
+                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation"
+                            placeholder="Konfirmasi Password">
                     </div>
 
                     <div class="form-group">
