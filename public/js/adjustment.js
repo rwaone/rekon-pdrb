@@ -110,10 +110,6 @@ $(document).ready(function () {
     $('#filter-button').click(function () {
         $('.loader').removeClass('d-none');
 
-        $('input[name*=id_]').prop('disabled', false)
-        $('input[name*=adhk_value_]').prop('disabled', false)
-        $('input[name*=adhb_value_]').prop('disabled', false)
-
         $.ajax({
             type: 'POST',
             url: url_get_full_data.href,
@@ -126,9 +122,10 @@ $(document).ready(function () {
             },
 
             success: function (result) {
-                console.log(result);
 
                 sessionStorage.setItem("data", JSON.stringify(result));
+                fetchData(1)
+                getTotal()
 
                 Toast.fire({
                     icon: 'success',
@@ -143,7 +140,36 @@ $(document).ready(function () {
 
     function fetchData(quarter){
         var data = JSON.parse(sessionStorage.getItem("data"));
-        console.log(data)
+        $.each(data['current'], function(index, data){
+            $(`#adhb-inisial-${index}`).text(formatRupiah(data[quarter-1]['adhb'].replaceAll('.', ','),''))
+            $(`#adhk-inisial-${index}`).text(formatRupiah(data[quarter-1]['adhk'].replaceAll('.', ','),''))
+        })
+    }
+
+    function getTotal(){
+        let totalADHB = 0
+        let totalADHK = 0
+        for (let i = 2; i <= 16; i++){
+            totalADHB += Number($(`#adhb-inisial-${i}`).text().replaceAll('.', '').replaceAll(',', '.'))
+            totalADHK += Number($(`#adhk-inisial-${i}`).text().replaceAll('.', '').replaceAll(',', '.'))
+        }
+        $(`#adhb-inisial-total`).text(formatRupiah(String(totalADHB).replaceAll('.', ','), ''))
+        $(`#adhk-inisial-total`).text(formatRupiah(String(totalADHK).replaceAll('.', ','), ''))
+        
+        ProvADHB = Number($(`#adhb-inisial-1`).text().replaceAll('.', '').replaceAll(',', '.'))
+        ProvADHK = Number($(`#adhk-inisial-1`).text().replaceAll('.', '').replaceAll(',', '.'))
+
+        selisihADHB = totalADHB - ProvADHB
+        $(`#adhb-inisial-selisih`).text(formatRupiah(String(selisihADHB).replaceAll('.', ','), ''))
+
+        selisihADHK = totalADHK - ProvADHK
+        $(`#adhk-inisial-selisih`).text(formatRupiah(String(selisihADHK).replaceAll('.', ','), ''))
+
+        diskrepansiADHB = (selisihADHB/ProvADHB)*100
+        $(`#adhb-inisial-diskrepansi`).text(formatRupiah(String(diskrepansiADHB).replaceAll('.', ','), ''))
+
+        diskrepansiADHK = (selisihADHK/ProvADHK)*100
+        $(`#adhk-inisial-diskrepansi`).text(formatRupiah(String(diskrepansiADHK).replaceAll('.', ','), ''))
     }
 
     // When the user scrolls down 20px from the top of the document, show the button

@@ -53,17 +53,17 @@ class AdjustmentController extends Controller
         $regions = Region::all();
         $previous_period = Period::where('type', $filter['type'])->where('year', $filter['year'] - 1)->where('quarter', 4)->where('status', 'Final')->first()->id;
         foreach ($regions as $region) {
-            $data[$region->code]['current'] = Pdrb::select('id', 'adhb', 'adhk')
+            $data['current'][$region->id] = Pdrb::select('id', 'adhb', 'adhk')
                 ->where('region_id', $region->id)
                 ->where('period_id', $filter['period_id'])
                 ->where('subsector_id', $filter['subsector'])
-                ->get()->toArray();
+                ->get();
 
-            $data[$region->code]['previous'] = PDRB::select('id', 'adhb', 'adhk')
+            $data['previous'][$region->id] = PDRB::select('id', 'adhb', 'adhk')
                 ->where('region_id', $region->id)
                 ->where('period_id', $previous_period)
                 ->where('subsector_id', $filter['subsector'])
-                ->get()->toArray();
+                ->get();
         }
 
         return response()->json($data);

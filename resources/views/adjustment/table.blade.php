@@ -46,111 +46,111 @@
                 @if ($region->id == 1)
                     <tr>
                         <td class="first"><b>{{ $region->name }}</b></td>
-                        <td class="adhb-inisial"></td>
-                        <td class="adhb-adjust"></td>
-                        <td class="adhb-berjalan"></td>
-                        <td class="adhk-inisial"></td>
-                        <td class="adhk-adjust"></td>
-                        <td class="adhk-berjalan"></td>
-                        <td class="qtoq-inisial"></td>
-                        <td class="qtoq-berjalan"></td>
-                        <td class="yony-inisial"></td>
-                        <td class="yony-berjalan"></td>
-                        <td class="ctoc-inisial"></td>
-                        <td class="ctoc-berjalan"></td>
-                        <td class="lajuQ-inisial"></td>
-                        <td class="lajuQ-berjalan"></td>
-                        <td class="sogY-inisial"></td>
-                        <td class="sogY-berjalan"></td>
-                        <td class="kontribusi-inisial"></td>
-                        <td class="kontribusi-berjalan"></td>
+                        <td class="text-right adhb-inisial" id="adhb-inisial-{{ $region->id }}"></td>
+                        <td class="text-right adhb-adjust"></td>
+                        <td class="text-right adhb-berjalan"></td>
+                        <td class="text-right adhk-inisial" id="adhk-inisial-{{ $region->id }}"></td>
+                        <td class="text-right adhk-adjust"></td>
+                        <td class="text-right adhk-berjalan"></td>
+                        <td class="text-right qtoq-inisial"></td>
+                        <td class="text-right qtoq-berjalan"></td>
+                        <td class="text-right yony-inisial"></td>
+                        <td class="text-right yony-berjalan"></td>
+                        <td class="text-right ctoc-inisial"></td>
+                        <td class="text-right ctoc-berjalan"></td>
+                        <td class="text-right lajuQ-inisial"></td>
+                        <td class="text-right lajuQ-berjalan"></td>
+                        <td class="text-right sogY-inisial"></td>
+                        <td class="text-right sogY-berjalan"></td>
+                        <td class="text-right kontribusi-inisial"></td>
+                        <td class="text-right kontribusi-berjalan"></td>
                     </tr>
                     <tr>
                         <td class="first"><b>Total Kab/Kota</b></td>
-                        <td class="adhb-inisial"></td>
-                        <td class="adhb-adjust"></td>
-                        <td class="adhb-berjalan"></td>
-                        <td class="adhk-inisial"></td>
-                        <td class="adhk-adjust"></td>
-                        <td class="adhk-berjalan"></td>
-                        <td class="qtoq-inisial"></td>
-                        <td class="qtoq-berjalan"></td>
-                        <td class="yony-inisial"></td>
-                        <td class="yony-berjalan"></td>
-                        <td class="ctoc-inisial"></td>
-                        <td class="ctoc-berjalan"></td>
-                        <td class="lajuQ-inisial"></td>
-                        <td class="lajuQ-berjalan"></td>
-                        <td class="sogY-inisial"></td>
-                        <td class="sogY-berjalan"></td>
-                        <td class="kontribusi-inisial"></td>
-                        <td class="kontribusi-berjalan"></td>
+                        <td class="text-right adhb-inisial" id="adhb-inisial-total"></td>
+                        <td class="text-right adhb-adjust"></td>
+                        <td class="text-right adhb-berjalan"></td>
+                        <td class="text-right adhk-inisial" id="adhk-inisial-total"></td>
+                        <td class="text-right adhk-adjust"></td>
+                        <td class="text-right adhk-berjalan"></td>
+                        <td class="text-right qtoq-inisial"></td>
+                        <td class="text-right qtoq-berjalan"></td>
+                        <td class="text-right yony-inisial"></td>
+                        <td class="text-right yony-berjalan"></td>
+                        <td class="text-right ctoc-inisial"></td>
+                        <td class="text-right ctoc-berjalan"></td>
+                        <td class="text-right lajuQ-inisial"></td>
+                        <td class="text-right lajuQ-berjalan"></td>
+                        <td class="text-right sogY-inisial"></td>
+                        <td class="text-right sogY-berjalan"></td>
+                        <td class="text-right kontribusi-inisial"></td>
+                        <td class="text-right kontribusi-berjalan"></td>
                     </tr>
                     <tr>
                         <td class="first"><b>Selisih Prov dan Total Kab/Kota</b></td>
-                        <td class="adhb-inisial"></td>
-                        <td class="adhb-adjust"></td>
-                        <td class="adhb-berjalan"></td>
-                        <td class="adhk-inisial"></td>
-                        <td class="adhk-adjust"></td>
-                        <td class="adhk-berjalan"></td>
-                        <td class="qtoq-inisial"></td>
-                        <td class="qtoq-berjalan"></td>
-                        <td class="yony-inisial"></td>
-                        <td class="yony-berjalan"></td>
-                        <td class="ctoc-inisial"></td>
-                        <td class="ctoc-berjalan"></td>
-                        <td class="lajuQ-inisial"></td>
-                        <td class="lajuQ-berjalan"></td>
-                        <td class="sogY-inisial"></td>
-                        <td class="sogY-berjalan"></td>
-                        <td class="kontribusi-inisial"></td>
-                        <td class="kontribusi-berjalan"></td>
+                        <td class="text-right adhb-inisial" id="adhb-inisial-selisih"></td>
+                        <td class="text-right adhb-adjust"></td>
+                        <td class="text-right adhb-berjalan"></td>
+                        <td class="text-right adhk-inisial" id="adhk-inisial-selisih"></td>
+                        <td class="text-right adhk-adjust"></td>
+                        <td class="text-right adhk-berjalan"></td>
+                        <td class="text-right qtoq-inisial"></td>
+                        <td class="text-right qtoq-berjalan"></td>
+                        <td class="text-right yony-inisial"></td>
+                        <td class="text-right yony-berjalan"></td>
+                        <td class="text-right ctoc-inisial"></td>
+                        <td class="text-right ctoc-berjalan"></td>
+                        <td class="text-right lajuQ-inisial"></td>
+                        <td class="text-right lajuQ-berjalan"></td>
+                        <td class="text-right sogY-inisial"></td>
+                        <td class="text-right sogY-berjalan"></td>
+                        <td class="text-right kontribusi-inisial"></td>
+                        <td class="text-right kontribusi-berjalan"></td>
                     </tr>
                     <tr>
                         <td class="first"><b>% Diskrepansi</b></td>
-                        <td class="adhb-inisial"></td>
-                        <td class="adhb-adjust"></td>
-                        <td class="adhb-berjalan"></td>
-                        <td class="adhk-inisial"></td>
-                        <td class="adhk-adjust"></td>
-                        <td class="adhk-berjalan"></td>
-                        <td class="qtoq-inisial"></td>
-                        <td class="qtoq-berjalan"></td>
-                        <td class="yony-inisial"></td>
-                        <td class="yony-berjalan"></td>
-                        <td class="ctoc-inisial"></td>
-                        <td class="ctoc-berjalan"></td>
-                        <td class="lajuQ-inisial"></td>
-                        <td class="lajuQ-berjalan"></td>
-                        <td class="sogY-inisial"></td>
-                        <td class="sogY-berjalan"></td>
-                        <td class="kontribusi-inisial"></td>
-                        <td class="kontribusi-berjalan"></td>
+                        <td class="text-right adhb-inisial" id="adhb-inisial-diskrepansi"></td>
+                        <td class="text-right adhb-adjust"></td>
+                        <td class="text-right adhb-berjalan"></td>
+                        <td class="text-right adhk-inisial" id="adhk-inisial-diskrepansi"></td>
+                        <td class="text-right adhk-adjust"></td>
+                        <td class="text-right adhk-berjalan"></td>
+                        <td class="text-right qtoq-inisial"></td>
+                        <td class="text-right qtoq-berjalan"></td>
+                        <td class="text-right yony-inisial"></td>
+                        <td class="text-right yony-berjalan"></td>
+                        <td class="text-right ctoc-inisial"></td>
+                        <td class="text-right ctoc-berjalan"></td>
+                        <td class="text-right lajuQ-inisial"></td>
+                        <td class="text-right lajuQ-berjalan"></td>
+                        <td class="text-right sogY-inisial"></td>
+                        <td class="text-right sogY-berjalan"></td>
+                        <td class="text-right kontribusi-inisial"></td>
+                        <td class="text-right kontribusi-berjalan"></td>
                     </tr>
                 @else
                     <tr>
                         <td class="first">{{ $loop->iteration - 1 . '. ' . $region->name }}</td>
-                        <td class="adhb-inisial"></td>
+                        <td class="text-right adhb-inisial" id="adhb-inisial-{{ $region->id }}"></td>
                         <td class="adhb-adjust"><input type="text" class="form-control text-right"
                                 name="adhb-adjust" aria-required="true"></td>
-                        <td class="adhk-inisial"></td>
-                        <td class="adhb-berjalan"></td>
+                        <td class="text-right adhb-berjalan"></td>
+                        <td class="text-right adhk-inisial" id="adhk-inisial-{{ $region->id }}"></td>
                         <td class="adhk-adjust"><input type="text" class="form-control text-right"
                                 name="adhk-adjust" aria-required="true"></td>
-                        <td class="adhk-berjalan"></td>
-                        <td class="qtoq-inisial"></td>
-                        <td class="qtoq-berjalan"></td>
-                        <td class="yony-inisial"></td>
-                        <td class="yony-berjalan"></td>
-                        <td class="ctoc-inisial"></td>
-                        <td class="ctoc-berjalan"></td>
-                        <td class="lajuQ-inisial"></td>
-                        <td class="lajuQ-berjalan"></td>
-                        <td class="sogY-inisial"></td>
-                        <td class="sogY-berjalan"></td>
-                        <td class="kontribusi-inisial"></td>
-                        <td class="kontribusi-berjalan"></td>
+                        <td class="text-right adhk-berjalan"></td>
+                        <td class="text-right qtoq-inisial"></td>
+                        <td class="text-right qtoq-berjalan"></td>
+                        <td class="text-right yony-inisial"></td>
+                        <td class="text-right yony-berjalan"></td>
+                        <td class="text-right ctoc-inisial"></td>
+                        <td class="text-right ctoc-berjalan"></td>
+                        <td class="text-right lajuQ-inisial"></td>
+                        <td class="text-right lajuQ-berjalan"></td>
+                        <td class="text-right sogY-inisial"></td>
+                        <td class="text-right sogY-berjalan"></td>
+                        <td class="text-right kontribusi-inisial"></td>
+                        <td class="text-right kontribusi-berjalan"></td>
                     </tr>
                 @endif
             @endforeach
