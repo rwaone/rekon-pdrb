@@ -258,9 +258,9 @@ class FenomenaController extends Controller
             $data = Fenomena::where('region_id', $region->id)
                 ->where('quarter', $quarters)
                 ->where('year', $years)->pluck('description');
-            if ($data->contains(null)) {
+            if ($data->isEmpty()) {
                 $data = 0;
-            } else {
+            } else {    
                 $data = 1;
             }
             $monitoring_quarter[$years][$quarters][$region->name]['description'] = $data;

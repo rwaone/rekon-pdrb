@@ -211,7 +211,7 @@ $(document).ready(function () {
                 let X = inputCell.find(`input[id^='adhb']`).val().replaceAll(/[A-Za-z.]/g, '')
                 let Y = Number(X.replaceAll(/[,]/g, '.'))
                 let Z = (Y / totalPDRB) * 100
-                rekonCell.text(String(Z.toFixed(9)).replaceAll(/[.]/g, ','))
+                rekonCell.text(String(Z.toFixed(2)).replaceAll(/[.]/g, ','))
             }
         }
     });
@@ -251,8 +251,8 @@ $(document).ready(function () {
                 }
 
                 let QtoQ = ((currentQ / previousQ) * 100) - 100
-                let QtoQval = isNaN(QtoQ) ? '-' : QtoQ.toFixed(9)
-                rekonCell.text(String(QtoQval).replaceAll(/[.]/g, ','))
+                let QtoQval = isNaN(QtoQ) ? '-' : QtoQ.toFixed(2)
+                rekonCell.text(String(QtoQval).replaceAll(/[.]/g, ','));
             }
         }
     });
@@ -283,8 +283,8 @@ $(document).ready(function () {
                     var previousValue = Number(previousCell.find(`input[id*='adhk']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                 }
                 let YtoY = ((currentValue / previousValue) * 100) - 100
-                let YtoYval = isNaN(YtoY) ? '-' : YtoY.toFixed(9)
-                rekonCell.text(String(YtoYval).replaceAll(/[.]/g, ','))
+                let YtoYval = isNaN(YtoY) ? '-' : YtoY.toFixed(2)
+                rekonCell.text(String(YtoYval).replaceAll(/[.]/g, ','));
             }
         }
     });
@@ -321,7 +321,7 @@ $(document).ready(function () {
                     sumPreviousValue += previousValue
                 }
                 let CtoC = ((sumCurrentValue / sumPreviousValue) * 100) - 100
-                let CtoCval = isNaN(CtoC) ? '-' : CtoC.toFixed(9)
+                let CtoCval = isNaN(CtoC) ? '-' : CtoC.toFixed(2)
                 rekonCell.text(String(CtoCval).replaceAll(/[.]/g, ','))
             }
         }
@@ -353,7 +353,7 @@ $(document).ready(function () {
                     var adhkValue = Number(adhkCell.find(`input[id^='adhk']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                 }
                 let implisit = ((adhbValue / adhkValue) * 100)
-                let indeks = isNaN(implisit) ? '-' : implisit.toFixed(9)
+                let indeks = isNaN(implisit) ? '-' : implisit.toFixed(2)
                 rekonCell.text(String(indeks).replaceAll(/[.]/g, ','))
             }
         }
@@ -401,7 +401,7 @@ $(document).ready(function () {
                 let currentImplisit = ((adhbValue / adhkValue) * 100)
                 let previousImplisit = ((previousAdhbValue / previousAdhkValue) * 100)
                 let laju = ((currentImplisit / previousImplisit) * 100) - 100
-                let value = isNaN(laju) ? '-' : laju.toFixed(9)
+                let value = isNaN(laju) ? '-' : laju.toFixed(2)
                 rekonCell.text(String(value).replaceAll(/[.]/g, ','))
             }
         }
@@ -443,7 +443,7 @@ $(document).ready(function () {
                 let currentImplisit = ((adhbValue / adhkValue) * 100)
                 let previousImplisit = ((previousAdhbValue / previousAdhkValue) * 100)
                 let laju = ((currentImplisit / previousImplisit) * 100) - 100
-                let value = isNaN(laju) ? '-' : laju.toFixed(9)
+                let value = isNaN(laju) ? '-' : laju.toFixed(2)
                 rekonCell.text(String(value).replaceAll(/[.]/g, ','))
             }
         }
