@@ -34,7 +34,7 @@ $(document).ready(function () {
                         rowSum += value
                     } else {
                         let cell = $('#' + price_base + '-table tr').eq(row + 1).find('td').eq(col)
-                        let sumText = String(rowSum.toFixed(2)).replaceAll(/[.]/g, ',')
+                        let sumText = String(rowSum.toFixed(9)).replaceAll(/[.]/g, ',')
                         cell.find(`input[id^='` + price_base + `']`).val(formatRupiah(sumText, ''))
                     }
                 }
@@ -63,8 +63,8 @@ $(document).ready(function () {
                 }
                 let pdrbs = sum + pdrb
                 let PdrbNonmigas = pdrbs - nonmigas
-                let sumPDRB = String(pdrbs.toFixed(2)).replaceAll(/[.]/g, ',')
-                let sumPDRBnm = String(PdrbNonmigas.toFixed(2)).replaceAll(/[.]/g, ',')
+                let sumPDRB = String(pdrbs.toFixed(9)).replaceAll(/[.]/g, ',')
+                let sumPDRBnm = String(PdrbNonmigas.toFixed(9)).replaceAll(/[.]/g, ',')
                 let totalnm = $('#' + price_base + '-table tr').last().prev().find('td').eq(col)
                 let totalCell = $('#' + price_base + '-table tr').last().find('td').eq(col)
                 totalnm.text(formatRupiah(sumPDRBnm, ''))
@@ -76,12 +76,12 @@ $(document).ready(function () {
         for (let i = 1; i < 5; i++) {
             //adhb table
             $(`.` + price_base + `-sector-Q${i}-1`).keyup(function (e) {
-                let jumlah = calculateSector(price_base + `-sector-Q${i}-1`).toFixed(2);
+                let jumlah = calculateSector(price_base + `-sector-Q${i}-1`).toFixed(9);
                 let que = String(jumlah).replaceAll(/[.]/g, ',');
                 $(`#` + price_base + `_1_1_Q${i}`).val(formatRupiah(que, ''));
             });
             $(`.` + price_base + `-sector-Q${i}-8`).keyup(function (e) {
-                let jumlah = calculateSector(price_base + `-sector-Q${i}-8`).toFixed(2);
+                let jumlah = calculateSector(price_base + `-sector-Q${i}-8`).toFixed(9);
                 let que = String(jumlah).replaceAll(/[.]/g, ',');
                 $(`#` + price_base + `_8_3_Q${i}`).val(formatRupiah(que, ''))
             });
@@ -89,12 +89,12 @@ $(document).ready(function () {
             for (let j = 1; j < 18; j++) {
                 //adhb table
                 $(`.` + price_base + `-category-Q${i}-${j}`).keyup(function (e) {
-                    let jumlah = calculateSector(price_base + `-category-Q${i}-${j}`).toFixed(2);
+                    let jumlah = calculateSector(price_base + `-category-Q${i}-${j}`).toFixed(9);
                     let que = String(jumlah).replaceAll(/[.]/g, ',');
                     $(`#` + price_base + `_${catArray[j - 1]}_Q${i}`).val(formatRupiah(que, ''))
                 });
                 $(`.` + price_base + `-category-${j}`).keyup(function (e) {
-                    let jumlah = calculateSector(price_base + `-category-${j}`).toFixed(2);
+                    let jumlah = calculateSector(price_base + `-category-${j}`).toFixed(9);
                     let que = String(jumlah).replaceAll(/[.]/g, ',');
                     $(`#` + price_base + `_${catArray[j - 1]}`).val(formatRupiah(que, ''))
                 });
