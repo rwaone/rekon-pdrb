@@ -26,7 +26,7 @@
 
     <div class="card save-container">
         <div class="ml-auto">
-            <button id="fullFormSave" type="button" class="btn btn-success">Simpan</button>
+            <button id="adjustment-save" type="button" class="btn btn-success">Simpan</button>
         </div>
     </div>
 

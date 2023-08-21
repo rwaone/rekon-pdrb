@@ -62,6 +62,23 @@ class AdjustmentController extends Controller
                         ->where('subsector_id', $filter['subsector'])
                         ->get()->toArray();
                     $data['current'][$region->id][$index] = $query[0];
+                    $adjustment = Adjustment::select('adhb', 'adhk')
+                        ->where('pdrb_id', $query[0]['id'])
+                        ->get()->toArray();
+                    if(sizeof($adjustment) == 0){
+                        $adjustment = [
+                            'pdrb_id' => $query[0]['id'],
+                            'adhb' => '0',
+                            'adhk' => '0',
+                            'created_at' => date('Y-m-d H:i:s'),
+                            'updated_at' => date('Y-m-d H:i:s'),
+                        ];
+                        $data['current'][$region->id][$index]['adjust_adhb'] = $adjustment['adhb'];
+                        $data['current'][$region->id][$index]['adjust_adhk'] = $adjustment['adhk'];
+                    } else {
+                        $data['current'][$region->id][$index]['adjust_adhb'] = $adjustment['adhb'];
+                        $data['current'][$region->id][$index]['adjust_adhk'] = $adjustment['adhk'];  
+                    }
                 }
 
                 $query = PDRB::select('id', 'adhb', 'adhk')
@@ -88,7 +105,7 @@ class AdjustmentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAdjustmentRequest $request, Adjustment $adjustment)
+    public function update(Request $request)
     {
         //
     }

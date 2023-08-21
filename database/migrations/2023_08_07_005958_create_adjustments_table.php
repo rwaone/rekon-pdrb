@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('adjustments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('pdrb_id');
-            $table->decimal('value', $precision = 10, $scale = 2)->default(0);
+            $table->decimal('adhb', $precision = 10, $scale = 2)->default(0);
+            $table->decimal('adhk', $precision = 10, $scale = 2)->default(0);
             $table->timestamps();
         });
     }

@@ -124,11 +124,9 @@ $(document).ready(function () {
             },
 
             success: function (result) {
-
+                console.log(result);
                 sessionStorage.setItem("data", JSON.stringify(result));
                 fetchData(1)
-                getTotalInisial()
-                getTotalBerjalan()
 
                 Toast.fire({
                     icon: 'success',
@@ -141,14 +139,53 @@ $(document).ready(function () {
         });
     });
 
+    $("#adjustment-save").click(function () {
+        $.ajax({
+            type: 'POST',
+            url: url_save_full_data.href,
+            data: {
+                filter: $('#filterForm').serializeArray().reduce(function (obj, item) {
+                    obj[item.name] = item.value;
+                    return obj;
+                }, {}),
+                adjustment: $('#adjustForm').serializeArray().reduce(function (obj, item) {
+                    obj[item.name] = item.value;
+                    return obj;
+                }, {}),
+                _token: tokens,
+            },
+
+            success: function (result) {
+
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: 'Data berhasil disimpan.'
+                })
+            },
+        });
+    });
+
+    for (let quarter = 1; quarter <= 4; quarter++) {
+        $(`#tab_${quarter}`).click(function () {
+            fetchData(quarter)
+            $('.tab-item').removeClass('active')
+            $(`#tab_${quarter}`).addClass('active')
+        })
+    }
+
+
     function fetchData(quarter) {
         var data = JSON.parse(sessionStorage.getItem("data"));
-        console.log(data);
         $.each(data['current'], function (index, data) {
             $(`#adhb-inisial-${index}`).text(formatRupiah(data[quarter]['adhb'].replaceAll('.', ','), ''))
             $(`#adhk-inisial-${index}`).text(formatRupiah(data[quarter]['adhk'].replaceAll('.', ','), ''))
             $(`#adhb-berjalan-${index}`).text(formatRupiah(data[quarter]['adhb'].replaceAll('.', ','), ''))
             $(`#adhk-berjalan-${index}`).text(formatRupiah(data[quarter]['adhk'].replaceAll('.', ','), ''))
+            $(`#adhb-adjust-${index}`).val(formatRupiah(data[quarter]['adjust_adhb'].replaceAll('.', ','), ''))
+            $(`#adhk-adjust-${index}`).val(formatRupiah(data[quarter]['adjust_adhk'].replaceAll('.', ','), ''))
+            getTotalInisial()
+            getTotalBerjalan()
         })
     }
 
