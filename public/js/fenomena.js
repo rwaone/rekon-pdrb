@@ -293,6 +293,8 @@ function fetchData() {
             url: url_key.href,
             dataType: "json",
             success: function (data) {
+                //check data
+                console.log(data);
                 resolve(data);
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -375,10 +377,12 @@ $("#showData").click(async function (e) {
         $("#view-body").removeClass("d-none");
         for (i = 1; i <= 15; i++) {
             $(`#rekon-view tbody tr.${types}`).each(function (index) {
-                $(this)
-                    .find("td span")
-                    .eq(i - 1)
-                    .text(data[`fenomena-${i + 1}`][index]["description"]);
+                if (data[`fenomena-${i + 1}`].length !== 0) {
+                    $(this)
+                        .find("td span")
+                        .eq(i - 1)
+                        .text(data[`fenomena-${i + 1}`][index]["description"]);
+                }
             });
         }
         $("#komponen tbody tr").each(function (index) {
