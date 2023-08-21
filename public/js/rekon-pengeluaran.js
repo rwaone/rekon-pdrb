@@ -30,7 +30,7 @@ $(document).ready(function () {
                         rowSum += value
                     } else {
                         let cell = $('#' + price_base + '-table tr').eq(row + 1).find('td').eq(col)
-                        let sumText = String(rowSum.toFixed(2)).replaceAll(/[.]/g, ',')
+                        let sumText = String(rowSum).replaceAll(/[.]/g, ',')
                         cell.find(`input[id^='` + price_base + `']`).val(formatRupiah(sumText, ''))
                     }
                 }
@@ -47,7 +47,7 @@ $(document).ready(function () {
                         sum += Number(Y)
                     }
                 }
-                let pdrbs = sum.toFixed(2)
+                let pdrbs = sum
                 let sumPDRB = String(pdrbs).replaceAll(/[.]/g, ',')
                 let totalCell = $('#' + price_base + '-table tr').last().find('td').eq(col)
                 totalCell.text(formatRupiah(sumPDRB, ''))
@@ -57,12 +57,12 @@ $(document).ready(function () {
         //single and full, sum for every category and sector
         for (let i = 1; i <= 4; i++) {
             $(`.` + price_base + `-sector-Q${i}-49`).keyup(function (e) {
-                let jumlah = calculateSector(price_base + `-sector-Q${i}-49`).toFixed(2);
+                let jumlah = calculateSector(price_base + `-sector-Q${i}-49`);
                 let que = String(jumlah).replaceAll(/[.]/g, ',');
                 $(`#` + price_base + `_1_X_Q${i}`).val(formatRupiah(que, '` + price_base + `'));
             });
             $(`.` + price_base + `-sector-Q${i}-52`).keyup(function (e) {
-                let jumlah = calculateSector(price_base + `-sector-Q${i}-52`).toFixed(2);
+                let jumlah = calculateSector(price_base + `-sector-Q${i}-52`);
                 let que = String(jumlah).replaceAll(/[.]/g, ',');
                 $(`#` + price_base + `_4_X_Q${i}`).val(formatRupiah(que, '` + price_base + `'))
             });
@@ -72,7 +72,7 @@ $(document).ready(function () {
                 let XM = X.replaceAll(/[,]/g, '.')
                 let IM = I.replaceAll(/[,]/g, '.')
                 let sumXI = Number(XM) - Number(IM)
-                let valueXI = String(sumXI.toFixed(2)).replaceAll(/[.]/g, ',')
+                let valueXI = String(sumXI).replaceAll(/[.]/g, ',')
                 $(`#` + price_base + `_6_X_Q${i}`).val(formatRupiah(valueXI, ''))
             });
 

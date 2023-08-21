@@ -202,8 +202,8 @@ $(document).ready(function () {
             let totalPDRB = Number($('#adhb-table tr').last().find('td').eq(col).text().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
             let totalCell = $('#rekon-table tr').last().find('td').eq(col)
 
-            nmCell.text(String(((totalnm / totalPDRB) * 100).toFixed(2)).replaceAll(/[.]/g, ','))
-            totalCell.text(String(((totalPDRB / totalPDRB) * 100).toFixed(2)).replaceAll(/[.]/g, ','))
+            nmCell.text(String(((totalnm / totalPDRB) * 100)).replaceAll(/[.]/g, ','))
+            totalCell.text(String(((totalPDRB / totalPDRB) * 100)).replaceAll(/[.]/g, ','))
 
             for (let row = 0; row < numRows; row++) {
                 let inputCell = $('#adhb-table tr').eq(row + 1).find('td').eq(col)
@@ -211,7 +211,7 @@ $(document).ready(function () {
                 let X = inputCell.find(`input[id^='adhb']`).val().replaceAll(/[A-Za-z.]/g, '')
                 let Y = Number(X.replaceAll(/[,]/g, '.'))
                 let Z = (Y / totalPDRB) * 100
-                rekonCell.text(String(Z.toFixed(2)).replaceAll(/[.]/g, ','))
+                rekonCell.text(String(Z).replaceAll(/[.]/g, ','))
             }
         }
     });
@@ -251,7 +251,7 @@ $(document).ready(function () {
                 }
 
                 let QtoQ = ((currentQ / previousQ) * 100) - 100
-                let QtoQval = isNaN(QtoQ) ? '-' : QtoQ.toFixed(2)
+                let QtoQval = isNaN(QtoQ) ? '-' : QtoQ
                 rekonCell.text(String(QtoQval).replaceAll(/[.]/g, ','))
             }
         }
@@ -283,7 +283,7 @@ $(document).ready(function () {
                     var previousValue = Number(previousCell.find(`input[id*='adhk']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                 }
                 let YtoY = ((currentValue / previousValue) * 100) - 100
-                let YtoYval = isNaN(YtoY) ? '-' : YtoY.toFixed(2)
+                let YtoYval = isNaN(YtoY) ? '-' : YtoY
                 rekonCell.text(String(YtoYval).replaceAll(/[.]/g, ','))
             }
         }
@@ -321,7 +321,7 @@ $(document).ready(function () {
                     sumPreviousValue += previousValue
                 }
                 let CtoC = ((sumCurrentValue / sumPreviousValue) * 100) - 100
-                let CtoCval = isNaN(CtoC) ? '-' : CtoC.toFixed(2)
+                let CtoCval = isNaN(CtoC) ? '-' : CtoC
                 rekonCell.text(String(CtoCval).replaceAll(/[.]/g, ','))
             }
         }
@@ -353,7 +353,7 @@ $(document).ready(function () {
                     var adhkValue = Number(adhkCell.find(`input[id^='adhk']`).val().replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                 }
                 let implisit = ((adhbValue / adhkValue) * 100)
-                let indeks = isNaN(implisit) ? '-' : implisit.toFixed(2)
+                let indeks = isNaN(implisit) ? '-' : implisit
                 rekonCell.text(String(indeks).replaceAll(/[.]/g, ','))
             }
         }
@@ -401,7 +401,7 @@ $(document).ready(function () {
                 let currentImplisit = ((adhbValue / adhkValue) * 100)
                 let previousImplisit = ((previousAdhbValue / previousAdhkValue) * 100)
                 let laju = ((currentImplisit / previousImplisit) * 100) - 100
-                let value = isNaN(laju) ? '-' : laju.toFixed(2)
+                let value = isNaN(laju) ? '-' : laju
                 rekonCell.text(String(value).replaceAll(/[.]/g, ','))
             }
         }
@@ -443,7 +443,7 @@ $(document).ready(function () {
                 let currentImplisit = ((adhbValue / adhkValue) * 100)
                 let previousImplisit = ((previousAdhbValue / previousAdhkValue) * 100)
                 let laju = ((currentImplisit / previousImplisit) * 100) - 100
-                let value = isNaN(laju) ? '-' : laju.toFixed(2)
+                let value = isNaN(laju) ? '-' : laju
                 rekonCell.text(String(value).replaceAll(/[.]/g, ','))
             }
         }
@@ -710,11 +710,11 @@ $(document).ready(function () {
 
         for (let i = 1; i <= 4; i++) {
 
-            let jumlah = calculateSector(price_base + `-sector-Q${i}-49`).toFixed(2);
+            let jumlah = calculateSector(price_base + `-sector-Q${i}-49`);
             let que = String(jumlah).replaceAll(/[.]/g, ',');
             $(`#` + price_base + `_1_X_Q${i}`).val(formatRupiah(que, ''));
 
-            jumlah = calculateSector(price_base + `-sector-Q${i}-52`).toFixed(2);
+            jumlah = calculateSector(price_base + `-sector-Q${i}-52`);
             que = String(jumlah).replaceAll(/[.]/g, ',');
             $(`#` + price_base + `_4_X_Q${i}`).val(formatRupiah(que, ''))
 
@@ -723,7 +723,7 @@ $(document).ready(function () {
             let XM = X.replaceAll(/[,]/g, '.')
             let IM = I.replaceAll(/[,]/g, '.')
             let sumXI = Number(XM) - Number(IM)
-            let valueXI = String(sumXI.toFixed(2)).replaceAll(/[.]/g, ',')
+            let valueXI = String(sumXI).replaceAll(/[.]/g, ',')
             $(`#` + price_base + `_6_X_Q${i}`).val(formatRupiah(valueXI, ''))
 
         }
@@ -743,7 +743,7 @@ $(document).ready(function () {
                     rowSum += value
                 } else {
                     let cell = $('#' + price_base + '-table tr').eq(row + 1).find('td').eq(col)
-                    let sumText = String(rowSum.toFixed(2)).replaceAll(/[.]/g, ',')
+                    let sumText = String(rowSum).replaceAll(/[.]/g, ',')
                     cell.find(`input[id^='` + price_base + `']`).val(formatRupiah(sumText, ''))
                 }
             }
@@ -760,7 +760,7 @@ $(document).ready(function () {
                     sum += Number(Y)
                 }
             }
-            let pdrbs = sum.toFixed(2)
+            let pdrbs = sum
             let sumPDRB = String(pdrbs).replaceAll(/[.]/g, ',')
             let totalCell = $('#' + price_base + '-table tr').last().find('td').eq(col)
             totalCell.text(formatRupiah(sumPDRB, ''))
@@ -771,18 +771,18 @@ $(document).ready(function () {
     function allSumPDRBLapus(price_base) {
         for (let i = 1; i < 5; i++) {
 
-            let jumlah = calculateSector(price_base + `-sector-Q${i}-1`).toFixed(2);
+            let jumlah = calculateSector(price_base + `-sector-Q${i}-1`);
             let que = String(jumlah).replaceAll(/[.]/g, ',');
             $(`#` + price_base + `_1_1_Q${i}`).val(formatRupiah(que, ''));
 
 
-            jumlah = calculateSector(price_base + `-sector-Q${i}-8`).toFixed(2);
+            jumlah = calculateSector(price_base + `-sector-Q${i}-8`);
             que = String(jumlah).replaceAll(/[.]/g, ',');
             $(`#` + price_base + `_8_3_Q${i}`).val(formatRupiah(que, ''))
 
             for (let j = 1; j < 18; j++) {
 
-                let jumlah = calculateSector(price_base + `-category-Q${i}-${j}`).toFixed(2);
+                let jumlah = calculateSector(price_base + `-category-Q${i}-${j}`);
                 let que = String(jumlah).replaceAll(/[.]/g, ',');
                 $(`#` + price_base + `_${catArray[j - 1]}_Q${i}`).val(formatRupiah(que, ''))
 
@@ -805,7 +805,7 @@ $(document).ready(function () {
                     rowSum += value
                 } else {
                     let cell = $('#' + price_base + '-table tr').eq(row + 1).find('td').eq(col)
-                    let sumText = String(rowSum.toFixed(2)).replaceAll(/[.]/g, ',')
+                    let sumText = String(rowSum).replaceAll(/[.]/g, ',')
                     cell.find(`input[id^='` + price_base + `']`).val(formatRupiah(sumText, ''))
                 }
             }
@@ -834,8 +834,8 @@ $(document).ready(function () {
             }
             let pdrbs = sum + pdrb
             let PdrbNonmigas = pdrbs - nonmigas
-            let sumPDRB = String(pdrbs.toFixed(2)).replaceAll(/[.]/g, ',')
-            let sumPDRBnm = String(PdrbNonmigas.toFixed(2)).replaceAll(/[.]/g, ',')
+            let sumPDRB = String(pdrbs).replaceAll(/[.]/g, ',')
+            let sumPDRBnm = String(PdrbNonmigas).replaceAll(/[.]/g, ',')
             let totalnm = $('#' + price_base + '-table tr').last().prev().find('td').eq(col)
             let totalCell = $('#' + price_base + '-table tr').last().find('td').eq(col)
             totalnm.text(formatRupiah(sumPDRBnm, ''))
