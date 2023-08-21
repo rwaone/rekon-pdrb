@@ -1,5 +1,7 @@
 $(document).ready(function () {
 
+    let price_list = ['adhb', 'adhk']
+
     //change input value into formated accounting input
     $('input[type="text"]').keyup(function (e) {
         $(this).val(formatRupiah($(this).val(), ''))
@@ -125,7 +127,8 @@ $(document).ready(function () {
 
                 sessionStorage.setItem("data", JSON.stringify(result));
                 fetchData(1)
-                getTotal()
+                getTotalInisial()
+                getTotalBerjalan()
 
                 Toast.fire({
                     icon: 'success',
@@ -138,38 +141,71 @@ $(document).ready(function () {
         });
     });
 
-    function fetchData(quarter){
+    function fetchData(quarter) {
         var data = JSON.parse(sessionStorage.getItem("data"));
-        $.each(data['current'], function(index, data){
-            $(`#adhb-inisial-${index}`).text(formatRupiah(data[quarter-1]['adhb'].replaceAll('.', ','),''))
-            $(`#adhk-inisial-${index}`).text(formatRupiah(data[quarter-1]['adhk'].replaceAll('.', ','),''))
+        console.log(data);
+        $.each(data['current'], function (index, data) {
+            $(`#adhb-inisial-${index}`).text(formatRupiah(data[quarter]['adhb'].replaceAll('.', ','), ''))
+            $(`#adhk-inisial-${index}`).text(formatRupiah(data[quarter]['adhk'].replaceAll('.', ','), ''))
+            $(`#adhb-berjalan-${index}`).text(formatRupiah(data[quarter]['adhb'].replaceAll('.', ','), ''))
+            $(`#adhk-berjalan-${index}`).text(formatRupiah(data[quarter]['adhk'].replaceAll('.', ','), ''))
         })
     }
 
-    function getTotal(){
-        let totalADHB = 0
-        let totalADHK = 0
-        for (let i = 2; i <= 16; i++){
-            totalADHB += Number($(`#adhb-inisial-${i}`).text().replaceAll('.', '').replaceAll(',', '.'))
-            totalADHK += Number($(`#adhk-inisial-${i}`).text().replaceAll('.', '').replaceAll(',', '.'))
+    function getTotalInisial() {
+        $.each(price_list, function (index, price_base) {
+            let total = 0
+
+            for (let i = 2; i <= 16; i++) {
+                total += Number($(`#${price_base}-inisial-${i}`).text().replaceAll('.', '').replaceAll(',', '.'))
+            }
+            $(`#${price_base}-inisial-total`).text(formatRupiah(String(total.toFixed(2)).replaceAll('.', ','), ''))
+
+            let prov = Number($(`#${price_base}-inisial-1`).text().replaceAll('.', '').replaceAll(',', '.'))
+
+            let selisih = total - prov
+            $(`#${price_base}-inisial-selisih`).text(formatRupiah(String(selisih.toFixed(2)).replaceAll('.', ','), ''))
+
+            let diskrepansi = (selisih / prov) * 100
+            $(`#${price_base}-inisial-diskrepansi`).text(String(diskrepansi.toFixed(2)).replaceAll('.', ','))
+
+        })
+    }
+
+    function getTotalBerjalan() {
+        $.each(price_list, function (index, price_base) {
+            let total = 0
+
+            for (let i = 2; i <= 16; i++) {
+                total += Number($(`#${price_base}-berjalan-${i}`).text().replaceAll('.', '').replaceAll(',', '.'))
+            }
+            $(`#${price_base}-berjalan-total`).text(formatRupiah(String(total.toFixed(2)).replaceAll('.', ','), ''))
+
+            let prov = Number($(`#${price_base}-berjalan-1`).text().replaceAll('.', '').replaceAll(',', '.'))
+
+            let selisih = total - prov
+            $(`#${price_base}-berjalan-selisih`).text(formatRupiah(String(selisih.toFixed(2)).replaceAll('.', ','), ''))
+
+            let diskrepansi = (selisih / prov) * 100
+            $(`#${price_base}-berjalan-diskrepansi`).text(String(diskrepansi.toFixed(2)).replaceAll('.', ','))
+
+        })
+    }
+
+    $.each(price_list, function (index, price_base) {
+        for (let indeks = 2; indeks <= 16; indeks++) {
+            $(`#${price_base}-adjust-${indeks}`).keyup(function (e) {
+                countBerjalan(price_base, indeks)
+                getTotalBerjalan()
+            })
         }
-        $(`#adhb-inisial-total`).text(formatRupiah(String(totalADHB).replaceAll('.', ','), ''))
-        $(`#adhk-inisial-total`).text(formatRupiah(String(totalADHK).replaceAll('.', ','), ''))
-        
-        ProvADHB = Number($(`#adhb-inisial-1`).text().replaceAll('.', '').replaceAll(',', '.'))
-        ProvADHK = Number($(`#adhk-inisial-1`).text().replaceAll('.', '').replaceAll(',', '.'))
+    })
 
-        selisihADHB = totalADHB - ProvADHB
-        $(`#adhb-inisial-selisih`).text(formatRupiah(String(selisihADHB).replaceAll('.', ','), ''))
-
-        selisihADHK = totalADHK - ProvADHK
-        $(`#adhk-inisial-selisih`).text(formatRupiah(String(selisihADHK).replaceAll('.', ','), ''))
-
-        diskrepansiADHB = (selisihADHB/ProvADHB)*100
-        $(`#adhb-inisial-diskrepansi`).text(formatRupiah(String(diskrepansiADHB).replaceAll('.', ','), ''))
-
-        diskrepansiADHK = (selisihADHK/ProvADHK)*100
-        $(`#adhk-inisial-diskrepansi`).text(formatRupiah(String(diskrepansiADHK).replaceAll('.', ','), ''))
+    function countBerjalan(price_base, indeks) {
+        let adjust = Number($(`#${price_base}-adjust-${indeks}`).val().replaceAll('.', '').replaceAll(',', '.'))
+        let inisial = Number($(`#${price_base}-inisial-${indeks}`).text().replaceAll('.', '').replaceAll(',', '.'))
+        let value = adjust + inisial
+        $(`#${price_base}-berjalan-${indeks}`).text(formatRupiah(String(value.toFixed(2)).replaceAll('.', ','), ''))
     }
 
     // When the user scrolls down 20px from the top of the document, show the button

@@ -48,10 +48,10 @@
                         <td class="first"><b>{{ $region->name }}</b></td>
                         <td class="text-right adhb-inisial" id="adhb-inisial-{{ $region->id }}"></td>
                         <td class="text-right adhb-adjust"></td>
-                        <td class="text-right adhb-berjalan"></td>
+                        <td class="text-right adhb-berjalan" id="adhb-berjalan-{{ $region->id }}"></td>
                         <td class="text-right adhk-inisial" id="adhk-inisial-{{ $region->id }}"></td>
                         <td class="text-right adhk-adjust"></td>
-                        <td class="text-right adhk-berjalan"></td>
+                        <td class="text-right adhk-berjalan" id="adhk-berjalan-{{ $region->id }}"></td>
                         <td class="text-right qtoq-inisial"></td>
                         <td class="text-right qtoq-berjalan"></td>
                         <td class="text-right yony-inisial"></td>
@@ -69,10 +69,10 @@
                         <td class="first"><b>Total Kab/Kota</b></td>
                         <td class="text-right adhb-inisial" id="adhb-inisial-total"></td>
                         <td class="text-right adhb-adjust"></td>
-                        <td class="text-right adhb-berjalan"></td>
+                        <td class="text-right adhb-berjalan" id="adhb-berjalan-total"></td>
                         <td class="text-right adhk-inisial" id="adhk-inisial-total"></td>
                         <td class="text-right adhk-adjust"></td>
-                        <td class="text-right adhk-berjalan"></td>
+                        <td class="text-right adhk-berjalan" id="adhk-berjalan-total"></td>
                         <td class="text-right qtoq-inisial"></td>
                         <td class="text-right qtoq-berjalan"></td>
                         <td class="text-right yony-inisial"></td>
@@ -90,10 +90,10 @@
                         <td class="first"><b>Selisih Prov dan Total Kab/Kota</b></td>
                         <td class="text-right adhb-inisial" id="adhb-inisial-selisih"></td>
                         <td class="text-right adhb-adjust"></td>
-                        <td class="text-right adhb-berjalan"></td>
+                        <td class="text-right adhb-berjalan" id="adhb-berjalan-selisih"></td>
                         <td class="text-right adhk-inisial" id="adhk-inisial-selisih"></td>
                         <td class="text-right adhk-adjust"></td>
-                        <td class="text-right adhk-berjalan"></td>
+                        <td class="text-right adhk-berjalan" id="adhk-berjalan-selisih"></td>
                         <td class="text-right qtoq-inisial"></td>
                         <td class="text-right qtoq-berjalan"></td>
                         <td class="text-right yony-inisial"></td>
@@ -111,10 +111,10 @@
                         <td class="first"><b>% Diskrepansi</b></td>
                         <td class="text-right adhb-inisial" id="adhb-inisial-diskrepansi"></td>
                         <td class="text-right adhb-adjust"></td>
-                        <td class="text-right adhb-berjalan"></td>
+                        <td class="text-right adhb-berjalan" id="adhb-berjalan-diskrepansi"></td>
                         <td class="text-right adhk-inisial" id="adhk-inisial-diskrepansi"></td>
                         <td class="text-right adhk-adjust"></td>
-                        <td class="text-right adhk-berjalan"></td>
+                        <td class="text-right adhk-berjalan" id="adhk-berjalan-diskrepansi"></td>
                         <td class="text-right qtoq-inisial"></td>
                         <td class="text-right qtoq-berjalan"></td>
                         <td class="text-right yony-inisial"></td>
@@ -132,13 +132,13 @@
                     <tr>
                         <td class="first">{{ $loop->iteration - 1 . '. ' . $region->name }}</td>
                         <td class="text-right adhb-inisial" id="adhb-inisial-{{ $region->id }}"></td>
-                        <td class="adhb-adjust"><input type="text" class="form-control text-right"
+                        <td class="adhb-adjust"><input id="adhb-adjust-{{ $region->id }}" type="text" class="form-control text-right"
                                 name="adhb-adjust" aria-required="true"></td>
-                        <td class="text-right adhb-berjalan"></td>
+                        <td class="text-right adhb-berjalan" id="adhb-berjalan-{{ $region->id }}"></td>
                         <td class="text-right adhk-inisial" id="adhk-inisial-{{ $region->id }}"></td>
-                        <td class="adhk-adjust"><input type="text" class="form-control text-right"
+                        <td class="adhk-adjust"><input id="adhk-adjust-{{ $region->id }}" type="text" class="form-control text-right"
                                 name="adhk-adjust" aria-required="true"></td>
-                        <td class="text-right adhk-berjalan"></td>
+                        <td class="text-right adhk-berjalan" id="adhk-berjalan-{{ $region->id }}"></td>
                         <td class="text-right qtoq-inisial"></td>
                         <td class="text-right qtoq-berjalan"></td>
                         <td class="text-right yony-inisial"></td>
