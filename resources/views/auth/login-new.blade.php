@@ -90,9 +90,8 @@
     </div>
 
 
-    <script src="{{ url('') }}/login-page/js/jquery-3.3.1.min.js"></script>
-    <script src="{{ url('') }}/login-page/js/popper.min.js"></script>
-    <script src="{{ url('') }}/login-page/js/bootstrap.min.js"></script>
+    <script src="{{ url('') }}/plugins/jquery/jquery.min.js"></script>
+    <script src="{{ url('') }}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="{{ url('') }}/login-page/js/main.js"></script>
 </body>
 

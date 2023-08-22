@@ -52,6 +52,7 @@ class AdjustmentController extends Controller
     {
         $filter = $request->filter;
         $regions = Region::all();
+
         $previous_period = Period::where('type', $filter['type'])->where('year', $filter['year'] - 1)->where('quarter', 4)->where('status', 'Final')->first()->id;
         foreach ($regions as $region) {
             for ($index = 1; $index <= 4; $index++) {

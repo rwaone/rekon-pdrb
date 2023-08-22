@@ -119,37 +119,12 @@ $(document).ready(function () {
     });
 
     $('#filter-button').click(function () {
-
-        $('.loader').removeClass('d-none');
-
-        $.ajax({
-            type: 'POST',
-            url: url_get_adjustment.href,
-            data: {
-                filter: $('#filterForm').serializeArray().reduce(function (obj, item) {
-                    obj[item.name] = item.value;
-                    return obj;
-                }, {}),
-                _token: tokens,
-            },
-
-            success: function (result) {
-                console.log(result);
-                sessionStorage.setItem("data", JSON.stringify(result));
-                fetchData(1)
-
-                Toast.fire({
-                    icon: 'success',
-                    title: 'Berhasil',
-                    text: 'Data berhasil ditampilkan.'
-                })
-
-                $('.loader').addClass('d-none')
-            },
-        });
+        fetchData()
+        printData(1)
     });
 
     $("#adjustment-save").click(function () {
+        $('.loader').removeClass('d-none');
 
         $.ajax({
 
@@ -161,12 +136,13 @@ $(document).ready(function () {
             },
 
             success: function (result) {
-                console.log(result)
                 Toast.fire({
                     icon: 'success',
                     title: 'Berhasil',
                     text: 'Data berhasil disimpan.'
                 })
+                $('.loader').addClass('d-none')
+                fetchData()
 
             },
         });
@@ -174,7 +150,7 @@ $(document).ready(function () {
 
     for (let quarter = 1; quarter <= 4; quarter++) {
         $(`#tab_${quarter}`).click(function () {
-            fetchData(quarter)
+            printData(quarter)
         })
     }
 
@@ -191,7 +167,35 @@ $(document).ready(function () {
         return data
     }
 
-    function fetchData(quarter) {
+    function fetchData(){        
+        $('.loader').removeClass('d-none');
+        $.ajax({
+            type: 'POST',
+            url: url_get_adjustment.href,
+            data: {
+                filter: $('#filterForm').serializeArray().reduce(function (obj, item) {
+                    obj[item.name] = item.value;
+                    return obj;
+                }, {}),
+                _token: tokens,
+            },
+
+            success: function (result) {
+                console.log(result)
+                sessionStorage.setItem("data", JSON.stringify(result));
+
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: 'Data berhasil ditampilkan.'
+                })
+
+                $('.loader').addClass('d-none')
+            },
+        });
+    }
+
+    function printData(quarter) {
         var data = JSON.parse(sessionStorage.getItem("data"));
         $.each(data['current'], function (index, data) {
             $(`#adhb-inisial-${index}`).text(formatRupiah(data[quarter]['adhb'].replaceAll('.', ','), ''))
@@ -203,23 +207,21 @@ $(document).ready(function () {
         })
         $('.tab-item').removeClass('active')
         $(`#tab_${quarter}`).addClass('active')
-        getTotalInisial()
-        getTotalBerjalan()
-        getQtoQinisial()
-        getQtoQberjalan()
-        getYonYinisial()
-        getYonYberjalan()
-        getCtoCinisial()
-        getCtoCberjalan()
-        getLajuQinisial()
-        getLajuQberjalan()
-        getKontribusiInisial()
-        getKontribusiBerjalan()
+        getTotalInisial(quarter, data)
+        getTotalBerjalan(quarter, data)
+        getQtoQinisial(quarter, data)
+        getQtoQberjalan(quarter, data)
+        getYonYinisial(quarter, data)
+        getYonYberjalan(quarter, data)
+        getCtoCinisial(quarter, data)
+        getCtoCberjalan(quarter, data)
+        getLajuQinisial(quarter, data)
+        getLajuQberjalan(quarter, data)
+        getKontribusiInisial(quarter, data)
+        getKontribusiBerjalan(quarter, data)
     }
 
-    function getTotalInisial() {
-        var data = JSON.parse(sessionStorage.getItem("data"));
-        let quarter = getQuarter()
+    function getTotalInisial(quarter, data) {
         $.each(price_list, function (index, price_base) {
             let total = 0
 
@@ -239,9 +241,7 @@ $(document).ready(function () {
         })
     }
 
-    function getTotalBerjalan() {
-        var data = JSON.parse(sessionStorage.getItem("data"));
-        let quarter = getQuarter()
+    function getTotalBerjalan(quarter, data) {
         $.each(price_list, function (index, price_base) {
             let total = 0
 
@@ -265,14 +265,16 @@ $(document).ready(function () {
     $.each(price_list, function (index, price_base) {
         for (let indeks = 2; indeks <= 16; indeks++) {
             $(`#${price_base}-adjust-${indeks}`).keyup(function (e) {
+                var data = JSON.parse(sessionStorage.getItem("data"));
+                let quarter = getQuarter()
                 countBerjalan(price_base, indeks)
-                getTotalBerjalan()
-                getTotalBerjalan()
-                getQtoQberjalan()
-                getYonYberjalan()
-                getCtoCberjalan()
-                getLajuQberjalan()
-                getKontribusiBerjalan()
+                getTotalBerjalan(quarter, data)
+                getTotalBerjalan(quarter, data)
+                getQtoQberjalan(quarter, data)
+                getYonYberjalan(quarter, data)
+                getCtoCberjalan(quarter, data)
+                getLajuQberjalan(quarter, data)
+                getKontribusiBerjalan(quarter, data)
             })
         }
     })
@@ -289,10 +291,8 @@ $(document).ready(function () {
         $(`#${price_base}-berjalan-${indeks}`).text(formatRupiah(String(value.toFixed(2)).replaceAll('.', ','), ''))
     }
 
-    function getQtoQinisial() {
-        var data = JSON.parse(sessionStorage.getItem("data"));
+    function getQtoQinisial(quarter, data) {
         let qtoq = {}
-        let quarter = getQuarter()
         let totalCurrent = 0
         let totalPrevious = 0
         if (quarter == 1) {
@@ -329,10 +329,8 @@ $(document).ready(function () {
         })
     }
 
-    function getQtoQberjalan() {
-        var data = JSON.parse(sessionStorage.getItem("data"));
+    function getQtoQberjalan(quarter, data) {
         let qtoq = {}
-        let quarter = getQuarter()
         let totalCurrent = 0
         let totalPrevious = 0
         if (quarter == 1) {
@@ -371,10 +369,8 @@ $(document).ready(function () {
         })
     }
 
-    function getYonYinisial() {
-        var data = JSON.parse(sessionStorage.getItem("data"));
+    function getYonYinisial(quarter, data) {
         let yony = {}
-        let quarter = getQuarter()
         let totalCurrent = 0
         let totalPrevious = 0
         $.each(data['current'], function (index, value) {
@@ -397,10 +393,8 @@ $(document).ready(function () {
         })
     }
 
-    function getYonYberjalan() {
-        var data = JSON.parse(sessionStorage.getItem("data"));
+    function getYonYberjalan(quarter, data) {
         let yony = {}
-        let quarter = getQuarter()
         let totalCurrent = 0
         let totalPrevious = 0
         $.each(data['current'], function (index, value) {
@@ -424,10 +418,8 @@ $(document).ready(function () {
         })
     }
 
-    function getCtoCinisial() {
-        var data = JSON.parse(sessionStorage.getItem("data"));
+    function getCtoCinisial(quarter, data) {
         let ctoc = {}
-        let quarter = getQuarter()
         let totalCurrent = 0
         let totalPrevious = 0
         $.each(data['current'], function (index, value) {
@@ -454,10 +446,8 @@ $(document).ready(function () {
         })
     }
 
-    function getCtoCberjalan() {
-        var data = JSON.parse(sessionStorage.getItem("data"));
+    function getCtoCberjalan(quarter, data) {
         let ctoc = {}
-        let quarter = getQuarter()
         let totalCurrent = 0
         let totalPrevious = 0
         $.each(data['current'], function (index, value) {
@@ -485,10 +475,8 @@ $(document).ready(function () {
         })
     }
 
-    function getLajuQinisial() {
-        var data = JSON.parse(sessionStorage.getItem("data"));
+    function getLajuQinisial(quarter, data) {
         let lajuQ = {}
-        let quarter = getQuarter()
         let totalCurrent = 0
         let totalPrevious = 0
         if (quarter == 1) {
@@ -539,10 +527,8 @@ $(document).ready(function () {
         })
     }
 
-    function getLajuQberjalan() {
-        var data = JSON.parse(sessionStorage.getItem("data"));
+    function getLajuQberjalan(quarter, data) {
         let lajuQ = {}
-        let quarter = getQuarter()
         let totalCurrent = 0
         let totalPrevious = 0
         if (quarter == 1) {
@@ -595,11 +581,9 @@ $(document).ready(function () {
         })
     }
 
-    function getKontribusiBerjalan() {
-        var data = JSON.parse(sessionStorage.getItem("data"));
+    function getKontribusiBerjalan(quarter, data) {
         let x = {}
         let kontribusi = {}
-        let quarter = getQuarter()
         let total = 0
 
         for (let i = 2; i <= 16; i++) {
@@ -621,11 +605,9 @@ $(document).ready(function () {
         })
     }
 
-    function getKontribusiInisial() {
-        var data = JSON.parse(sessionStorage.getItem("data"));
+    function getKontribusiInisial(quarter, data) {
         let x = {}
         let kontribusi = {}
-        let quarter = getQuarter()
         let total = 0
 
         for (let i = 2; i <= 16; i++) {
