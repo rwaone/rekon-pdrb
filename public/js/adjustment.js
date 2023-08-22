@@ -2,6 +2,15 @@ $(document).ready(function () {
 
     let price_list = ['adhb', 'adhk']
 
+    function changeBackgroundColor(element, value) {
+        element.removeClass('uptrend downtrend')
+        if (value > 0){
+            element.addClass('uptrend')
+        } else if (value < 0){
+            element.addClass('downtrend')
+        }
+    }
+
     //change input value into formated accounting input
     $('input[type="text"]').keyup(function (e) {
         $(this).val(formatRupiah($(this).val(), ''))
@@ -110,6 +119,7 @@ $(document).ready(function () {
     });
 
     $('#filter-button').click(function () {
+
         $('.loader').removeClass('d-none');
 
         $.ajax({
@@ -203,18 +213,22 @@ $(document).ready(function () {
         getCtoCberjalan()
         getLajuQinisial()
         getLajuQberjalan()
+        getKontribusiInisial()
+        getKontribusiBerjalan()
     }
 
     function getTotalInisial() {
+        var data = JSON.parse(sessionStorage.getItem("data"));
+        let quarter = getQuarter()
         $.each(price_list, function (index, price_base) {
             let total = 0
 
             for (let i = 2; i <= 16; i++) {
-                total += Number($(`#${price_base}-inisial-${i}`).text().replaceAll('.', '').replaceAll(',', '.'))
+                total += Number(data['current'][i][quarter][price_base])
             }
             $(`#${price_base}-inisial-total`).text(formatRupiah(String(total.toFixed(2)).replaceAll('.', ','), ''))
 
-            let prov = Number($(`#${price_base}-inisial-1`).text().replaceAll('.', '').replaceAll(',', '.'))
+            let prov = Number(data['current'][1][quarter][price_base])
 
             let selisih = total - prov
             $(`#${price_base}-inisial-selisih`).text(formatRupiah(String(selisih.toFixed(2)).replaceAll('.', ','), ''))
@@ -232,11 +246,12 @@ $(document).ready(function () {
             let total = 0
 
             for (let i = 2; i <= 16; i++) {
-                total += Number(data['current'][i][quarter][price_base])
+                let adjust = Number($(`#${price_base}-adjust-${i}`).val().replaceAll('.', '').replaceAll(',', '.'))
+                total += Number(data['current'][i][quarter][price_base]) + adjust
             }
             $(`#${price_base}-berjalan-total`).text(formatRupiah(String(total.toFixed(2)).replaceAll('.', ','), ''))
 
-            let prov = Number($(`#${price_base}-berjalan-1`).text().replaceAll('.', '').replaceAll(',', '.'))
+            let prov = Number(data['current'][1][quarter][price_base])
 
             let selisih = total - prov
             $(`#${price_base}-berjalan-selisih`).text(formatRupiah(String(selisih.toFixed(2)).replaceAll('.', ','), ''))
@@ -257,6 +272,7 @@ $(document).ready(function () {
                 getYonYberjalan()
                 getCtoCberjalan()
                 getLajuQberjalan()
+                getKontribusiBerjalan()
             })
         }
     })
@@ -309,6 +325,7 @@ $(document).ready(function () {
 
         $.each(qtoq, function (index, value) {
             $(`#qtoq-inisial-${index}`).text(formatRupiah(String(value.toFixed(2)).replaceAll('.', ','), ''))
+            changeBackgroundColor($(`#qtoq-inisial-${index}`), value)
         })
     }
 
@@ -350,6 +367,7 @@ $(document).ready(function () {
 
         $.each(qtoq, function (index, value) {
             $(`#qtoq-berjalan-${index}`).text(formatRupiah(String(value.toFixed(2)).replaceAll('.', ','), ''))
+            changeBackgroundColor($(`#qtoq-berjalan-${index}`), value)
         })
     }
 
@@ -375,6 +393,7 @@ $(document).ready(function () {
 
         $.each(yony, function (index, value) {
             $(`#yony-inisial-${index}`).text(formatRupiah(String(value.toFixed(2)).replaceAll('.', ','), ''))
+            changeBackgroundColor($(`#yony-inisial-${index}`), value)
         })
     }
 
@@ -401,6 +420,7 @@ $(document).ready(function () {
 
         $.each(yony, function (index, value) {
             $(`#yony-berjalan-${index}`).text(formatRupiah(String(value.toFixed(2)).replaceAll('.', ','), ''))
+            changeBackgroundColor($(`#yony-berjalan-${index}`), value)
         })
     }
 
@@ -430,6 +450,7 @@ $(document).ready(function () {
 
         $.each(ctoc, function (index, value) {
             $(`#ctoc-inisial-${index}`).text(formatRupiah(String(value.toFixed(2)).replaceAll('.', ','), ''))
+            changeBackgroundColor($(`#ctoc-inisial-${index}`), value)
         })
     }
 
@@ -444,7 +465,7 @@ $(document).ready(function () {
             let previous = 0
             for (q = 1; q <= quarter; q++) {
                 let adjust = (q == quarter) ? Number($(`#adhk-adjust-${index}`).val().replaceAll('.', '').replaceAll(',', '.')) : Number(value[q]['adjust_adhk'])
-                current += ( Number(value[q]['adhk']) + adjust )
+                current += (Number(value[q]['adhk']) + adjust)
                 previous += Number(data['previous'][index][q]['adhk'])
             }
             let result = (current - previous) / previous * 100
@@ -460,6 +481,7 @@ $(document).ready(function () {
 
         $.each(ctoc, function (index, value) {
             $(`#ctoc-berjalan-${index}`).text(formatRupiah(String(value.toFixed(2)).replaceAll('.', ','), ''))
+            changeBackgroundColor($(`#ctoc-berjalan-${index}`), value)
         })
     }
 
@@ -513,6 +535,7 @@ $(document).ready(function () {
 
         $.each(lajuQ, function (index, value) {
             $(`#lajuQ-inisial-${index}`).text(formatRupiah(String(value.toFixed(2)).replaceAll('.', ','), ''))
+            changeBackgroundColor($(`#lajuQ-inisial-${index}`), value)
         })
     }
 
@@ -568,6 +591,58 @@ $(document).ready(function () {
 
         $.each(lajuQ, function (index, value) {
             $(`#lajuQ-berjalan-${index}`).text(formatRupiah(String(value.toFixed(2)).replaceAll('.', ','), ''))
+            changeBackgroundColor($(`#lajuQ-berjalan-${index}`), value)
+        })
+    }
+
+    function getKontribusiBerjalan() {
+        var data = JSON.parse(sessionStorage.getItem("data"));
+        let x = {}
+        let kontribusi = {}
+        let quarter = getQuarter()
+        let total = 0
+
+        for (let i = 2; i <= 16; i++) {
+            let adjust = Number($(`#adhb-adjust-${i}`).val().replaceAll('.', '').replaceAll(',', '.'))
+            x[i] = Number(data['current'][i][quarter]['adhb']) + adjust
+            total += x[i]
+        }
+        
+        x['total'] = total
+
+        $.each(x, function (index, value) {
+
+                let result = value / total * 100
+                kontribusi[index] = result
+        })
+
+        $.each(kontribusi, function (index, value) {
+            $(`#kontribusi-berjalan-${index}`).text(formatRupiah(String(value.toFixed(2)).replaceAll('.', ','), ''))
+        })
+    }
+
+    function getKontribusiInisial() {
+        var data = JSON.parse(sessionStorage.getItem("data"));
+        let x = {}
+        let kontribusi = {}
+        let quarter = getQuarter()
+        let total = 0
+
+        for (let i = 2; i <= 16; i++) {
+            x[i] = Number(data['current'][i][quarter]['adhb'])
+            total += x[i]
+        }
+        
+        x['total'] = total
+
+        $.each(x, function (index, value) {
+
+                let result = value / total * 100
+                kontribusi[index] = result
+        })
+
+        $.each(kontribusi, function (index, value) {
+            $(`#kontribusi-inisial-${index}`).text(formatRupiah(String(value.toFixed(2)).replaceAll('.', ','), ''))
         })
     }
 
@@ -576,21 +651,21 @@ $(document).ready(function () {
         scrollFunction();
     };
 
-    function scrollFunction() {
-        if (
-            document.body.scrollTop > 20 ||
-            document.documentElement.scrollTop > 20
-        ) {
-            mybutton.style.display = "block";
-        } else {
-            mybutton.style.display = "none";
-        }
+function scrollFunction() {
+    if (
+        document.body.scrollTop > 20 ||
+        document.documentElement.scrollTop > 20
+    ) {
+        mybutton.style.display = "block";
+    } else {
+        mybutton.style.display = "none";
     }
-    // When the user clicks on the button, scroll to the top of the document
-    mybutton.addEventListener("click", backToTop);
+}
+// When the user clicks on the button, scroll to the top of the document
+mybutton.addEventListener("click", backToTop);
 
-    function backToTop() {
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
-    }
+function backToTop() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
 });

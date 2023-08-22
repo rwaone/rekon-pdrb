@@ -111,6 +111,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ url('pengeluaran/adjustment') }}"
+                                class="nav-link {{ Request::is('pengeluaran/adjustment') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Adjustment</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ url('pengeluaran/daftarPokok') }}"
                                 class="nav-link {{ Request::is('pengeluaran/daftarPokok') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>

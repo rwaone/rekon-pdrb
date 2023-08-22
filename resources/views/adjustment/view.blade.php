@@ -9,6 +9,15 @@
         <link rel="stylesheet" href="{{ url('') }}/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
         <link rel="stylesheet" href="{{ url('') }}/plugins/select2/css/select2.min.css">
         <style type="text/css">
+            td.uptrend {
+                background-color: #09c140;
+                color: aliceblue;
+            }
+
+            td.downtrend {
+                background-color: red;
+                color: aliceblue;
+            }
         </style>
     </x-slot>
 
@@ -18,11 +27,7 @@
 
     @include('adjustment.filter')
 
-    @if ($type == 'Lapangan Usaha')
-        <div class="card">@include('adjustment.table')</div>
-    @elseif ($type == 'Pengeluaran')
-        <div class="card"></div>
-    @endif
+    <div class="card">@include('adjustment.table')</div>
 
     <div class="card save-container">
         <div class="ml-auto">

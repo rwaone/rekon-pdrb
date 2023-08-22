@@ -9,7 +9,7 @@
 <div class="card-body p-3">
     <form action="adjustForm" method="post">
         <table class="table table-bordered table-responsive" id="adjust-table">
-            <thead class="text-center" style="background-color: #09c140; color:aliceblue;">
+            <thead class="text-center" style="background-color: #09b5c1; color:aliceblue;">
                 <tr>
                     <th class="first" rowspan="2" style="min-width: 300px">Wilayah</th>
                     <th colspan="3">ADHB</th>

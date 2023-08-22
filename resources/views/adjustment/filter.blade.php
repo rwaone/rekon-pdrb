@@ -38,9 +38,9 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" for="subsector">Lapangan Usaha:</label>
+                    <label class="col-sm-2 col-form-label" for="subsector"> {{$type == 'Pengeluaran' ? 'Komponen' : 'Lapangan Usaha'}}:</label>
                     <select id="subsector" class="form-control col-sm-9 select2bs4" name="subsector" required>
-                        <option value="">Pilih Lapangan Usaha</option>                        
+                        <option value="">Pilih {{$type == 'Pengeluaran' ? 'Komponen' : 'Lapangan Usaha'}}</option>                        
                         @foreach ($subsectors as $subsector)
                             <option value="{{ $subsector->id }}">{{$loop->iteration . '. ' . $subsector->name }}</option>
                         @endforeach

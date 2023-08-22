@@ -19,8 +19,9 @@ class AdjustmentController extends Controller
     public function index()
     {
         $regions = Region::getMyRegion();
-        $type = 'Lapangan Usaha';
-        $subsectors = Subsector::where('type', 'Lapangan Usaha')->get();
+        $segment = \Request::segment(1);
+        $type = ( $segment == 'pengeluaran') ? 'Pengeluaran' : 'Lapangan Usaha';
+        $subsectors = Subsector::where('type', $type)->get();
         return view('adjustment.view', [
             'regions' => $regions,
             'subsectors' => $subsectors,
