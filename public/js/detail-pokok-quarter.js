@@ -252,7 +252,7 @@ function getGrowthQ(data, befores, type) {
 
     for (let q = 1; q <= 4; q++) {
         for (let i = 1; i <= rowComponent; i++) {
-            $(`#value-${i}-${q}`).text(data['pdrb-' + q][i - 1]["adhk"]);
+            $(`#value-${i}-${q}`).text(data["pdrb-" + q][i - 1]["adhk"]);
         }
     }
     getSummarise(types);
@@ -339,7 +339,9 @@ function getGrowthY(data, befores, type) {
 
     for (let q = 1; q <= 4; q++) {
         for (let i = 1; i <= rowComponent; i++) {
-            $(`#value-${i}-${q}`).text(formatRupiah(data['pdrb-' + q][i - 1]["adhk"].replace('.', ',')));
+            $(`#value-${i}-${q}`).text(
+                formatRupiah(data["pdrb-" + q][i - 1]["adhk"].replace(".", ","))
+            );
         }
     }
     getSummarise(types);
@@ -357,7 +359,11 @@ function getGrowthY(data, befores, type) {
     if (status === 2) {
         for (let q = 1; q <= 4; q++) {
             for (let i = 1; i <= rowComponent; i++) {
-                $(`#value-${i}-${q}`).text(formatRupiah(befores['pdrb-' + q][i - 1]["adhk"].replace('.', ',')));
+                $(`#value-${i}-${q}`).text(
+                    formatRupiah(
+                        befores["pdrb-" + q][i - 1]["adhk"].replace(".", ",")
+                    )
+                );
             }
         }
         getSummarise(types);
@@ -365,17 +371,14 @@ function getGrowthY(data, befores, type) {
         for (let i = 1; i <= 4; i++) {
             before[i] = getCells(i);
         }
-
     }
 
     for (var i = 1; i <= 4; i++) {
-        let result = []
+        let result = [];
         for (let j = 0; j <= details[i].length; j++) {
-
             let score = ((details[i][j] / before[i][j]) * 100 - 100).toFixed(2);
 
             result[j] = !isFinite(score) || isNaN(score) ? "-" : score;
-
         }
         growth[i] = result;
     }
@@ -421,7 +424,9 @@ function getGrowthC(data, befores, type) {
 
     for (let q = 1; q <= 4; q++) {
         for (let i = 1; i <= rowComponent; i++) {
-            $(`#value-${i}-${q}`).text(formatRupiah(data['pdrb-' + q][i - 1]["adhk"].replace('.', ',')));
+            $(`#value-${i}-${q}`).text(
+                formatRupiah(data["pdrb-" + q][i - 1]["adhk"].replace(".", ","))
+            );
         }
     }
     getSummarise(types);
@@ -439,7 +444,11 @@ function getGrowthC(data, befores, type) {
     if (status === 2) {
         for (let q = 1; q <= 4; q++) {
             for (let i = 1; i <= rowComponent; i++) {
-                $(`#value-${i}-${q}`).text(formatRupiah(befores['pdrb-' + q][i - 1]["adhk"].replace('.', ',')));
+                $(`#value-${i}-${q}`).text(
+                    formatRupiah(
+                        befores["pdrb-" + q][i - 1]["adhk"].replace(".", ",")
+                    )
+                );
             }
         }
         getSummarise(types);
@@ -447,19 +456,18 @@ function getGrowthC(data, befores, type) {
         for (let i = 1; i <= 4; i++) {
             before[i] = getCells(i);
         }
-
     }
 
     for (var i = 1; i <= 4; i++) {
-        let result = []
+        let result = [];
         for (let j = 0; j < details[i].length; j++) {
-            let score = 0
-            let sumValue = 0
-            let sumBefore = 0
+            let score = 0;
+            let sumValue = 0;
+            let sumBefore = 0;
 
             for (let length = 1; length <= i; length++) {
-                sumValue += details[length][j]
-                sumBefore += before[length][j]
+                sumValue += details[length][j];
+                sumBefore += before[length][j];
             }
             score = ((sumValue / sumBefore) * 100 - 100).toFixed(2);
 
@@ -509,7 +517,9 @@ function getSOGQ(data, befores, type) {
 
     for (let q = 1; q <= 4; q++) {
         for (let i = 1; i <= rowComponent; i++) {
-            $(`#value-${i}-${q}`).text(formatRupiah(data['pdrb-' + q][i - 1]["adhk"].replace('.', ',')));
+            $(`#value-${i}-${q}`).text(
+                formatRupiah(data["pdrb-" + q][i - 1]["adhk"].replace(".", ","))
+            );
         }
     }
     getSummarise(types);
@@ -527,7 +537,11 @@ function getSOGQ(data, befores, type) {
     if (status === 2) {
         for (let q = 1; q <= 4; q++) {
             for (let i = 1; i <= rowComponent; i++) {
-                $(`#value-${i}-${q}`).text(formatRupiah(befores['pdrb-' + q][i - 1]["adhk"].replace('.', ',')));
+                $(`#value-${i}-${q}`).text(
+                    formatRupiah(
+                        befores["pdrb-" + q][i - 1]["adhk"].replace(".", ",")
+                    )
+                );
             }
         }
         getSummarise(types);
@@ -538,22 +552,27 @@ function getSOGQ(data, befores, type) {
     }
 
     for (var i = 1; i <= 4; i++) {
-        let result = []
-        let previous_total
+        let result = [];
+        let previous_total;
         if (i == 1) {
-            previous_total = previous[4][previous[i].length - 1]
+            previous_total = previous[4][previous[i].length - 1];
         } else {
-            previous_total = current[i-1][current[i].length - 1]
+            previous_total = current[i - 1][current[i].length - 1];
         }
         for (let j = 0; j < current[i].length; j++) {
-            let sog
+            let sog;
             if (i == 1) {
-                sog = ((100 * (current[i][j] - previous[4][j]) / previous_total)).toFixed(2);
+                sog = (
+                    (100 * (current[i][j] - previous[4][j])) /
+                    previous_total
+                ).toFixed(2);
             } else {
-                sog = ((100 * (current[i][j] - current[i-1][j]) / previous_total)).toFixed(2);
+                sog = (
+                    (100 * (current[i][j] - current[i - 1][j])) /
+                    previous_total
+                ).toFixed(2);
             }
             result[j] = !isFinite(sog) || isNaN(sog) ? "-" : sog;
-
         }
         growth[i] = result;
     }
@@ -599,7 +618,9 @@ function getSOGY(data, befores, type) {
 
     for (let q = 1; q <= 4; q++) {
         for (let i = 1; i <= rowComponent; i++) {
-            $(`#value-${i}-${q}`).text(formatRupiah(data['pdrb-' + q][i - 1]["adhk"].replace('.', ',')));
+            $(`#value-${i}-${q}`).text(
+                formatRupiah(data["pdrb-" + q][i - 1]["adhk"].replace(".", ","))
+            );
         }
     }
     getSummarise(types);
@@ -617,7 +638,11 @@ function getSOGY(data, befores, type) {
     if (status === 2) {
         for (let q = 1; q <= 4; q++) {
             for (let i = 1; i <= rowComponent; i++) {
-                $(`#value-${i}-${q}`).text(formatRupiah(befores['pdrb-' + q][i - 1]["adhk"].replace('.', ',')));
+                $(`#value-${i}-${q}`).text(
+                    formatRupiah(
+                        befores["pdrb-" + q][i - 1]["adhk"].replace(".", ",")
+                    )
+                );
             }
         }
         getSummarise(types);
@@ -625,18 +650,18 @@ function getSOGY(data, befores, type) {
         for (let i = 1; i <= 4; i++) {
             previous[i] = getCells(i);
         }
-
     }
 
     for (var i = 1; i <= 4; i++) {
-        let result = []
-        let previous_total = previous[i][previous[i].length - 1]
+        let result = [];
+        let previous_total = previous[i][previous[i].length - 1];
         for (let j = 0; j < current[i].length; j++) {
-
-            let sog = ((100 * (current[i][j] - previous[i][j]) / previous_total)).toFixed(2);
+            let sog = (
+                (100 * (current[i][j] - previous[i][j])) /
+                previous_total
+            ).toFixed(2);
 
             result[j] = !isFinite(sog) || isNaN(sog) ? "-" : sog;
-
         }
         growth[i] = result;
     }
@@ -763,8 +788,8 @@ function getLajuQ(idx) {
     });
     $("tbody td:nth-child(n+2):nth-child(-n+6)").addClass("view-laju");
     const growth = [];
-    const current = idx[0]
-    const previous = idx[1]
+    const current = idx[0];
+    const previous = idx[1];
     for (let i = 1; i <= 4; i++) {
         const result = current[i].map((value, j) => {
             let score;
@@ -798,8 +823,8 @@ function getLajuY(idx) {
     });
     $("tbody td:nth-child(n+2):nth-child(-n+6)").addClass("view-laju");
     const growth = [];
-    const current = idx[0]
-    const previous = idx[1]
+    const current = idx[0];
+    const previous = idx[1];
     for (let i = 1; i <= 4; i++) {
         const result = current[i].map((value, j) => {
             let score = ((value / previous[i][j]) * 100 - 100).toFixed(2);
@@ -844,6 +869,7 @@ function getTotal() {
         }
     });
 }
+
 $("#download-all").on("click", async function (e) {
     e.preventDefault();
     $(".loader").removeClass("d-none");
@@ -868,8 +894,8 @@ function calculateSector(sector) {
 //change the value of inputed number to Rupiah
 function formatRupiah(angka, prefix) {
     var number_string = String(angka)
-        .replace(/[^\-,\d]/g, "")
-        .toString(),
+            .replace(/[^\-,\d]/g, "")
+            .toString(),
         isNegative = false;
 
     if (number_string.startsWith("-")) {
@@ -896,6 +922,26 @@ function formatRupiah(angka, prefix) {
     return prefix == undefined ? rupiah : rupiah ? "Rp. " + rupiah : "";
 }
 
+function toFixedView() {
+    $("#rekon-view tbody tr").each(function (index) {
+        let data = {};
+        $(this)
+            .find("td:not(:first-child)")
+            .each(function (indeX) {
+                let data = $(this)
+                    .text()
+                    .replaceAll(/[.]/g, "")
+                    .replaceAll(/[,]/g, ".");
+                let Y = $(this).text(
+                    formatRupiah(
+                        Number(data).toFixed(2).replaceAll(/[.]/g, ",")
+                    )
+                );
+                // $(this).text(Y)
+            });
+    });
+}
+
 function fetchData() {
     return new Promise(function (resolve, reject) {
         $.ajax({
@@ -917,6 +963,7 @@ function fetchData() {
 $(document).ready(async function () {
     const data = await fetchData();
     getAdhb(data.data, types);
+    toFixedView();
 });
 
 //change
@@ -924,9 +971,152 @@ $(document).ready(function () {
     let tbody = $("#rekon-view").find("tbody");
     var datas = JSON.parse(sessionStorage.getItem("data"));
     var befores = JSON.parse(sessionStorage.getItem("before"));
+    $("#select-cat").on("change", function (e) {
+        e.preventDefault();
+        let checkVal = $(this).val();
+        console.log(checkVal);
+        switch (checkVal) {
+            case "nav-adhb":
+                resetMenu("nav-adhb");
+                e.preventDefault();
+                $(".loader").removeClass("d-none");
+                setTimeout(function () {
+                    getAdhb(datas, types);
+                    showOff();
+                    toFixedView();
+                    $(".loader").addClass("d-none");
+                }, 500);
+                break;
+            case "nav-adhk":
+                resetMenu("nav-adhk");
+                e.preventDefault();
+                $(".loader").removeClass("d-none");
+                setTimeout(function () {
+                    getAdhk(datas, types);
+                    showOff();
+                    toFixedView();
+                    $(".loader").addClass("d-none");
+                }, 500);
+                break;
+            case "nav-distribusi":
+                resetMenu("nav-distribusi");
+                e.preventDefault();
+                $(".loader").removeClass("d-none");
+                setTimeout(function () {
+                    getAdhb(datas, types);
+                    $("tbody td:nth-child(n+2):nth-child(-n+6)").removeClass(
+                        function (index, className) {
+                            return (
+                                className.match(/(^|\s)view-\S+/g) || []
+                            ).join(" ");
+                        }
+                    );
+                    for (let q = 1; q <= 5; q++) {
+                        for (let i = 0; i <= 55; i++) {
+                            $(`#value-${i}-${q}`).addClass(
+                                `view-distribusi-${q}`
+                            );
+                            $(`#sector-${i}-${q}`).addClass(
+                                `view-distribusi-${q}`
+                            );
+                        }
+                        for (let index of catArray) {
+                            $(`#categories-${index}-${q}`).addClass(
+                                `view-distribusi-${q}`
+                            );
+                        }
+                    }
+                    tbody.find(".total-column").each(function () {
+                        $(this).addClass("view-distribusi-total");
+                    });
+                    getDist();
 
+                    showOff();
+                    $(".loader").addClass("d-none");
+                }, 500);
+                break;
+            case "nav-qtoq":
+                resetMenu("nav-qtoq");
+                e.preventDefault();
+                $(".loader").removeClass("d-none");
+                setTimeout(function () {
+                    getGrowthQ(datas, befores, types);
+                    $(".loader").addClass("d-none");
+                }, 500);
+                break;
+            case "nav-ytoy":
+                resetMenu("nav-ytoy");
+                e.preventDefault();
+                $(".loader").removeClass("d-none");
+                setTimeout(function () {
+                    getGrowthY(datas, befores, types);
+                    $(".loader").addClass("d-none");
+                }, 500);
+                break;
+            case "nav-ctoc":
+                resetMenu("nav-ctoc");
+                e.preventDefault();
+                $(".loader").removeClass("d-none");
+                setTimeout(function () {
+                    getGrowthC(datas, befores, types);
+                    $(".loader").addClass("d-none");
+                }, 500);
+                break;
+            case "nav-indeks":
+                resetMenu("nav-indeks");
+                e.preventDefault();
+                $(".loader").removeClass("d-none");
+                setTimeout(function () {
+                    getIndex(datas, befores, types);
+                    showOff();
+                    $(".loader").addClass("d-none");
+                }, 500);
+                break;
+            case "nav-lajuQ":
+                resetMenu("nav-lajuQ");
+                e.preventDefault();
+                $(".loader").removeClass("d-none");
+                setTimeout(function () {
+                    let idx = getIndex(datas, befores, types);
+                    getLajuQ(idx);
+                    $(".loader").addClass("d-none");
+                }, 500);
+                break;
+            case "nav-lajuY":
+                resetMenu("nav-lajuY");
+                e.preventDefault();
+                $(".loader").removeClass("d-none");
+                setTimeout(function () {
+                    let idx = getIndex(datas, befores, types);
+                    getLajuY(idx);
+                    $(".loader").addClass("d-none");
+                }, 500);
+                break;
+            case "nav-sogQ":
+                resetMenu("nav-sogQ");
+                e.preventDefault();
+                $(".loader").removeClass("d-none");
+                setTimeout(function () {
+                    getSOGQ(datas, befores, types);
+                    $(".loader").addClass("d-none");
+                }, 500);
+                break;
+            case "nav-sogY":
+                resetMenu("nav-sogY");
+                e.preventDefault();
+                $(".loader").removeClass("d-none");
+                setTimeout(function () {
+                    getSOGY(datas, befores, types);
+                    $(".loader").addClass("d-none");
+                }, 500);
+                break;
+            default:
+                break;
+        }
+    });
+    
     $("#nav-distribusi").on("click", function (e) {
-        resetMenu('nav-distribusi');
+        resetMenu("nav-distribusi");
         e.preventDefault();
         $(".loader").removeClass("d-none");
         setTimeout(function () {
@@ -959,30 +1149,32 @@ $(document).ready(function () {
     });
 
     $("#nav-adhb").on("click", function (e) {
-        resetMenu('nav-adhb');
+        resetMenu("nav-adhb");
         e.preventDefault();
         $(".loader").removeClass("d-none");
         setTimeout(function () {
             getAdhb(datas, types);
             showOff();
+            toFixedView();
             $(".loader").addClass("d-none");
         }, 500);
     });
 
     $("#nav-adhk").on("click", function (e) {
-        resetMenu('nav-adhk');
+        resetMenu("nav-adhk");
         e.preventDefault();
         $(".loader").removeClass("d-none");
         setTimeout(function () {
             getAdhk(datas, types);
             showOff();
+            toFixedView();
             $(".loader").addClass("d-none");
         }, 500);
     });
 
     //belum tau gimana
     $("#nav-qtoq").on("click", function (e) {
-        resetMenu('nav-qtoq');
+        resetMenu("nav-qtoq");
         e.preventDefault();
         $(".loader").removeClass("d-none");
         setTimeout(function () {
@@ -992,7 +1184,7 @@ $(document).ready(function () {
     });
 
     $("#nav-ytoy").on("click", function (e) {
-        resetMenu('nav-ytoy');
+        resetMenu("nav-ytoy");
         e.preventDefault();
         $(".loader").removeClass("d-none");
         setTimeout(function () {
@@ -1002,7 +1194,7 @@ $(document).ready(function () {
     });
 
     $("#nav-ctoc").on("click", function (e) {
-        resetMenu('nav-ctoc');
+        resetMenu("nav-ctoc");
         e.preventDefault();
         $(".loader").removeClass("d-none");
         setTimeout(function () {
@@ -1013,7 +1205,7 @@ $(document).ready(function () {
 
     //indeks implisit adhb/adhk
     $("#nav-indeks").on("click", function (e) {
-        resetMenu('nav-indeks');
+        resetMenu("nav-indeks");
         e.preventDefault();
         $(".loader").removeClass("d-none");
         setTimeout(function () {
@@ -1025,7 +1217,7 @@ $(document).ready(function () {
 
     //laju index
     $("#nav-lajuQ").on("click", function (e) {
-        resetMenu('nav-lajuQ');
+        resetMenu("nav-lajuQ");
         e.preventDefault();
         $(".loader").removeClass("d-none");
         setTimeout(function () {
@@ -1036,7 +1228,7 @@ $(document).ready(function () {
     });
 
     $("#nav-lajuY").on("click", function (e) {
-        resetMenu('nav-lajuY');
+        resetMenu("nav-lajuY");
         e.preventDefault();
         $(".loader").removeClass("d-none");
         setTimeout(function () {
@@ -1047,7 +1239,7 @@ $(document).ready(function () {
     });
 
     $("#nav-sogQ").on("click", function (e) {
-        resetMenu('nav-sogQ');
+        resetMenu("nav-sogQ");
         e.preventDefault();
         $(".loader").removeClass("d-none");
         setTimeout(function () {
@@ -1057,7 +1249,7 @@ $(document).ready(function () {
     });
 
     $("#nav-sogY").on("click", function (e) {
-        resetMenu('nav-sogY');
+        resetMenu("nav-sogY");
         e.preventDefault();
         $(".loader").removeClass("d-none");
         setTimeout(function () {
@@ -1067,7 +1259,7 @@ $(document).ready(function () {
     });
 
     function resetMenu(menu) {
-        $('.tab-item').removeClass('active');
-        $('#' + menu).addClass('active');
+        $(".tab-item").removeClass("active");
+        $("#" + menu).addClass("active");
     }
 });
