@@ -228,21 +228,39 @@ class LapanganController extends Controller
         $periods = [];
         $befores = [];
 
-        for ($index = 1; $index <= 4; $index++) {            
-            $befores['pdrb-' . $index] = Pdrb::select('subsector_id', 'adhk', 'adhb')
-                ->where('period_id', $period_before->id)
-                ->where('region_id', $region_id)
-                ->where('quarter', $index)
-                ->get();
+        for ($index = 1; $index <= 4; $index++) {
+            if ($period_before) {
+                $befores['pdrb-' . $index] = Pdrb::select('subsector_id', 'adhk', 'adhb')
+                    ->where('period_id', $period_before->id)
+                    ->where('region_id', $region_id)
+                    ->where('quarter', $index)
+                    ->get();
+            }
+            // else {
+            //     $defaultValues = [
+            //         'subsector_id' => null,
+            //         'adhk' => '-',
+            //         'adhb' => '-',
+            //     ];
+            //     $befores['pdrb-' . $index] = array_fill(0, 55, $defaultValues);
+            // }
 
-            if ($index <= $quarter) {
+            // if ($index <= $quarter) {
                 $datas['pdrb-' . $index] = Pdrb::select('subsector_id', 'adhk', 'adhb')
                     ->where('quarter', $index)
                     ->where('period_id', $period_id)
                     ->where('region_id', $region_id)
                     ->orderBy('subsector_id')
                     ->get();
-            }
+                if (count($datas['pdrb-' . $index]) == 0) {
+                    $defaultValues = [
+                        'subsector_id' => null,
+                        'adhk' => '-',
+                        'adhb' => '-',
+                    ];
+                    $datas['pdrb-' . $index] = array_fill(0, 55, $defaultValues);
+                }
+            // }
         }
         return response()->json([
             'data' => $datas,

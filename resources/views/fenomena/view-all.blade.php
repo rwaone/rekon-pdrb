@@ -69,27 +69,34 @@
                 min-width: 480px;
                 max-width: 480px;
                 padding: 0rem !important;
-                word-break:break-all;
+                /* word-break:break-all; */
                 cursor: pointer;
-            }
-            
-            .table-data-wrapper td span {
-                display:block;
+                max-height: 100px;
                 overflow: hidden;
-                text-overflow: ellipsis;
-                /* white-space: nowrap; */
-                padding-left: 1.2rem;
-                
+                position: relative;
             }
 
-            .table-data-wrapper td:hover span {
-                /* overflow: visible; */
-                /* height: auto; */
-                background-color:whitesmoke ! important;
-                contain: paint;
-                display: inline-flex;
-                min-width: 100%;
-                /* text-align: right ! important; */
+            .table-data-wrapper td span {
+                display: block;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                padding-left: 1.2rem;
+                text-align: justify;
+
+            }
+
+            .modal {
+                position: absolute;
+                background-color: white;
+                border: 1px solid gray;
+                padding: 10px;
+                display: none;
+                z-index: 999;
+                left: 0;
+                top: 0;
+                width: auto;
+                overflow: auto;
             }
 
             .table-data-wrapper td:not(:last-child),
@@ -336,6 +343,23 @@
             const url_fenomena_quarter = new URL("{{ route('fenomenaQuarter') }}")
             const tokens = '{{ csrf_token() }}'
 
+            $(document).ready(function() {
+                $("#rekon-view tr").find("td").hover(
+                    function() {
+                        let textIn = $(this).find("span").text();
+                        let modal = $("<div class='modal'></div>").text(textIn);
+                        $(this).append(modal);
+                        // $("#rekon-view").append(modal);
+                        modal.show();
+                        console.log(textIn);
+                    },
+                    function() {
+                        let textOut = $(this).text();
+                        $(".modal").remove();
+                        console.log(textOut);
+                    }
+                )
+            })
             $(function() {
                 $('[data-toggle="tooltip"]').tooltip()
             })
