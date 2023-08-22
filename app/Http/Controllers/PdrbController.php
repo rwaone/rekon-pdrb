@@ -95,7 +95,7 @@ class PdrbController extends Controller
 
     public function monitoring()
     {
-        $quarter = [ 1, 2, 3, 4];
+        $quarter = [1, 2, 3, 4];
         $regions = Region::getMyRegion();
         // $this_year = date('Y');
         $year_active = Period::where('status', 'Aktif')->get('year');
@@ -156,12 +156,37 @@ class PdrbController extends Controller
     {
         $filter = $request->filter;
         $subsectors = Subsector::where('type', $filter['type'])->get();
-        $previous_periodId = Period::where('type', $filter['type'])->where('year', $filter['year'] - 1)->where('quarter', 4)->where('status', 'Final')->first()->id;
+        $previous_period = Period::where('type', $filter['type'])->where('year', $filter['year'] - 1)->where('quarter', 4)->where('status', 'Final')->first();
+        
+        if (isset($previous_period)) {
+            $previous_periodId = $previous_period->id;
+            $previous_data = [];
+            for ($index = 1; $index <= 4; $index++) {
+                $previous_data[$index] = Pdrb::where('period_id', $previous_periodId)->where('region_id', $filter['region_id'])->where('quarter', $index)->orderBy('subsector_id')->get();
+            }
+        } else {
+            for ($index = 1; $index <= 4; $index++) {
+                $inputData = [];
+                foreach ($subsectors as $subsector) {
+                    $singleData = [
+                        'subsector_id' => $subsector->id,
+                        'type' => $filter['type'],
+                        'year' => $filter['year'] - 1,
+                        'quarter' => $index,
+                        'region_id' => $filter['region_id'],
+                        'adhb' => null,
+                        'adhk' => null,
+                    ];
+                    array_push($inputData, $singleData);
+                }
+                $previous_data[$index] = (object) $inputData;
+            }
+        }
+
+
         $current_data = [];
-        $previous_data = [];
 
         for ($index = 1; $index <= 4; $index++) {
-            $previous_data[$index] = Pdrb::where('period_id', $previous_periodId)->where('region_id', $filter['region_id'])->where('quarter', $index)->orderBy('subsector_id')->get();
             if ($index <= $filter['quarter']) {
                 $query_data[$index] = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->where('quarter', $index)->orderBy('subsector_id')->get();
                 if (sizeof($query_data[$index]) == 0) {
