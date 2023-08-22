@@ -97,8 +97,8 @@
             const url_fetch_year = new URL("{{ route('fetchYear') }}")
             const url_fetch_quarter = new URL("{{ route('fetchQuarter') }}")
             const url_fetch_period = new URL("{{ route('fetchPeriod') }}")
-            const url_save_full_data = new URL("{{ route('saveFullData') }}")
-            const url_get_full_data = new URL("{{ route('get-adjustment') }}")
+            const url_save_adjustment = new URL("{{ route('save-adjustment') }}")
+            const url_get_adjustment = new URL("{{ route('get-adjustment') }}")
             const url_copy_data = new URL("{{ route('copyData') }}")
 
             const Toast = Swal.mixin({

@@ -114,7 +114,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'POST',
-            url: url_get_full_data.href,
+            url: url_get_adjustment.href,
             data: {
                 filter: $('#filterForm').serializeArray().reduce(function (obj, item) {
                     obj[item.name] = item.value;
@@ -140,28 +140,24 @@ $(document).ready(function () {
     });
 
     $("#adjustment-save").click(function () {
+
         $.ajax({
+
             type: 'POST',
-            url: url_save_full_data.href,
+            url: url_save_adjustment.href,
             data: {
-                filter: $('#filterForm').serializeArray().reduce(function (obj, item) {
-                    obj[item.name] = item.value;
-                    return obj;
-                }, {}),
-                adjustment: $('#adjustForm').serializeArray().reduce(function (obj, item) {
-                    obj[item.name] = item.value;
-                    return obj;
-                }, {}),
+                adjustment: JSON.stringify(dataSave(getQuarter())),
                 _token: tokens,
             },
 
             success: function (result) {
-
+                console.log(result)
                 Toast.fire({
                     icon: 'success',
                     title: 'Berhasil',
                     text: 'Data berhasil disimpan.'
                 })
+
             },
         });
     });
@@ -169,11 +165,21 @@ $(document).ready(function () {
     for (let quarter = 1; quarter <= 4; quarter++) {
         $(`#tab_${quarter}`).click(function () {
             fetchData(quarter)
-            $('.tab-item').removeClass('active')
-            $(`#tab_${quarter}`).addClass('active')
         })
     }
 
+    function dataSave(quarter) {
+        var query = JSON.parse(sessionStorage.getItem("data"));
+        let data = {}
+        for (let region = 2; region <= 16; region++) {
+            let array = {}
+            array['pdrb_id'] = query['current'][region][quarter]['id']
+            array['adhb'] = Number($(`#adhb-adjust-${region}`).val().replaceAll('.', '').replaceAll(',', '.'))
+            array['adhk'] = Number($(`#adhk-adjust-${region}`).val().replaceAll('.', '').replaceAll(',', '.'))
+            data[region] = array
+        }
+        return data
+    }
 
     function fetchData(quarter) {
         var data = JSON.parse(sessionStorage.getItem("data"));
@@ -184,9 +190,19 @@ $(document).ready(function () {
             $(`#adhk-berjalan-${index}`).text(formatRupiah(data[quarter]['adhk'].replaceAll('.', ','), ''))
             $(`#adhb-adjust-${index}`).val(formatRupiah(data[quarter]['adjust_adhb'].replaceAll('.', ','), ''))
             $(`#adhk-adjust-${index}`).val(formatRupiah(data[quarter]['adjust_adhk'].replaceAll('.', ','), ''))
-            getTotalInisial()
-            getTotalBerjalan()
         })
+        $('.tab-item').removeClass('active')
+        $(`#tab_${quarter}`).addClass('active')
+        getTotalInisial()
+        getTotalBerjalan()
+        getQtoQinisial()
+        getQtoQberjalan()
+        getYonYinisial()
+        getYonYberjalan()
+        getCtoCinisial()
+        getCtoCberjalan()
+        getLajuQinisial()
+        getLajuQberjalan()
     }
 
     function getTotalInisial() {
@@ -210,11 +226,13 @@ $(document).ready(function () {
     }
 
     function getTotalBerjalan() {
+        var data = JSON.parse(sessionStorage.getItem("data"));
+        let quarter = getQuarter()
         $.each(price_list, function (index, price_base) {
             let total = 0
 
             for (let i = 2; i <= 16; i++) {
-                total += Number($(`#${price_base}-berjalan-${i}`).text().replaceAll('.', '').replaceAll(',', '.'))
+                total += Number(data['current'][i][quarter][price_base])
             }
             $(`#${price_base}-berjalan-total`).text(formatRupiah(String(total.toFixed(2)).replaceAll('.', ','), ''))
 
@@ -234,15 +252,323 @@ $(document).ready(function () {
             $(`#${price_base}-adjust-${indeks}`).keyup(function (e) {
                 countBerjalan(price_base, indeks)
                 getTotalBerjalan()
+                getTotalBerjalan()
+                getQtoQberjalan()
+                getYonYberjalan()
+                getCtoCberjalan()
+                getLajuQberjalan()
             })
         }
     })
+
+    function getQuarter() {
+        quarter = $(`.nav-link.tab-item.active`).data('value')
+        return quarter
+    }
 
     function countBerjalan(price_base, indeks) {
         let adjust = Number($(`#${price_base}-adjust-${indeks}`).val().replaceAll('.', '').replaceAll(',', '.'))
         let inisial = Number($(`#${price_base}-inisial-${indeks}`).text().replaceAll('.', '').replaceAll(',', '.'))
         let value = adjust + inisial
         $(`#${price_base}-berjalan-${indeks}`).text(formatRupiah(String(value.toFixed(2)).replaceAll('.', ','), ''))
+    }
+
+    function getQtoQinisial() {
+        var data = JSON.parse(sessionStorage.getItem("data"));
+        let qtoq = {}
+        let quarter = getQuarter()
+        let totalCurrent = 0
+        let totalPrevious = 0
+        if (quarter == 1) {
+            $.each(data['current'], function (index, value) {
+                let current = Number(value[quarter]['adhk'])
+                let previous = Number(data['previous'][index][4]['adhk'])
+                let result = (current - previous) / previous * 100
+                qtoq[index] = result
+
+                if (index != 1) {
+                    totalCurrent += Number(current)
+                    totalPrevious += Number(previous)
+                }
+            })
+        } else {
+            $.each(data['current'], function (index, value) {
+                let current = Number(value[quarter]['adhk'])
+                let previous = Number(value[quarter - 1]['adhk'])
+                let result = (current - previous) / previous * 100
+                qtoq[index] = result
+
+                if (index != 1) {
+                    totalCurrent += Number(current)
+                    totalPrevious += Number(previous)
+                }
+            })
+        }
+
+        qtoq['total'] = (totalCurrent - totalPrevious) / totalPrevious * 100
+
+        $.each(qtoq, function (index, value) {
+            $(`#qtoq-inisial-${index}`).text(formatRupiah(String(value.toFixed(2)).replaceAll('.', ','), ''))
+        })
+    }
+
+    function getQtoQberjalan() {
+        var data = JSON.parse(sessionStorage.getItem("data"));
+        let qtoq = {}
+        let quarter = getQuarter()
+        let totalCurrent = 0
+        let totalPrevious = 0
+        if (quarter == 1) {
+            $.each(data['current'], function (index, value) {
+                let adjust = Number($(`#adhk-adjust-${index}`).val().replaceAll('.', '').replaceAll(',', '.'))
+                let current = Number(value[quarter]['adhk']) + adjust
+                let previous = Number(data['previous'][index][4]['adhk'])
+                let result = (current - previous) / previous * 100
+                qtoq[index] = result
+
+                if (index != 1) {
+                    totalCurrent += Number(current)
+                    totalPrevious += Number(previous)
+                }
+            })
+        } else {
+            $.each(data['current'], function (index, value) {
+                let adjust = Number($(`#adhk-adjust-${index}`).val().replaceAll('.', '').replaceAll(',', '.'))
+                let current = Number(value[quarter]['adhk']) + adjust
+                let previous = Number(value[quarter - 1]['adhk'])
+                let result = (current - previous) / previous * 100
+                qtoq[index] = result
+
+                if (index != 1) {
+                    totalCurrent += Number(current)
+                    totalPrevious += Number(previous)
+                }
+            })
+        }
+
+        qtoq['total'] = (totalCurrent - totalPrevious) / totalPrevious * 100
+
+        $.each(qtoq, function (index, value) {
+            $(`#qtoq-berjalan-${index}`).text(formatRupiah(String(value.toFixed(2)).replaceAll('.', ','), ''))
+        })
+    }
+
+    function getYonYinisial() {
+        var data = JSON.parse(sessionStorage.getItem("data"));
+        let yony = {}
+        let quarter = getQuarter()
+        let totalCurrent = 0
+        let totalPrevious = 0
+        $.each(data['current'], function (index, value) {
+            let current = Number(value[quarter]['adhk'])
+            let previous = Number(data['previous'][index][quarter]['adhk'])
+            let result = (current - previous) / previous * 100
+            yony[index] = result
+
+            if (index != 1) {
+                totalCurrent += Number(current)
+                totalPrevious += Number(previous)
+            }
+        })
+
+        yony['total'] = (totalCurrent - totalPrevious) / totalPrevious * 100
+
+        $.each(yony, function (index, value) {
+            $(`#yony-inisial-${index}`).text(formatRupiah(String(value.toFixed(2)).replaceAll('.', ','), ''))
+        })
+    }
+
+    function getYonYberjalan() {
+        var data = JSON.parse(sessionStorage.getItem("data"));
+        let yony = {}
+        let quarter = getQuarter()
+        let totalCurrent = 0
+        let totalPrevious = 0
+        $.each(data['current'], function (index, value) {
+            let adjust = Number($(`#adhk-adjust-${index}`).val().replaceAll('.', '').replaceAll(',', '.'))
+            let current = Number(value[quarter]['adhk']) + adjust
+            let previous = Number(data['previous'][index][quarter]['adhk'])
+            let result = (current - previous) / previous * 100
+            yony[index] = result
+
+            if (index != 1) {
+                totalCurrent += Number(current)
+                totalPrevious += Number(previous)
+            }
+        })
+
+        yony['total'] = (totalCurrent - totalPrevious) / totalPrevious * 100
+
+        $.each(yony, function (index, value) {
+            $(`#yony-berjalan-${index}`).text(formatRupiah(String(value.toFixed(2)).replaceAll('.', ','), ''))
+        })
+    }
+
+    function getCtoCinisial() {
+        var data = JSON.parse(sessionStorage.getItem("data"));
+        let ctoc = {}
+        let quarter = getQuarter()
+        let totalCurrent = 0
+        let totalPrevious = 0
+        $.each(data['current'], function (index, value) {
+            let current = 0
+            let previous = 0
+            for (q = 1; q <= quarter; q++) {
+                current += Number(value[q]['adhk'])
+                previous += Number(data['previous'][index][q]['adhk'])
+            }
+            let result = (current - previous) / previous * 100
+            ctoc[index] = result
+
+            if (index != 1) {
+                totalCurrent += Number(current)
+                totalPrevious += Number(previous)
+            }
+        })
+
+        ctoc['total'] = (totalCurrent - totalPrevious) / totalPrevious * 100
+
+        $.each(ctoc, function (index, value) {
+            $(`#ctoc-inisial-${index}`).text(formatRupiah(String(value.toFixed(2)).replaceAll('.', ','), ''))
+        })
+    }
+
+    function getCtoCberjalan() {
+        var data = JSON.parse(sessionStorage.getItem("data"));
+        let ctoc = {}
+        let quarter = getQuarter()
+        let totalCurrent = 0
+        let totalPrevious = 0
+        $.each(data['current'], function (index, value) {
+            let current = 0
+            let previous = 0
+            for (q = 1; q <= quarter; q++) {
+                let adjust = (q == quarter) ? Number($(`#adhk-adjust-${index}`).val().replaceAll('.', '').replaceAll(',', '.')) : Number(value[q]['adjust_adhk'])
+                current += ( Number(value[q]['adhk']) + adjust )
+                previous += Number(data['previous'][index][q]['adhk'])
+            }
+            let result = (current - previous) / previous * 100
+            ctoc[index] = result
+
+            if (index != 1) {
+                totalCurrent += Number(current)
+                totalPrevious += Number(previous)
+            }
+        })
+
+        ctoc['total'] = (totalCurrent - totalPrevious) / totalPrevious * 100
+
+        $.each(ctoc, function (index, value) {
+            $(`#ctoc-berjalan-${index}`).text(formatRupiah(String(value.toFixed(2)).replaceAll('.', ','), ''))
+        })
+    }
+
+    function getLajuQinisial() {
+        var data = JSON.parse(sessionStorage.getItem("data"));
+        let lajuQ = {}
+        let quarter = getQuarter()
+        let totalCurrent = 0
+        let totalPrevious = 0
+        if (quarter == 1) {
+            $.each(data['current'], function (index, value) {
+                let currentADHB = Number(value[quarter]['adhb'])
+                let currentADHK = Number(value[quarter]['adhk'])
+
+                let previousADHB = Number(data['previous'][index][4]['adhb'])
+                let previousADHK = Number(data['previous'][index][4]['adhk'])
+
+                let current = currentADHB / currentADHK
+                let previous = previousADHB / previousADHK
+
+                let result = (current - previous) / previous * 100
+                lajuQ[index] = result
+
+                if (index != 1) {
+                    totalCurrent += Number(current)
+                    totalPrevious += Number(previous)
+                }
+            })
+        } else {
+            $.each(data['current'], function (index, value) {
+                let currentADHB = Number(value[quarter]['adhb'])
+                let currentADHK = Number(value[quarter]['adhk'])
+
+                let previousADHB = Number(value[quarter - 1]['adhb'])
+                let previousADHK = Number(value[quarter - 1]['adhk'])
+
+                let current = currentADHB / currentADHK
+                let previous = previousADHB / previousADHK
+
+                let result = (current - previous) / previous * 100
+                lajuQ[index] = result
+
+                if (index != 1) {
+                    totalCurrent += Number(current)
+                    totalPrevious += Number(previous)
+                }
+            })
+        }
+
+        lajuQ['total'] = (totalCurrent - totalPrevious) / totalPrevious * 100
+
+        $.each(lajuQ, function (index, value) {
+            $(`#lajuQ-inisial-${index}`).text(formatRupiah(String(value.toFixed(2)).replaceAll('.', ','), ''))
+        })
+    }
+
+    function getLajuQberjalan() {
+        var data = JSON.parse(sessionStorage.getItem("data"));
+        let lajuQ = {}
+        let quarter = getQuarter()
+        let totalCurrent = 0
+        let totalPrevious = 0
+        if (quarter == 1) {
+            $.each(data['current'], function (index, value) {
+                let adjustADHB = Number($(`#adhk-adjust-${index}`).val().replaceAll('.', '').replaceAll(',', '.'))
+                let adjustADHK = Number($(`#adhk-adjust-${index}`).val().replaceAll('.', '').replaceAll(',', '.'))
+
+                let currentADHB = Number(value[quarter]['adhb']) + adjustADHB
+                let currentADHK = Number(value[quarter]['adhk']) + adjustADHK
+
+                let previousADHB = Number(data['previous'][index][4]['adhb'])
+                let previousADHK = Number(data['previous'][index][4]['adhk'])
+
+                let current = currentADHB / currentADHK
+                let previous = previousADHB / previousADHK
+
+                let result = (current - previous) / previous * 100
+                lajuQ[index] = result
+
+                if (index != 1) {
+                    totalCurrent += Number(current)
+                    totalPrevious += Number(previous)
+                }
+            })
+        } else {
+            $.each(data['current'], function (index, value) {
+                let currentADHB = Number(value[quarter]['adhb'])
+                let currentADHK = Number(value[quarter]['adhk'])
+                let previousADHB = Number(value[quarter - 1]['adhb'])
+                let previousADHK = Number(value[quarter - 1]['adhk'])
+
+                let current = currentADHB / currentADHK
+                let previous = previousADHB / previousADHK
+
+                let result = (current - previous) / previous * 100
+                lajuQ[index] = result
+
+                if (index != 1) {
+                    totalCurrent += Number(current)
+                    totalPrevious += Number(previous)
+                }
+            })
+        }
+
+        lajuQ['total'] = (totalCurrent - totalPrevious) / totalPrevious * 100
+
+        $.each(lajuQ, function (index, value) {
+            $(`#lajuQ-berjalan-${index}`).text(formatRupiah(String(value.toFixed(2)).replaceAll('.', ','), ''))
+        })
     }
 
     // When the user scrolls down 20px from the top of the document, show the button

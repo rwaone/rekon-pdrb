@@ -41,7 +41,9 @@ Route::post('rekonsiliasi/get-full', [PdrbController::class, 'getFullData'])->na
 Route::post('rekonsiliasi/copy-data', [PdrbController::class, 'copyData'])->name('copyData');
 Route::resource('pdrb', PdrbController::class)->middleware(['auth', 'verified']);
 Route::get('monitoring', [PdrbController::class, 'monitoring'])->middleware(['auth', 'verified']);
+
 Route::post('adjustment/get-data', [AdjustmentController::class, 'show'])->middleware(['auth', 'verified'])->name('get-adjustment');
+Route::post('adjustment/save-data', [AdjustmentController::class, 'update'])->middleware(['auth', 'verified'])->name('save-adjustment');
 
 //Fenomena
 Route::post('fenomena/get', [FenomenaController::class, 'getFenomena'])->middleware(['auth', 'verified'])->name('getFenomena');

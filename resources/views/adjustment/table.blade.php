@@ -1,9 +1,9 @@
 <div class="card-header d-flex p-0">
     <ul class="nav nav-pills float-left p-2">
-        <li class="nav-item"><a class="nav-link tab-item active" id="tab_1" type="button">Triwulan 1</a></li>
-        <li class="nav-item"><a class="nav-link tab-item" id="tab_2" type="button">Triwulan 2</a></li>
-        <li class="nav-item"><a class="nav-link tab-item" id="tab_3" type="button">Triwulan 3</a></li>
-        <li class="nav-item"><a class="nav-link tab-item" id="tab_4" type="button">Triwulan 4</a></li>
+        <li class="nav-item"><a class="nav-link tab-item" data-value="1" id="tab_1" type="button">Triwulan 1</a></li>
+        <li class="nav-item"><a class="nav-link tab-item" data-value="2" id="tab_2" type="button">Triwulan 2</a></li>
+        <li class="nav-item"><a class="nav-link tab-item" data-value="3" id="tab_3" type="button">Triwulan 3</a></li>
+        <li class="nav-item"><a class="nav-link tab-item" data-value="4" id="tab_4" type="button">Triwulan 4</a></li>
     </ul>
 </div>
 <div class="card-body p-3">
@@ -48,23 +48,27 @@
                         <tr>
                             <td class="first"><b>{{ $region->name }}</b></td>
                             <td class="text-right adhb-inisial" id="adhb-inisial-{{ $region->id }}"></td>
-                            <td class="text-right adhb-adjust"></td>
+                            <td class="text-right adhb-adjust"><input id="adhb-adjust-{{ $region->id }}" type="text"
+                                class="form-control text-right" name="adhb-adjust-{{ $region->id }}"
+                                aria-required="true" disabled></td>
                             <td class="text-right adhb-berjalan" id="adhb-berjalan-{{ $region->id }}"></td>
                             <td class="text-right adhk-inisial" id="adhk-inisial-{{ $region->id }}"></td>
-                            <td class="text-right adhk-adjust"></td>
+                            <td class="text-right adhk-adjust"><input id="adhk-adjust-{{ $region->id }}" type="text"
+                                class="form-control text-right" name="adhk-adjust-{{ $region->id }}"
+                                aria-required="true" disabled></td>
                             <td class="text-right adhk-berjalan" id="adhk-berjalan-{{ $region->id }}"></td>
-                            <td class="text-right qtoq-inisial"></td>
-                            <td class="text-right qtoq-berjalan"></td>
-                            <td class="text-right yony-inisial"></td>
-                            <td class="text-right yony-berjalan"></td>
-                            <td class="text-right ctoc-inisial"></td>
-                            <td class="text-right ctoc-berjalan"></td>
-                            <td class="text-right lajuQ-inisial"></td>
-                            <td class="text-right lajuQ-berjalan"></td>
-                            <td class="text-right sogY-inisial"></td>
-                            <td class="text-right sogY-berjalan"></td>
-                            <td class="text-right kontribusi-inisial"></td>
-                            <td class="text-right kontribusi-berjalan"></td>
+                            <td class="text-right qtoq-inisial" id="qtoq-inisial-{{ $region->id }}"></td>
+                            <td class="text-right qtoq-berjalan" id="qtoq-berjalan-{{ $region->id }}"></td>
+                            <td class="text-right yony-inisial" id="yony-inisial-{{ $region->id }}"></td>
+                            <td class="text-right yony-berjalan" id="yony-berjalan-{{ $region->id }}"></td>
+                            <td class="text-right ctoc-inisial" id="ctoc-inisial-{{ $region->id }}"></td>
+                            <td class="text-right ctoc-berjalan" id="ctoc-berjalan-{{ $region->id }}"></td>
+                            <td class="text-right lajuQ-inisial" id="lajuQ-inisial-{{ $region->id }}"></td>
+                            <td class="text-right lajuQ-berjalan" id="lajuQ-berjalan-{{ $region->id }}"></td>
+                            <td class="text-right sogY-inisial" id="sogY-inisial-{{ $region->id }}"></td>
+                            <td class="text-right sogY-berjalan" id="sogY-berjalan-{{ $region->id }}"></td>
+                            <td class="text-right kontribusi-inisial" id="kontribusi-inisial-{{ $region->id }}"></td>
+                            <td class="text-right kontribusi-berjalan" id="kontribusi-berjalan-{{ $region->id }}"></td>
                         </tr>
                         <tr>
                             <td class="first"><b>Total Kab/Kota</b></td>
@@ -74,18 +78,18 @@
                             <td class="text-right adhk-inisial" id="adhk-inisial-total"></td>
                             <td class="text-right adhk-adjust"></td>
                             <td class="text-right adhk-berjalan" id="adhk-berjalan-total"></td>
-                            <td class="text-right qtoq-inisial"></td>
-                            <td class="text-right qtoq-berjalan"></td>
-                            <td class="text-right yony-inisial"></td>
-                            <td class="text-right yony-berjalan"></td>
-                            <td class="text-right ctoc-inisial"></td>
-                            <td class="text-right ctoc-berjalan"></td>
-                            <td class="text-right lajuQ-inisial"></td>
-                            <td class="text-right lajuQ-berjalan"></td>
-                            <td class="text-right sogY-inisial"></td>
-                            <td class="text-right sogY-berjalan"></td>
-                            <td class="text-right kontribusi-inisial"></td>
-                            <td class="text-right kontribusi-berjalan"></td>
+                            <td class="text-right qtoq-inisial" id="qtoq-inisial-total"></td>
+                            <td class="text-right qtoq-berjalan" id="qtoq-berjalan-total"></td>
+                            <td class="text-right yony-inisial" id="yony-inisial-total"></td>
+                            <td class="text-right yony-berjalan" id="yony-berjalan-total"></td>
+                            <td class="text-right ctoc-inisial" id="ctoc-inisial-total"></td>
+                            <td class="text-right ctoc-berjalan" id="ctoc-berjalan-total"></td>
+                            <td class="text-right lajuQ-inisial" id="lajuQ-inisial-total"></td>
+                            <td class="text-right lajuQ-berjalan" id="lajuQ-berjalan-total"></td>
+                            <td class="text-right sogY-inisial" id="sogY-inisial-total"></td>
+                            <td class="text-right sogY-berjalan" id="sogY-berjalan-total"></td>
+                            <td class="text-right kontribusi-inisial" id="kontribusi-inisial-total"></td>
+                            <td class="text-right kontribusi-berjalan" id="kontribusi-berjalan-total"></td>
                         </tr>
                         <tr>
                             <td class="first"><b>Selisih Prov dan Total Kab/Kota</b></td>
@@ -142,18 +146,18 @@
                                     class="form-control text-right" name="adhk-adjust-{{ $region->id }}"
                                     aria-required="true"></td>
                             <td class="text-right adhk-berjalan" id="adhk-berjalan-{{ $region->id }}"></td>
-                            <td class="text-right qtoq-inisial"></td>
-                            <td class="text-right qtoq-berjalan"></td>
-                            <td class="text-right yony-inisial"></td>
-                            <td class="text-right yony-berjalan"></td>
-                            <td class="text-right ctoc-inisial"></td>
-                            <td class="text-right ctoc-berjalan"></td>
-                            <td class="text-right lajuQ-inisial"></td>
-                            <td class="text-right lajuQ-berjalan"></td>
-                            <td class="text-right sogY-inisial"></td>
-                            <td class="text-right sogY-berjalan"></td>
-                            <td class="text-right kontribusi-inisial"></td>
-                            <td class="text-right kontribusi-berjalan"></td>
+                            <td class="text-right qtoq-inisial" id="qtoq-inisial-{{ $region->id }}"></td>
+                            <td class="text-right qtoq-berjalan" id="qtoq-berjalan-{{ $region->id }}"></td>
+                            <td class="text-right yony-inisial" id="yony-inisial-{{ $region->id }}"></td>
+                            <td class="text-right yony-berjalan" id="yony-berjalan-{{ $region->id }}"></td>
+                            <td class="text-right ctoc-inisial" id="ctoc-inisial-{{ $region->id }}"></td>
+                            <td class="text-right ctoc-berjalan" id="ctoc-berjalan-{{ $region->id }}"></td>
+                            <td class="text-right lajuQ-inisial" id="lajuQ-inisial-{{ $region->id }}"></td>
+                            <td class="text-right lajuQ-berjalan" id="lajuQ-berjalan-{{ $region->id }}"></td>
+                            <td class="text-right sogY-inisial" id="sogY-inisial-{{ $region->id }}"></td>
+                            <td class="text-right sogY-berjalan" id="sogY-berjalan-{{ $region->id }}"></td>
+                            <td class="text-right kontribusi-inisial" id="kontribusi-inisial-{{ $region->id }}"></td>
+                            <td class="text-right kontribusi-berjalan" id="kontribusi-berjalan-{{ $region->id }}"></td>
                         </tr>
                     @endif
                 @endforeach

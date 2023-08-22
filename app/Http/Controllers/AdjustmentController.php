@@ -61,11 +61,14 @@ class AdjustmentController extends Controller
                         ->where('quarter', $index)
                         ->where('subsector_id', $filter['subsector'])
                         ->get()->toArray();
+
                     $data['current'][$region->id][$index] = $query[0];
+
                     $adjustment = Adjustment::select('adhb', 'adhk')
                         ->where('pdrb_id', $query[0]['id'])
                         ->get()->toArray();
-                    if(sizeof($adjustment) == 0){
+
+                    if (sizeof($adjustment) == 0) {
                         $adjustment = [
                             'pdrb_id' => $query[0]['id'],
                             'adhb' => '0',
@@ -73,11 +76,14 @@ class AdjustmentController extends Controller
                             'created_at' => date('Y-m-d H:i:s'),
                             'updated_at' => date('Y-m-d H:i:s'),
                         ];
+
+                        Adjustment::insert($adjustment);
+
                         $data['current'][$region->id][$index]['adjust_adhb'] = $adjustment['adhb'];
                         $data['current'][$region->id][$index]['adjust_adhk'] = $adjustment['adhk'];
                     } else {
-                        $data['current'][$region->id][$index]['adjust_adhb'] = $adjustment['adhb'];
-                        $data['current'][$region->id][$index]['adjust_adhk'] = $adjustment['adhk'];  
+                        $data['current'][$region->id][$index]['adjust_adhb'] = $adjustment[0]['adhb'];
+                        $data['current'][$region->id][$index]['adjust_adhk'] = $adjustment[0]['adhk'];
                     }
                 }
 
@@ -107,7 +113,11 @@ class AdjustmentController extends Controller
      */
     public function update(Request $request)
     {
-        //
+        $adjustment = json_decode($request->adjustment);
+        foreach($adjustment as $data){
+            Adjustment::where('pdrb_id', $data->pdrb_id)->update(['adhb' => $data->adhb, 'adhk' => $data->adhk]);
+        }
+        return response()->json('berhasil');
     }
 
     /**
