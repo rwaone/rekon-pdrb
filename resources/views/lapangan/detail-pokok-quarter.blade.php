@@ -48,9 +48,28 @@
         <li class="breadcrumb-item active">Tabel Pokok</li>
         <div id="my-cat" data-cat="{{ json_encode($cat) }}"></div>
     </x-slot>
-    
-    <div class="card save-container" id="navList">
-        <ul class="nav nav-pills p-2">
+    <div class="card save-container w-50 ml-auto" id="navList">
+        <div class="row">
+            <div class="col-lg col-md-12 col-sm-12">
+                <select class="form-control " id="select-cat" name="quarter">
+                {{-- <select class="form-control select2bs4" id="quarter" name="quarter"> --}}
+                    <option value="" selected>-- Pilih --</option>
+                    <option value="nav-adhb">ADHB</option>
+                    <option value="nav-adhk">ADHK</option>
+                    <option value="nav-distribusi">Distribusi</option>
+                    <option value="nav-qtoq">Growth (Q to Q)</option>
+                    <option value="nav-ytoy">Growth (Y on Y)</option>
+                    <option value="nav-ctoc">Growth (C to C)</option>
+                    <option value="nav-indeks">Indeks Implisit</option>
+                    <option value="nav-lajuQ">Laju Implisit (Q to Q)</option>
+                    <option value="nav-lajuY">Laju Implisit (Y on Y)</option>
+                    <option value="nav-sogQ">SOG (Q to Q)</option>
+                    <option value="nav-sogY">SOG (Y on Y)</option>
+                    </option>
+                </select>
+            </div>
+        </div>
+        {{-- <ul class="nav nav-pills p-2">
             <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-adhb">ADHB</a></li>
             <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-adhk">ADHK</a></li>
             <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-distribusi">Distribusi</a></li>
@@ -62,7 +81,7 @@
             <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-lajuY">Laju Implisit (Y on Y)</a></li>
             <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-sogQ">SOG (Q to Q)</a></li>
             <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-sogY">SOG (Y on Y)</a></li>
-        </ul>
+        </ul> --}}
     </div>
 
     <div class="card mb-3" id="view-body">
@@ -224,7 +243,7 @@
             getUrl.searchParams.set('region_id', urlParams.get('region_id'))
             getUrl.searchParams.set('quarter', urlParams.get('quarter'))
 
-            
+
             $(document).on('select2:open', () => {
                 document.querySelector('.select2-search__field').focus();
             });
