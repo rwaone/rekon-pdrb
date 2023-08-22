@@ -483,6 +483,7 @@ $(document).ready(function () {
         $('.loader').removeClass('d-none')
         setTimeout(function () {
             $('.form-container').addClass('d-none')
+            $('.save-container').addClass('d-none')
             $('#navList').addClass('d-none')
             $('.loader').addClass('d-none')
         }, 200);
