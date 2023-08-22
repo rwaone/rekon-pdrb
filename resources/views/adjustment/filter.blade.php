@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" for="period_id">Periode Putaran:</label>
+                    <label class="col-sm-2 col-form-label" for="period">Periode Putaran:</label>
                     <select id="period" class="form-control col-sm-9 select2bs4" name="period_id" required>
                         <option value="">Pilih Periode Revisi</option>
                     </select>

@@ -6,7 +6,6 @@ $(document).ready(function () {
     $('#type').on('change', function () {
         var pdrb_type = this.value
         $("#year").html('')
-        $('#region_id').val('').change()
         closeContainer()
 
         $.ajax({
@@ -41,7 +40,6 @@ $(document).ready(function () {
         var pdrb_type = $('#type').val()
         var pdrb_year = this.value
         $("#quarter").html('')
-        $('#region_id').val('').change()
         closeContainer()
 
         $.ajax({
@@ -105,7 +103,6 @@ $(document).ready(function () {
         var pdrb_year = $('#year').val()
         var pdrb_quarter = this.value
         $("#period").html('')
-        $('#region_id').val('').change()
         closeContainer()
 
         $.ajax({
@@ -161,7 +158,6 @@ $(document).ready(function () {
     });
 
     $('#period').change(function () {
-        $('#region_id').val('').change()
         if ($('#period').text().includes('Aktif')) {
             $('#fullFormSave').prop('disabled', false)
         } else {
@@ -170,11 +166,35 @@ $(document).ready(function () {
         closeContainer()
     });
 
-    $('#region_id').change(function () {
-        if ($('#region_id').val() != '') {
+    $('#filter-button').click(function () {
+        if (validateFilter()){
             getFullData()
+        } else {
+            Toast.fire({
+                icon: 'warning',
+                title: 'Gagal',
+                text: 'Isian filter tidak boleh kosong'
+            })
         }
     });
+    
+    function validateFilter() {
+    
+        if($(`#type`).val() == ''){
+            return false
+        } else if ($(`#year`).val() == ''){
+            return false
+        } else if ($(`#quarter`).val() == ''){
+            return false
+        } else if ($(`#period`).val() == ''){
+            return false
+        } else if ($(`#region_id`).val() == ''){
+            return false
+        }
+
+        return true
+
+    }
 
     $('#nav-adhb').click(function () {
         showForm('adhb');

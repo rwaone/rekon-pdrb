@@ -47,6 +47,8 @@
                     </select>
                     <div class="help-block"></div>
                 </div>
+                
+                <button id="filter-button" type="button" class="btn btn-success float-right">Tampilkan</button>
 
                 {{-- <div class="form-group row">
                     <label class="col-sm-2 col-form-label" for="price_base">Basis Harga:</label>

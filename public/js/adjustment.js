@@ -4,9 +4,9 @@ $(document).ready(function () {
 
     function changeBackgroundColor(element, value) {
         element.removeClass('uptrend downtrend')
-        if (value > 0){
+        if (value > 0) {
             element.addClass('uptrend')
-        } else if (value < 0){
+        } else if (value < 0) {
             element.addClass('downtrend')
         }
     }
@@ -119,9 +119,36 @@ $(document).ready(function () {
     });
 
     $('#filter-button').click(function () {
-        fetchData()
-        printData(1)
+        if (validateFilter()) {
+            fetchData()
+            printData(1)
+        } else {
+            Toast.fire({
+                icon: 'warning',
+                title: 'Gagal',
+                text: 'Isian filter tidak boleh kosong'
+            })
+        }
     });
+
+    function validateFilter() {
+
+        if ($(`#type`).val() == '') {
+            return false
+        } else if ($(`#year`).val() == '') {
+            return false
+        } else if ($(`#quarter`).val() == '') {
+            return false
+        } else if ($(`#period`).val() == '') {
+            return false
+        } else if ($(`#subsector`).val() == '') {
+            return false
+        }
+
+        return true
+
+    }
+
 
     $("#adjustment-save").click(function () {
         $('.loader').removeClass('d-none');
@@ -167,7 +194,7 @@ $(document).ready(function () {
         return data
     }
 
-    function fetchData(){        
+    function fetchData() {
         $('.loader').removeClass('d-none');
         $.ajax({
             type: 'POST',
@@ -591,13 +618,13 @@ $(document).ready(function () {
             x[i] = Number(data['current'][i][quarter]['adhb']) + adjust
             total += x[i]
         }
-        
+
         x['total'] = total
 
         $.each(x, function (index, value) {
 
-                let result = value / total * 100
-                kontribusi[index] = result
+            let result = value / total * 100
+            kontribusi[index] = result
         })
 
         $.each(kontribusi, function (index, value) {
@@ -614,13 +641,13 @@ $(document).ready(function () {
             x[i] = Number(data['current'][i][quarter]['adhb'])
             total += x[i]
         }
-        
+
         x['total'] = total
 
         $.each(x, function (index, value) {
 
-                let result = value / total * 100
-                kontribusi[index] = result
+            let result = value / total * 100
+            kontribusi[index] = result
         })
 
         $.each(kontribusi, function (index, value) {
@@ -633,21 +660,21 @@ $(document).ready(function () {
         scrollFunction();
     };
 
-function scrollFunction() {
-    if (
-        document.body.scrollTop > 20 ||
-        document.documentElement.scrollTop > 20
-    ) {
-        mybutton.style.display = "block";
-    } else {
-        mybutton.style.display = "none";
+    function scrollFunction() {
+        if (
+            document.body.scrollTop > 20 ||
+            document.documentElement.scrollTop > 20
+        ) {
+            mybutton.style.display = "block";
+        } else {
+            mybutton.style.display = "none";
+        }
     }
-}
-// When the user clicks on the button, scroll to the top of the document
-mybutton.addEventListener("click", backToTop);
+    // When the user clicks on the button, scroll to the top of the document
+    mybutton.addEventListener("click", backToTop);
 
-function backToTop() {
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
-}
+    function backToTop() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
 });
