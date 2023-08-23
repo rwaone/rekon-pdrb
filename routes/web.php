@@ -65,7 +65,7 @@ Route::get('lapangan-usaha/daftarPokok', [LapanganController::class, 'daftarPoko
 Route::get('lapangan-usaha/detailPokok', [LapanganController::class, 'detailPokok'])->middleware(['auth', 'verified'])->name('lapangan-usaha.detail');
 Route::get('lapangan-usaha/getDetail', [LapanganController::class, 'getDetail'])->middleware(['auth', 'verified'])->name('lapangan-usaha.getDetail');
 
-Route::get('lapangan-usaha/adjustment', [AdjustmentController::class, 'index'])->middleware(['auth', 'verified']);
+Route::get('lapangan-usaha/adjustment', [AdjustmentController::class, 'index'])->middleware(['auth', 'verified', 'admin']);
 
 Route::get('lapangan-usaha/monitoring', [LapanganController::class, 'monitoring'])->middleware(['auth', 'verified']);
 
@@ -78,7 +78,7 @@ Route::get('pengeluaran/getKonserda', [PengeluaranController::class, 'getKonserd
 Route::get('pengeluaran/daftarPokok', [PengeluaranController::class, 'daftarPokok'])->middleware(['auth', 'verified']);
 Route::get('pengeluaran/detailPokok', [PengeluaranController::class, 'detailPokok'])->middleware(['auth', 'verified'])->name('pengeluaran.detail');;
 Route::get('pengeluaran/getDetail', [PengeluaranController::class, 'getDetail'])->middleware(['auth', 'verified'])->name('pengeluaran.getDetail');
-Route::get('pengeluaran/adjustment', [AdjustmentController::class, 'index'])->middleware(['auth', 'verified']);
+Route::get('pengeluaran/adjustment', [AdjustmentController::class, 'index'])->middleware(['auth', 'verified', 'admin']);
 
 Route::get('pengeluaran/monitoring', [PengeluaranController::class, 'monitoring'])->middleware(['auth', 'verified']);
 
