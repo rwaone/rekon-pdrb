@@ -213,8 +213,22 @@ class PdrbController extends Controller
                 }
             }
         }
+        $notification = [];
+        
+        array_push($notification, [
+            'type' => 'success',
+            'text' => 'Data berhasil diunduh'
+        ]);
+        
+        if (!isset($previous_period)){
+            $message = [
+                'type' => 'warning',
+                'text' => 'Data periode sebelumnya tidak ada / belum final, summary tidak dapat ditampilkan'
+            ];
+            array_push($notification, $message);
+        }
 
-        return response()->json(['current_data' => $current_data, 'previous_data' => $previous_data]);
+        return response()->json(['current_data' => $current_data, 'previous_data' => $previous_data, 'messages' => $notification]);
     }
 
     public function saveFullData(Request $request)

@@ -114,10 +114,6 @@ $(document).ready(function () {
         })
     });
 
-    $('#period').change(function () {
-        $('#subsector').val('').change()
-    });
-
     $('#filter-button').click(function () {
         if (validateFilter()) {
             fetchData()
@@ -209,12 +205,10 @@ $(document).ready(function () {
 
             success: function (result) {
                 console.log(result)
-                sessionStorage.setItem("data", JSON.stringify(result));
+                sessionStorage.setItem("data", JSON.stringify(result.data));
 
-                Toast.fire({
-                    icon: 'success',
-                    title: 'Berhasil',
-                    text: 'Data berhasil ditampilkan.'
+                $.each(result.messages, function (index, message) {
+                    window.showToastr(message['type'], message['text'])
                 })
 
                 $('.loader').addClass('d-none')
@@ -223,7 +217,7 @@ $(document).ready(function () {
     }
 
     function printData(quarter) {
-        var data = JSON.parse(sessionStorage.getItem("data"));
+        var data = JSON.parse(sessionStorage.getItem("data"))
         $.each(data['current'], function (index, data) {
             $(`#adhb-inisial-${index}`).text(formatRupiah(data[quarter]['adhb'].replaceAll('.', ','), ''))
             $(`#adhk-inisial-${index}`).text(formatRupiah(data[quarter]['adhk'].replaceAll('.', ','), ''))

@@ -600,10 +600,8 @@ $(document).ready(function () {
                     allSumPDRBLapus('prev-adhk')
                 }
 
-                Toast.fire({
-                    icon: 'success',
-                    title: 'Berhasil',
-                    text: 'Data berhasil ditampilkan.'
+                $.each(result.messages, function (index, message) {
+                    window.showToastr(message['type'], message['text'])
                 })
 
                 $('.loader').addClass('d-none')

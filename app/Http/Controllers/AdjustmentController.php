@@ -53,7 +53,9 @@ class AdjustmentController extends Controller
         $filter = $request->filter;
         $regions = Region::all();
 
-        $previous_period = Period::where('type', $filter['type'])->where('year', $filter['year'] - 1)->where('quarter', 4)->where('status', 'Final')->first()->id;
+        $previous_period = Period::where('type', $filter['type'])->where('year', $filter['year'] - 1)->where('quarter', 4)->where('status', 'Final')->first();
+        $notification = [];
+
         foreach ($regions as $region) {
             for ($index = 1; $index <= 4; $index++) {
                 if ($index <= $filter['quarter']) {
@@ -88,18 +90,43 @@ class AdjustmentController extends Controller
                         $data['current'][$region->id][$index]['adjust_adhk'] = $adjustment[0]['adhk'];
                     }
                 }
+                
+                if (isset($previous_period)) {
+                    $query = PDRB::select('id', 'adhb', 'adhk')
+                        ->where('region_id', $region->id)
+                        ->where('period_id', $previous_period->id)
+                        ->where('quarter', $index)
+                        ->where('subsector_id', $filter['subsector'])
+                        ->get()->toArray();
+                    $data['previous'][$region->id][$index] = $query[0];
 
-                $query = PDRB::select('id', 'adhb', 'adhk')
-                    ->where('region_id', $region->id)
-                    ->where('period_id', $previous_period)
-                    ->where('quarter', $index)
-                    ->where('subsector_id', $filter['subsector'])
-                    ->get()->toArray();
-                $data['previous'][$region->id][$index] = $query[0];
+                } else {                    
+                    $dummy = [
+                        'id' => 0,
+                        'adhb' => 0,
+                        'adhk' => 0,
+                    ];
+                    $data['previous'][$region->id][$index] = $dummy;
+                }
             }
         }
 
-        return response()->json($data);
+        array_push($notification, [
+            'type' => 'success',
+            'title' => 'Berhasil',
+            'text' => 'Data berhasil diunduh'
+        ]);
+        
+        if (!isset($previous_period)){
+            $message = [
+                'type' => 'warning',
+                'title' => 'Warning',
+                'text' => 'Data periode sebelumnya tidak ada / belum final, summary tidak dapat ditampilkan'
+            ];
+            array_push($notification, $message);
+        }
+
+        return response()->json(['data' => $data, 'messages' => $notification]);
     }
 
     /**
