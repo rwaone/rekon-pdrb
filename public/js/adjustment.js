@@ -114,6 +114,14 @@ $(document).ready(function () {
         })
     });
 
+    $('#period').change(function () {
+        if ($('#period').text().includes('Aktif')) {
+            $('#adjustment-save').prop('disabled', false)
+        } else {
+            $('#adjustment-save').prop('disabled', true)
+        }
+    });
+
     $('#filter-button').click(function () {
         if (validateFilter()) {
             fetchData()
