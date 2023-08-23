@@ -50,7 +50,7 @@ class AdjustmentController extends Controller
      */
     public function show(Request $request)
     {
-        $filter = $request->filter;
+        $filter = (array) json_decode($request->filter);
         $regions = Region::all();
 
         $previous_period = Period::where('type', $filter['type'])->where('year', $filter['year'] - 1)->where('quarter', 4)->where('status', 'Final')->first();
