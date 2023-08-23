@@ -98,6 +98,7 @@
         <script src="{{ url('') }}/plugins/select2/js/select2.full.min.js"></script>
         <script src="{{ asset('js/adjustment.js') }}"></script>
         <script>
+            sessionStorage.clear()
             const tokens = '{{ csrf_token() }}'
             const url_fetch_year = new URL("{{ route('fetchYear') }}")
             const url_fetch_quarter = new URL("{{ route('fetchQuarter') }}")

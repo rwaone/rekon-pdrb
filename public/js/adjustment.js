@@ -117,7 +117,6 @@ $(document).ready(function () {
     $('#filter-button').click(function () {
         if (validateFilter()) {
             fetchData()
-            printData(1)
         } else {
             Toast.fire({
                 icon: 'warning',
@@ -206,6 +205,8 @@ $(document).ready(function () {
             success: function (result) {
                 console.log(result)
                 sessionStorage.setItem("data", JSON.stringify(result.data));
+                
+                printData(1)
 
                 $.each(result.messages, function (index, message) {
                     window.showToastr(message['type'], message['text'])
