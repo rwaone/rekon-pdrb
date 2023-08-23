@@ -124,6 +124,7 @@ $(document).ready(function () {
 
     $('#filter-button').click(function () {
         if (validateFilter()) {
+            sessionStorage.setItem("filterData", JSON.stringify(filterData()))
             fetchData()
         } else {
             Toast.fire({
@@ -133,6 +134,18 @@ $(document).ready(function () {
             })
         }
     });
+
+    function filterData() {
+        let filter = {}
+
+        filter['type'] = $(`#type`).val()
+        filter['year'] = $(`#year`).val()
+        filter['quarter'] = $(`#quarter`).val()
+        filter['period_id'] = $(`#period`).val()
+        filter['subsector'] = $(`#subsector`).val()
+
+        return filter
+    }
 
     function validateFilter() {
 
@@ -185,7 +198,7 @@ $(document).ready(function () {
     }
 
     function dataSave(quarter) {
-        var query = JSON.parse(sessionStorage.getItem("data"));
+        var query = JSON.parse(sessionStorage.getItem("adjustmentData"));
         let data = {}
         for (let region = 2; region <= 16; region++) {
             let array = {}
@@ -203,17 +216,14 @@ $(document).ready(function () {
             type: 'POST',
             url: url_get_adjustment.href,
             data: {
-                filter: $('#filterForm').serializeArray().reduce(function (obj, item) {
-                    obj[item.name] = item.value;
-                    return obj;
-                }, {}),
+                filter: sessionStorage.getItem("filterData"),
                 _token: tokens,
             },
 
             success: function (result) {
-                console.log(result)
-                sessionStorage.setItem("data", JSON.stringify(result.data));
-                
+
+                sessionStorage.setItem("adjustmentData", JSON.stringify(result.data));
+
                 printData(1)
 
                 $.each(result.messages, function (index, message) {
@@ -226,7 +236,7 @@ $(document).ready(function () {
     }
 
     function printData(quarter) {
-        var data = JSON.parse(sessionStorage.getItem("data"))
+        var data = JSON.parse(sessionStorage.getItem("adjustmentData"))
         $.each(data['current'], function (index, data) {
             $(`#adhb-inisial-${index}`).text(formatRupiah(data[quarter]['adhb'].replaceAll('.', ','), ''))
             $(`#adhk-inisial-${index}`).text(formatRupiah(data[quarter]['adhk'].replaceAll('.', ','), ''))
@@ -295,7 +305,7 @@ $(document).ready(function () {
     $.each(price_list, function (index, price_base) {
         for (let indeks = 2; indeks <= 16; indeks++) {
             $(`#${price_base}-adjust-${indeks}`).keyup(function (e) {
-                var data = JSON.parse(sessionStorage.getItem("data"));
+                var data = JSON.parse(sessionStorage.getItem("adjustmentData"));
                 let quarter = getQuarter()
                 countBerjalan(price_base, indeks)
                 getTotalBerjalan(quarter, data)
