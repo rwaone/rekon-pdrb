@@ -118,7 +118,7 @@
                     </div>
                     <div class="col-md-2">
                         <select class="form-control select2bs4" id="year" name="year">
-                            <option value="" selected>-- Pilih Tahun --</option>
+                            <option value="" selected>-- Pilih Periode Tahun --</option>
                             @if ($years)
                                 @foreach ($years as $year)
                                     <option {{ old('year', $filter['year']) == $year->year ? 'selected' : '' }}
@@ -129,7 +129,7 @@
                     </div>
                     <div class="col-md-2">
                         <select class="form-control select2bs4" id="quarter" name="quarter">
-                            <option value="" selected>-- Pilih Triwulan --</option>
+                            <option value="" selected>-- Pilih Perioude Triwulan --</option>
                             @if ($quarters)
                                 @foreach ($quarters as $quarter)
                                     <option
@@ -143,13 +143,18 @@
                     </div>
                     <div class="col-md-2">
                         <select class="form-control select2bs4" id="period" name="period">
-                            <option value="" selected>-- Pilih Putaran --</option>
+                            <option value="" selected>-- Pilih Periode Putaran --</option>
                             @if ($periods)
                                 @foreach ($periods as $period)
                                     <option {{ old('period', $filter['period_id']) == $period->id ? 'selected' : '' }}
                                         value="{{ $period->id }}">{{ $period->description }}</option>
                                 @endforeach
                             @endif
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-control select2bs4" id="data_quarter" name="data_quarter">
+                            <option value="" selected>-- Pilih Data --</option>
                         </select>
                     </div>
                     <div class="col-md-4">

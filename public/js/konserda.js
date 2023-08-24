@@ -117,6 +117,7 @@ $(document).ready(function () {
                     $("#period").append(
                         '<option value="" selected>-- Pilih Putaran --</option>'
                     );
+
                     $.each(result.periods, function (key, value) {
                         $("#period").append(
                             '<option value="' +
@@ -125,7 +126,19 @@ $(document).ready(function () {
                                 value.description +
                                 "</option>"
                         );
-                    });
+                    });                 
+                    
+                    $("#data_quarter").empty();
+                    $("#data_quarter").append(
+                        '<option value="" selected>-- Pilih Data --</option>'
+                    );
+
+                    for (let i = 1; i <= pdrb_quarter; i++) {
+                        $("#data_quarter").append(
+                            '<option value="'+ i +'" selected>Triwulan ' + i + '</option>'
+                        );
+                    }
+
                 },
             });
         } else {
