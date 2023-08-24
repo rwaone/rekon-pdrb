@@ -109,16 +109,16 @@
             <form>
                 @csrf
                 <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-2">
                         <select class="form-control select2bs4" id="type" name="type">
                             <option value="" selected>-- Pilih Jenis PDRB --</option>
-                            <option {{ old('type', $filter['type']) == 'Pengeluaran' ? 'selected' : '' }}
-                                value='Pengeluaran'>Pengeluaran</option>
+                            <option {{ old('type', $filter['type']) == 'Lapangan Usaha' ? 'selected' : '' }}
+                                value='Lapangan Usaha'>Lapangan Usaha</option>
                         </select>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-2">
                         <select class="form-control select2bs4" id="year" name="year">
-                            <option value="" selected>-- Pilih Tahun --</option>
+                            <option value="" selected>-- Pilih Periode Tahun --</option>
                             @if ($years)
                                 @foreach ($years as $year)
                                     <option {{ old('year', $filter['year']) == $year->year ? 'selected' : '' }}
@@ -127,9 +127,9 @@
                             @endif
                         </select>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-2">
                         <select class="form-control select2bs4" id="quarter" name="quarter">
-                            <option value="" selected>-- Pilih Triwulan --</option>
+                            <option value="" selected>-- Pilih Perioude Triwulan --</option>
                             @if ($quarters)
                                 @foreach ($quarters as $quarter)
                                     <option
@@ -141,9 +141,9 @@
                             @endif
                         </select>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-2">
                         <select class="form-control select2bs4" id="period" name="period">
-                            <option value="" selected>-- Pilih Putaran --</option>
+                            <option value="" selected>-- Pilih Periode Putaran --</option>
                             @if ($periods)
                                 @foreach ($periods as $period)
                                     <option {{ old('period', $filter['period_id']) == $period->id ? 'selected' : '' }}
@@ -152,153 +152,191 @@
                             @endif
                         </select>
                     </div>
-                    <div class="col-md-4">
-                        <button class="btn btn-info col-md-10" id="showData">Tampilkan Data</button>
-                        <div class="btn btn-danger col-md-1" id="refresh"><i class="bi bi-x-lg"></i></div>
+                    <div class="col-2">
+                        <select class="form-control select2bs4" id="data_quarter" name="data_quarter">
+                            <option value="" selected>-- Pilih Data --</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <div class="row">
+                            <button class="btn btn-info col-8 mr-1" id="showData">Tampilkan</button>
+                            <div class="btn btn-danger col-3" id="refresh"><i class="bi bi-x-lg"></i></div>
+                        </div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
     <span class="loader d-none"></span>
-    <div class="card mb-3 d-none" id="view-body">
-        <div class="card-body">
-            <nav class="navbar">
-                <ul class="nav-item ml-auto">
-                    <button class="btn btn-warning" id="download-csv" data-toogle="tooltip" data-placement="bottom"
-                        title="Download"><i class="bi bi-file-earmark-arrow-down"></i></button>
-                    <button class="btn btn-success" id="download-all" data-toogle="tooltip" data-placement="bottom"
-                        title="Download All"><i class="bi bi-file-earmark-arrow-down-fill"></i></button>
-                    <button class="btn btn-primary" id="change-query" onclick="switchPlay('1')" data-toogle="tooltip"
-                        data-placement="bottom" title="Tukar Posisi Kolom"><i class="bi bi-toggles"></i></button>
-                </ul>
-            </nav>
-            <nav class="navbar justify-content-center">
-                <ul class="nav nav-tabs d-flex">
-                    <a class="nav-item nav-link" id="nav-adhb" href="">ADHB</a>
-                    <a class="nav-item nav-link" id="nav-adhk" href="">ADHK</a>
-                    <a class="nav-item nav-link" id="nav-distribusi" href="">S.Dalam</a>
-                    <a class="nav-item nav-link" id="nav-struktur-antar" href="">S.Antar</a>
-                    <a class="nav-item nav-link" id="nav-pertumbuhan-year" href="">Growth (Y to Y)</a>
-                    <a class="nav-item nav-link" id="nav-pertumbuhan-quarter" href="">Growth (Q to Q)</a>
-                    <a class="nav-item nav-link" id="nav-pertumbuhan-cumulative" href="">Growth (C to
-                        C)</a>
-                    <a class="nav-item nav-link" id="nav-indeks" href="">Indeks Implisit</a>
-                    <a class="nav-item nav-link" id="nav-laju-year" href="">Laju Implisit (Y to Y)</a>
-                    <a class="nav-item nav-link" id="nav-laju-quarter" href="">Laju Implisit (Q to Q)</a>
-                    <a class="nav-item nav-link" id="nav-laju-cumulative" href="">Laju Implisit (C to C)</a>
-                </ul>
-            </nav>
-            <div class="table-container">
-                <div class="row">
-                    <div class="overflow-x-scroll">
-                        <table class="table table-striped table-bordered" id="komponen">
-                            <thead>
-                                <tr>
-                                    <th>Komponen</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($subsectors as $index => $item)
-                                    @if ($item->code != null && $item->code == 'a')
-                                        <tr>
-                                            <td class="first-columns">
-                                                <p class="text-bold ml-1" style="margin-bottom:0rem;" for="">
-                                                    {{ $item->sector->code . '. ' . $item->sector->name }}
-                                                </p>
-                                            </td>
-                                        </tr>
-                                    @endif
-                                    @if ($item->code != null)
-                                        <tr>
-                                            <td class="first-columns">
-                                                <p class=" ml-4" style="margin-bottom:0rem;"
-                                                    for="{{ $item->code }}_{{ $item->name }}">
-                                                    {{ $item->code . '. ' . $item->name }}
-                                                </p>
-                                            </td>
-                                        </tr>
-                                    @elseif ($item->code == null && $item->sector->code != null)
-                                        <tr>
-                                            <td class="first-columns">
-                                                <p class=" text-bold ml-1" style="margin-bottom:0rem;"
-                                                    for="{{ $item->sector->code . '_' . $item->sector->name }}">
-                                                    {{ $item->sector->code . '. ' . $item->sector->name }}
-                                                </p>
-                                            </td>
-                                        </tr>
-                                    @elseif ($item->code == null && $item->sector->code == null)
-                                        <tr>
-                                            <td class="first-columns">
-                                                <label class="" style="margin-bottom:0rem;"
-                                                    for="{{ $item->sector->category->code . '_' . $item->name }}">{{ $item->sector->category->code . '. ' . $item->name }}</label>
-                                            </td>
-                                        </tr>
-                                    @endif
-                                @endforeach
-                                <tr class="PDRB-footer text-center"
-                                    style="background-color: steelblue; color:aliceblue; font-weight: bold;">
-                                    <td>Produk Domestik Regional Bruto (PDRB)</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="table-data-wrapper">
-                        <table class="table table-bordered" id="rekon-view">
-                            <thead class="text-center" style="background-color: steelblue; color:aliceblue;">
-                                <tr>
-                                    <th id="head-purpose" class=""></th>
-                                    <th>Total Kabupaten/Kota</th>
-                                    @foreach ($regions as $region)
-                                        <th>{{ $region->name }}</th>
-                                    @endforeach
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($subsectors as $index => $item)
-                                    @if ($item->code != null && $item->code == 'a')
-                                        <tr>
-                                            <td id="sector-purpose-{{ $index + 1 }}" class=""></td>
-                                            <td id="sector-totalKabkot-{{ $index + 1 }}"
-                                                class="sum-of-kabkot text-bold"></td>
-                                            @foreach ($regions as $region)
-                                                <td id="sector-{{ $index + 1 }}-{{ $region->id }}"
-                                                    class="text-right values other-columns"></td>
-                                            @endforeach
-                                        </tr>
-                                    @endif
-                                    @if ($item->code != null)
-                                        <tr>
-                                            <td id="purpose-{{ $index + 1 }}" class=""></td>
-                                            <td id="totalKabkot-{{ $index + 1 }}" class="sum-of-kabkot"></td>
-                                            @foreach ($regions as $region)
-                                                <td id="{{ 'value-' . $index + 1 }}-{{ $region->id }}"
-                                                    class="text-right values other-columns"></td>
-                                            @endforeach
-                                        </tr>
-                                    @elseif ($item->code == null && $item->sector->code != null)
-                                        <tr>
-                                            <td id="purpose-{{ $index + 1 }}" class=""></td>
-                                            <td id="totalKabkot-{{ $index + 1 }}" class="sum-of-kabkot text-bold">
-                                            </td>
-                                            @foreach ($regions as $region)
-                                                <td id="{{ 'value-' . $index + 1 }}-{{ $region->id }}"
-                                                    class="text-right text-bold values other-columns pdrb-total-{{ $region->id }}">
+    <div class="d-none" id="view-body">
+        <div class="row justify-content-start mb-3">
+            <div class="col-6">
+                <select class="form-control select2bs4" id="select-cat" name="quarter">
+                    <option value="" selected>-- Pilih --</option>
+                    <option value="nav-adhb">ADHB</option>
+                    <option value="nav-adhk">ADHK</option>
+                    <option value="nav-distribusi">Struktur Dalam</option>
+                    <option value="nav-struktur-antar">Struktur Antar</option>
+                    <option value="nav-pertumbuhan-year">Growth (Y on Y)</option>
+                    <option value="nav-pertumbuhan-quarter">Growth (Q to Q)</option>
+                    <option value="nav-pertumbuhan-cumulative">Growth (C to C)</option>
+                    <option value="nav-indeks">Indeks Implisit</option>
+                    <option value="nav-laju-year">Laju Implisit (Y on Y)</option>
+                    <option value="nav-laju-quarter">Laju Implisit (Q to Q)</option>
+                    <option value="nav-laju-cumulative">Laju Implisit (C to C)</option>
+                    </option>
+                </select>
+            </div>
+            <div class="col">
+                <button class="btn btn-warning" id="download-csv" data-toogle="tooltip" data-placement="bottom"
+                    title="Download"><i class="bi bi-file-earmark-arrow-down"></i></button>
+                <button class="btn btn-success" id="download-all" data-toogle="tooltip" data-placement="bottom"
+                    title="Download All"><i class="bi bi-file-earmark-arrow-down-fill"></i></button>
+                <button class="btn btn-primary" id="change-query" onclick="switchPlay('1')" data-toogle="tooltip"
+                    data-placement="bottom" title="Tukar Posisi Kolom"><i class="bi bi-toggles"></i></button>
+            </div>
+        </div>
+        <div class="card mb-3">
+            <div class="card-body">
+                {{-- <nav class="navbar">
+                    <ul class="nav-item ml-auto">
+                        <button class="btn btn-warning" id="download-csv" data-toogle="tooltip" data-placement="bottom"
+                            title="Download"><i class="bi bi-file-earmark-arrow-down"></i></button>
+                        <button class="btn btn-success" id="download-all" data-toogle="tooltip" data-placement="bottom"
+                            title="Download All"><i class="bi bi-file-earmark-arrow-down-fill"></i></button>
+                        <button class="btn btn-primary" id="change-query" onclick="switchPlay('1')" data-toogle="tooltip"
+                            data-placement="bottom" title="Tukar Posisi Kolom"><i class="bi bi-toggles"></i></button>
+                    </ul>
+                </nav>
+                <nav class="navbar justify-content-center">
+                    <ul class="nav nav-tabs d-flex">
+                        <a class="nav-item nav-link" id="nav-adhb" href="">ADHB</a>
+                        <a class="nav-item nav-link" id="nav-adhk" href="">ADHK</a>
+                        <a class="nav-item nav-link" id="nav-distribusi" href="">S.Dalam</a>
+                        <a class="nav-item nav-link" id="nav-struktur-antar" href="">S.Antar</a>
+                        <a class="nav-item nav-link" id="nav-pertumbuhan-year" href="">Growth (Y to Y)</a>
+                        <a class="nav-item nav-link" id="nav-pertumbuhan-quarter" href="">Growth (Q to Q)</a>
+                        <a class="nav-item nav-link" id="nav-pertumbuhan-cumulative" href="">Growth (C to
+                            C)</a>
+                        <a class="nav-item nav-link" id="nav-indeks" href="">Indeks Implisit</a>
+                        <a class="nav-item nav-link" id="nav-laju-year" href="">Laju Implisit (Y to Y)</a>
+                        <a class="nav-item nav-link" id="nav-laju-quarter" href="">Laju Implisit (Q to Q)</a>
+                        <a class="nav-item nav-link" id="nav-laju-cumulative" href="">Laju Implisit (C to C)</a>
+                    </ul>
+                </nav> --}}
+                <div class="table-container">
+                    <div class="row">
+                        <div class="overflow-x-scroll">
+                            <table class="table table-striped table-bordered" id="komponen">
+                                <thead>
+                                    <tr>
+                                        <th>Komponen</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($subsectors as $index => $item)
+                                        @if ($item->code != null && $item->code == 'a')
+                                            <tr>
+                                                <td class="first-columns">
+                                                    <p class="text-bold ml-1" style="margin-bottom:0rem;"
+                                                        for="">
+                                                        {{ $item->sector->code . '. ' . $item->sector->name }}
+                                                    </p>
                                                 </td>
-                                            @endforeach
-                                        </tr>
-                                    @endif
-                                @endforeach
-                                <tr class="PDRB-footer text-right"
-                                    style="background-color: steelblue; color:aliceblue; font-weight: bold;">
-                                    <td class="text-right" id="purpose-migas"></td>
-                                    <td class="sum-of-kabkot text-right" id="totalKabkot-migas"></td>
-                                    @foreach ($regions as $region)
-                                        <td id="total-{{ $region->id }}" style="margin-bottom:0rem;"></td>
+                                            </tr>
+                                        @endif
+                                        @if ($item->code != null)
+                                            <tr>
+                                                <td class="first-columns">
+                                                    <p class=" ml-4" style="margin-bottom:0rem;"
+                                                        for="{{ $item->code }}_{{ $item->name }}">
+                                                        {{ $item->code . '. ' . $item->name }}
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        @elseif ($item->code == null && $item->sector->code != null)
+                                            <tr>
+                                                <td class="first-columns">
+                                                    <p class=" text-bold ml-1" style="margin-bottom:0rem;"
+                                                        for="{{ $item->sector->code . '_' . $item->sector->name }}">
+                                                        {{ $item->sector->code . '. ' . $item->sector->name }}
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        @elseif ($item->code == null && $item->sector->code == null)
+                                            <tr>
+                                                <td class="first-columns">
+                                                    <label class="" style="margin-bottom:0rem;"
+                                                        for="{{ $item->sector->category->code . '_' . $item->name }}">{{ $item->sector->category->code . '. ' . $item->name }}</label>
+                                                </td>
+                                            </tr>
+                                        @endif
                                     @endforeach
-                                </tr>
-                            </tbody>
-                        </table>
+                                    <tr class="PDRB-footer text-center"
+                                        style="background-color: steelblue; color:aliceblue; font-weight: bold;">
+                                        <td>Produk Domestik Regional Bruto (PDRB)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-data-wrapper">
+                            <table class="table table-bordered" id="rekon-view">
+                                <thead class="text-center" style="background-color: steelblue; color:aliceblue;">
+                                    <tr>
+                                        <th id="head-purpose" class=""></th>
+                                        <th>Total Kabupaten/Kota</th>
+                                        @foreach ($regions as $region)
+                                            <th>{{ $region->name }}</th>
+                                        @endforeach
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($subsectors as $index => $item)
+                                        @if ($item->code != null && $item->code == 'a')
+                                            <tr>
+                                                <td id="sector-purpose-{{ $index + 1 }}" class=""></td>
+                                                <td id="sector-totalKabkot-{{ $index + 1 }}"
+                                                    class="sum-of-kabkot text-bold"></td>
+                                                @foreach ($regions as $region)
+                                                    <td id="sector-{{ $index + 1 }}-{{ $region->id }}"
+                                                        class="text-right values other-columns"></td>
+                                                @endforeach
+                                            </tr>
+                                        @endif
+                                        @if ($item->code != null)
+                                            <tr>
+                                                <td id="purpose-{{ $index + 1 }}" class=""></td>
+                                                <td id="totalKabkot-{{ $index + 1 }}" class="sum-of-kabkot"></td>
+                                                @foreach ($regions as $region)
+                                                    <td id="{{ 'value-' . $index + 1 }}-{{ $region->id }}"
+                                                        class="text-right values other-columns"></td>
+                                                @endforeach
+                                            </tr>
+                                        @elseif ($item->code == null && $item->sector->code != null)
+                                            <tr>
+                                                <td id="purpose-{{ $index + 1 }}" class=""></td>
+                                                <td id="totalKabkot-{{ $index + 1 }}"
+                                                    class="sum-of-kabkot text-bold">
+                                                </td>
+                                                @foreach ($regions as $region)
+                                                    <td id="{{ 'value-' . $index + 1 }}-{{ $region->id }}"
+                                                        class="text-right text-bold values other-columns pdrb-total-{{ $region->id }}">
+                                                    </td>
+                                                @endforeach
+                                            </tr>
+                                        @endif
+                                    @endforeach
+                                    <tr class="PDRB-footer text-right"
+                                        style="background-color: steelblue; color:aliceblue; font-weight: bold;">
+                                        <td class="text-right" id="purpose-migas"></td>
+                                        <td class="sum-of-kabkot text-right" id="totalKabkot-migas"></td>
+                                        @foreach ($regions as $region)
+                                            <td id="total-{{ $region->id }}" style="margin-bottom:0rem;"></td>
+                                        @endforeach
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -346,7 +384,8 @@
 
                 //Initialize Select2 Elements
                 $('.select2bs4').select2({
-                    theme: 'bootstrap4'
+                    theme: 'bootstrap4',
+                    width: '100%',
                 })
             });
         </script>

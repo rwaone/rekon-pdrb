@@ -126,8 +126,8 @@ $(document).ready(function () {
                                 value.description +
                                 "</option>"
                         );
-                    });                 
-                    
+                    });
+
                     $("#data_quarter").empty();
                     $("#data_quarter").append(
                         '<option value="" selected>-- Pilih Data --</option>'
@@ -135,10 +135,13 @@ $(document).ready(function () {
 
                     for (let i = 1; i <= pdrb_quarter; i++) {
                         $("#data_quarter").append(
-                            '<option value="'+ i +'" selected>Triwulan ' + i + '</option>'
+                            '<option value="' +
+                                i +
+                                '" selected>Triwulan ' +
+                                i +
+                                "</option>"
                         );
                     }
-
                 },
             });
         } else {
@@ -158,6 +161,25 @@ function getStored(type) {
         $("#view-body").removeClass("d-none");
     }
 }
+function toFixedView() {
+    $("#rekon-view tbody tr").each(function (index) {
+        let data = {};
+        $(this)
+            .find("td:not(:first-child)")
+            .each(function (indeX) {
+                let data = $(this)
+                    .text()
+                    .replaceAll(/[.]/g, "")
+                    .replaceAll(/[,]/g, ".");
+                let Y = $(this).text(
+                    formatRupiah(
+                        Number(data).toFixed(2).replaceAll(/[.]/g, ",")
+                    )
+                );
+                // $(this).text(Y)
+            });
+    });
+}
 
 function fetchData(type) {
     let period_id;
@@ -167,8 +189,10 @@ function fetchData(type) {
     } else {
         period_id = sessionStorage.getItem("filters");
     }
+    data_quarter = $("#data_quarter").val();
     url_key.searchParams.set("period_id", encodeURIComponent(period_id));
     url_key.searchParams.set("type", encodeURIComponent(type));
+    url_key.searchParams.set("data_quarter", encodeURIComponent(data_quarter));
     return new Promise(function (resolve, reject) {
         $.ajax({
             type: "GET",
@@ -196,6 +220,7 @@ $(document).ready(function () {
             const data = await fetchData("show");
             console.log(data);
             getAdhb(data.data, types);
+            toFixedView();
             $(".loader").addClass("d-none");
             $("#view-body").removeClass("d-none");
             sessionStorage.setItem("dataLU", JSON.stringify(data.data));
@@ -214,298 +239,596 @@ $(document).ready(function () {
 
 //change
 $(document).ready(function () {
-    $("#nav-distribusi").on("click", function (e) {
+    $("#select-cat").on("change", async function (e) {
         e.preventDefault();
-        $(".nav-item").removeClass("active");
-        $(this).addClass("active");
-        $(".loader").removeClass("d-none");
-        setTimeout(function () {
-            getStored(types);
-            $("#rekon-view tbody td").removeClass(function (index, className) {
-                return (className.match(/(^|\s)view-\S+/g) || []).join(" ");
-            });
-            for (let q = 1; q <= 16; q++) {
-                for (let i = 0; i <= rowComponent; i++) {
-                    $(`#value-${i}-${q}`).addClass(`view-distribusi-${q}`);
-                    $(`#sector-${i}-${q}`).addClass(`view-distribusi-${q}`);
+        let checkVal = $(this).val();
+        console.log(checkVal);
+        switch (checkVal) {
+            case "nav-adhb":
+                e.preventDefault();
+                $(".loader").removeClass("d-none");
+                setTimeout(function () {
+                    $(".loader").addClass("d-none");
+                    showOff();
+                    getStored(types);
+                    toFixedView();
+                    switchPlay("2");
+                }, 200);
+                break;
+            case "nav-adhk":
+                e.preventDefault();
+                $(".loader").removeClass("d-none");
+                try {
+                    let data = JSON.parse(sessionStorage.getItem("AdhkStored"));
+                    if (!data) {
+                        data = await fetchData("show");
+                        sessionStorage.setItem(
+                            "AdhkStored",
+                            JSON.stringify(data)
+                        );
+                    }
+                    showOff();
+                    getAdhk(data.data, types);
+                    toFixedView();
+                    switchPlay("2");
+                    $(".loader").addClass("d-none");
+                } catch (e) {
+                    $(".loader").addClass("d-none");
+                    alert("Error : " + e.message);
                 }
-                for (let index of catArray) {
-                    $(`#categories-${index}-${q}`).addClass(
-                        `view-distribusi-${q}`
+                break;
+            case "nav-distribusi":
+                e.preventDefault();
+                $(".loader").removeClass("d-none");
+                setTimeout(function () {
+                    getStored(types);
+                    $("#rekon-view tbody td").removeClass(function (
+                        index,
+                        className
+                    ) {
+                        return (className.match(/(^|\s)view-\S+/g) || []).join(
+                            " "
+                        );
+                    });
+                    for (let q = 1; q <= 16; q++) {
+                        for (let i = 0; i <= rowComponent; i++) {
+                            $(`#value-${i}-${q}`).addClass(
+                                `view-distribusi-${q}`
+                            );
+                            $(`#sector-${i}-${q}`).addClass(
+                                `view-distribusi-${q}`
+                            );
+                        }
+                        for (let index of catArray) {
+                            $(`#categories-${index}-${q}`).addClass(
+                                `view-distribusi-${q}`
+                            );
+                        }
+                    }
+                    $("#rekon-view tbody td:nth-child(2)").each(function () {
+                        $(this).addClass(`view-distribusi-totalKabkot`);
+                    });
+                    $(".loader").addClass("d-none");
+                    showOff();
+                    getDist();
+                    switchPlay("2");
+                }, 500);
+                break;
+            case "nav-pertumbuhan-year":
+                e.preventDefault();
+                $(".loader").removeClass("d-none");
+                try {
+                    let data = JSON.parse(
+                        sessionStorage.getItem("growth-year-stored")
                     );
+                    if (!data) {
+                        data = await fetchData("year");
+                        sessionStorage.setItem(
+                            "growth-year-stored",
+                            JSON.stringify(data)
+                        );
+                    }
+                    console.log(data);
+                    showOff();
+                    if (data.before === null || data.before.length === 0) {
+                        alert("Data tahun lalu tidak ada");
+                    } else {
+                        getGrowth(data.data, data.before, types);
+                        switchPlay("2");
+                    }
+                    $(".loader").addClass("d-none");
+                } catch (e) {
+                    $(".loader").addClass("d-none");
+                    alert("Error : " + e.message);
                 }
-            }
-            $("#rekon-view tbody td:nth-child(2)").each(function () {
-                $(this).addClass(`view-distribusi-totalKabkot`);
-            });
-            $(".loader").addClass("d-none");
-            showOff();
-            getDist();
-            switchPlay("2");
-        }, 500);
-    });
-
-    $("#nav-adhb").on("click", function (e) {
-        e.preventDefault();
-        $(".nav-item").removeClass("active");
-        $(this).addClass("active");
-        $(".loader").removeClass("d-none");
-        setTimeout(function () {
-            $(".loader").addClass("d-none");
-            showOff();
-            getStored(types);
-            switchPlay("2");
-        }, 200);
-    });
-
-    $("#nav-adhk").on("click", async function (e) {
-        e.preventDefault();
-        $(".nav-item").removeClass("active");
-        $(this).addClass("active");
-        $(".loader").removeClass("d-none");
-        try {
-            let data = JSON.parse(sessionStorage.getItem("AdhkStored"));
-            if (!data) {
-                data = await fetchData("show");
-                sessionStorage.setItem("AdhkStored", JSON.stringify(data));
-            }
-            showOff();
-            getAdhk(data.data, types);
-            switchPlay("2");
-            $(".loader").addClass("d-none");
-        } catch (e) {
-            $(".loader").addClass("d-none");
-            alert("Error : " + e.message);
+                break;
+            case "nav-pertumbuhan-quarter":
+                e.preventDefault();
+                $(".loader").removeClass("d-none");
+                try {
+                    let data = JSON.parse(
+                        sessionStorage.getItem("growth-quarter-stored")
+                    );
+                    if (!data) {
+                        data = await fetchData("quarter");
+                        sessionStorage.setItem(
+                            "growth-quarter-stored",
+                            JSON.stringify(data)
+                        );
+                    }
+                    showOff();
+                    if (data.before === null || data.before.length === 0) {
+                        alert("Data kuarter sebelumnya tidak ada");
+                    } else {
+                        getGrowth(data.data, data.before, types);
+                        switchPlay("2");
+                    }
+                    $(".loader").addClass("d-none");
+                } catch (e) {
+                    $(".loader").addClass("d-none");
+                    alert("Error : " + e.message);
+                }
+                break;
+            case "nav-pertumbuhan-cumulative":
+                e.preventDefault();
+                $(".loader").removeClass("d-none");
+                try {
+                    let data = JSON.parse(
+                        sessionStorage.getItem("growth-cumulative-stored")
+                    );
+                    if (!data) {
+                        data = await fetchData("cumulative");
+                        sessionStorage.setItem(
+                            "growth-cumulative-stored",
+                            JSON.stringify(data)
+                        );
+                    }
+                    showOff();
+                    if (data.before === null || data.before.length === 0) {
+                        alert("Data tahun lalu tidak ada");
+                    } else {
+                        getGrowth(data.data, data.before, types);
+                        switchPlay("2");
+                    }
+                    $(".loader").addClass("d-none");
+                } catch (e) {
+                    $(".loader").addClass("d-none");
+                    alert("Error : " + e.message);
+                }
+                break;
+            case "nav-indeks":
+                e.preventDefault();
+                $(".loader").removeClass("d-none");
+                try {
+                    let data = JSON.parse(
+                        sessionStorage.getItem("IndeksStored")
+                    );
+                    if (!data) {
+                        data = await fetchData("show");
+                        sessionStorage.setItem(
+                            "IndeksStored",
+                            JSON.stringify(data)
+                        );
+                    }
+                    showOff();
+                    getIndex(data.data, types);
+                    switchPlay("2");
+                    $(".loader").addClass("d-none");
+                } catch (e) {
+                    $(".loader").addClass("d-none");
+                    alert("Error : " + e.message);
+                }
+                break;
+            case "nav-laju-year":
+                e.preventDefault();
+                $(".loader").removeClass("d-none");
+                try {
+                    let data = JSON.parse(
+                        sessionStorage.getItem("laju-year-stored")
+                    );
+                    if (!data) {
+                        data = await fetchData("year");
+                        sessionStorage.setItem(
+                            "laju-year-stored",
+                            JSON.stringify(data)
+                        );
+                    }
+                    showOff();
+                    if (data.before === null || data.before.length === 0) {
+                        alert("Data tahun lalu tidak ada");
+                    } else {
+                        let first = getIndex(data.data, types);
+                        let before = getIndex(data.before, types);
+                        getLaju(first, before);
+                        switchPlay("2");
+                    }
+                    $(".loader").addClass("d-none");
+                } catch (e) {
+                    $(".loader").addClass("d-none");
+                    alert("Error : " + e.message);
+                }
+                break;
+            case "nav-laju-quarter":
+                e.preventDefault();
+                $(".loader").removeClass("d-none");
+                try {
+                    let data = JSON.parse(
+                        sessionStorage.getItem("laju-quarter-stored")
+                    );
+                    if (!data) {
+                        data = await fetchData("quarter");
+                        sessionStorage.setItem(
+                            "laju-quarter-stored",
+                            JSON.stringify(data)
+                        );
+                    }
+                    showOff();
+                    if (data.before === null || data.before.length === 0) {
+                        alert("Data kuarter sebelumnya tidak ada");
+                    } else {
+                        let first = getIndex(data.data, types);
+                        let before = getIndex(data.before, types);
+                        getLaju(first, before);
+                        switchPlay("2");
+                    }
+                    $(".loader").addClass("d-none");
+                } catch (e) {
+                    $(".loader").addClass("d-none");
+                    alert("Error : " + e.message);
+                }
+                break;
+            case "nav-laju-cumulative":
+                e.preventDefault();
+                $(".loader").removeClass("d-none");
+                try {
+                    let data = JSON.parse(
+                        sessionStorage.getItem("laju-cumulative-stored")
+                    );
+                    if (!data) {
+                        data = await fetchData("cumulative");
+                        sessionStorage.setItem(
+                            "laju-cumulative-stored",
+                            JSON.stringify(data)
+                        );
+                    }
+                    showOff();
+                    if (data.before === null || data.before.length === 0) {
+                        alert("Data tahun lalu tidak ada");
+                    } else {
+                        let first = getIndex(data.data, types);
+                        let before = getIndex(data.before, types);
+                        getLaju(first, before);
+                        switchPlay("2");
+                    }
+                    $(".loader").addClass("d-none");
+                } catch (e) {
+                    $(".loader").addClass("d-none");
+                    alert("Error : " + e.message);
+                }
+                break;
+            case "nav-struktur-antar":
+                e.preventDefault();
+                $(".loader").removeClass("d-none");
+                try {
+                    let data = JSON.parse(
+                        sessionStorage.getItem("santar-stored")
+                    );
+                    if (!data) {
+                        data = await fetchData("show");
+                        sessionStorage.setItem(
+                            "santar-stored",
+                            JSON.stringify(data)
+                        );
+                    }
+                    showOff();
+                    getAntar(data.data, types);
+                    switchPlay("2");
+                    $("#change-query").prop("disabled", true);
+                    $(".loader").addClass("d-none");
+                } catch (e) {
+                    $(".loader").addClass("d-none");
+                    alert("Error : " + e.message);
+                }
+                break;
+            default:
+                break;
         }
     });
+    
+    // $("#nav-distribusi").on("click", function (e) {
+    //     e.preventDefault();
+    //     $(".nav-item").removeClass("active");
+    //     $(this).addClass("active");
+    //     $(".loader").removeClass("d-none");
+    //     setTimeout(function () {
+    //         getStored(types);
+    //         $("#rekon-view tbody td").removeClass(function (index, className) {
+    //             return (className.match(/(^|\s)view-\S+/g) || []).join(" ");
+    //         });
+    //         for (let q = 1; q <= 16; q++) {
+    //             for (let i = 0; i <= rowComponent; i++) {
+    //                 $(`#value-${i}-${q}`).addClass(`view-distribusi-${q}`);
+    //                 $(`#sector-${i}-${q}`).addClass(`view-distribusi-${q}`);
+    //             }
+    //             for (let index of catArray) {
+    //                 $(`#categories-${index}-${q}`).addClass(
+    //                     `view-distribusi-${q}`
+    //                 );
+    //             }
+    //         }
+    //         $("#rekon-view tbody td:nth-child(2)").each(function () {
+    //             $(this).addClass(`view-distribusi-totalKabkot`);
+    //         });
+    //         $(".loader").addClass("d-none");
+    //         showOff();
+    //         getDist();
+    //         switchPlay("2");
+    //     }, 500);
+    // });
 
-    //indeks implisit adhb/adhk
-    $("#nav-indeks").on("click", async function (e) {
-        e.preventDefault();
-        $(".nav-item").removeClass("active");
-        $(this).addClass("active");
-        $(".loader").removeClass("d-none");
-        try {
-            let data = JSON.parse(sessionStorage.getItem("IndeksStored"));
-            if (!data) {
-                data = await fetchData("show");
-                sessionStorage.setItem("IndeksStored", JSON.stringify(data));
-            }
-            showOff();
-            getIndex(data.data, types);
-            switchPlay("2");
-            $(".loader").addClass("d-none");
-        } catch (e) {
-            $(".loader").addClass("d-none");
-            alert("Error : " + e.message);
-        }
-    });
+    // $("#nav-adhb").on("click", function (e) {
+    //     e.preventDefault();
+    //     $(".nav-item").removeClass("active");
+    //     $(this).addClass("active");
+    //     $(".loader").removeClass("d-none");
+    //     setTimeout(function () {
+    //         $(".loader").addClass("d-none");
+    //         showOff();
+    //         getStored(types);
+    //         toFixedView();
+    //         switchPlay("2");
+    //     }, 200);
+    // });
 
-    $("#nav-laju-year").on("click", async function (e) {
-        e.preventDefault();
-        $(".nav-item").removeClass("active");
-        $(this).addClass("active");
-        $(".loader").removeClass("d-none");
-        try {
-            let data = JSON.parse(sessionStorage.getItem("laju-year-stored"));
-            if (!data) {
-                data = await fetchData("year");
-                sessionStorage.setItem(
-                    "laju-year-stored",
-                    JSON.stringify(data)
-                );
-            }
-            showOff();
-            if (data.before === null || data.before.length === 0) {
-                alert("Data tahun lalu tidak ada");
-            } else {
-                let first = getIndex(data.data, types);
-                let before = getIndex(data.before, types);
-                getLaju(first, before);
-                switchPlay("2");
-            }
-            $(".loader").addClass("d-none");
-        } catch (e) {
-            $(".loader").addClass("d-none");
-            alert("Error : " + e.message);
-        }
-    });
+    // $("#nav-adhk").on("click", async function (e) {
+    //     e.preventDefault();
+    //     $(".nav-item").removeClass("active");
+    //     $(this).addClass("active");
+    //     $(".loader").removeClass("d-none");
+    //     try {
+    //         let data = JSON.parse(sessionStorage.getItem("AdhkStored"));
+    //         if (!data) {
+    //             data = await fetchData("show");
+    //             sessionStorage.setItem("AdhkStored", JSON.stringify(data));
+    //         }
+    //         showOff();
+    //         getAdhk(data.data, types);
+    //         toFixedView();
+    //         switchPlay("2");
+    //         $(".loader").addClass("d-none");
+    //     } catch (e) {
+    //         $(".loader").addClass("d-none");
+    //         alert("Error : " + e.message);
+    //     }
+    // });
 
-    $("#nav-laju-quarter").on("click", async function (e) {
-        e.preventDefault();
-        $(".nav-item").removeClass("active");
-        $(this).addClass("active");
-        $(".loader").removeClass("d-none");
-        try {
-            let data = JSON.parse(
-                sessionStorage.getItem("laju-quarter-stored")
-            );
-            if (!data) {
-                data = await fetchData("quarter");
-                sessionStorage.setItem(
-                    "laju-quarter-stored",
-                    JSON.stringify(data)
-                );
-            }
-            showOff();
-            if (data.before === null || data.before.length === 0) {
-                alert("Data kuarter sebelumnya tidak ada");
-            } else {
-                let first = getIndex(data.data, types);
-                let before = getIndex(data.before, types);
-                getLaju(first, before);
-                switchPlay("2");
-            }
-            $(".loader").addClass("d-none");
-        } catch (e) {
-            $(".loader").addClass("d-none");
-            alert("Error : " + e.message);
-        }
-    });
+    // //indeks implisit adhb/adhk
+    // $("#nav-indeks").on("click", async function (e) {
+    //     e.preventDefault();
+    //     $(".nav-item").removeClass("active");
+    //     $(this).addClass("active");
+    //     $(".loader").removeClass("d-none");
+    //     try {
+    //         let data = JSON.parse(sessionStorage.getItem("IndeksStored"));
+    //         if (!data) {
+    //             data = await fetchData("show");
+    //             sessionStorage.setItem("IndeksStored", JSON.stringify(data));
+    //         }
+    //         showOff();
+    //         getIndex(data.data, types);
+    //         switchPlay("2");
+    //         $(".loader").addClass("d-none");
+    //     } catch (e) {
+    //         $(".loader").addClass("d-none");
+    //         alert("Error : " + e.message);
+    //     }
+    // });
 
-    $("#nav-laju-cumulative").on("click", async function (e) {
-        e.preventDefault();
-        $(".nav-item").removeClass("active");
-        $(this).addClass("active");
-        $(".loader").removeClass("d-none");
-        try {
-            let data = JSON.parse(
-                sessionStorage.getItem("laju-cumulative-stored")
-            );
-            if (!data) {
-                data = await fetchData("cumulative");
-                sessionStorage.setItem(
-                    "laju-cumulative-stored",
-                    JSON.stringify(data)
-                );
-            }
-            showOff();
-            if (data.before === null || data.before.length === 0) {
-                alert("Data tahun lalu tidak ada");
-            } else {
-                let first = getIndex(data.data, types);
-                let before = getIndex(data.before, types);
-                getLaju(first, before);
-                switchPlay("2");
-            }
-            $(".loader").addClass("d-none");
-        } catch (e) {
-            $(".loader").addClass("d-none");
-            alert("Error : " + e.message);
-        }
-    });
+    // $("#nav-laju-year").on("click", async function (e) {
+    //     e.preventDefault();
+    //     $(".nav-item").removeClass("active");
+    //     $(this).addClass("active");
+    //     $(".loader").removeClass("d-none");
+    //     try {
+    //         let data = JSON.parse(sessionStorage.getItem("laju-year-stored"));
+    //         if (!data) {
+    //             data = await fetchData("year");
+    //             sessionStorage.setItem(
+    //                 "laju-year-stored",
+    //                 JSON.stringify(data)
+    //             );
+    //         }
+    //         showOff();
+    //         if (data.before === null || data.before.length === 0) {
+    //             alert("Data tahun lalu tidak ada");
+    //         } else {
+    //             let first = getIndex(data.data, types);
+    //             let before = getIndex(data.before, types);
+    //             getLaju(first, before);
+    //             switchPlay("2");
+    //         }
+    //         $(".loader").addClass("d-none");
+    //     } catch (e) {
+    //         $(".loader").addClass("d-none");
+    //         alert("Error : " + e.message);
+    //     }
+    // });
 
-    //growth
-    $("#nav-pertumbuhan-year").on("click", async function (e) {
-        e.preventDefault();
-        $(".nav-item").removeClass("active");
-        $(this).addClass("active");
-        $(".loader").removeClass("d-none");
-        try {
-            let data = JSON.parse(sessionStorage.getItem("growth-year-stored"));
-            if (!data) {
-                data = await fetchData("year");
-                sessionStorage.setItem(
-                    "growth-year-stored",
-                    JSON.stringify(data)
-                );
-            }
-            console.log(data);
-            showOff();
-            if (data.before === null || data.before.length === 0) {
-                alert("Data tahun lalu tidak ada");
-            } else {
-                getGrowth(data.data, data.before, types);
-                switchPlay("2");
-            }
-            $(".loader").addClass("d-none");
-        } catch (e) {
-            $(".loader").addClass("d-none");
-            alert("Error : " + e.message);
-        }
-    });
+    // $("#nav-laju-quarter").on("click", async function (e) {
+    //     e.preventDefault();
+    //     $(".nav-item").removeClass("active");
+    //     $(this).addClass("active");
+    //     $(".loader").removeClass("d-none");
+    //     try {
+    //         let data = JSON.parse(
+    //             sessionStorage.getItem("laju-quarter-stored")
+    //         );
+    //         if (!data) {
+    //             data = await fetchData("quarter");
+    //             sessionStorage.setItem(
+    //                 "laju-quarter-stored",
+    //                 JSON.stringify(data)
+    //             );
+    //         }
+    //         showOff();
+    //         if (data.before === null || data.before.length === 0) {
+    //             alert("Data kuarter sebelumnya tidak ada");
+    //         } else {
+    //             let first = getIndex(data.data, types);
+    //             let before = getIndex(data.before, types);
+    //             getLaju(first, before);
+    //             switchPlay("2");
+    //         }
+    //         $(".loader").addClass("d-none");
+    //     } catch (e) {
+    //         $(".loader").addClass("d-none");
+    //         alert("Error : " + e.message);
+    //     }
+    // });
 
-    $("#nav-pertumbuhan-quarter").on("click", async function (e) {
-        e.preventDefault();
-        $(".nav-item").removeClass("active");
-        $(this).addClass("active");
-        $(".loader").removeClass("d-none");
-        try {
-            let data = JSON.parse(
-                sessionStorage.getItem("growth-quarter-stored")
-            );
-            if (!data) {
-                data = await fetchData("quarter");
-                sessionStorage.setItem(
-                    "growth-quarter-stored",
-                    JSON.stringify(data)
-                );
-            }
-            showOff();
-            if (data.before === null || data.before.length === 0) {
-                alert("Data kuarter sebelumnya tidak ada");
-            } else {
-                getGrowth(data.data, data.before, types);
-                switchPlay("2");
-            }
-            $(".loader").addClass("d-none");
-        } catch (e) {
-            $(".loader").addClass("d-none");
-            alert("Error : " + e.message);
-        }
-    });
+    // $("#nav-laju-cumulative").on("click", async function (e) {
+    //     e.preventDefault();
+    //     $(".nav-item").removeClass("active");
+    //     $(this).addClass("active");
+    //     $(".loader").removeClass("d-none");
+    //     try {
+    //         let data = JSON.parse(
+    //             sessionStorage.getItem("laju-cumulative-stored")
+    //         );
+    //         if (!data) {
+    //             data = await fetchData("cumulative");
+    //             sessionStorage.setItem(
+    //                 "laju-cumulative-stored",
+    //                 JSON.stringify(data)
+    //             );
+    //         }
+    //         showOff();
+    //         if (data.before === null || data.before.length === 0) {
+    //             alert("Data tahun lalu tidak ada");
+    //         } else {
+    //             let first = getIndex(data.data, types);
+    //             let before = getIndex(data.before, types);
+    //             getLaju(first, before);
+    //             switchPlay("2");
+    //         }
+    //         $(".loader").addClass("d-none");
+    //     } catch (e) {
+    //         $(".loader").addClass("d-none");
+    //         alert("Error : " + e.message);
+    //     }
+    // });
 
-    $("#nav-pertumbuhan-cumulative").on("click", async function (e) {
-        e.preventDefault();
-        $(".nav-item").removeClass("active");
-        $(this).addClass("active");
-        $(".loader").removeClass("d-none");
-        try {
-            let data = JSON.parse(
-                sessionStorage.getItem("growth-cumulative-stored")
-            );
-            if (!data) {
-                data = await fetchData("cumulative");
-                sessionStorage.setItem(
-                    "growth-cumulative-stored",
-                    JSON.stringify(data)
-                );
-            }
-            showOff();
-            if (data.before === null || data.before.length === 0) {
-                alert("Data tahun lalu tidak ada");
-            } else {
-                getGrowth(data.data, data.before, types);
-                switchPlay("2");
-            }
-            $(".loader").addClass("d-none");
-        } catch (e) {
-            $(".loader").addClass("d-none");
-            alert("Error : " + e.message);
-        }
-    });
-    //struktur antar
-    $("#nav-struktur-antar").on("click", async function (e) {
-        e.preventDefault();
-        $(".nav-item").removeClass("active");
-        $(this).addClass("active");
-        $(".loader").removeClass("d-none");
-        try {
-            let data = JSON.parse(sessionStorage.getItem("santar-stored"));
-            if (!data) {
-                data = await fetchData("show");
-                sessionStorage.setItem("santar-stored", JSON.stringify(data));
-            }
-            showOff();
-            getAntar(data.data, types);
-            switchPlay("2");
-            $("#change-query").prop("disabled", true);
-            $(".loader").addClass("d-none");
-        } catch (e) {
-            $(".loader").addClass("d-none");
-            alert("Error : " + e.message);
-        }
-    });
+    // //growth
+    // $("#nav-pertumbuhan-year").on("click", async function (e) {
+    //     e.preventDefault();
+    //     $(".nav-item").removeClass("active");
+    //     $(this).addClass("active");
+    //     $(".loader").removeClass("d-none");
+    //     try {
+    //         let data = JSON.parse(sessionStorage.getItem("growth-year-stored"));
+    //         if (!data) {
+    //             data = await fetchData("year");
+    //             sessionStorage.setItem(
+    //                 "growth-year-stored",
+    //                 JSON.stringify(data)
+    //             );
+    //         }
+    //         console.log(data);
+    //         showOff();
+    //         if (data.before === null || data.before.length === 0) {
+    //             alert("Data tahun lalu tidak ada");
+    //         } else {
+    //             getGrowth(data.data, data.before, types);
+    //             switchPlay("2");
+    //         }
+    //         $(".loader").addClass("d-none");
+    //     } catch (e) {
+    //         $(".loader").addClass("d-none");
+    //         alert("Error : " + e.message);
+    //     }
+    // });
+
+    // $("#nav-pertumbuhan-quarter").on("click", async function (e) {
+    //     e.preventDefault();
+    //     $(".nav-item").removeClass("active");
+    //     $(this).addClass("active");
+    //     $(".loader").removeClass("d-none");
+    //     try {
+    //         let data = JSON.parse(
+    //             sessionStorage.getItem("growth-quarter-stored")
+    //         );
+    //         if (!data) {
+    //             data = await fetchData("quarter");
+    //             sessionStorage.setItem(
+    //                 "growth-quarter-stored",
+    //                 JSON.stringify(data)
+    //             );
+    //         }
+    //         showOff();
+    //         if (data.before === null || data.before.length === 0) {
+    //             alert("Data kuarter sebelumnya tidak ada");
+    //         } else {
+    //             getGrowth(data.data, data.before, types);
+    //             switchPlay("2");
+    //         }
+    //         $(".loader").addClass("d-none");
+    //     } catch (e) {
+    //         $(".loader").addClass("d-none");
+    //         alert("Error : " + e.message);
+    //     }
+    // });
+
+    // $("#nav-pertumbuhan-cumulative").on("click", async function (e) {
+    //     e.preventDefault();
+    //     $(".nav-item").removeClass("active");
+    //     $(this).addClass("active");
+    //     $(".loader").removeClass("d-none");
+    //     try {
+    //         let data = JSON.parse(
+    //             sessionStorage.getItem("growth-cumulative-stored")
+    //         );
+    //         if (!data) {
+    //             data = await fetchData("cumulative");
+    //             sessionStorage.setItem(
+    //                 "growth-cumulative-stored",
+    //                 JSON.stringify(data)
+    //             );
+    //         }
+    //         showOff();
+    //         if (data.before === null || data.before.length === 0) {
+    //             alert("Data tahun lalu tidak ada");
+    //         } else {
+    //             getGrowth(data.data, data.before, types);
+    //             switchPlay("2");
+    //         }
+    //         $(".loader").addClass("d-none");
+    //     } catch (e) {
+    //         $(".loader").addClass("d-none");
+    //         alert("Error : " + e.message);
+    //     }
+    // });
+    // //struktur antar
+    // $("#nav-struktur-antar").on("click", async function (e) {
+    //     e.preventDefault();
+    //     $(".nav-item").removeClass("active");
+    //     $(this).addClass("active");
+    //     $(".loader").removeClass("d-none");
+    //     try {
+    //         let data = JSON.parse(sessionStorage.getItem("santar-stored"));
+    //         if (!data) {
+    //             data = await fetchData("show");
+    //             sessionStorage.setItem("santar-stored", JSON.stringify(data));
+    //         }
+    //         showOff();
+    //         getAntar(data.data, types);
+    //         switchPlay("2");
+    //         $("#change-query").prop("disabled", true);
+    //         $(".loader").addClass("d-none");
+    //     } catch (e) {
+    //         $(".loader").addClass("d-none");
+    //         alert("Error : " + e.message);
+    //     }
+    // });
 });
 
 window.addEventListener("beforeunload", function () {
@@ -753,7 +1076,6 @@ function diskrepansi() {
         );
         // let score = X > 0 ? ((Y - X) / X) * 100 : 0;
         let score = ((Y - X) / X) * 100;
-        
         // console.log(Y, X, score);
         $(this).addClass("text-right");
         if (score > 5 || score < -5) {
@@ -767,7 +1089,8 @@ function diskrepansi() {
             score = "-";
             $(this).text(score);
         } else {
-            $(this).text(score.toFixed(5));
+            score = score.toFixed(5).replaceAll(/[.]/g, ",");
+            $(this).text(score);
         }
         // $(this).text(score.toFixed(5));
     });
