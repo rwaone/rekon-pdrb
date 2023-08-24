@@ -48,10 +48,10 @@
         <li class="breadcrumb-item active">Tabel Pokok</li>
         <div id="my-cat" data-cat="{{ json_encode($cat) }}"></div>
     </x-slot>
-    <div class="card save-container w-50 ml-auto" id="navList">
+    <div class="save-container w-50 mr-auto mb-3" id="navList">
         <div class="row">
             <div class="col-lg col-md-12 col-sm-12">
-                <select class="form-control " id="select-cat" name="quarter">
+                <select class="form-control select2bs4" id="select-cat" name="quarter">
                 {{-- <select class="form-control select2bs4" id="quarter" name="quarter"> --}}
                     <option value="" selected>-- Pilih --</option>
                     <option value="nav-adhb">ADHB</option>
@@ -254,7 +254,8 @@
 
                 //Initialize Select2 Elements
                 $('.select2bs4').select2({
-                    theme: 'bootstrap4'
+                    theme: 'bootstrap4',
+                    width: '100%',
                 })
             });
         </script>
