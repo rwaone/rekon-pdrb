@@ -112,8 +112,8 @@
                     <div class="col-2">
                         <select class="form-control select2bs4" id="type" name="type">
                             <option value="" selected>-- Pilih Jenis PDRB --</option>
-                            <option {{ old('type', $filter['type']) == 'Lapangan Usaha' ? 'selected' : '' }}
-                                value='Lapangan Usaha'>Lapangan Usaha</option>
+                            <option {{ old('type', $filter['type']) == 'Pengeluaran' ? 'selected' : '' }}
+                                value='Pengeluaran'>Pengeluaran</option>
                         </select>
                     </div>
                     <div class="col-2">
