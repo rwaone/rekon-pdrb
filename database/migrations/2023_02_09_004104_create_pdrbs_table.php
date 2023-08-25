@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('pdrbs', function (Blueprint $table) {
             $table->id();
-            $table->char('type', 25)->nullable(true);
-            $table->foreignId('period_id');
-            $table->foreignId('region_id');
+            $table->foreignId('dataset_id');
+            $table->year('year');
+            $table->char('quarter', 1);
             $table->foreignId('subsector_id');
-            $table->decimal('adhb', $precision = 10, $scale = 2)->nullable(true);
-            $table->decimal('adhk', $precision = 10, $scale = 2)->nullable(true);
+            $table->decimal('adhb', $precision = 19, $scale = 9)->default(0);
+            $table->decimal('adhk', $precision = 19, $scale = 9)->default(0);
             $table->timestamps();
         });
     }

@@ -11,17 +11,12 @@ class Pdrb extends Model
  
     protected $guarded = ['id'];
 
-    protected $with = ['region', 'period', 'subsector'];
+    protected $with = ['dataset', 'subsector'];
     protected $load = ['adjustment'];
    
-    public function region()
+    public function dataset()
     {
-        return $this->belongsTo(Region::class);
-    }
-    
-    public function period()
-    {
-        return $this->belongsTo(Period::class);
+        return $this->belongsTo(Dataset::class);
     }
 
     public function subsector()

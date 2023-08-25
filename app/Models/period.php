@@ -11,10 +11,10 @@ class Period extends Model
  
     protected $guarded = ['id'];
 
-    protected $load = ['pdrb'];
+    protected $load = ['dataset'];
     
-    public function pdrb()
+    public function dataset()
     {
-        return $this->hasMany(Pdrb::class);
+        return $this->hasMany(Dataset::class);
     }
 }
