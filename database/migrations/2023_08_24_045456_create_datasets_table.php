@@ -13,7 +13,11 @@ return new class extends Migration
     {
         Schema::create('datasets', function (Blueprint $table) {
             $table->id();
+            $table->char('type', 25)->nullable(true);
             $table->foreignId('period_id');
+            $table->foreignId('region_id');
+            $table->year('year');
+            $table->char('quarter', 1);
             $table->char('status', 10);
             $table->timestamps();
         });
