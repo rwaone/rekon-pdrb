@@ -127,7 +127,9 @@ function downloadExcel(data) {
     const years = $("#select2-year-container").html();
     const quarters = $("#select2-quarter-container").html();
     const periods = $("#select2-period-container").html();
-    a.download = types + "-" + years + "-" + quarters + "-" + periods + ".xlsx";
+    const datas = $("#select2-data_quarter-container").html();
+    const rincian = $("#select2-select-cat-container").html();
+    a.download = rincian + "-" + types + "-" + years + "-" + "Periode " + quarters + " " + periods + "-" + "Data " + datas + ".xlsx";
 
     // Append the link to the document and trigger the download
     document.body.appendChild(a);

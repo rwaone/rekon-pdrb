@@ -213,8 +213,11 @@ $(document).ready(function () {
     $("#showData").click(async function (e) {
         e.preventDefault();
         $(".loader").removeClass("d-none");
-        $("#nav-adhb").addClass("active");
         $(".loader").removeClass("d-none");
+        // $("#select-cat").val("nav-adhb")
+        $("#select-cat option[value='nav-adhb']").prop("selected", true);
+        $("#select-cat").trigger("change");
+        sessionStorage.clear();
 
         try {
             const data = await fetchData("show");
@@ -226,7 +229,6 @@ $(document).ready(function () {
             sessionStorage.setItem("dataLU", JSON.stringify(data.data));
         } catch (e) {
             $(".loader").addClass("d-none");
-            sessionStorage.clear();
             alert("Error : " + e.message);
         }
     });
@@ -534,7 +536,7 @@ $(document).ready(function () {
                 break;
         }
     });
-    
+
     // $("#nav-distribusi").on("click", function (e) {
     //     e.preventDefault();
     //     $(".nav-item").removeClass("active");
@@ -1057,6 +1059,10 @@ function getIdx(adhb, adhk) {
 }
 
 function diskrepansi() {
+    $("#rekon-view tbody tr:not(:last-child):not(:nth-last-child(2)) td:first-child").each(function () {
+        $(this).css("background-color", "");
+        $(this).css("color", "black");
+    });
     $("#rekon-view tbody td:first-child").each(function () {
         let X = Number(
             $(this)
@@ -1078,13 +1084,6 @@ function diskrepansi() {
         let score = ((Y - X) / X) * 100;
         // console.log(Y, X, score);
         $(this).addClass("text-right");
-        if (score > 5 || score < -5) {
-            $(this).css("background-color", "#DB3131");
-            $(this).css("color", "aliceblue");
-        } else if ((score > 1 && score < 6) || (score < -1 && score > -6)) {
-            $(this).css("background-color", "#E6ED18");
-            $(this).css("color", "black");
-        }
         if (isNaN(score)) {
             score = "-";
             $(this).text(score);
@@ -1092,7 +1091,16 @@ function diskrepansi() {
             score = score.toFixed(5).replaceAll(/[.]/g, ",");
             $(this).text(score);
         }
-        // $(this).text(score.toFixed(5));
+        score = Number(score.replaceAll(",", "."));
+        if (score > 5 || score < -5) {
+            $(this).css("background-color", "#DB3131");
+            $(this).css("color", "aliceblue");
+            // console.log(score, "merah")
+        } else if ((score > 2 && score < 6) || (score < -2 && score > -6)) {
+            $(this).css("background-color", "#E6ED18");
+            $(this).css("color", "black");
+            // console.log(score, "kuning")
+        }
     });
     $("#head-purpose").text("Cek Diskrepansi");
 }
@@ -1191,6 +1199,7 @@ function getAdhk(data, type) {
     getSummarise(type);
     getTotalKabkot();
     diskrepansi();
+    console.log("HELYEA")
 }
 
 function getGrowth(data, before, type) {
