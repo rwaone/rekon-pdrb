@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Period;
+use App\Models\Region;
 use App\Models\Dataset;
 use App\Http\Requests\StoreDatasetRequest;
 use App\Http\Requests\UpdateDatasetRequest;
+use App\Models\Pdrb;
 
 class DatasetController extends Controller
 {
@@ -62,5 +65,35 @@ class DatasetController extends Controller
     public function destroy(Dataset $dataset)
     {
         //
+    }
+
+    public function batchCreate()
+    {
+        $periods = Period::all();
+        $regions = Region::all();
+
+        foreach ($periods as $period) {
+            foreach($regions as $region){
+                $data = [
+                    'type' => $period->type,
+                    'period_id' => $period->id,
+                    'region_id' => $region->id,
+                    'year' => $period->year,
+                    'quarter' => $period->quarter,
+                    'status' => $period->status == 'Final' ? 'Approved' : 'Submitted',
+                ];
+
+                Dataset::create($data);
+
+            }
+        }
+    }
+
+    public function batchUpdatePdrb()
+    {
+        $pdrb = Pdrb::all();
+
+        foreach($pdrb)
+
     }
 }
