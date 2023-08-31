@@ -66,38 +66,4 @@ class DatasetController extends Controller
     {
         //
     }
-
-    public function batchCreate()
-    {
-        $periods = Period::all();
-        $regions = Region::all();
-
-        foreach ($periods as $period) {
-            foreach($regions as $region){
-                $data = [
-                    'type' => $period->type,
-                    'period_id' => $period->id,
-                    'region_id' => $region->id,
-                    'year' => $period->year,
-                    'quarter' => $period->quarter,
-                    'status' => $period->status == 'Final' ? 'Approved' : 'Submitted',
-                ];
-
-                Dataset::create($data);
-
-            }
-        }
-    }
-
-    public function batchUpdatePdrb()
-    {
-        $pdrb = Pdrb::where('dataset_id',0)->get();
-        set_time_limit(0);
-        foreach($pdrb as $data){
-            $dataset = Dataset::where('period_id', $data->period_id)->where('region_id',$data->region_id)->first();
-            // return $dataset;
-            Pdrb::where('id', $data->id)->update(['dataset_id' => $dataset->id]);
-        }
-
-    }
 }
