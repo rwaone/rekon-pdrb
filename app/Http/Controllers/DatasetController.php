@@ -91,7 +91,7 @@ class DatasetController extends Controller
 
     public function batchUpdatePdrb()
     {
-        $pdrb = Pdrb::all();
+        $pdrb = Pdrb::where('dataset_id',0)->get();
         set_time_limit(0);
         foreach($pdrb as $data){
             $dataset = Dataset::where('period_id', $data->period_id)->where('region_id',$data->region_id)->first();
