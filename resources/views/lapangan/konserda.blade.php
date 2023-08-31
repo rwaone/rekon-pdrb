@@ -171,7 +171,7 @@
         <div class="row justify-content-start mb-3">
             <div class="col-6">
                 <select class="form-control select2bs4" id="select-cat" name="quarter">
-                    <option value="" selected>-- Pilih --</option>
+                    {{-- <option value="">-- Pilih --</option> --}}
                     <option value="nav-adhb">ADHB</option>
                     <option value="nav-adhk">ADHK</option>
                     <option value="nav-distribusi">Struktur Dalam</option>
@@ -189,8 +189,8 @@
             <div class="col">
                 <button class="btn btn-warning" id="download-csv" data-toogle="tooltip" data-placement="bottom"
                     title="Download"><i class="bi bi-file-earmark-arrow-down"></i></button>
-                <button class="btn btn-success" id="download-all" data-toogle="tooltip" data-placement="bottom"
-                    title="Download All"><i class="bi bi-file-earmark-arrow-down-fill"></i></button>
+                {{-- <button class="btn btn-success" id="download-all" data-toogle="tooltip" data-placement="bottom"
+                    title="Download All"><i class="bi bi-file-earmark-arrow-down-fill"></i></button> --}}
                 <button class="btn btn-primary" id="change-query" onclick="switchPlay('1')" data-toogle="tooltip"
                     data-placement="bottom" title="Tukar Posisi Kolom"><i class="bi bi-toggles"></i></button>
             </div>
