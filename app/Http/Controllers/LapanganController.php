@@ -101,7 +101,7 @@ class LapanganController extends Controller
             //KACAU KUMULATIFNYA!!
         } elseif ($typeof == 'cumulative') {
             // $period_before = Period::where('status', 'Final')->where('type', 'Lapangan Usaha')->where('year', $period_now->year - 1)->where('quarter', '<=', $quarter_check->quarter)->pluck('id')->toArray();
-            $period_before = Period::where('type', 'Lapangan Usaha')->pluck('id')->toArray();
+            $period_before = Period::where('type', 'Lapangan Usaha')->where('year', $period_now->year - 1)->where('quarter', 4)->latest('id')->pluck('id')->toArray();
             // $period_cumulative_now = Period::where('year', $period_now->year)->where('quarter', '<=', $quarter_check->quarter)->pluck('id')->toArray();
             switch ($quarter_check) {
                 case 4:
