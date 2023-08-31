@@ -44,6 +44,7 @@
                         @foreach ($subsectors as $subsector)
                             <option value="{{ $subsector->id }}">{{$loop->iteration . '. ' . $subsector->name }}</option>
                         @endforeach
+                        <option value="0">Total PDRB</option>
                     </select>
                     <div class="help-block"></div>
                 </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pdrb;
 use App\Models\Period;
 use App\Models\Region;
+use App\Models\Dataset;
 use App\Models\Category;
 use App\Models\Subsector;
 use Illuminate\Http\Request;
@@ -159,39 +160,23 @@ class LapanganController extends Controller
 
     public function daftarPokok()
     {
+        // dd(Region::getMyRegionId());
         $number = 1;
-        //ini harus diperbaikin
-        if (Auth::user()->satker_id == 1) {
-            $daftar_2 = Pdrb::select('region_id', 'period_id', 'year')
-                ->where('type', 'Lapangan Usaha')
-                ->whereNotIn('quarter', ['Y', 'F'])
-                ->groupBy('region_id', 'period_id', 'year')
-                ->orderBy('year', 'desc')
-                ->orderBy('quarter', 'desc')
-                ->orderBy('region_id')
-                ->get();
-
-            foreach ($daftar_2 as $item) {
-                $item->number = $number;
-                $number++;
-            }
-        } else {
-            $daftar_2 = Pdrb::select('region_id', 'period_id', 'year')
-                ->where('type', 'Lapangan Usaha')
-                ->where('region_id', Auth::user()->satker_id)
-                ->whereNotIn('quarter', ['Y', 'F'])
-                ->groupBy('region_id', 'period_id', 'year')
-                ->orderBy('year', 'desc')
-                ->orderBy('quarter', 'desc')
-                ->orderBy('region_id')
-                ->get();
-            foreach ($daftar_2 as $item) {
-                $item->number = $number;
-                $number++;
-            }
+        $daftar = Dataset::select('region_id', 'period_id', 'year')
+            ->where('type', 'Lapangan Usaha')
+            ->whereIn('region_id', Region::getMyRegionId())
+            ->groupBy('region_id', 'period_id', 'year')
+            ->orderBy('year', 'desc')
+            ->orderBy('quarter', 'desc')
+            ->orderBy('region_id')
+            ->get();
+        foreach ($daftar as $item) {
+            $item->number = $number;
+            $number++;
         }
+
         return view('lapangan.tabel-pokok', [
-            'daftar_2' => $daftar_2,
+            'daftar_2' => $daftar,
         ]);
     }
 
@@ -218,53 +203,55 @@ class LapanganController extends Controller
         $quarter = $request->query('quarter');
 
         $period = Period::where('id', $period_id)->first();
+
         $period_before = Period::where('year', $period->year - 1)
             ->where('quarter', 4)
-            ->where('status', 'Final')
             ->where('type', 'Lapangan Usaha')
+            ->latest('id')
             ->first();
 
-        $year_ = $period->year;
-        $periods = [];
+        $previous_dataset = Dataset::where('period_id', $period_before->id)
+            ->where('region_id', $region_id)
+            ->first();
+        
+        
+            // return response()->json($previous_dataset);
+
+        $current_dataset = Dataset::where('period_id', $period_id)
+            ->where('region_id', $region_id)
+            ->first();
+
         $befores = [];
 
         for ($index = 1; $index <= 4; $index++) {
             if ($period_before) {
                 $befores['pdrb-' . $index] = Pdrb::select('subsector_id', 'adhk', 'adhb')
-                    ->where('period_id', $period_before->id)
-                    ->where('region_id', $region_id)
+                    ->where('dataset_id', $previous_dataset->id)
                     ->where('quarter', $index)
-                    ->get();
-            }
-            // else {
-            //     $defaultValues = [
-            //         'subsector_id' => null,
-            //         'adhk' => '-',
-            //         'adhb' => '-',
-            //     ];
-            //     $befores['pdrb-' . $index] = array_fill(0, 55, $defaultValues);
-            // }
-
-            // if ($index <= $quarter) {
-                $datas['pdrb-' . $index] = Pdrb::select('subsector_id', 'adhk', 'adhb')
-                    ->where('quarter', $index)
-                    ->where('period_id', $period_id)
-                    ->where('region_id', $region_id)
                     ->orderBy('subsector_id')
                     ->get();
-                if (count($datas['pdrb-' . $index]) == 0) {
-                    $defaultValues = [
-                        'subsector_id' => null,
-                        'adhk' => '-',
-                        'adhb' => '-',
-                    ];
-                    $datas['pdrb-' . $index] = array_fill(0, 55, $defaultValues);
-                }
+            }
+            $datas['pdrb-' . $index] = Pdrb::select('subsector_id', 'adhk', 'adhb')
+                ->where('quarter', $index)
+                ->where('dataset_id', $current_dataset->id)
+                ->orderBy('subsector_id')
+                ->get();
+
+            if (count($datas['pdrb-' . $index]) == 0) {
+                $defaultValues = [
+                    'subsector_id' => null,
+                    'adhk' => '-',
+                    'adhb' => '-',
+                ];
+                $datas['pdrb-' . $index] = array_fill(0, 55, $defaultValues);
+            }
             // }
         }
         return response()->json([
             'data' => $datas,
-            'before' => $befores
+            'before' => $befores,
+            'current' => $current_dataset,
+            'previous' => $previous_dataset,
         ]);
     }
 

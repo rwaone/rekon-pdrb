@@ -221,6 +221,8 @@ $(document).ready(function () {
             },
 
             success: function (result) {
+                
+                console.log(result)
 
                 sessionStorage.setItem("adjustmentData", JSON.stringify(result.data));
 

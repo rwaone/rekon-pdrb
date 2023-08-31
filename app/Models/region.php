@@ -32,9 +32,9 @@ class Region extends Model
     public static function getMyRegionId()
     {
         if (auth()->user()->satker_id == 1){
-            $region = Region::all();
+            $region = Region::all()->pluck('id');
         } else {
-            $region = Region::where('satker_id', auth()->user()->satker_id)->get('id');
+            $region = Region::where('satker_id', auth()->user()->satker_id)->pluck('id');
         }
 
         return $region;

@@ -7,13 +7,14 @@ use App\Models\Period;
 use App\Models\Region;
 use App\Models\Satker;
 use App\Models\Sector;
+use App\Models\Dataset;
 use App\Models\Category;
 use App\Models\Subsector;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StorepdrbRequest;
 use App\Http\Requests\UpdatepdrbRequest;
 use App\Http\Requests\StoreFilterRequest;
-use Illuminate\Support\Facades\Auth;
 
 class PdrbController extends Controller
 {
@@ -145,9 +146,9 @@ class PdrbController extends Controller
     {
         $filter = $request->filter;
         $copy = $request->copy;
-
+        $dataset = Dataset::where('period_id', $copy['periodCopy'])->where('region_id', $filter['region_id'])->first();
         for ($index = 1; $index <= $copy['quarterCopy']; $index++) {
-            $data[$index] = Pdrb::where('period_id', $copy['periodCopy'])->where('region_id', $filter['region_id'])->where('quarter', $index)->orderBy('subsector_id')->get();
+            $data[$index] = Pdrb::where('dataset_id', $dataset->id)->where('quarter', $index)->orderBy('subsector_id')->get();
         }
         return response()->json($data);
     }
@@ -156,14 +157,31 @@ class PdrbController extends Controller
     {
         $filter = $request->filter;
         $subsectors = Subsector::where('type', $filter['type'])->get();
-        $previous_period = Period::where('type', $filter['type'])->where('year', $filter['year'] - 1)->where('quarter', 4)->where('status', 'Final')->first();
-        
-        if (isset($previous_period)) {
-            $previous_periodId = $previous_period->id;
+        $notification = [];
+
+        $current_dataset = Dataset::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->first();
+
+        $previous_dataset = Dataset::where('type', $filter['type'])
+            ->where('region_id', $filter['region_id'])
+            ->where('year', $filter['year'] - 1)
+            ->where('quarter', 4)
+            ->latest('id')
+            ->first();
+
+
+        if (isset($previous_dataset)) {
             $previous_data = [];
             for ($index = 1; $index <= 4; $index++) {
-                $previous_data[$index] = Pdrb::where('period_id', $previous_periodId)->where('region_id', $filter['region_id'])->where('quarter', $index)->orderBy('subsector_id')->get();
+                $previous_data[$index] = Pdrb::where('dataset_id', $previous_dataset->id)->where('quarter', $index)->orderBy('subsector_id')->get();
             }
+
+            $previous_period = Period::where('id', $previous_dataset->period_id)->first();
+            $message = [
+                'type' => 'success',
+                'text' => 'Data periode sebelumnya berhasil diunduh, Tahun ' . $previous_period->year . ' ' . $previous_period->description
+            ];
+
+            array_push($notification, $message);
         } else {
             for ($index = 1; $index <= 4; $index++) {
                 $inputData = [];
@@ -181,25 +199,49 @@ class PdrbController extends Controller
                 }
                 $previous_data[$index] = (object) $inputData;
             }
+
+            $message = [
+                'type' => 'warning',
+                'text' => 'Data periode sebelumnya tidak ada / belum final, summary tidak dapat ditampilkan'
+            ];
+            array_push($notification, $message);
         }
 
 
         $current_data = [];
 
-        for ($index = 1; $index <= 4; $index++) {
-            if ($index <= $filter['quarter']) {
-                $query_data[$index] = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->where('quarter', $index)->orderBy('subsector_id')->get();
-                if (sizeof($query_data[$index]) == 0) {
+        if (isset($current_dataset)) {
+            for ($index = 1; $index <= 4; $index++) {
+                if ($index <= $filter['quarter']) {
+                    $current_data[$index] = Pdrb::where('dataset_id', $current_dataset->id)->where('quarter', $index)->orderBy('subsector_id')->get();
+                }
+            }
+
+            array_push($notification, [
+                'type' => 'success',
+                'text' => 'Data periode ini berhasil diunduh'
+            ]);
+        } else {
+            $dataset = Dataset::create([
+                'type' => $filter['type'],
+                'period_id' => $filter['period_id'],
+                'region_id' => $filter['region_id'],
+                'year' => $filter['year'],
+                'quarter' => $filter['quarter'],
+                'status' => 'Entry',
+            ]);
+
+            for ($index = 1; $index <= 4; $index++) {
+                if ($index <= $filter['quarter']) {
+
                     $inputData = [];
                     $timestamp = date('Y-m-d H:i:s');
                     foreach ($subsectors as $subsector) {
                         $singleData = [
                             'subsector_id' => $subsector->id,
-                            'type' => $filter['type'],
+                            'dataset_id' => $dataset->id,
                             'year' => $filter['year'],
                             'quarter' => $index,
-                            'period_id' => $filter['period_id'],
-                            'region_id' => $filter['region_id'],
                             'created_at' => $timestamp,
                             'updated_at' => $timestamp,
                         ];
@@ -207,25 +249,14 @@ class PdrbController extends Controller
                     }
 
                     Pdrb::insert($inputData);
-                    $current_data[$index] = Pdrb::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->where('quarter', $index)->orderBy('subsector_id')->get();
-                } else {
-                    $current_data[$index] = $query_data[$index];
+                    $current_data[$index] = Pdrb::where('dataset_id', $dataset->id)->where('quarter', $index)->orderBy('subsector_id')->get();
                 }
             }
-        }
-        $notification = [];
-        
-        array_push($notification, [
-            'type' => 'success',
-            'text' => 'Data berhasil diunduh'
-        ]);
-        
-        if (!isset($previous_period)){
-            $message = [
-                'type' => 'warning',
-                'text' => 'Data periode sebelumnya tidak ada / belum final, summary tidak dapat ditampilkan'
-            ];
-            array_push($notification, $message);
+
+            array_push($notification, [
+                'type' => 'success',
+                'text' => 'Data periode ini berhasil dibuat'
+            ]);
         }
 
         return response()->json(['current_data' => $current_data, 'previous_data' => $previous_data, 'messages' => $notification]);

@@ -513,6 +513,9 @@ $(document).ready(function () {
 
         $('.loader').removeClass('d-none');
 
+        $('#adhbForm')[0].reset();
+        $('#adhkForm')[0].reset();
+
         $('input[name*=id_]').prop('disabled', false)
         $('input[name*=adhk_value_]').prop('disabled', false)
         $('input[name*=adhb_value_]').prop('disabled', false)

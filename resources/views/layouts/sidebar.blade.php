@@ -49,8 +49,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('lapangan-usaha/konserda') }}"
-                                class="nav-link {{ Request::is('lapangan-usaha/konserda') ? 'active' : '' }}">
+                            <a href="{{ url('lapangan-usaha/diskrepansi') }}"
+                                class="nav-link {{ Request::is('lapangan-usaha/diskrepansi') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Diskrepansi</p>
                             </a>
@@ -104,8 +104,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('pengeluaran/konserda') }}"
-                                class="nav-link {{ Request::is('pengeluaran/konserda') ? 'active' : '' }}">
+                            <a href="{{ url('pengeluaran/diskrepansi') }}"
+                                class="nav-link {{ Request::is('pengeluaran/diskrepansi') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Diskrepansi</p>
                             </a>

@@ -949,6 +949,7 @@ function fetchData() {
             url: getUrl.href,
             dataType: "json",
             success: function (data) {
+                console.log(data)
                 resolve(data);
                 // console.log(data);
                 sessionStorage.setItem("data", JSON.stringify(data.data));
