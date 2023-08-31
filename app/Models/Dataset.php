@@ -9,7 +9,16 @@ class Dataset extends Model
 {
     use HasFactory;
     
+    protected $guarded = ['id'];
+    
     protected $with = ['region', 'period'];
+
+    protected $load = ['dataset'];
+    
+    public function pdrb()
+    {
+        return $this->hasMany(Pdrb::class);
+    }
 
     public function region()
     {

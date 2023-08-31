@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PdrbController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PeriodController;
+use App\Http\Controllers\DatasetController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FenomenaController;
 use App\Http\Controllers\LapanganController;
@@ -98,7 +99,8 @@ Route::post('fetch/active-quarter', [PeriodController::class, 'fetchActiveQuarte
 Route::post('fetch/active-period', [PeriodController::class, 'fetchActivePeriod'])->name('fetchActivePeriod');
 Route::resource('period', PeriodController::class)->middleware(['auth', 'verified', 'admin']);
 
-
+Route::get('dataset/create/batch', [DatasetController::class, 'batchCreate'])->middleware('auth', 'admin');
+Route::get('dataset/update/pdrb', [DatasetController::class, 'batchUpdatePdrb'])->middleware('auth', 'admin');
 
 Route::resource('user', UserController::class)->middleware(['auth', 'verified', 'admin']);
 
