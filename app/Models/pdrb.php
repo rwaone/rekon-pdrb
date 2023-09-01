@@ -14,6 +14,7 @@ class Pdrb extends Model
     protected $with = ['dataset', 'subsector'];
     protected $load = ['adjustment'];
    
+    
     public function dataset()
     {
         return $this->belongsTo(Dataset::class);
