@@ -140,14 +140,14 @@
 
                             <td class="adhb-adjust"><input id="adhb-adjust-{{ $region->id }}" type="text"
                                     class="form-control text-right" name="adhb-adjust-{{ $region->id }}"
-                                    aria-required="true" {{(auth()->user()->role == 'user') ? 'disabled'}}></td>
+                                    aria-required="true" {{(auth()->user()->role == 'user') ? 'disabled' : ''}}></td>
 
                             <td class="text-right adhb-berjalan" id="adhb-berjalan-{{ $region->id }}"></td>
                             <td class="text-right adhk-inisial" id="adhk-inisial-{{ $region->id }}"></td>
 
                             <td class="adhk-adjust"><input id="adhk-adjust-{{ $region->id }}" type="text"
                                     class="form-control text-right" name="adhk-adjust-{{ $region->id }}"
-                                    aria-required="true" {{(auth()->user()->role == 'user') ? 'disabled'}}></td>
+                                    aria-required="true" {{(auth()->user()->role == 'user') ? 'disabled' : ''}}></td>
                                     
                             <td class="text-right adhk-berjalan" id="adhk-berjalan-{{ $region->id }}"></td>
                             <td class="text-right qtoq-inisial" id="qtoq-inisial-{{ $region->id }}"></td>
