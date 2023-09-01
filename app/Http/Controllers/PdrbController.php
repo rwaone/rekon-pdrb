@@ -214,7 +214,7 @@ class PdrbController extends Controller
             for ($index = 1; $index <= 4; $index++) {
                 if ($index <= $filter['quarter']) {
                     $current_data[$index] = Pdrb::where('dataset_id', $current_dataset->id)->where('quarter', $index)->orderBy('subsector_id')->get();
-                    if(sizeof($previous_dataset) == 0) {
+                    if(sizeof($current_data[$index]) == 0) {
                         if ($index <= $filter['quarter']) {
                             $inputData = [];
                             $timestamp = date('Y-m-d H:i:s');
