@@ -66,8 +66,8 @@
                                 @foreach ($regions as $region => $item)
                                     <tr>
                                         <td class = "pl-2">{{ $region }}</td>
-                                        <td>{{ $item['adhk'] }}</td>
-                                        <td>{{ $item['adhb'] }}</td>
+                                        <td>{{ $item['entry'] }}</td>
+                                        <td>{{ $item['submit'] }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
