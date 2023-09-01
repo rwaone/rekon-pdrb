@@ -214,26 +214,6 @@ class PdrbController extends Controller
             for ($index = 1; $index <= 4; $index++) {
                 if ($index <= $filter['quarter']) {
                     $current_data[$index] = Pdrb::where('dataset_id', $current_dataset->id)->where('quarter', $index)->orderBy('subsector_id')->get();
-                    if(sizeof($current_data[$index]) == 0) {
-                        if ($index <= $filter['quarter']) {
-                            $inputData = [];
-                            $timestamp = date('Y-m-d H:i:s');
-                            foreach ($subsectors as $subsector) {
-                                $singleData = [
-                                    'subsector_id' => $subsector->id,
-                                    'dataset_id' => $current_dataset->id,
-                                    'year' => $filter['year'],
-                                    'quarter' => $index,
-                                    'created_at' => $timestamp,
-                                    'updated_at' => $timestamp,
-                                ];
-                                array_push($inputData, $singleData);
-                            }
-        
-                            Pdrb::insert($inputData);
-                            $current_data[$index] = Pdrb::where('dataset_id', $current_dataset->id)->where('quarter', $index)->orderBy('subsector_id')->get();
-                        }
-                    }
                 }
             }
 
