@@ -106,7 +106,7 @@
                             <td>
                                 <input type="hidden" name="id_Y_{{ $subsector->id }}">
                                 <input disabled type="text"
-                                    name="adhk_value_Y_{{ $subsector->id }}"
+                                    name="adhk_sum_Y_{{ $subsector->id }}"
                                     id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Y' }}"
                                     class="form-control text-right {{ 'adhk-sector-Y-' . $subsector->sector_id }} {{ 'adhk-category-Y-' . $subsector->sector->category_id }}"
                                     aria-required="true" tabindex="{{ $subsector->id + 220 }}">
@@ -154,7 +154,7 @@
                             <td class ="sectors">
                                 <input type="hidden" name="id_Y_{{ $subsector->id }}">
                                 <input disabled type="text"
-                                    name="adhk_value_Y_{{ $subsector->id }}"
+                                    name="adhk_sum_Y_{{ $subsector->id }}"
                                     id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code . '_Y' }}"
                                     class="form-control text-right {{ 'adhk-sector-Y-' . $subsector->sector_id }} {{ 'adhk-category-Y-' . $subsector->sector->category_id }} sectors"
                                     aria-required="true" tabindex="{{ $subsector->id + 220 }}">
