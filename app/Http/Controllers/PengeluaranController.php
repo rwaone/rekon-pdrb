@@ -295,22 +295,20 @@ class PengeluaranController extends Controller
             $quarter_active = Period::select('id', 'quarter', 'description')->where('year', $year->year)->where('type', 'Pengeluaran')->whereIn('status', ['Selesai', 'Aktif'])->get();
             foreach ($quarter_active as $quarters) {
                 foreach ($regions as $region) {
-                    $data = Pdrb::where('region_id', $region->id)->where('period_id', $quarters->id)->where('quarter', $quarters->quarter)->get(['adhk','adhb']);
-                    $data_adhb = $data->pluck('adhb');
-                    $data_adhk = $data->pluck('adhk');
-                    if ($data_adhb->contains(null)){
-                        $data_adhb = 0;
+                    $data = Dataset::where('region_id', $region->id)->where('period_id', $quarters->id)->where('quarter', $quarters->quarter)->first();
+                    if ($data->status == 'Submitted') {
+                        $submit = 1;
+                        $entry = 1;
+                    } elseif ($data->status == 'Entry') {
+                        $entry = 1;
+                        $submit = 0;
                     } else {
-                        $data_adhb = 1;
-                    }
-                    if ($data_adhk->contains(null)){
-                        $data_adhk = 0;
-                    } else {
-                        $data_adhk = 1;
+                        $entry = 0;
+                        $submit = 0;
                     }
                     $monitoring_quarter[$year->year][$quarters->quarter][$region->name]['description'] = Period::select('description')->where('id', $quarters->id)->pluck('description');
-                    $monitoring_quarter[$year->year][$quarters->quarter][$region->name]['adhk'] = $data_adhk;
-                    $monitoring_quarter[$year->year][$quarters->quarter][$region->name]['adhb'] = $data_adhb;
+                    $monitoring_quarter[$year->year][$quarters->quarter][$region->name]['entry'] = $entry;
+                    $monitoring_quarter[$year->year][$quarters->quarter][$region->name]['submit'] = $submit;
                 }
             }
         }

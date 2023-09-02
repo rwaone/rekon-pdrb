@@ -59,15 +59,15 @@
                         <table class="table table-bordered table-striped" id="monitoring-kuarter">
                             <thead>
                                 <th>Kabupaten/Kota</th>
-                                <th>ADHK</th>
-                                <th>ADHB</th>
+                                <th>Entry</th>
+                                <th>Submit</th>
                             </thead>
                             <tbody>
                                 @foreach ($regions as $region => $item)
                                     <tr>
                                         <td class = "pl-2">{{ $region }}</td>
-                                        <td>{{ $item['adhk'] }}</td>
-                                        <td>{{ $item['adhb'] }}</td>
+                                        <td>{{ $item['entry'] }}</td>
+                                        <td>{{ $item['submit'] }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
