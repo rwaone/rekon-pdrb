@@ -65,7 +65,6 @@ class LapanganController extends Controller
                 if ($quarter_before == 0) {
                     $quarter_before = 4;
                     $period_before = Period::where('type', 'Lapangan Usaha')->where('year', $period_now->year - 1)->where('quarter', 4)->latest('id')->first();
-                    
                 } else {
                     // $period_before = Period::where('status', 'Final')->where('type', 'Lapangan Usaha')->where('year', $period_now->year)->where('quarter', $quarter_before)->first();
                     $period_before = $period_now;
@@ -217,9 +216,9 @@ class LapanganController extends Controller
         $previous_dataset = Dataset::where('period_id', $period_before->id)
             ->where('region_id', $region_id)
             ->first();
-        
-        
-            // return response()->json($previous_dataset);
+
+
+        // return response()->json($previous_dataset);
 
         $current_dataset = Dataset::where('period_id', $period_id)
             ->where('region_id', $region_id)
@@ -296,15 +295,17 @@ class LapanganController extends Controller
             foreach ($quarter_active as $quarters) {
                 foreach ($regions as $region) {
                     $data = Dataset::where('region_id', $region->id)->where('period_id', $quarters->id)->where('quarter', $quarters->quarter)->first();
-                    if ($data->status == 'Submitted') {
-                        $submit = 1;
-                        $entry = 1;
-                    } elseif ($data->status == 'Entry') {
-                        $entry = 1;
-                        $submit = 0;
-                    } else {
-                        $entry = 0;
-                        $submit = 0;
+                    if (isset($data)) {
+                        if ($data->status == 'Submitted') {
+                            $submit = 1;
+                            $entry = 1;
+                        } elseif ($data->status == 'Entry') {
+                            $entry = 1;
+                            $submit = 0;
+                        } else {
+                            $entry = 0;
+                            $submit = 0;
+                        }
                     }
                     $monitoring_quarter[$year->year][$quarters->quarter][$region->name]['description'] = Period::select('description')->where('id', $quarters->id)->pluck('description');
                     $monitoring_quarter[$year->year][$quarters->quarter][$region->name]['entry'] = $entry;
