@@ -302,10 +302,10 @@ class LapanganController extends Controller
                         } elseif ($data->status == 'Entry') {
                             $entry = 1;
                             $submit = 0;
-                        } else {
-                            $entry = 0;
-                            $submit = 0;
-                        }
+                        } 
+                    } else {
+                        $entry = 0;
+                        $submit = 0;
                     }
                     $monitoring_quarter[$year->year][$quarters->quarter][$region->name]['description'] = Period::select('description')->where('id', $quarters->id)->pluck('description');
                     $monitoring_quarter[$year->year][$quarters->quarter][$region->name]['entry'] = $entry;

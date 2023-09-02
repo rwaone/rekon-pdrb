@@ -216,9 +216,9 @@ class PengeluaranController extends Controller
         $previous_dataset = Dataset::where('period_id', $period_before->id)
             ->where('region_id', $region_id)
             ->first();
-        
-        
-            // return response()->json($previous_dataset);
+
+
+        // return response()->json($previous_dataset);
 
         $current_dataset = Dataset::where('period_id', $period_id)
             ->where('region_id', $region_id)
@@ -303,10 +303,10 @@ class PengeluaranController extends Controller
                         } elseif ($data->status == 'Entry') {
                             $entry = 1;
                             $submit = 0;
-                        } else {
-                            $entry = 0;
-                            $submit = 0;
                         }
+                    } else {
+                        $entry = 0;
+                        $submit = 0;
                     }
                     $monitoring_quarter[$year->year][$quarters->quarter][$region->name]['description'] = Period::select('description')->where('id', $quarters->id)->pluck('description');
                     $monitoring_quarter[$year->year][$quarters->quarter][$region->name]['entry'] = $entry;
@@ -318,7 +318,7 @@ class PengeluaranController extends Controller
 
         return view('pengeluaran.monitoring', [
             'max_year' => $max_year,
-            'monitoring_quarter' => $monitoring_quarter, 
+            'monitoring_quarter' => $monitoring_quarter,
         ]);
     }
 }
