@@ -296,15 +296,17 @@ class PengeluaranController extends Controller
             foreach ($quarter_active as $quarters) {
                 foreach ($regions as $region) {
                     $data = Dataset::where('region_id', $region->id)->where('period_id', $quarters->id)->where('quarter', $quarters->quarter)->first();
-                    if ($data->status == 'Submitted') {
-                        $submit = 1;
-                        $entry = 1;
-                    } elseif ($data->status == 'Entry') {
-                        $entry = 1;
-                        $submit = 0;
-                    } else {
-                        $entry = 0;
-                        $submit = 0;
+                    if (isset($data)) {
+                        if ($data->status == 'Submitted') {
+                            $submit = 1;
+                            $entry = 1;
+                        } elseif ($data->status == 'Entry') {
+                            $entry = 1;
+                            $submit = 0;
+                        } else {
+                            $entry = 0;
+                            $submit = 0;
+                        }
                     }
                     $monitoring_quarter[$year->year][$quarters->quarter][$region->name]['description'] = Period::select('description')->where('id', $quarters->id)->pluck('description');
                     $monitoring_quarter[$year->year][$quarters->quarter][$region->name]['entry'] = $entry;
