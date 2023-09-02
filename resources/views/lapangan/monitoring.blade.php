@@ -59,8 +59,8 @@
                         <table class="table table-bordered table-striped" id="monitoring-kuarter">
                             <thead>
                                 <th>Kabupaten/Kota</th>
-                                <th>ADHK</th>
-                                <th>ADHB</th>
+                                <th>Entry</th>
+                                <th>Submit</th>
                             </thead>
                             <tbody>
                                 @foreach ($regions as $region => $item)

@@ -296,14 +296,14 @@ class LapanganController extends Controller
             foreach ($quarter_active as $quarters) {
                 foreach ($regions as $region) {
                     $data = Dataset::where('region_id', $region->id)->where('period_id', $quarters->id)->where('quarter', $quarters->quarter)->first();
-                    if ($data->status == 'Entry') {
+                    if ($data->status == 'Submitted') {
+                        $submit = 1;
                         $entry = 1;
+                    } elseif ($data->status == 'Entry') {
+                        $entry = 1;
+                        $submit = 0;
                     } else {
                         $entry = 0;
-                    }
-                    if ($data->status == 'Submit') {
-                        $submit = 1;
-                    } else {
                         $submit = 0;
                     }
                     $monitoring_quarter[$year->year][$quarters->quarter][$region->name]['description'] = Period::select('description')->where('id', $quarters->id)->pluck('description');
