@@ -260,7 +260,9 @@ class FenomenaController extends Controller
                 ->where('year', $years)->pluck('description');
             if ($data->isEmpty()) {
                 $data = 0;
-            } else {    
+            } elseif ($data->contains('-')) {
+                $data = 2;
+            } else {
                 $data = 1;
             }
             $monitoring_quarter[$years][$quarters][$region->name]['description'] = $data;

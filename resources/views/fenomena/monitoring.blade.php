@@ -95,6 +95,26 @@
                 </table>
             </div>
         </div>
+        <div class="row p-3 justify-content-center">
+            <div class="col-md">
+                <p>
+                    <i class="bi bi-x-circle-fill" style = "color: red;"></i>
+                    Belum isi
+                </p>
+            </div>
+            <div class="col-md">
+                <p>
+                    <i class="bi bi-check-circle-fill" style = "color: green;"></i>
+                    Sudah isi semua
+                </p>
+            </div>
+            <div class="col-md">
+                <p>
+                    <i class="bi bi-check-circle-fill" style = "color: orange;"></i>
+                    Masih ada yang berisi "-"
+                </p>
+            </div>
+        </div>
     </div>
 
 

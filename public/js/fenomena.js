@@ -339,6 +339,12 @@ if (paramsLink == "monitoring") {
                     );
                     $(this).addClass("text-center");
                 }
+                if ($(this).text() === "2") {
+                    $(this).html(
+                        '<i class="bi bi-check-circle-fill" style = "color: orange;"></i>'
+                    );
+                    $(this).addClass("text-center");
+                }
             });
         } catch (error) {
             error.message;
