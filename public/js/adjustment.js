@@ -221,7 +221,7 @@ $(document).ready(function () {
             },
 
             success: function (result) {
-                
+
                 console.log(result)
 
                 sessionStorage.setItem("adjustmentData", JSON.stringify(result.data));
@@ -249,6 +249,12 @@ $(document).ready(function () {
         })
         $('.tab-item').removeClass('active')
         $(`#tab_${quarter}`).addClass('active')
+
+        for (let indeks = 2; indeks <= 16; indeks++) {
+            countBerjalan('adhb', indeks)
+            countBerjalan('adhk', indeks)
+        }
+
         getTotalInisial(quarter, data)
         getTotalBerjalan(quarter, data)
         getQtoQinisial(quarter, data)
@@ -392,7 +398,7 @@ $(document).ready(function () {
             $.each(data['current'], function (index, value) {
                 let adjust = Number($(`#adhk-adjust-${index}`).val().replaceAll('.', '').replaceAll(',', '.'))
                 let current = Number(value[quarter]['adhk']) + adjust
-                let previous = Number(value[quarter - 1]['adhk'])
+                let previous = Number(value[quarter - 1]['adhk']) + Number(value[quarter - 1]['adjust_adhk'])
                 let result = (current - previous) / previous * 100
                 qtoq[index] = result
 
@@ -575,7 +581,7 @@ $(document).ready(function () {
         let totalPrevious = 0
         if (quarter == 1) {
             $.each(data['current'], function (index, value) {
-                let adjustADHB = Number($(`#adhk-adjust-${index}`).val().replaceAll('.', '').replaceAll(',', '.'))
+                let adjustADHB = Number($(`#adhb-adjust-${index}`).val().replaceAll('.', '').replaceAll(',', '.'))
                 let adjustADHK = Number($(`#adhk-adjust-${index}`).val().replaceAll('.', '').replaceAll(',', '.'))
 
                 let currentADHB = Number(value[quarter]['adhb']) + adjustADHB
@@ -597,8 +603,13 @@ $(document).ready(function () {
             })
         } else {
             $.each(data['current'], function (index, value) {
-                let currentADHB = Number(value[quarter]['adhb'])
-                let currentADHK = Number(value[quarter]['adhk'])
+
+                let adjustADHB = Number($(`#adhb-adjust-${index}`).val().replaceAll('.', '').replaceAll(',', '.'))
+                let adjustADHK = Number($(`#adhk-adjust-${index}`).val().replaceAll('.', '').replaceAll(',', '.'))
+
+                let currentADHB = Number(value[quarter]['adhb']) + adjustADHB
+                let currentADHK = Number(value[quarter]['adhk']) + adjustADHK
+
                 let previousADHB = Number(value[quarter - 1]['adhb'])
                 let previousADHK = Number(value[quarter - 1]['adhk'])
 
