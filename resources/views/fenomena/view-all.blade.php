@@ -137,9 +137,9 @@
         <div id="my-cat" data-cat="{{ json_encode($cat) }}"></div>
     </x-slot>
     <div class="row">
-        <div class="col-2 col-md-2 col-sm-2">
-        </div>
-        <div class="col-10 col-md-10 col-sm-10">
+        {{-- <div class="col-2 col-md-2 col-sm-2">
+        </div> --}}
+        <div class="col col-md col-sm">
             <div class="card mb-3 p-0">
                 <div class="card-body">
                     <form>
@@ -179,9 +179,9 @@
                                 </select>
                             </div>
                             <div class="col-md">
-                                <button class="btn btn-info col-md-10" id="showData">Tampilkan Data</button>
-                                <div class="btn btn-danger" id="refresh"><i class="bi bi-x-lg"></i></div>
+                                <button class="btn btn-info col-md col-sm" id="showData">Tampilkan Data</button>
                             </div>
+                            <div class="btn btn-danger" id="refresh"><i class="bi bi-x-lg"></i></div>
                         </div>
                     </form>
                 </div>

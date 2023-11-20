@@ -177,13 +177,7 @@ $(document).ready(function () {
                                 obj["cell-" + row + "-" + col] = v3;
                                 $this
                                     .closest("table")
-                                    .find(
-                                        "tr:eq(" +
-                                            row +
-                                            ") td:eq(" +
-                                            col +
-                                            ") textarea"
-                                    )
+                                    .find("tr:eq("+ row +") td:eq(" + col + ") textarea")
                                     .val(v3);
                             });
                         });
