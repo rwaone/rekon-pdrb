@@ -19,7 +19,7 @@ class AdjustmentController extends Controller
      */
     public function index()
     {
-        $regions = Region::getMyRegion();
+        $regions = Region::all();
         $segment = \Request::segment(1);
         $type = ($segment == 'pengeluaran') ? 'Pengeluaran' : 'Lapangan Usaha';
         $subsectors = Subsector::where('type', $type)->get();

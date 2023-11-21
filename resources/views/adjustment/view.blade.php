@@ -29,11 +29,13 @@
 
     <div class="card">@include('adjustment.table')</div>
 
-    <div class="card save-container">
-        <div class="ml-auto">
-            <button id="adjustment-save" type="button" class="btn btn-success">Simpan</button>
+    @can('admin')
+        <div class="card save-container">
+            <div class="ml-auto">
+                <button id="adjustment-save" type="button" class="btn btn-success">Simpan</button>
+            </div>
         </div>
-    </div>
+    @endcan
 
     <!-- Back to top button -->
     <button type="button" class="btn btn-light btn-floating btn-lg" id="btn-back-to-top">
