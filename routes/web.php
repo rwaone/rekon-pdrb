@@ -102,7 +102,7 @@ Route::resource('period', PeriodController::class)->middleware(['auth', 'verifie
 Route::get('dataset/create/batch', [DatasetController::class, 'batchCreate'])->middleware('auth', 'admin');
 Route::get('dataset/update/pdrb', [DatasetController::class, 'batchUpdatePdrb'])->middleware('auth', 'admin');
 
-Route::resource('user', UserController::class)->middleware(['auth', 'verified', 'admin']);
+Route::resource('user', UserController::class)->middleware(['auth', 'admin']);
 
 
 require __DIR__ . '/auth.php';
