@@ -33,7 +33,30 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+            'satker_id' => ['required'],
+            'role' => ['required'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+        // dd($request);
+
+        $user = User::create([
+            'name' => $request->name,
+            'username' => $request->username,
+            'email' => $request->email,
+            'role'  => $request->role,
+            'satker_id' => $request->satker_id,
+            'password' => Hash::make($request->password),
+        ]);
+
+        event(new Registered($user));
+
+        // Auth::login($user);
+
+        return redirect('user');
     }
 
     /**
