@@ -257,7 +257,15 @@ class FenomenaController extends Controller
         foreach ($regions as $region) {
             $data = Fenomena::where('region_id', $region->id)
                 ->where('quarter', $quarters)
+                ->where('type', $types)
                 ->where('year', $years)->pluck('description');
+            $count = 0;
+            foreach ($data as $item) {
+                if ($item === '-') {
+                    $count++;
+                }
+            }
+
             if ($data->isEmpty()) {
                 $data = 0;
             } elseif ($data->contains('-')) {
@@ -266,6 +274,7 @@ class FenomenaController extends Controller
                 $data = 1;
             }
             $monitoring_quarter[$years][$quarters][$region->name]['description'] = $data;
+            $monitoring_quarter[$years][$quarters][$region->name]['counts'] = $count;
         }
 
         return response()->json($monitoring_quarter);
