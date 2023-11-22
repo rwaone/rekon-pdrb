@@ -18,6 +18,21 @@
                 background-color: red;
                 color: aliceblue;
             }
+            /* style="background-color: #09b5c1; color:aliceblue;" */
+            #adjust-table th.first{
+                position: sticky;
+                left: 0;
+                background-color: #09b5c1;
+                color: aliceblue;
+                z-index: 2;
+            }
+
+            #adjust-table td:nth-child(1){
+                position: sticky;
+                left: 0;
+                background-color: #fff;
+                z-index: 2;
+            }
         </style>
     </x-slot>
 
