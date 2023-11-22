@@ -83,12 +83,14 @@
                     <thead>
                         <th>Kabupaten/Kota</th>
                         <th>Cek</th>
+                        <th>Jumlah Kosong ("-")</th>
                     </thead>
                     <tbody>
                         @foreach ($regions as $index => $region)
                             <tr>
                                 <td id="region-{{ $region->name }}" class="pl-2">{{ $region->name }}</td>
-                                <td id="value-{{ $index+1 }}"></td>
+                                <td id="value-{{ $index+1 }}" class="values"></td>
+                                <td id="counts-{{ $index+1 }}" class="text-center"></td>
                             </tr>
                         @endforeach
                     </tbody>

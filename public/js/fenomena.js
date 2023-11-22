@@ -302,7 +302,7 @@ if (paramsLink == "monitoring") {
         e.preventDefault();
         try {
             const data = await fetchData();
-
+            console.log(data)
             const year_fenomena = Object.keys(data)[0];
             const quarter_fenomena = Object.keys(data[year_fenomena])[0];
             const type_fenomena = $("#type").val();
@@ -319,8 +319,13 @@ if (paramsLink == "monitoring") {
                         "description"
                     ]
                 );
+                $(`#counts-${i}`).text(
+                    data[year_fenomena][quarter_fenomena][kotakey[i - 1]][
+                        "counts"
+                    ]
+                );
             }
-            $("#monitoring-kuarter tbody tr td").each(function () {
+            $("#monitoring-kuarter tbody tr td.values").each(function () {
                 if ($(this).text() === "0") {
                     $(this).html(
                         '<i class="bi bi-x-circle-fill" style = "color: red;"></i>'

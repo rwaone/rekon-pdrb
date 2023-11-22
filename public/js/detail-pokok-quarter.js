@@ -981,6 +981,7 @@ $(document).ready(function () {
                 resetMenu("nav-adhb");
                 e.preventDefault();
                 $(".loader").removeClass("d-none");
+                // console.log(datas, befores)
                 setTimeout(function () {
                     getAdhb(datas, types);
                     showOff();
@@ -992,6 +993,7 @@ $(document).ready(function () {
                 resetMenu("nav-adhk");
                 e.preventDefault();
                 $(".loader").removeClass("d-none");
+                // console.log(datas, befores)
                 setTimeout(function () {
                     getAdhk(datas, types);
                     showOff();
@@ -1003,6 +1005,7 @@ $(document).ready(function () {
                 resetMenu("nav-distribusi");
                 e.preventDefault();
                 $(".loader").removeClass("d-none");
+                // console.log(datas, befores)
                 setTimeout(function () {
                     getAdhb(datas, types);
                     $("tbody td:nth-child(n+2):nth-child(-n+6)").removeClass(
@@ -1040,6 +1043,7 @@ $(document).ready(function () {
                 resetMenu("nav-qtoq");
                 e.preventDefault();
                 $(".loader").removeClass("d-none");
+                // console.log(datas, befores)
                 setTimeout(function () {
                     getGrowthQ(datas, befores, types);
                     $(".loader").addClass("d-none");
@@ -1049,6 +1053,7 @@ $(document).ready(function () {
                 resetMenu("nav-ytoy");
                 e.preventDefault();
                 $(".loader").removeClass("d-none");
+                // console.log(datas, befores)
                 setTimeout(function () {
                     getGrowthY(datas, befores, types);
                     $(".loader").addClass("d-none");
@@ -1058,6 +1063,7 @@ $(document).ready(function () {
                 resetMenu("nav-ctoc");
                 e.preventDefault();
                 $(".loader").removeClass("d-none");
+                // console.log(datas, befores)
                 setTimeout(function () {
                     getGrowthC(datas, befores, types);
                     $(".loader").addClass("d-none");
@@ -1067,6 +1073,7 @@ $(document).ready(function () {
                 resetMenu("nav-indeks");
                 e.preventDefault();
                 $(".loader").removeClass("d-none");
+                // console.log(datas, befores)
                 setTimeout(function () {
                     getIndex(datas, befores, types);
                     showOff();
@@ -1077,6 +1084,7 @@ $(document).ready(function () {
                 resetMenu("nav-lajuQ");
                 e.preventDefault();
                 $(".loader").removeClass("d-none");
+                // console.log(datas, befores)
                 setTimeout(function () {
                     let idx = getIndex(datas, befores, types);
                     getLajuQ(idx);
@@ -1087,6 +1095,7 @@ $(document).ready(function () {
                 resetMenu("nav-lajuY");
                 e.preventDefault();
                 $(".loader").removeClass("d-none");
+                // console.log(datas, befores)
                 setTimeout(function () {
                     let idx = getIndex(datas, befores, types);
                     getLajuY(idx);
@@ -1097,6 +1106,7 @@ $(document).ready(function () {
                 resetMenu("nav-sogQ");
                 e.preventDefault();
                 $(".loader").removeClass("d-none");
+                // console.log(datas, befores)
                 setTimeout(function () {
                     getSOGQ(datas, befores, types);
                     $(".loader").addClass("d-none");
@@ -1106,6 +1116,7 @@ $(document).ready(function () {
                 resetMenu("nav-sogY");
                 e.preventDefault();
                 $(".loader").removeClass("d-none");
+                // console.log(datas, befores)
                 setTimeout(function () {
                     getSOGY(datas, befores, types);
                     $(".loader").addClass("d-none");
@@ -1115,149 +1126,149 @@ $(document).ready(function () {
                 break;
         }
     });
-    
-    $("#nav-distribusi").on("click", function (e) {
-        resetMenu("nav-distribusi");
-        e.preventDefault();
-        $(".loader").removeClass("d-none");
-        setTimeout(function () {
-            getAdhb(datas, types);
-            $("tbody td:nth-child(n+2):nth-child(-n+6)").removeClass(function (
-                index,
-                className
-            ) {
-                return (className.match(/(^|\s)view-\S+/g) || []).join(" ");
-            });
-            for (let q = 1; q <= 5; q++) {
-                for (let i = 0; i <= 55; i++) {
-                    $(`#value-${i}-${q}`).addClass(`view-distribusi-${q}`);
-                    $(`#sector-${i}-${q}`).addClass(`view-distribusi-${q}`);
-                }
-                for (let index of catArray) {
-                    $(`#categories-${index}-${q}`).addClass(
-                        `view-distribusi-${q}`
-                    );
-                }
-            }
-            tbody.find(".total-column").each(function () {
-                $(this).addClass("view-distribusi-total");
-            });
-            getDist();
 
-            showOff();
-            $(".loader").addClass("d-none");
-        }, 500);
-    });
+    // $("#nav-adhb").on("click", function (e) {
+    //     resetMenu("nav-adhb");
+    //     e.preventDefault();
+    //     $(".loader").removeClass("d-none");
+    //     setTimeout(function () {
+    //         getAdhb(datas, types);
+    //         showOff();
+    //         toFixedView();
+    //         $(".loader").addClass("d-none");
+    //     }, 500);
+    // });
 
-    $("#nav-adhb").on("click", function (e) {
-        resetMenu("nav-adhb");
-        e.preventDefault();
-        $(".loader").removeClass("d-none");
-        setTimeout(function () {
-            getAdhb(datas, types);
-            showOff();
-            toFixedView();
-            $(".loader").addClass("d-none");
-        }, 500);
-    });
+    // $("#nav-adhk").on("click", function (e) {
+    //     resetMenu("nav-adhk");
+    //     e.preventDefault();
+    //     $(".loader").removeClass("d-none");
+    //     setTimeout(function () {
+    //         getAdhk(datas, types);
+    //         showOff();
+    //         toFixedView();
+    //         $(".loader").addClass("d-none");
+    //     }, 500);
+    // });
 
-    $("#nav-adhk").on("click", function (e) {
-        resetMenu("nav-adhk");
-        e.preventDefault();
-        $(".loader").removeClass("d-none");
-        setTimeout(function () {
-            getAdhk(datas, types);
-            showOff();
-            toFixedView();
-            $(".loader").addClass("d-none");
-        }, 500);
-    });
+    // $("#nav-distribusi").on("click", function (e) {
+    //     resetMenu("nav-distribusi");
+    //     e.preventDefault();
+    //     $(".loader").removeClass("d-none");
+    //     setTimeout(function () {
+    //         getAdhb(datas, types);
+    //         $("tbody td:nth-child(n+2):nth-child(-n+6)").removeClass(function (
+    //             index,
+    //             className
+    //         ) {
+    //             return (className.match(/(^|\s)view-\S+/g) || []).join(" ");
+    //         });
+    //         for (let q = 1; q <= 5; q++) {
+    //             for (let i = 0; i <= 55; i++) {
+    //                 $(`#value-${i}-${q}`).addClass(`view-distribusi-${q}`);
+    //                 $(`#sector-${i}-${q}`).addClass(`view-distribusi-${q}`);
+    //             }
+    //             for (let index of catArray) {
+    //                 $(`#categories-${index}-${q}`).addClass(
+    //                     `view-distribusi-${q}`
+    //                 );
+    //             }
+    //         }
+    //         tbody.find(".total-column").each(function () {
+    //             $(this).addClass("view-distribusi-total");
+    //         });
+    //         getDist();
 
-    //belum tau gimana
-    $("#nav-qtoq").on("click", function (e) {
-        resetMenu("nav-qtoq");
-        e.preventDefault();
-        $(".loader").removeClass("d-none");
-        setTimeout(function () {
-            getGrowthQ(datas, befores, types);
-            $(".loader").addClass("d-none");
-        }, 500);
-    });
+    //         showOff();
+    //         $(".loader").addClass("d-none");
+    //     }, 500);
+    // });
 
-    $("#nav-ytoy").on("click", function (e) {
-        resetMenu("nav-ytoy");
-        e.preventDefault();
-        $(".loader").removeClass("d-none");
-        setTimeout(function () {
-            getGrowthY(datas, befores, types);
-            $(".loader").addClass("d-none");
-        }, 500);
-    });
+    // //belum tau gimana
+    // $("#nav-qtoq").on("click", function (e) {
+    //     resetMenu("nav-qtoq");
+    //     e.preventDefault();
+    //     $(".loader").removeClass("d-none");
+    //     setTimeout(function () {
+    //         getGrowthQ(datas, befores, types);
+    //         $(".loader").addClass("d-none");
+    //     }, 500);
+    // });
 
-    $("#nav-ctoc").on("click", function (e) {
-        resetMenu("nav-ctoc");
-        e.preventDefault();
-        $(".loader").removeClass("d-none");
-        setTimeout(function () {
-            getGrowthC(datas, befores, types);
-            $(".loader").addClass("d-none");
-        }, 500);
-    });
+    // $("#nav-ytoy").on("click", function (e) {
+    //     resetMenu("nav-ytoy");
+    //     e.preventDefault();
+    //     $(".loader").removeClass("d-none");
+    //     setTimeout(function () {
+    //         getGrowthY(datas, befores, types);
+    //         $(".loader").addClass("d-none");
+    //     }, 500);
+    // });
 
-    //indeks implisit adhb/adhk
-    $("#nav-indeks").on("click", function (e) {
-        resetMenu("nav-indeks");
-        e.preventDefault();
-        $(".loader").removeClass("d-none");
-        setTimeout(function () {
-            getIndex(datas, befores, types);
-            showOff();
-            $(".loader").addClass("d-none");
-        }, 500);
-    });
+    // $("#nav-ctoc").on("click", function (e) {
+    //     resetMenu("nav-ctoc");
+    //     e.preventDefault();
+    //     $(".loader").removeClass("d-none");
+    //     setTimeout(function () {
+    //         getGrowthC(datas, befores, types);
+    //         $(".loader").addClass("d-none");
+    //     }, 500);
+    // });
 
-    //laju index
-    $("#nav-lajuQ").on("click", function (e) {
-        resetMenu("nav-lajuQ");
-        e.preventDefault();
-        $(".loader").removeClass("d-none");
-        setTimeout(function () {
-            let idx = getIndex(datas, befores, types);
-            getLajuQ(idx);
-            $(".loader").addClass("d-none");
-        }, 500);
-    });
+    // //indeks implisit adhb/adhk
+    // $("#nav-indeks").on("click", function (e) {
+    //     resetMenu("nav-indeks");
+    //     e.preventDefault();
+    //     $(".loader").removeClass("d-none");
+    //     setTimeout(function () {
+    //         getIndex(datas, befores, types);
+    //         showOff();
+    //         $(".loader").addClass("d-none");
+    //     }, 500);
+    // });
 
-    $("#nav-lajuY").on("click", function (e) {
-        resetMenu("nav-lajuY");
-        e.preventDefault();
-        $(".loader").removeClass("d-none");
-        setTimeout(function () {
-            let idx = getIndex(datas, befores, types);
-            getLajuY(idx);
-            $(".loader").addClass("d-none");
-        }, 500);
-    });
+    // //laju index
+    // $("#nav-lajuQ").on("click", function (e) {
+    //     resetMenu("nav-lajuQ");
+    //     e.preventDefault();
+    //     $(".loader").removeClass("d-none");
+    //     setTimeout(function () {
+    //         let idx = getIndex(datas, befores, types);
+    //         getLajuQ(idx);
+    //         $(".loader").addClass("d-none");
+    //     }, 500);
+    // });
 
-    $("#nav-sogQ").on("click", function (e) {
-        resetMenu("nav-sogQ");
-        e.preventDefault();
-        $(".loader").removeClass("d-none");
-        setTimeout(function () {
-            getSOGQ(datas, befores, types);
-            $(".loader").addClass("d-none");
-        }, 500);
-    });
+    // $("#nav-lajuY").on("click", function (e) {
+    //     resetMenu("nav-lajuY");
+    //     e.preventDefault();
+    //     $(".loader").removeClass("d-none");
+    //     setTimeout(function () {
+    //         let idx = getIndex(datas, befores, types);
+    //         getLajuY(idx);
+    //         $(".loader").addClass("d-none");
+    //     }, 500);
+    // });
 
-    $("#nav-sogY").on("click", function (e) {
-        resetMenu("nav-sogY");
-        e.preventDefault();
-        $(".loader").removeClass("d-none");
-        setTimeout(function () {
-            getSOGY(datas, befores, types);
-            $(".loader").addClass("d-none");
-        }, 500);
-    });
+    // $("#nav-sogQ").on("click", function (e) {
+    //     resetMenu("nav-sogQ");
+    //     e.preventDefault();
+    //     $(".loader").removeClass("d-none");
+    //     setTimeout(function () {
+    //         getSOGQ(datas, befores, types);
+    //         $(".loader").addClass("d-none");
+    //     }, 500);
+    // });
+
+    // $("#nav-sogY").on("click", function (e) {
+    //     resetMenu("nav-sogY");
+    //     e.preventDefault();
+    //     $(".loader").removeClass("d-none");
+    //     setTimeout(function () {
+    //         getSOGY(datas, befores, types);
+    //         $(".loader").addClass("d-none");
+    //     }, 500);
+    // });
 
     function resetMenu(menu) {
         $(".tab-item").removeClass("active");

@@ -129,7 +129,21 @@ function downloadExcel(data) {
     const periods = $("#select2-period-container").html();
     const datas = $("#select2-data_quarter-container").html();
     const rincian = $("#select2-select-cat-container").html();
-    a.download = rincian + "-" + types + "-" + years + "-" + "Periode " + quarters + " " + periods + "-" + "Data " + datas + ".xlsx";
+    a.download =
+        rincian +
+        "-" +
+        types +
+        "-" +
+        years +
+        "-" +
+        "Periode " +
+        quarters +
+        " " +
+        periods +
+        "-" +
+        "Data " +
+        datas +
+        ".xlsx";
 
     // Append the link to the document and trigger the download
     document.body.appendChild(a);
@@ -276,6 +290,7 @@ function downloadKonserda() {
         list["ADHB"] = getReady();
         getAdhk(datas, types);
         list["ADHK"] = getReady();
+        getAdhb(datas, types);
         let tbody = $("#rekon-view").find("tbody");
         $("tbody td:nth-child(n+2):nth-child(-n+6)").removeClass(function (
             index,
@@ -297,12 +312,22 @@ function downloadKonserda() {
         });
         getDist();
         list["DISTRIBUSI"] = getReady();
-        getGrowth(datas, befores, types);
-        list["GROWTH"] = getReady();
-        let laju = getIndex(datas, types);
+        getGrowthQ(datas, befores, types);
+        list["GROWTH-Q"] = getReady();
+        getGrowthY(datas, befores, types);
+        list["GROWTH-Y"] = getReady();
+        getGrowthC(datas, befores, types);
+        list["GROWTH-C"] = getReady();
+        let laju = getIndex(datas, befores, types);
         list["INDEX"] = getReady();
-        getLaju(laju);
-        list["LAJU"] = getReady();
+        getLajuQ(laju);
+        list["LAJU-Q"] = getReady();
+        getLajuY(laju);
+        list["LAJU-Y"] = getReady();
+        getSOGQ(datas, befores, types);
+        list["SOG-Q"] = getReady();
+        getSOGY(datas, befores, types);
+        list["SOG-Y"] = getReady();
         getAdhb(datas, types);
 
         var workbook = XLSX.utils.book_new();
