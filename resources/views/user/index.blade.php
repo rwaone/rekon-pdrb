@@ -86,6 +86,7 @@
                 </tbody>
             </table>
         </div>
+    </div>
 
         @include('user.create-modal')
 
