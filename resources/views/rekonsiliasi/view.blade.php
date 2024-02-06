@@ -74,7 +74,8 @@
     
     <div class="card save-container d-none">
         <div class="ml-auto">
-            <button id="fullFormSave" type="button" class="btn btn-success">Simpan</button>
+            <button id="submitButton" type="button" class="btn btn-success float-right" style='margin-right:5px'>Submit</button>
+            <button id="fullFormSave" type="button" class="btn btn-warning float-right" style='margin-right:10px'>Simpan</button>
         </div>
     </div>
 
@@ -155,6 +156,7 @@
             const url_get_single_data = new URL("{{ route('getSingleData') }}")
             const url_get_full_data = new URL("{{ route('getFullData') }}")
             const url_copy_data = new URL("{{ route('copyData') }}")
+            const url_submit_data = new URL("{{ route('submitData') }}")
 
             const Toast = Swal.mixin({
                 toast: true,

@@ -40,6 +40,7 @@ Route::post('rekonsiliasi/save-full', [PdrbController::class, 'saveFullData'])->
 Route::post('rekonsiliasi/get-single', [PdrbController::class, 'getSingleData'])->name('getSingleData');
 Route::post('rekonsiliasi/get-full', [PdrbController::class, 'getFullData'])->name('getFullData');
 Route::post('rekonsiliasi/copy-data', [PdrbController::class, 'copyData'])->name('copyData');
+Route::post('rekonsiliasi/submit-data', [PdrbController::class, 'submitData'])->name('submitData');
 Route::resource('pdrb', PdrbController::class)->middleware(['auth', 'verified']);
 Route::get('monitoring', [PdrbController::class, 'monitoring'])->middleware(['auth', 'verified']);
 

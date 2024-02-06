@@ -223,14 +223,15 @@ $(document).ready(function () {
             success: function (result) {
 
                 console.log(result)
+                
+                $.each(result.messages, function (index, message) {
+                    window.showToastr(message['type'], message['text'])
+                })
 
                 sessionStorage.setItem("adjustmentData", JSON.stringify(result.data));
 
                 printData(1)
 
-                $.each(result.messages, function (index, message) {
-                    window.showToastr(message['type'], message['text'])
-                })
 
                 $('.loader').addClass('d-none')
             },

@@ -607,6 +607,14 @@ $(document).ready(function () {
                     window.showToastr(message['type'], message['text'])
                 })
 
+                if(result.dataset.status == 'Submitted') {
+                    $('#fullFormSave').prop('disabled', true)
+                    $('#submitButton').prop('hidden', true)
+                } else {
+                    $('#fullFormSave').prop('disabled', false)
+                    $('#submitButton').prop('hidden', false)
+                }
+
                 $('.loader').addClass('d-none')
             },
         });
@@ -720,6 +728,29 @@ $(document).ready(function () {
 
             success: function (result) {
 
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: 'Data berhasil disimpan.'
+                })
+            },
+        });
+    });
+
+    $("#submitButton").click(function () {
+        $.ajax({
+            type: 'POST',
+            url: url_submit_data.href,
+            data: {
+                filter: $('#filterForm').serializeArray().reduce(function (obj, item) {
+                    obj[item.name] = item.value;
+                    return obj;
+                }, {}),
+                _token: tokens,
+            },
+
+            success: function (result) {
+                console.log(result);
                 Toast.fire({
                     icon: 'success',
                     title: 'Berhasil',
