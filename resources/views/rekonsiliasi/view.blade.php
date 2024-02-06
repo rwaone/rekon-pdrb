@@ -39,10 +39,10 @@
     <x-slot name="breadcrumb">
         <li class="breadcrumb-item active">Entri Rekonsiliasi</li>
     </x-slot>
-    
+
     <div id="my-cat" data-cat="{{ json_encode($cat) }}"></div>
 
-    @include('rekonsiliasi.filter') 
+    @include('rekonsiliasi.filter')
 
     <div class="card save-container d-none" id="navList">
         <ul class="nav nav-pills p-2">
@@ -53,8 +53,10 @@
             <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-ytoy">Growth (Y on Y)</a></li>
             <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-ctoc">Growth (C to C)</a></li>
             <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-indeks">Indeks Implisit</a></li>
-            <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-lajuQ">Laju Implisit (Q to Q)</a></li>
-            <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-lajuY">Laju Implisit (Y on Y)</a></li>
+            <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-lajuQ">Laju Implisit (Q to Q)</a>
+            </li>
+            <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-lajuY">Laju Implisit (Y on Y)</a>
+            </li>
         </ul>
     </div>
 
@@ -63,7 +65,7 @@
         <div id="adhkFormContainer" class="card form-container d-none"> @include('lapangan.adhk-form') </div>
         <div id="tableFormContainer" class="card form-container d-none"> @include('lapangan.rekon-table') </div>
         <div id="prevadhbDataContainer" class="card d-none"> @include('lapangan.prev-adhb-form') </div>
-        <div id="prevadhkDataContainer" class="card d-none"> @include('lapangan.prev-adhk-form' )</div>
+        <div id="prevadhkDataContainer" class="card d-none"> @include('lapangan.prev-adhk-form')</div>
     @elseif ($type == 'Pengeluaran')
         <div id="adhbFormContainer" class="card form-container d-none"> @include('pengeluaran.adhb-form') </div>
         <div id="adhkFormContainer" class="card form-container d-none"> @include('pengeluaran.adhk-form') </div>
@@ -71,7 +73,7 @@
         <div id="prevadhbDataContainer" class="card d-none"> @include('pengeluaran.prev-adhb-form') </div>
         <div id="prevadhkDataContainer" class="card d-none"> @include('pengeluaran.prev-adhk-form') </div>
     @endif
-    
+
     <div class="card save-container d-none">
         <div class="ml-auto">
             <button id="fullFormSave" type="button" class="btn btn-success">Simpan</button>
@@ -99,7 +101,8 @@
 
                         <div class="form-group">
                             <label class="col-form-label" for="year-copy">Tahun:</label>
-                            <select id="year-copy" class="form-control select2bs4" style="width: 100%;" name="yearCopy">
+                            <select id="year-copy" class="form-control select2bs4" style="width: 100%;"
+                                name="yearCopy">
                                 <option value="" disabled selected>Pilih Tahun</option>
                             </select>
                             <div class="help-block"></div>
@@ -123,6 +126,10 @@
                             <div class="help-block"></div>
                         </div>
 
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="adjust-checkbox" name="adjust">
+                            <label class="form-check-label" for="adjust">Tambahkan Hasil Adjustment</label>
+                        </div>
 
                         <input type="hidden" id="copy-price-base">
 
