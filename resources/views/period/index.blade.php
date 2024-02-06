@@ -161,11 +161,11 @@
                             <div class="form-group">
                                 <label for="description-text" class="col-form-label">Keterangan Putaran:</label>
                                 <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
+                                    {{-- <div class="input-group-prepend">
                                         <span class="input-group-text">Putaran ke-</span>
-                                    </div>
+                                    </div> --}}
                                     <input type="text" class="form-control" id="description-text"
-                                        name="description" placeholder="Angka Putaran">
+                                        name="description" placeholder="Keterangan Putaran">
                                 </div>
                             </div>
 
