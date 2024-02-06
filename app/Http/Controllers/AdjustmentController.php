@@ -54,7 +54,13 @@ class AdjustmentController extends Controller
         $filter = (array) json_decode($request->filter);
         $regions = Region::all();
 
-        $previous_period = Period::where('type', $filter['type'])->where('year', $filter['year'] - 1)->where('quarter', 4)->latest('id')->first();
+        $current_period = Period::where('id', $filter['period_id'])->first();
+        // return response()->json($current_period);
+        if ($current_period->status == 'Aktif') {
+            $previous_period = Period::where('type', $filter['type'])->where('year', $filter['year'] - 1)->where('quarter', 4)->latest('id')->first();
+        } else {
+            $previous_period = Period::where('type', $filter['type'])->where('year', $filter['year'] - 1)->where('quarter', 4)->where('status','<>', 'Aktif')->latest('id')->first();
+        }
         $notification = [];
         if ($filter['subsector'] != 0) {
             foreach ($regions as $region) {

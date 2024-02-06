@@ -526,8 +526,10 @@ $(document).ready(function () {
 
     function getLajuQinisial(quarter, data) {
         let lajuQ = {}
-        let totalCurrent = 0
-        let totalPrevious = 0
+        let totalCurrentADHB = 0
+        let totalCurrentADHK = 0
+        let totalPreviousADHB = 0
+        let totalPreviousADHK = 0
         if (quarter == 1) {
             $.each(data['current'], function (index, value) {
                 let currentADHB = Number(value[quarter]['adhb'])
@@ -543,8 +545,10 @@ $(document).ready(function () {
                 lajuQ[index] = result
 
                 if (index != 1) {
-                    totalCurrent += Number(current)
-                    totalPrevious += Number(previous)
+                    totalCurrentADHB += Number(currentADHB)
+                    totalCurrentADHK += Number(currentADHK)
+                    totalPreviousADHB += Number(previousADHB)
+                    totalPreviousADHK += Number(previousADHK)
                 }
             })
         } else {
@@ -562,11 +566,16 @@ $(document).ready(function () {
                 lajuQ[index] = result
 
                 if (index != 1) {
-                    totalCurrent += Number(current)
-                    totalPrevious += Number(previous)
+                    totalCurrentADHB += Number(currentADHB)
+                    totalCurrentADHK += Number(currentADHK)
+                    totalPreviousADHB += Number(previousADHB)
+                    totalPreviousADHK += Number(previousADHK)
                 }
             })
         }
+
+        let totalCurrent = totalCurrentADHB / totalCurrentADHK
+        let totalPrevious = totalPreviousADHB / totalPreviousADHK
 
         lajuQ['total'] = (totalCurrent - totalPrevious) / totalPrevious * 100
 
@@ -578,8 +587,10 @@ $(document).ready(function () {
 
     function getLajuQberjalan(quarter, data) {
         let lajuQ = {}
-        let totalCurrent = 0
-        let totalPrevious = 0
+        let totalCurrentADHB = 0
+        let totalCurrentADHK = 0
+        let totalPreviousADHB = 0
+        let totalPreviousADHK = 0
         if (quarter == 1) {
             $.each(data['current'], function (index, value) {
                 let adjustADHB = Number($(`#adhb-adjust-${index}`).val().replaceAll('.', '').replaceAll(',', '.'))
@@ -598,9 +609,12 @@ $(document).ready(function () {
                 lajuQ[index] = result
 
                 if (index != 1) {
-                    totalCurrent += Number(current)
-                    totalPrevious += Number(previous)
+                    totalCurrentADHB += Number(currentADHB)
+                    totalCurrentADHK += Number(currentADHK)
+                    totalPreviousADHB += Number(previousADHB)
+                    totalPreviousADHK += Number(previousADHK)
                 }
+                
             })
         } else {
             $.each(data['current'], function (index, value) {
@@ -621,11 +635,15 @@ $(document).ready(function () {
                 lajuQ[index] = result
 
                 if (index != 1) {
-                    totalCurrent += Number(current)
-                    totalPrevious += Number(previous)
+                    totalCurrentADHB += Number(currentADHB)
+                    totalCurrentADHK += Number(currentADHK)
+                    totalPreviousADHB += Number(previousADHB)
+                    totalPreviousADHK += Number(previousADHK)
                 }
             })
         }
+        let totalCurrent = totalCurrentADHB / totalCurrentADHK
+        let totalPrevious = totalPreviousADHB / totalPreviousADHK
 
         lajuQ['total'] = (totalCurrent - totalPrevious) / totalPrevious * 100
 
