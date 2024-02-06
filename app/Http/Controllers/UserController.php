@@ -83,13 +83,32 @@ class UserController extends Controller
      */
     public function update(ProfileUpdateRequest $request, User $user)
     {
-        $request->user()->fill($request->validated());
+        $rules = [
+            'name' => ['required', 'string', 'max:255'],
+            'satker_id' => ['required'],
+            'role' => ['required'],
+        ];
 
-        // if ($request->user()->isDirty('email')) {
-        //     $request->user()->email_verified_at = null;
-        // }
+        if($request->username != $user->username){
+            $rules['username'] = ['required', 'string', 'max:255', 'unique:'.User::class];
+        }
+        
+        if($request->email != $user->email){
+            $rules['email'] = ['required', 'string', 'email', 'max:255', 'unique:'.User::class];
+        }
 
-        $request->user()->save();
+        $request->validate($rules);
+
+        $updateData = [
+            'name' => $request->name,
+            'username' => $request->username,
+            'email' => $request->email,
+            'satker_id' => $request->satker_id,
+            'role' => $request->role
+        ];
+
+        User::where('id', $user->id)->update($updateData);
+
 
         return redirect('user')->with('notif', 'user-updated');
     }
