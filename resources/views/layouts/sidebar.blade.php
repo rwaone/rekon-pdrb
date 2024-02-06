@@ -70,6 +70,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ url('lapangan-usaha/hasil') }}"
+                                class="nav-link {{ Request::is('lapangan-usaha/hasil') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Hasil</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ url('lapangan-usaha/fenomena') }}"
                                 class="nav-link {{ Request::is('lapangan-usaha/fenomena') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>

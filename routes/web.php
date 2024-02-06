@@ -65,6 +65,7 @@ Route::get('lapangan-usaha/getKonserda', [LapanganController::class, 'getKonserd
 Route::get('lapangan-usaha/daftarPokok', [LapanganController::class, 'daftarPokok'])->middleware(['auth', 'verified']);
 Route::get('lapangan-usaha/detailPokok', [LapanganController::class, 'detailPokok'])->middleware(['auth', 'verified'])->name('lapangan-usaha.detail');
 Route::get('lapangan-usaha/getDetail', [LapanganController::class, 'getDetail'])->middleware(['auth', 'verified'])->name('lapangan-usaha.getDetail');
+Route::get('lapangan-usaha/hasil', [LapanganController::class, 'result'])->middleware(['auth', 'verified']);
 
 Route::get('lapangan-usaha/adjustment', [AdjustmentController::class, 'index'])->middleware(['auth', 'verified']);
 

@@ -29,6 +29,21 @@ class LapanganController extends Controller
         ]);
     }
 
+    public function result()
+    {
+        $cat = Category::pluck('id')->toArray();
+        $catString = implode(", ", $cat);
+        $regions = Region::getMyRegion();
+        $type = 'Lapangan Usaha';
+        $subsectors = Subsector::where('type', 'Lapangan Usaha')->get();
+        return view('rekonsiliasi.result', [
+            'cat' => $catString,
+            'regions' => $regions,
+            'subsectors' => $subsectors,
+            'type' => $type,
+        ]);
+    }
+
     public function fenomena()
     {
         $type = 'Lapangan Usaha';
