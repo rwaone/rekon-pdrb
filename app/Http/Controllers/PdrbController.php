@@ -222,7 +222,7 @@ class PdrbController extends Controller
                 'text' => 'Data periode ini berhasil diunduh'
             ]);
         } else {
-            $dataset = Dataset::create([
+            $current_dataset = Dataset::create([
                 'type' => $filter['type'],
                 'period_id' => $filter['period_id'],
                 'region_id' => $filter['region_id'],
@@ -239,7 +239,7 @@ class PdrbController extends Controller
                     foreach ($subsectors as $subsector) {
                         $singleData = [
                             'subsector_id' => $subsector->id,
-                            'dataset_id' => $dataset->id,
+                            'dataset_id' => $current_dataset->id,
                             'year' => $filter['year'],
                             'quarter' => $index,
                             'created_at' => $timestamp,
@@ -249,7 +249,7 @@ class PdrbController extends Controller
                     }
 
                     Pdrb::insert($inputData);
-                    $current_data[$index] = Pdrb::where('dataset_id', $dataset->id)->where('quarter', $index)->orderBy('subsector_id')->get();
+                    $current_data[$index] = Pdrb::where('dataset_id', $current_dataset->id)->where('quarter', $index)->orderBy('subsector_id')->get();
                 }
             }
 
@@ -259,7 +259,7 @@ class PdrbController extends Controller
             ]);
         }
 
-        return response()->json(['current_data' => $current_data, 'previous_data' => $previous_data, 'messages' => $notification]);
+        return response()->json(['dataset' => $current_dataset, 'current_data' => $current_data, 'previous_data' => $previous_data, 'messages' => $notification]);
     }
 
     public function saveFullData(Request $request)
@@ -282,5 +282,15 @@ class PdrbController extends Controller
         }
 
         return response()->json($data);
+    }
+
+    public function submitData(Request $request)
+    {
+        $filter = $request->filter;
+        Dataset::where('region_id', $filter['region_id'])->where('period_id', $filter['period_id'])->update(['status' => 'Submitted']);
+        
+        $messages = [['type' => 'succcess','text' => 'Data berhasil disubmit']];
+        
+        return response()->json(['messages' => $messages]);
     }
 }
