@@ -17,7 +17,7 @@ class PeriodController extends Controller
      */
     public function index()
     {
-        $periods = Period::all();
+        $periods = Period::orderBy('id', 'desc')->get();
         return view('period.index', [
             'periods' => $periods,
             'years' => range(date('Y'), 2010),
