@@ -544,7 +544,11 @@ $(document).ready(function () {
                 $.each(result.current_data, function (quarter, value) {
                     $.each(value, function (key, value) {
                         adhkValue = ((value.adhk != null) ? formatRupiah(
+<<<<<<< Updated upstream
                             value.adhk
+=======
+                            (value.adhk + value.adjustment.adhk)
+>>>>>>> Stashed changes
                                 .replace('.', ','),
                             '') : formatRupiah(0,
                                 ''));
@@ -556,7 +560,11 @@ $(document).ready(function () {
                                 value.id);
 
                         adhbbValue = ((value.adhb != null) ? formatRupiah(
+<<<<<<< Updated upstream
                             value.adhb
+=======
+                            (value.adhb + value.adjustment.adhb)
+>>>>>>> Stashed changes
                                 .replace('.', ','),
                             '') : formatRupiah(0,
                                 ''));

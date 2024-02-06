@@ -86,7 +86,11 @@
         @elseif ($type == 'Pengeluaran')
             <script src="{{ asset('js/rekon-pengeluaran.js') }}"></script>
         @endif
+<<<<<<< Updated upstream
         <script src="{{ asset('js/rekonsiliasi.js') }}"></script>
+=======
+        <script src="{{ asset('js/result.js') }}"></script>
+>>>>>>> Stashed changes
         <script>
             const tokens = '{{ csrf_token() }}'
             const url_fetch_year = new URL("{{ route('fetchYear') }}")
