@@ -540,7 +540,12 @@ $(document).ready(function () {
             },
 
             success: function (result) {
+                $.each(result.messages, function (index, message) {
+                    window.showToastr(message['type'], message['text'])
+                })
+
                 console.log(result)
+                
                 $.each(result.current_data, function (quarter, value) {
                     $.each(value, function (key, value) {
                         adhkValue = ((value.adhk != null) ? formatRupiah(
@@ -602,10 +607,6 @@ $(document).ready(function () {
                     allSumPDRBLapus('prev-adhb')
                     allSumPDRBLapus('prev-adhk')
                 }
-
-                $.each(result.messages, function (index, message) {
-                    window.showToastr(message['type'], message['text'])
-                })
 
                 if(result.dataset.status == 'Submitted') {
                     $('#fullFormSave').prop('disabled', true)
@@ -754,8 +755,9 @@ $(document).ready(function () {
                 Toast.fire({
                     icon: 'success',
                     title: 'Berhasil',
-                    text: 'Data berhasil disimpan.'
+                    text: 'Data berhasil disubmit.'
                 })
+                getFullData()
             },
         });
     });
