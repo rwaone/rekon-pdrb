@@ -72,6 +72,7 @@ Route::get('lapangan-usaha/hasil', [LapanganController::class, 'result'])->middl
 Route::get('lapangan-usaha/adjustment', [AdjustmentController::class, 'index'])->middleware(['auth', 'verified']);
 
 Route::get('lapangan-usaha/monitoring', [LapanganController::class, 'monitoring'])->middleware(['auth', 'verified']);
+Route::get('lapangan-usaha/getMonitoring', [LapanganController::class, 'getMonitoring'])->middleware(['auth', 'verified'])->name('lapangan-usaha.getMonitoring');
 
 //Pengeluaran
 Route::get('pengeluaran/rekonsiliasi', [PengeluaranController::class, 'rekonsiliasi'])->middleware(['auth', 'verified']);
@@ -85,6 +86,7 @@ Route::get('pengeluaran/getDetail', [PengeluaranController::class, 'getDetail'])
 Route::get('pengeluaran/adjustment', [AdjustmentController::class, 'index'])->middleware(['auth', 'verified']);
 
 Route::get('pengeluaran/monitoring', [PengeluaranController::class, 'monitoring'])->middleware(['auth', 'verified']);
+Route::get('pengeluaran/getMonitoring', [PengeluaranController::class, 'getMonitoring'])->middleware(['auth', 'verified'])->name('pengeluaran.getMonitoring');
 
 Route::post('konserda/year', [PeriodController::class, 'konserdaYear'])->name('konserdaYear');
 Route::post('konserda/quarter', [PeriodController::class, 'konserdaQuarter'])->name('konserdaQuarter');

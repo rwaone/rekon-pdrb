@@ -76,13 +76,6 @@
                                 <p>Hasil</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ url('lapangan-usaha/fenomena') }}"
-                                class="nav-link {{ Request::is('lapangan-usaha/fenomena') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Entri Fenomena</p>
-                            </a>
-                        </li>
                         @if (auth()->user()->satker_id == 1)
                             <li class="nav-item">
                                 <a href="{{ url('lapangan-usaha/monitoring') }}"
@@ -92,6 +85,13 @@
                                 </a>
                             </li>
                         @endif
+                        <li class="nav-item">
+                            <a href="{{ url('lapangan-usaha/fenomena') }}"
+                                class="nav-link {{ Request::is('lapangan-usaha/fenomena') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Entri Fenomena</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item {{ Request::is('pengeluaran*') ? 'menu-open' : '' }}">
@@ -131,13 +131,6 @@
                                 <p>Tabel Pokok</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ url('pengeluaran/fenomena') }}"
-                                class="nav-link {{ Request::is('pengeluaran/fenomena') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Entri Fenomena</p>
-                            </a>
-                        </li>
                         @if (auth()->user()->satker_id == 1)
                             <li class="nav-item">
                                 <a href="{{ url('pengeluaran/monitoring') }}"
@@ -147,6 +140,13 @@
                                 </a>
                             </li>
                         @endif
+                        <li class="nav-item">
+                            <a href="{{ url('pengeluaran/fenomena') }}"
+                                class="nav-link {{ Request::is('pengeluaran/fenomena') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Entri Fenomena</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item">

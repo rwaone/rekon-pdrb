@@ -141,6 +141,11 @@ $(document).ready(function () {
                                 i +
                                 "</option>"
                         );
+                        if (i == 4) {
+                            $("#data_quarter").append(
+                                '<option value="sum" selected>Tahunan (SUM)</option>'
+                            );
+                        }
                     }
                 },
             });
@@ -198,11 +203,19 @@ function fetchData(type) {
             type: "GET",
             url: url_key.href,
             dataType: "json",
+            beforeSend: function () {
+                $(".loader").removeClass("d-none");
+            },
+            complete: function () {
+                setTimeout(function () {
+                    $(".loader").addClass("d-none");
+                }, 320);
+            },
             success: function (data) {
                 resolve(data);
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                reject(errorThrown);
+                reject(jqXHR.responseJSON);
             },
         });
     });
@@ -212,8 +225,6 @@ function fetchData(type) {
 $(document).ready(function () {
     $("#showData").click(async function (e) {
         e.preventDefault();
-        $(".loader").removeClass("d-none");
-        $(".loader").removeClass("d-none");
         // $("#select-cat").val("nav-adhb")
         $("#select-cat option[value='nav-adhb']").prop("selected", true);
         $("#select-cat").trigger("change");
@@ -224,12 +235,11 @@ $(document).ready(function () {
             console.log(data);
             getAdhb(data.data, types);
             toFixedView();
-            $(".loader").addClass("d-none");
             $("#view-body").removeClass("d-none");
             sessionStorage.setItem("dataLU", JSON.stringify(data.data));
         } catch (e) {
             $(".loader").addClass("d-none");
-            alert("Error : " + e.message);
+            alert(e.message);
         }
     });
 
@@ -1059,7 +1069,9 @@ function getIdx(adhb, adhk) {
 }
 
 function diskrepansi() {
-    $("#rekon-view tbody tr:not(:last-child):not(:nth-last-child(2)) td:first-child").each(function () {
+    $(
+        "#rekon-view tbody tr:not(:last-child):not(:nth-last-child(2)) td:first-child"
+    ).each(function () {
         $(this).css("background-color", "");
         $(this).css("color", "black");
     });
@@ -1199,7 +1211,7 @@ function getAdhk(data, type) {
     getSummarise(type);
     getTotalKabkot();
     diskrepansi();
-    console.log("HELYEA")
+    console.log("HELYEA");
 }
 
 function getGrowth(data, before, type) {

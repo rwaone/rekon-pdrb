@@ -669,7 +669,7 @@ $(document).ready(function () {
                         $.each(value, function (key, value) {
                             pdrbValue = ((value.adhk != null) ?
                                 formatRupiah(
-                                    value.adhk
+                                    String(Number(value.adhk) + Number(value.adjustment.adhk))
                                         .replace('.', ','),
                                     '') : formatRupiah(0,
                                         ''));
@@ -685,7 +685,7 @@ $(document).ready(function () {
                         $.each(value, function (key, value) {
                             pdrbValue = ((value.adhb != null) ?
                                 formatRupiah(
-                                    value.adhb
+                                    String(Number(value.adhb) + Number(value.adjustment.adhb))
                                         .replace('.', ','),
                                     '') : formatRupiah(0,
                                         ''));
