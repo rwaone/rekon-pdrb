@@ -293,6 +293,16 @@ class PdrbController extends Controller
         
         return response()->json(['messages' => $messages]);
     }
+    
+    public function unsubmitData(Request $request)
+    {
+        $filter = $request->filter;
+        Dataset::where('region_id', $filter['region_id'])->where('period_id', $filter['period_id'])->update(['status' => 'Entry']);
+        
+        $messages = [['type' => 'succcess','text' => 'Data berhasil batal submit']];
+        
+        return response()->json(['messages' => $messages]);
+    }
 
     public function getResultData(Request $request)
     {
