@@ -36,7 +36,7 @@ class LapanganController extends Controller
         $regions = Region::getMyRegion();
         $type = 'Lapangan Usaha';
         $subsectors = Subsector::where('type', 'Lapangan Usaha')->get();
-        return view('rekonsiliasi.result', [
+        return view('result.view', [
             'cat' => $catString,
             'regions' => $regions,
             'subsectors' => $subsectors,

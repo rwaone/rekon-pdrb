@@ -37,12 +37,12 @@
     </x-slot>
 
     <x-slot name="breadcrumb">
-        <li class="breadcrumb-item active">Entri Rekonsiliasi</li>
+        <li class="breadcrumb-item active">Hasil</li>
     </x-slot>
-
+    
     <div id="my-cat" data-cat="{{ json_encode($cat) }}"></div>
 
-    @include('rekonsiliasi.filter')
+    @include('rekonsiliasi.filter') 
 
     <div class="card save-container d-none" id="navList">
         <ul class="nav nav-pills p-2">
@@ -53,10 +53,8 @@
             <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-ytoy">Growth (Y on Y)</a></li>
             <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-ctoc">Growth (C to C)</a></li>
             <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-indeks">Indeks Implisit</a></li>
-            <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-lajuQ">Laju Implisit (Q to Q)</a>
-            </li>
-            <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-lajuY">Laju Implisit (Y on Y)</a>
-            </li>
+            <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-lajuQ">Laju Implisit (Q to Q)</a></li>
+            <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-lajuY">Laju Implisit (Y on Y)</a></li>
         </ul>
     </div>
 
@@ -65,7 +63,7 @@
         <div id="adhkFormContainer" class="card form-container d-none"> @include('lapangan.adhk-form') </div>
         <div id="tableFormContainer" class="card form-container d-none"> @include('lapangan.rekon-table') </div>
         <div id="prevadhbDataContainer" class="card d-none"> @include('lapangan.prev-adhb-form') </div>
-        <div id="prevadhkDataContainer" class="card d-none"> @include('lapangan.prev-adhk-form')</div>
+        <div id="prevadhkDataContainer" class="card d-none"> @include('lapangan.prev-adhk-form' )</div>
     @elseif ($type == 'Pengeluaran')
         <div id="adhbFormContainer" class="card form-container d-none"> @include('pengeluaran.adhb-form') </div>
         <div id="adhkFormContainer" class="card form-container d-none"> @include('pengeluaran.adhk-form') </div>
@@ -74,79 +72,11 @@
         <div id="prevadhkDataContainer" class="card d-none"> @include('pengeluaran.prev-adhk-form') </div>
     @endif
 
-    <div class="card save-container d-none">
-        <div class="ml-auto">
-            <button id="submitButton" type="button" class="btn btn-success float-right" style='margin-right:5px'>Submit</button>
-            <button id="unsubmitButton" type="button" class="btn btn-danger float-right" style='margin-right:5px'>Batal Submit</button>
-            <button id="fullFormSave" type="button" class="btn btn-warning float-right" style='margin-right:10px'>Simpan</button>
-        </div>
-    </div>
-
     <!-- Back to top button -->
     <button type="button" class="btn btn-light btn-floating btn-lg" id="btn-back-to-top">
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <div class="modal fade" id="copy-modal">
-
-        <div class="modal-dialog modal-md">
-            <form id="copyDataForm">
-                @csrf
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Salin Data Sebelumnya</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-
-                        <div class="form-group">
-                            <label class="col-form-label" for="year-copy">Tahun:</label>
-                            <select id="year-copy" class="form-control select2bs4" style="width: 100%;"
-                                name="yearCopy">
-                                <option value="" disabled selected>Pilih Tahun</option>
-                            </select>
-                            <div class="help-block"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-form-label" for="quarter-copy">Triwulan:</label>
-                            <select id="quarter-copy" class="form-control select2bs4" style="width: 100%;"
-                                name="quarterCopy">
-                                <option value="" disabled selected>Pilih Triwulan</option>
-                            </select>
-                            <div class="help-block"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-form-label" for="period-copy">Periode:</label>
-                            <select id="period-copy" class="form-control select2bs4" style="width: 100%;"
-                                name="periodCopy">
-                                <option value="" disabled selected>Pilih Putaran</option>
-                            </select>
-                            <div class="help-block"></div>
-                        </div>
-
-<<<<<<< Updated upstream
-=======
-                        {{-- <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="adjust-checkbox" name="adjust">
-                            <label class="form-check-label" for="adjust">Tambahkan Hasil Adjustment</label>
-                        </div> --}}
->>>>>>> Stashed changes
-
-                        <input type="hidden" id="copy-price-base">
-
-                    </div>
-                    <div class="modal-footer">
-                        <button onclick="" id="copySubmit" type="button"
-                            class="btn btn-success float-right">Salin</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <x-slot name="script">
         <!-- Additional JS resources -->
@@ -156,7 +86,7 @@
         @elseif ($type == 'Pengeluaran')
             <script src="{{ asset('js/rekon-pengeluaran.js') }}"></script>
         @endif
-        <script src="{{ asset('js/rekonsiliasi.js') }}"></script>
+        <script src="{{ asset('js/result.js') }}"></script>
         <script>
             const tokens = '{{ csrf_token() }}'
             const url_fetch_year = new URL("{{ route('fetchYear') }}")
@@ -167,8 +97,6 @@
             const url_get_single_data = new URL("{{ route('getSingleData') }}")
             const url_get_full_data = new URL("{{ route('getFullData') }}")
             const url_copy_data = new URL("{{ route('copyData') }}")
-            const url_submit_data = new URL("{{ route('submitData') }}")
-            const url_unsubmit_data = new URL("{{ route('unsubmitData') }}")
 
             const Toast = Swal.mixin({
                 toast: true,

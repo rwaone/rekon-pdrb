@@ -358,7 +358,6 @@ class PdrbController extends Controller
             array_push($notification, $message);
         }
 
-
         $current_data = [];
 
         if (isset($current_dataset)) {

@@ -543,9 +543,10 @@ $(document).ready(function () {
                 console.log(result)
                 $.each(result.current_data, function (quarter, value) {
                     $.each(value, function (key, value) {
+
+                        let adhk = Number(value.adhk) + Number(value.adjustment.adhk)
                         adhkValue = ((value.adhk != null) ? formatRupiah(
-                            (value.adhk + value.adjustment.adhk)
-                                .replace('.', ','),
+                            String(adhk).replace('.', ','),
                             '') : formatRupiah(0,
                                 ''));
                         $('input[name=adhk_value_' + quarter + '_' + value
@@ -554,10 +555,10 @@ $(document).ready(function () {
                         $('input[name=id_' + quarter + '_' + value
                             .subsector_id + ']').val(
                                 value.id);
-
+                        
+                        let adhb = Number(value.adhb) + Number(value.adjustment.adhb)
                         adhbbValue = ((value.adhb != null) ? formatRupiah(
-                            (value.adhb + value.adjustment.adhb)
-                                .replace('.', ','),
+                            String(adhb).replace('.', ','),
                             '') : formatRupiah(0,
                                 ''));
                         $('input[name=adhb_value_' + quarter + '_' + value
