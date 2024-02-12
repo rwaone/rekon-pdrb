@@ -153,10 +153,10 @@ class AdjustmentController extends Controller
                                 ->where('subsector_id', 69)
                                 ->get()->toArray();
 
-                                $data['current'][$region->id][$index]['adhb'] -= 2*$impor[0]['adhb'];
-                                $data['current'][$region->id][$index]['adhk'] -= 2*$impor[0]['adhk'];
-                                $data['current'][$region->id][$index]['adjust_adhb'] -= 2*$impor[0]['adjust_adhb'];
-                                $data['current'][$region->id][$index]['adjust_adhk'] -= 2*$impor[0]['adjust_adhk'];
+                                $data['current'][$region->id][$index]['adhb'] = (string)($data['current'][$region->id][$index]['adhb'] - (2*$impor[0]['adhb']));
+                                $data['current'][$region->id][$index]['adhk'] = (string)($data['current'][$region->id][$index]['adhk'] - (2*$impor[0]['adhk']));
+                                $data['current'][$region->id][$index]['adjust_adhb'] = (string)($data['current'][$region->id][$index]['adjust_adhb'] - (2*$impor[0]['adjust_adhb']));
+                                $data['current'][$region->id][$index]['adjust_adhk'] = (string)($data['current'][$region->id][$index]['adjust_adhk'] - (2*$impor[0]['adjust_adhk']));
                             }
                         }
                     }
