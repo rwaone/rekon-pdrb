@@ -162,6 +162,7 @@ $(document).ready(function () {
             $('#fullFormSave').prop('disabled', false)
         } else {
             $('#fullFormSave').prop('disabled', true)
+            $('#unsubmitButton').prop('disabled', true)
         }
         closeContainer()
     });
@@ -611,9 +612,11 @@ $(document).ready(function () {
                 if(result.dataset.status == 'Submitted') {
                     $('#fullFormSave').prop('disabled', true)
                     $('#submitButton').prop('hidden', true)
+                    $('#unsubmitButton').prop('hidden', false)
                 } else {
                     $('#fullFormSave').prop('disabled', false)
                     $('#submitButton').prop('hidden', false)
+                    $('#unsubmitButton').prop('hidden', true)
                 }
 
                 $('.loader').addClass('d-none')
@@ -756,6 +759,31 @@ $(document).ready(function () {
                     icon: 'success',
                     title: 'Berhasil',
                     text: 'Data berhasil disubmit.'
+                })
+                getFullData()
+            },
+        });
+    });
+
+    
+    $("#unsubmitButton").click(function () {
+        $.ajax({
+            type: 'POST',
+            url: url_unsubmit_data.href,
+            data: {
+                filter: $('#filterForm').serializeArray().reduce(function (obj, item) {
+                    obj[item.name] = item.value;
+                    return obj;
+                }, {}),
+                _token: tokens,
+            },
+
+            success: function (result) {
+                console.log(result);
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: 'Data berhasil batal submit.'
                 })
                 getFullData()
             },
