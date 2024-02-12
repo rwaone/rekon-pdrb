@@ -13,8 +13,9 @@
             #monitoring-kuarter thead {
                 text-align: center;
             }
+
             #monitoring-kuarter td {
-                padding:5px;
+                padding: 5px;
             }
         </style>
     </x-slot>
@@ -28,8 +29,8 @@
             <div class="col-2">
                 <select class="form-control select2bs4" id="type" name="type">
                     <option value="" selected>-- Pilih Jenis PDRB --</option>
-                    <option {{ old('type', $filter['type']) == 'Pengeluaran' ? 'selected' : '' }}
-                        value='Pengeluaran'>Pengeluaran</option>
+                    <option {{ old('type', $filter['type']) == 'Pengeluaran' ? 'selected' : '' }} value='Pengeluaran'>
+                        Pengeluaran</option>
                 </select>
             </div>
             <div class="col-2">
@@ -105,7 +106,7 @@
                     type: "GET",
                     beforeSend: function() {
                         $(".loader").removeClass("d-none");
-                    }, 
+                    },
                     complete: function() {
                         setTimeout(() => {
                             $(".loader").addClass("d-none");
@@ -118,6 +119,8 @@
                                 $(this).addClass("badge bg-warning");
                             } else if ($(this).text() === "Submitted") {
                                 $(this).addClass("badge bg-success");
+                            } else if ($(this).text() === "Belum Input") {
+                                $(this).addClass("badge bg-danger");
                             }
                         })
                     },
@@ -133,7 +136,7 @@
                     $(this).addClass("badge bg-success");
                 } else if ($(this).text() === "Belum Input") {
                     $(this).addClass("badge bg-danger");
-                } 
+                }
             })
 
             $(function() {

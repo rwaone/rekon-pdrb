@@ -121,6 +121,8 @@
                                 $(this).addClass("badge bg-warning");
                             } else if ($(this).text() === "Submitted") {
                                 $(this).addClass("badge bg-success");
+                            } else if ($(this).text() === "Belum Input") {
+                                $(this).addClass("badge bg-danger");
                             }
                         })
                     },
