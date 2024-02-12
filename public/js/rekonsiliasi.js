@@ -162,7 +162,7 @@ $(document).ready(function () {
             $('#fullFormSave').prop('disabled', false)
         } else {
             $('#fullFormSave').prop('disabled', true)
-            $('#unsubmitButton').prop('disabled', true)
+            $('#unsubmitButton').prop('hidden', true)
         }
         closeContainer()
     });
