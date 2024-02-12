@@ -145,6 +145,19 @@ class AdjustmentController extends Controller
 
                             // return response()->json($query);
                             $data['current'][$region->id][$index] = $query[0];
+                            if($filter['type'] == 'Pengeluaran'){
+                                $impor = Pdrb::selectRaw('SUM(pdrbs.adhb) AS adhb, SUM(pdrbs.adhk) AS adhk, SUM(adjustments.adhb) AS adjust_adhb, SUM(adjustments.adhk) AS adjust_adhk')
+                                ->leftJoin('adjustments', 'pdrbs.id', '=', 'adjustments.pdrb_id')
+                                ->where('pdrbs.dataset_id', $current_dataset->id)
+                                ->where('pdrbs.quarter', $index)
+                                ->where('subsector_id', 69)
+                                ->get()->toArray();
+
+                                $data['current'][$region->id][$index]['adhb'] -= 2*$impor[0]['adhb'];
+                                $data['current'][$region->id][$index]['adhk'] -= 2*$impor[0]['adhk'];
+                                $data['current'][$region->id][$index]['adjust_adhb'] -= 2*$impor[0]['adjust_adhb'];
+                                $data['current'][$region->id][$index]['adjust_adhk'] -= 2*$impor[0]['adjust_adhk'];
+                            }
                         }
                     }
                 } else {
