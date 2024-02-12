@@ -13,8 +13,9 @@
             #monitoring-kuarter thead {
                 text-align: center;
             }
+
             #monitoring-kuarter td {
-                padding:2px;
+                padding: 5px;
             }
         </style>
     </x-slot>
@@ -22,67 +23,75 @@
     <x-slot name="breadcrumb">
         <li class="breadcrumb-item active">Rekonsiliasi</li>
     </x-slot>
-
-    <div class="row">
-        <div class="col-md-8">
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-9">
-                            <select class="form-control select2bs4" id="year" name="year">
-                                <option value="" selected>-- Pilih Tahun --</option>
-                                @foreach ($monitoring_quarter as $year => $quarters)
-                                    <option value="{{ $year }}" {{ $year == $max_year ? 'selected' : '' }}>
-                                        {{ $year }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <button class="btn btn-info col-md-10" id="showData"><i class="bi bi-search"></i></button>
-                        </div>
-                    </div>
+    <form id="monitoring">
+        @csrf
+        <div class="row mb-5">
+            <div class="col-2">
+                <select class="form-control select2bs4" id="type" name="type">
+                    <option value="" selected>-- Pilih Jenis PDRB --</option>
+                    <option {{ old('type', $filter['type']) == 'Lapangan Usaha' ? 'selected' : '' }}
+                        value='Lapangan Usaha'>Lapangan Usaha</option>
+                </select>
+            </div>
+            <div class="col-2">
+                <select class="form-control select2bs4" id="year" name="year">
+                    <option value="" selected>-- Pilih Periode Tahun --</option>
+                    @if ($years)
+                        @foreach ($years as $year)
+                            <option {{ old('year', $filter['year']) == $year->year ? 'selected' : '' }}
+                                value="{{ $year->year }}">{{ $year->year }}</option>
+                        @endforeach
+                    @endif
+                </select>
+            </div>
+            <div class="col-2">
+                <select class="form-control select2bs4" id="quarter" name="quarter">
+                    <option value="" selected>-- Pilih Periode Triwulan --</option>
+                    @if ($quarters)
+                        @foreach ($quarters as $quarter)
+                            <option {{ old('quarter', $filter['quarter']) == $quarter->quarter ? 'selected' : '' }}
+                                value="{{ $quarter->quarter }}">
+                                {{ $quarter->quarter == 'F' ? 'Lengkap' : ($quarter->quarter == 'T' ? 'Tahunan' : 'Triwulan ' . $quarter->quarter) }}
+                            </option>
+                        @endforeach
+                    @endif
+                </select>
+            </div>
+            <div class="col-2">
+                <select class="form-control select2bs4" id="period" name="period">
+                    <option value="" selected>-- Pilih Periode Putaran --</option>
+                    @if ($periods)
+                        @foreach ($periods as $period)
+                            <option {{ old('period', $filter['period_id']) == $period->id ? 'selected' : '' }}
+                                value="{{ $period->id }}">{{ $period->description }}</option>
+                        @endforeach
+                    @endif
+                </select>
+            </div>
+            <div class="col-2">
+                <div class="row">
+                    <button class="btn btn-info col-8 mr-1" id="showData">Tampilkan</button>
+                    <div class="btn btn-danger col-3" id="refresh"><i class="bi bi-x-lg"></i></div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
     <span class="loader d-none"></span>
-    @foreach ($monitoring_quarter as $year => $quarters)
-        <div id="{{ $year }}" class="views">
-            <h4 class="ml-2">Monitoring Pemasukan Tabel PDRB Lapangan Usaha Tahun {{ $year }}</h4>
-            @foreach ($quarters as $quarter => $regions)
-                <div class="card p-4">
-                    <h5>Kuarter {{ $quarter }}, {{ $monitoring_quarter[$year][$quarter]['Provinsi Sulawesi Utara']['description'][0] }}</h5>
-                    <div class="card-body p-0">
-                        <table class="table table-bordered table-striped" id="monitoring-kuarter">
-                            <thead>
-                                <th>Kabupaten/Kota</th>
-                                <th>Entry</th>
-                                <th>Submit</th>
-                            </thead>
-                            <tbody>
-                                @foreach ($regions as $region => $item)
-                                    <tr>
-                                        <td class = "pl-2">{{ $region }}</td>
-                                        <td>{{ $item['entry'] }}</td>
-                                        <td>{{ $item['submit'] }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-    @endforeach
+    <div id="monitoring-container">
+        @include('lapangan.monitoring-container')
+    </div>
 
 
     <x-slot name="script">
         <!-- Additional JS resources -->
         <script src="{{ url('') }}/plugins/select2/js/select2.full.min.js"></script>
+        <script src="{{ asset('js/pdrb-monitoring.js') }}"></script>
         <script>
+            const url_fetch_year = new URL("{{ route('fetchYear') }}")
+            const url_fetch_quarter = new URL("{{ route('fetchQuarter') }}")
+            const url_fetch_period = new URL("{{ route('fetchPeriod') }}")
+            const tokens = "{{ csrf_token() }}"
+
             $(document).ready(function() {
                 $('.views').each(function() {
                     if ($(this).attr('id') !== $("#year").val()) {
@@ -90,31 +99,45 @@
                     }
                 })
             })
-            $('#showData').on('click', function() {
-                $('.loader').removeClass('d-none');
-                setTimeout(() => {
-                    $('.views').each(function() {
-                        $(this).addClass('d-none');
-                    });
-                    let showIndex = $('#year').val();
-                    $(`#${showIndex}`).removeClass('d-none');
-                    $('.loader').addClass('d-none');
-                }, 500);
+            $('#showData').on('click', function(e) {
+                e.preventDefault();
+                const datas = $("#monitoring").serialize();
+                $.ajax({
+                    data: datas,
+                    url: "{{ route('lapangan-usaha.getMonitoring') }}",
+                    type: "GET",
+                    beforeSend: function() {
+                        $(".loader").removeClass("d-none");
+                    },
+                    complete: function() {
+                        setTimeout(() => {
+                            $(".loader").addClass("d-none");
+                        }, 320);
+                    },
+                    success: function(datas) {
+                        $("#monitoring-container").html(datas);
+                        $('#monitoring-kuarter tbody tr td span.status').each(function() {
+                            if ($(this).text() === "Entry") {
+                                $(this).addClass("badge bg-warning");
+                            } else if ($(this).text() === "Submitted") {
+                                $(this).addClass("badge bg-success");
+                            }
+                        })
+                    },
+                    error: function(error) {
+                        alert(error.message);
+                    }
+                })
             });
-
-            $('#monitoring-kuarter tbody tr td').each(function() {
-                if ($(this).text() === '0') {
-                    $(this).html('<i class="bi bi-x-circle-fill" style = "color: red;"></i>');
-                    $(this).addClass('text-center')
-                }
-                if ($(this).text() === '1') {
-                    $(this).html('<i class="bi bi-check-circle-fill" style = "color: green;"></i>');
-                    $(this).addClass('text-center')
+            $('#monitoring-kuarter tbody tr td span.status').each(function() {
+                if ($(this).text() === "Entry") {
+                    $(this).addClass("badge bg-warning");
+                } else if ($(this).text() === "Submitted") {
+                    $(this).addClass("badge bg-success");
+                } else if ($(this).text() === "Belum Input") {
+                    $(this).addClass("badge bg-danger");
                 }
             })
-            $(document).on('select2:open', () => {
-                document.querySelector('.select2-search__field').focus();
-            });
 
             $(function() {
                 //Initialize Select2 Elements

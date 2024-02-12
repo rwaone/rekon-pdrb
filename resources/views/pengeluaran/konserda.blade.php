@@ -357,7 +357,7 @@
             let catArray = cat.split(", ")
             let rowComponent = 14
 
-            const url_key = new URL('{{ route('pengeluaran.getKonserda') }}')
+            const url_key = new URL('{{ route("pengeluaran.getKonserda") }}')
             const types = url_key.pathname.split('/')[1]
             const url_konserda_year = new URL("{{ route('konserdaYear') }}")
             const tokens = '{{ csrf_token() }}'
