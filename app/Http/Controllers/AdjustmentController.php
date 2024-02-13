@@ -119,7 +119,30 @@ class AdjustmentController extends Controller
                             ->where('subsector_id', $filter['subsector'])
                             ->get()->toArray();
                         $data['previous'][$region->id][$index] = $query[0];
+
+                        $adjustment = Adjustment::select('adhb', 'adhk')
+                                ->where('pdrb_id', $query[0]['id'])
+                                ->get()->toArray();
+
+                            if (sizeof($adjustment) == 0) {
+                                $adjustment = [
+                                    'pdrb_id' => $query[0]['id'],
+                                    'adhb' => '0',
+                                    'adhk' => '0',
+                                    'created_at' => date('Y-m-d H:i:s'),
+                                    'updated_at' => date('Y-m-d H:i:s'),
+                                ];
+
+                                Adjustment::insert($adjustment);
+
+                                $data['previous'][$region->id][$index]['adjust_adhb'] = $adjustment['adhb'];
+                                $data['previous'][$region->id][$index]['adjust_adhk'] = $adjustment['adhk'];
+                            } else {
+                                $data['previous'][$region->id][$index]['adjust_adhb'] = $adjustment[0]['adhb'];
+                                $data['previous'][$region->id][$index]['adjust_adhk'] = $adjustment[0]['adhk'];
+                            }
                     }
+                    
                 } else {
                     $message = [
                         'type' => 'warning',

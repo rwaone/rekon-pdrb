@@ -4,6 +4,7 @@
         <li class="nav-item"><a class="nav-link tab-item" data-value="2" id="tab_2" type="button">Triwulan 2</a></li>
         <li class="nav-item"><a class="nav-link tab-item" data-value="3" id="tab_3" type="button">Triwulan 3</a></li>
         <li class="nav-item"><a class="nav-link tab-item" data-value="4" id="tab_4" type="button">Triwulan 4</a></li>
+        <li class="nav-item"><a class="nav-link tab-item" data-value="5" id="tab_5" type="button">Tahunan</a></li>
     </ul>
 </div>
 <div class="card-body p-3">
