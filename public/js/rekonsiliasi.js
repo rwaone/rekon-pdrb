@@ -664,12 +664,17 @@ $(document).ready(function () {
             },
 
             success: function (result) {
+                console.log(result);
                 if (price_base == 'adhk') {
                     $.each(result, function (quarter, value) {
                         $.each(value, function (key, value) {
+                            let adjustment = 0
+                            if (value.adjustment){
+                                adjustment = Number(value.adjustment.adhk)
+                            }
                             pdrbValue = ((value.adhk != null) ?
                                 formatRupiah(
-                                    String(Number(value.adhk) + Number(value.adjustment.adhk))
+                                    String(Number(value.adhk) + adjustment)
                                         .replace('.', ','),
                                     '') : formatRupiah(0,
                                         ''));
@@ -683,9 +688,13 @@ $(document).ready(function () {
                 } else {
                     $.each(result, function (quarter, value) {
                         $.each(value, function (key, value) {
+                            let adjustment = 0
+                            if (value.adjustment){
+                                adjustment = Number(value.adjustment.adhb)
+                            }
                             pdrbValue = ((value.adhb != null) ?
                                 formatRupiah(
-                                    String(Number(value.adhb) + Number(value.adjustment.adhb))
+                                    String(Number(value.adhb) + adjustment)
                                         .replace('.', ','),
                                     '') : formatRupiah(0,
                                         ''));
