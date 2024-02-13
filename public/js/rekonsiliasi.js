@@ -162,7 +162,7 @@ $(document).ready(function () {
             $('#fullFormSave').prop('disabled', false)
         } else {
             $('#fullFormSave').prop('disabled', true)
-            $('#unsubmitButton').prop('disabled', true)
+            $('#unsubmitButton').prop('hidden', true)
         }
         closeContainer()
     });
@@ -611,11 +611,11 @@ $(document).ready(function () {
 
                 if(result.dataset.status == 'Submitted') {
                     $('#fullFormSave').prop('disabled', true)
-                    $('#submitButton').prop('hidden', true)
+                    $('#submitModalButton').prop('hidden', true)
                     $('#unsubmitButton').prop('hidden', false)
                 } else {
                     $('#fullFormSave').prop('disabled', false)
-                    $('#submitButton').prop('hidden', false)
+                    $('#submitModalButton').prop('hidden', false)
                     $('#unsubmitButton').prop('hidden', true)
                 }
 
@@ -741,6 +741,13 @@ $(document).ready(function () {
         });
     });
 
+    
+    $('#submitModalButton').click(function () {
+
+        $('#submit-modal').modal();
+
+    });
+
     $("#submitButton").click(function () {
         $.ajax({
             type: 'POST',
@@ -754,6 +761,7 @@ $(document).ready(function () {
             },
 
             success: function (result) {
+                $('#submit-modal').modal('hide');
                 console.log(result);
                 Toast.fire({
                     icon: 'success',
