@@ -50,3 +50,41 @@
   display: none;
   border-radius: 100%
 }
+
+.table-sorted th {
+  cursor: pointer;
+}
+
+.table-sorted .th-sort-asc::after {
+  content: "\25b4";
+}
+
+.table-sorted .th-sort-desc::after {
+  content: "\25be";
+}
+
+.table-sorted .th-sort-asc::after,
+.table-sorted .th-sort-desc::after {
+  margin-left: 5px;
+}
+
+.table-sorted .th-sort-asc,
+.table-sorted .th-sort-desc {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.pagination>li {
+  padding-top: 6px;
+  padding-right: 12px;
+  padding-bottom: 6px;
+  padding-left: 12px;
+}
+
+.pagination>li.active {
+  color: whitesmoke;
+  background-color: #17a2b8;
+}
+
+.pagination>li:hover {
+  cursor: pointer;
+}

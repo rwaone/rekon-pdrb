@@ -29,7 +29,7 @@
         </div>
 
         <div class="card-body">
-            <table id="periodTable" class="table">
+            <table id="periodTable" class="table table-sorted table-search">
                 <thead>
                     <tr>
                         <th class="text-center">No.</th>
@@ -41,6 +41,17 @@
                         <th class="text-center">Tanggal Selesai</th>
                         <th class="text-center">Status</th>
                         <th class="text-center">Aksi</th>
+                    </tr>
+                    <tr>
+                        <td class="text-center"></td>
+                        <td class="text-center search-header"><input type="text" class="search-input form-control"></td>
+                        <td class="text-center search-header"><input type="text" class="search-input form-control"></td>
+                        <td class="text-center search-header"><input type="text" class="search-input form-control"></td>
+                        <td class="text-center search-header"><input type="text" class="search-input form-control"></td>
+                        <td class="text-center search-header"><input type="text" class="search-input form-control"></td>
+                        <td class="text-center search-header"><input type="text" class="search-input form-control"></td>
+                        <td class="text-center search-header"><input type="text" class="search-input form-control"></td>
+                        <td class="text-center search-header"><input type="text" class="search-input form-control"></td>
                     </tr>
                 </thead>
                 <tbody>
@@ -101,7 +112,33 @@
                 </tbody>
             </table>
         </div>
-
+        <div class="row d-flex justify-content-end align-items-center">
+            <div class="mb-3 mx-3 ml-auto">Menampilkan <span id="showPage"></span> dari <span id="showTotal"></span>
+            </div>
+            <div class="form-group"> <!--		Show Numbers Of Rows 		-->
+                <select class  ="form-control" name="state" id="maxRows">
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                </select>
+            </div>
+            <div class="pagination-container">
+                <nav>
+                    <ul class="pagination">
+                        <li data-page="prev">
+                            <span>
+                                < <span class="sr-only">(current)
+                            </span></span>
+                        </li>
+                        <!--	Here the JS Function Will Add the Rows -->
+                        <li data-page="next" id="prev">
+                            <span> > <span class="sr-only">(current)</span></span>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
         <div class="modal fade" id="modal-lg">
             <div class="modal-dialog modal-lg">
                 <form id="periodForm" action="/period" method="post">
@@ -228,6 +265,7 @@
             <script src="{{ url('') }}/plugins/moment/moment.min.js"></script>
             <script src="{{ url('') }}/plugins/daterangepicker/daterangepicker.js"></script>
             <script>
+                getPagination("#periodTable", 10);
                 function deleteConfirm(url) {
                     $('#btn-delete').attr('action', url);
                     $('#deleteModal').modal();
@@ -274,14 +312,14 @@
                         theme: 'bootstrap4'
                     })
 
-                    $("#periodTable").DataTable({
-                        "scrollX": true,
-                        "ordering": false,
-                        "searching": false,
-                        "responsive": true,
-                        "lengthChange": false,
-                        "autoWidth": false,
-                    })
+                    // $("#periodTable").DataTable({
+                    //     "scrollX": true,
+                    //     "ordering": false,
+                    //     "searching": false,
+                    //     "responsive": true,
+                    //     "lengthChange": false,
+                    //     "autoWidth": false,
+                    // })
                 });
 
                 //Date range picker
