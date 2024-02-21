@@ -92,6 +92,7 @@
     <script src="{{ url('') }}/dist/js/adminlte.min.js"></script>
     <script src="{{ url('') }}/plugins/sweetalert2/sweetalert2.min.js"></script>
     <script src="{{ url('') }}/plugins/toastr/toastr.min.js"></script>
+    <script src="{{ asset('js/pagination.js') }}"></script>
     {{ $script }}
 </body>
 
