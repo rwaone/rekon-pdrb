@@ -29,7 +29,7 @@
         </div>
 
         <div class="card-body">
-            <table id="periodTable" class="table">
+            <table id="periodTable" class="table table-sorted table-search">
                 <thead>
                     <tr>
                         <th class="text-center">No.</th>
@@ -39,6 +39,20 @@
                         <th class="text-center">Role</th>
                         <th class="text-center">Satker</th>
                         <th class="text-center">Aksi</th>
+                    </tr>
+                    <tr>
+                        <td class="text-center search-header"></td>
+                        <td class="text-center search-header"><input type="text" class="search-input form-control">
+                        </td>
+                        <td class="text-center search-header"><input type="text" class="search-input form-control">
+                        </td>
+                        <td class="text-center search-header"><input type="text" class="search-input form-control">
+                        </td>
+                        <td class="text-center search-header"><input type="text" class="search-input form-control">
+                        </td>
+                        <td class="text-center search-header"><input type="text" class="search-input form-control">
+                        </td>
+                        <td class="text-center search-header"></td>
                     </tr>
                 </thead>
                 <tbody>
@@ -87,118 +101,137 @@
             </table>
         </div>
     </div>
-
-        @include('user.create-modal')
-
-        <div class="modal fade" id="deleteModal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Konfirmasi</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Apakah Anda Benar-Benar Ingin Menghapusnya?</p>
-                    </div>
-                    <form action="" method="post" id="btn-delete">
-                        <div class="modal-footer justify-content-between">
-                            @method('delete')
-                            @csrf
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-                            <button type="submit" class="btn btn-danger">Hapus</button>
-                        </div>
-                    </form>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
+    <div class="row d-flex justify-content-end align-items-center">
+        <div class="mb-3 mx-3 ml-auto">Menampilkan <span id="showPage"></span> dari <span id="showTotal"></span>
         </div>
+        <div class="form-group"> <!--		Show Numbers Of Rows 		-->
+            <select class  ="form-control" name="state" id="maxRows">
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+            </select>
+        </div>
+        <div class="pagination-container">
+            <nav>
+                <ul class="pagination">
+                    <li data-page="prev">
+                        <span>
+                            < <span class="sr-only">(current)
+                        </span></span>
+                    </li>
+                    <!--	Here the JS Function Will Add the Rows -->
+                    <li data-page="next" id="prev">
+                        <span> > <span class="sr-only">(current)</span></span>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
 
-        <x-slot name="script">
-            <!-- Additional JS resources -->
-            <script src="{{ url('') }}/plugins/select2/js/select2.full.min.js"></script>
-            <script src="{{ url('') }}/plugins/datatables/jquery.dataTables.min.js"></script>
-            <script src="{{ url('') }}/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-            <script src="{{ url('') }}/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-            <script src="{{ url('') }}/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-            <script src="{{ url('') }}/plugins/moment/moment.min.js"></script>
-            <script src="{{ url('') }}/plugins/daterangepicker/daterangepicker.js"></script>
-            <script src="{{ url('') }}/plugins/moment/moment.min.js"></script>
-            <script>
-                function deleteConfirm(url) {
-                    $('#btn-delete').attr('action', url);
-                    $('#deleteModal').modal();
+    @include('user.create-modal')
+
+    <div class="modal fade" id="deleteModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Konfirmasi</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Apakah Anda Benar-Benar Ingin Menghapusnya?</p>
+                </div>
+                <form action="" method="post" id="btn-delete">
+                    <div class="modal-footer justify-content-between">
+                        @method('delete')
+                        @csrf
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-danger">Hapus</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    <x-slot name="script">
+        <!-- Additional JS resources -->
+        <script src="{{ url('') }}/plugins/select2/js/select2.full.min.js"></script>
+        <script src="{{ url('') }}/plugins/datatables/jquery.dataTables.min.js"></script>
+        <script src="{{ url('') }}/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+        <script src="{{ url('') }}/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+        <script src="{{ url('') }}/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+        <script src="{{ url('') }}/plugins/moment/moment.min.js"></script>
+        <script src="{{ url('') }}/plugins/daterangepicker/daterangepicker.js"></script>
+        <script src="{{ url('') }}/plugins/moment/moment.min.js"></script>
+        <script>
+            getPagination("#periodTable", 10);
+            function deleteConfirm(url) {
+                $('#btn-delete').attr('action', url);
+                $('#deleteModal').modal();
+            }
+
+            $(function() {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+
+                var notif = "{{ Session::get('notif') }}";
+
+                if (notif != '') {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: notif
+                    })
+                } else if (notif == '2') {
+                    Toast.fire({
+                        icon: 'danger',
+                        title: 'Gagal',
+                        text: notif
+                    })
                 }
+            });
 
-                $(function() {
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000
-                    });
+            $(document).on('focus', '.select2-selection', function(e) {
+                $(this).closest(".select2-container").siblings('select:enabled').select2('open');
+            })
 
-                    var notif = "{{ Session::get('notif') }}";
+            $(document).on('select2:open', () => {
+                document.querySelector('.select2-search__field').focus();
+            });
+            $(function() {
+                //Initialize Select2 Elements
+                $('.select2').select2()
 
-                    if (notif != '') {
-                        Toast.fire({
-                            icon: 'success',
-                            title: 'Berhasil',
-                            text: notif
-                        })
-                    } else if (notif == '2') {
-                        Toast.fire({
-                            icon: 'danger',
-                            title: 'Gagal',
-                            text: notif
-                        })
-                    }
-                });
-
-                $(document).on('focus', '.select2-selection', function(e) {
-                    $(this).closest(".select2-container").siblings('select:enabled').select2('open');
+                //Initialize Select2 Elements
+                $('.select2bs4').select2({
+                    theme: 'bootstrap4'
                 })
+            });
 
-                $(document).on('select2:open', () => {
-                    document.querySelector('.select2-search__field').focus();
-                });
-                $(function() {
-                    //Initialize Select2 Elements
-                    $('.select2').select2()
+            //Date range picker
+            $('#jadwal').daterangepicker({
 
-                    //Initialize Select2 Elements
-                    $('.select2bs4').select2({
-                        theme: 'bootstrap4'
-                    })
-
-                    $("#periodTable").DataTable({
-                        "scrollX": true,
-                        "ordering": false,
-                        "searching": false,
-                        "responsive": true,
-                        "lengthChange": false,
-                        "autoWidth": false,
-                    })
-                });
-
-                //Date range picker
-                $('#jadwal').daterangepicker({
-
-                    locale: {
-                        format: 'YYYY-MM-DD'
-                    }
-                })
-                //Date range picker with time picker
-                $('#reservationtime').daterangepicker({
-                    timePicker: true,
-                    timePickerIncrement: 30,
-                    locale: {
-                        format: 'MM/DD/YYYY hh:mm A'
-                    }
-                })
-            </script>
-        </x-slot>
+                locale: {
+                    format: 'YYYY-MM-DD'
+                }
+            })
+            //Date range picker with time picker
+            $('#reservationtime').daterangepicker({
+                timePicker: true,
+                timePickerIncrement: 30,
+                locale: {
+                    format: 'MM/DD/YYYY hh:mm A'
+                }
+            })
+        </script>
+    </x-slot>
 
 </x-dashboard-Layout>
