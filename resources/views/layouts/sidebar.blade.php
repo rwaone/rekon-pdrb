@@ -69,6 +69,13 @@
                                 <p>Tabel Pokok</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ url('lapangan-usaha/hasil') }}"
+                                class="nav-link {{ Request::is('lapangan-usaha/hasil') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Hasil</p>
+                            </a>
+                        </li>
                         @if (auth()->user()->satker_id == 1)
                             <li class="nav-item">
                                 <a href="{{ url('lapangan-usaha/monitoring') }}"
