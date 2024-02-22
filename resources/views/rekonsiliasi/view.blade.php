@@ -128,13 +128,6 @@
                             <div class="help-block"></div>
                         </div>
 
-<<<<<<< Updated upstream
-=======
-                        {{-- <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="adjust-checkbox" name="adjust">
-                            <label class="form-check-label" for="adjust">Tambahkan Hasil Adjustment</label>
-                        </div> --}}
->>>>>>> Stashed changes
 
                         <input type="hidden" id="copy-price-base">
 
