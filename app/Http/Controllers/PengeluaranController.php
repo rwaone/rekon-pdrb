@@ -218,6 +218,21 @@ class PengeluaranController extends Controller
             'type' => $type,
         ]);
     }
+    
+    public function result()
+    {
+        $cat = Category::pluck('code')->toArray();
+        $catString = implode(", ", $cat);
+        $regions = Region::getMyRegion();
+        $type = 'Pengeluaran';
+        $subsectors = Subsector::where('type', 'Pengeluaran')->get();
+        return view('result.view', [
+            'cat' => $catString,
+            'regions' => $regions,
+            'subsectors' => $subsectors,
+            'type' => $type,
+        ]);
+    }
 
     public function fenomena()
     {

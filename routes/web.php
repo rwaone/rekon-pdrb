@@ -84,6 +84,7 @@ Route::get('pengeluaran/daftarPokok', [PengeluaranController::class, 'daftarPoko
 Route::get('pengeluaran/detailPokok', [PengeluaranController::class, 'detailPokok'])->middleware(['auth', 'verified'])->name('pengeluaran.detail');;
 Route::get('pengeluaran/getDetail', [PengeluaranController::class, 'getDetail'])->middleware(['auth', 'verified'])->name('pengeluaran.getDetail');
 Route::get('pengeluaran/adjustment', [AdjustmentController::class, 'index'])->middleware(['auth', 'verified']);
+Route::get('pengeluaran/hasil', [PengeluaranController::class, 'result'])->middleware(['auth', 'verified']);
 
 Route::get('pengeluaran/monitoring', [PengeluaranController::class, 'monitoring'])->middleware(['auth', 'verified']);
 Route::get('pengeluaran/getMonitoring', [PengeluaranController::class, 'getMonitoring'])->middleware(['auth', 'verified'])->name('pengeluaran.getMonitoring');
