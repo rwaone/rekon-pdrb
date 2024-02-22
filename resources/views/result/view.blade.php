@@ -59,17 +59,17 @@
     </div>
 
     @if ($type == 'Lapangan Usaha')
-        <div id="adhbFormContainer" class="card form-container d-none"> @include('lapangan.adhb-form') </div>
-        <div id="adhkFormContainer" class="card form-container d-none"> @include('lapangan.adhk-form') </div>
-        <div id="tableFormContainer" class="card form-container d-none"> @include('lapangan.rekon-table') </div>
-        <div id="prevadhbDataContainer" class="card d-none"> @include('lapangan.prev-adhb-form') </div>
-        <div id="prevadhkDataContainer" class="card d-none"> @include('lapangan.prev-adhk-form' )</div>
+        <div id="adhbFormContainer" class="card form-container d-none"> @include('result.lapangan-adhb-form') </div>
+        <div id="adhkFormContainer" class="card form-container d-none"> @include('result.lapangan-adhk-form') </div>
+        <div id="tableFormContainer" class="card form-container d-none"> @include('result.lapangan-rekon-table') </div>
+        <div id="prevadhbDataContainer" class="card d-none"> @include('result.lapangan-prev-adhb-form') </div>
+        <div id="prevadhkDataContainer" class="card d-none"> @include('result.lapangan-prev-adhk-form' )</div>
     @elseif ($type == 'Pengeluaran')
-        <div id="adhbFormContainer" class="card form-container d-none"> @include('pengeluaran.adhb-form') </div>
-        <div id="adhkFormContainer" class="card form-container d-none"> @include('pengeluaran.adhk-form') </div>
-        <div id="tableFormContainer" class="card form-container d-none"> @include('pengeluaran.rekon-table') </div>
-        <div id="prevadhbDataContainer" class="card d-none"> @include('pengeluaran.prev-adhb-form') </div>
-        <div id="prevadhkDataContainer" class="card d-none"> @include('pengeluaran.prev-adhk-form') </div>
+        <div id="adhbFormContainer" class="card form-container d-none"> @include('result.pengeluaran-adhb-form') </div>
+        <div id="adhkFormContainer" class="card form-container d-none"> @include('result.pengeluaran-adhk-form') </div>
+        <div id="tableFormContainer" class="card form-container d-none"> @include('result.pengeluaran-rekon-table') </div>
+        <div id="prevadhbDataContainer" class="card d-none"> @include('result.pengeluaran-prev-adhb-form') </div>
+        <div id="prevadhkDataContainer" class="card d-none"> @include('result.pengeluaran-prev-adhk-form') </div>
     @endif
 
     <!-- Back to top button -->
