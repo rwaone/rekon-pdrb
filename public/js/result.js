@@ -167,7 +167,7 @@ $(document).ready(function () {
     });
 
     $('#filter-button').click(function () {
-        if (validateFilter()){
+        if (validateFilter()) {
             getFullData()
         } else {
             Toast.fire({
@@ -177,18 +177,18 @@ $(document).ready(function () {
             })
         }
     });
-    
+
     function validateFilter() {
-    
-        if($(`#type`).val() == ''){
+
+        if ($(`#type`).val() == '') {
             return false
-        } else if ($(`#year`).val() == ''){
+        } else if ($(`#year`).val() == '') {
             return false
-        } else if ($(`#quarter`).val() == ''){
+        } else if ($(`#quarter`).val() == '') {
             return false
-        } else if ($(`#period`).val() == ''){
+        } else if ($(`#period`).val() == '') {
             return false
-        } else if ($(`#region_id`).val() == ''){
+        } else if ($(`#region_id`).val() == '') {
             return false
         }
 
@@ -494,7 +494,7 @@ $(document).ready(function () {
         $('.form-container').addClass('d-none')
         $('#' + price_base + 'FormContainer').removeClass('d-none')
         $('.save-container').removeClass('d-none')
-        
+
         $('.tab-item').removeClass('active')
         $('#nav-' + price_base).addClass('active')
 
@@ -555,7 +555,7 @@ $(document).ready(function () {
                         $('input[name=id_' + quarter + '_' + value
                             .subsector_id + ']').val(
                                 value.id);
-                        
+
                         let adhb = Number(value.adhb) + Number(value.adjustment.adhb)
                         adhbbValue = ((value.adhb != null) ? formatRupiah(
                             String(adhb).replace('.', ','),
@@ -572,18 +572,18 @@ $(document).ready(function () {
 
                 $.each(result.previous_data, function (quarter, value) {
                     $.each(value, function (key, value) {
+                        let adhk = Number(value.adhk) + Number(value.adjustment.adhk)
                         adhkValue = ((value.adhk != null) ? formatRupiah(
-                            value.adhk
-                                .replace('.', ','),
+                            String(adhk).replace('.', ','),
                             '') : formatRupiah(0,
                                 ''));
                         $('input[name=prev-adhk_value_' + quarter + '_' + value
                             .subsector_id + ']').val(
                                 adhkValue);
 
+                        let adhb = Number(value.adhb) + Number(value.adjustment.adhb)
                         adhbbValue = ((value.adhb != null) ? formatRupiah(
-                            value.adhb
-                                .replace('.', ','),
+                            String(adhb).replace('.', ','),
                             '') : formatRupiah(0,
                                 ''));
                         $('input[name=prev-adhb_value_' + quarter + '_' + value
