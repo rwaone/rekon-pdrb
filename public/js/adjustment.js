@@ -124,6 +124,7 @@ $(document).ready(function () {
 
     $('#filter-button').click(function () {
         if (validateFilter()) {
+            // console.log(filterData());
             sessionStorage.setItem("filterData", JSON.stringify(filterData()))
             fetchData()
         } else {

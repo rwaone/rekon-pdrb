@@ -18,8 +18,9 @@
                 background-color: red;
                 color: aliceblue;
             }
+
             /* style="background-color: #09b5c1; color:aliceblue;" */
-            #adjust-table th.first{
+            #adjust-table th.first {
                 position: sticky;
                 left: 0;
                 background-color: #09b5c1;
@@ -27,7 +28,7 @@
                 z-index: 2;
             }
 
-            #adjust-table td:nth-child(1){
+            #adjust-table td:nth-child(1) {
                 position: sticky;
                 left: 0;
                 background-color: #fff;
@@ -115,6 +116,24 @@
         <script src="{{ url('') }}/plugins/select2/js/select2.full.min.js"></script>
         <script src="{{ asset('js/adjustment.js') }}"></script>
         <script>
+            function formatOutput(state) {
+                if (!state.id) {
+                    return state.text;
+                }
+                var isBold = false;
+                if (state.element.classList.contains("something")) {
+                    isBold = true;
+                }
+                let $state;
+                if (isBold) {
+                    $state = $(
+                        '<span><strong>' + state.text + '</strong></span>'
+                    )
+                    return $state;
+                } else {
+                    return state.text;
+                }
+            }
             sessionStorage.clear()
             const tokens = '{{ csrf_token() }}'
             const url_fetch_year = new URL("{{ route('fetchYear') }}")
@@ -175,12 +194,17 @@
             });
 
             $(function() {
-                //Initialize Select2 Elements
+                // $(".test").select2({
+                //     theme: 'bootstrap4',
+                //     templateResult: formatOutput
+                // })
+                // Initialize Select2 Elements
                 $('.select2').select2()
 
-                //Initialize Select2 Elements
+                // Initialize Select2 Elements
                 $('.select2bs4').select2({
-                    theme: 'bootstrap4'
+                    theme: 'bootstrap4',
+                    templateResult: formatOutput
                 })
             });
         </script>
