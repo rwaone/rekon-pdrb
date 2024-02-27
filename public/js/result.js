@@ -544,7 +544,15 @@ $(document).ready(function () {
                 $.each(result.current_data, function (quarter, value) {
                     $.each(value, function (key, value) {
 
-                        let adhk = Number(value.adhk) + Number(value.adjustment.adhk)
+                        let adhk = 0
+
+                        if (value.adhk != null) {
+                            adhk = Number(value.adhk)
+                            if (value.adjustment != null) {
+                                adhk += Number(value.adjustment.adhk)
+                            }
+                        }
+
                         adhkValue = ((value.adhk != null) ? formatRupiah(
                             String(adhk).replace('.', ','),
                             '') : formatRupiah(0,
@@ -556,7 +564,15 @@ $(document).ready(function () {
                             .subsector_id + ']').val(
                                 value.id);
 
-                        let adhb = Number(value.adhb) + Number(value.adjustment.adhb)
+                        let adhb = 0
+
+                        if (value.adhb != null) {
+                            adhb = Number(value.adhb)
+                            if (value.adjustment != null) {
+                                adhb += Number(value.adjustment.adhb)
+                            }
+                        }
+
                         adhbbValue = ((value.adhb != null) ? formatRupiah(
                             String(adhb).replace('.', ','),
                             '') : formatRupiah(0,
@@ -572,7 +588,15 @@ $(document).ready(function () {
 
                 $.each(result.previous_data, function (quarter, value) {
                     $.each(value, function (key, value) {
-                        let adhk = Number(value.adhk) + Number(value.adjustment.adhk)
+
+                        let adhk = 0
+
+                        if (value.adhk != null) {
+                            adhk = Number(value.adhk)
+                            if (value.adjustment != null) {
+                                adhk += Number(value.adjustment.adhk)
+                            }
+                        }
                         adhkValue = ((value.adhk != null) ? formatRupiah(
                             String(adhk).replace('.', ','),
                             '') : formatRupiah(0,
@@ -581,7 +605,14 @@ $(document).ready(function () {
                             .subsector_id + ']').val(
                                 adhkValue);
 
-                        let adhb = Number(value.adhb) + Number(value.adjustment.adhb)
+                        let adhb = 0
+
+                        if (value.adhb != null) {
+                            adhb = Number(value.adhb)
+                            if (value.adjustment != null) {
+                                adhb += Number(value.adjustment.adhb)
+                            }
+                        }
                         adhbbValue = ((value.adhb != null) ? formatRupiah(
                             String(adhb).replace('.', ','),
                             '') : formatRupiah(0,
