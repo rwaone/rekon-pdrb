@@ -165,13 +165,51 @@ class AdjustmentController extends Controller
                         if ($index <= $filter['quarter']) {
                             if (sizeof($sector) > 1) {
                                 # code...
-                                $query = Pdrb::selectRaw('SUM(pdrbs.adhb) AS adhb, SUM(pdrbs.adhk) AS adhk, SUM(adjustments.adhb) AS adjust_adhb, SUM(adjustments.adhk) AS adjust_adhk')
-                                    ->leftJoin('adjustments', 'pdrbs.id', '=', 'adjustments.pdrb_id')
-                                    ->leftJoin('subsectors as s', 's.id', '=', 'pdrbs.subsector_id')
-                                    ->where('pdrbs.dataset_id', $current_dataset->id)
-                                    ->where('pdrbs.quarter', $index)
-                                    ->where('s.sector_id', $sector[1])
-                                    ->get()->toArray();
+                                if ($sector[0] == 'sector') {
+                                    # code...
+                                    # if sector = net export-import do this! uhuy
+                                    if ($sector[1] == '54') {
+                                        # code...
+                                        $query = Pdrb::selectRaw('subsector_id as identifier, pdrbs.adhb AS adhb, pdrbs.adhk AS adhk, adjustments.adhb AS adjust_adhb, adjustments.adhk AS adjust_adhk')
+                                            ->leftJoin('adjustments', 'pdrbs.id', '=', 'adjustments.pdrb_id')
+                                            ->leftJoin('subsectors as s', 's.id', '=', 'pdrbs.subsector_id')
+                                            ->where('pdrbs.dataset_id', $current_dataset->id)
+                                            ->where('pdrbs.quarter', $index)
+                                            ->where('s.sector_id', $sector[1])
+                                            ->get()->toArray();
+                                        // dd($query[0]);
+                                        $exports = [];
+                                        $imports = [];
+                                        foreach ($query as $item) {
+                                            if ($item['identifier'] == "68") {
+                                                $exports = $item;
+                                            } elseif ($item['identifier'] == "69") {
+                                                $imports = $item;
+                                            }
+                                        }
+                                        $query[0]['adhb'] = (string)($exports['adhb'] - $imports['adhb']);
+                                        $query[0]['adhk'] = (string)($exports['adhk'] - $imports['adhk']);
+                                        $query[0]['adjust_adhb'] = (string)($exports['adjust_adhb'] - $imports['adjust_adhb']);
+                                        $query[0]['adjust_adhk'] = (string)($exports['adjust_adhb'] - $imports['adjust_adhb']);
+                                    } else {
+                                        $query = Pdrb::selectRaw('SUM(pdrbs.adhb) AS adhb, SUM(pdrbs.adhk) AS adhk, SUM(adjustments.adhb) AS adjust_adhb, SUM(adjustments.adhk) AS adjust_adhk')
+                                            ->leftJoin('adjustments', 'pdrbs.id', '=', 'adjustments.pdrb_id')
+                                            ->leftJoin('subsectors as s', 's.id', '=', 'pdrbs.subsector_id')
+                                            ->where('pdrbs.dataset_id', $current_dataset->id)
+                                            ->where('pdrbs.quarter', $index)
+                                            ->where('s.sector_id', $sector[1])
+                                            ->get()->toArray();
+                                    }
+                                } else {
+                                    $query = Pdrb::selectRaw('SUM(pdrbs.adhb) AS adhb, SUM(pdrbs.adhk) AS adhk, SUM(adjustments.adhb) AS adjust_adhb, SUM(adjustments.adhk) AS adjust_adhk')
+                                        ->leftJoin('adjustments', 'pdrbs.id', '=', 'adjustments.pdrb_id')
+                                        ->leftJoin('subsectors as s', 's.id', '=', 'pdrbs.subsector_id')
+                                        ->leftJoin('sectors as ss', 'ss.id', '=', 's.sector_id')
+                                        ->where('pdrbs.dataset_id', $current_dataset->id)
+                                        ->where('pdrbs.quarter', $index)
+                                        ->where('ss.category_id', $sector[1])
+                                        ->get()->toArray();
+                                }
                             } else {
                                 $query = Pdrb::selectRaw('SUM(pdrbs.adhb) AS adhb, SUM(pdrbs.adhk) AS adhk, SUM(adjustments.adhb) AS adjust_adhb, SUM(adjustments.adhk) AS adjust_adhk')
                                     ->leftJoin('adjustments', 'pdrbs.id', '=', 'adjustments.pdrb_id')
@@ -179,9 +217,6 @@ class AdjustmentController extends Controller
                                     ->where('pdrbs.quarter', $index)
                                     ->get()->toArray();
                             }
-                            // dd($query);
-
-                            // return response()->json($query);
                             $data['current'][$region->id][$index] = $query[0];
 
                             if ($filter['type'] == 'Pengeluaran' && sizeof($sector) == 1) {
@@ -213,13 +248,51 @@ class AdjustmentController extends Controller
                     for ($index = 1; $index <= 4; $index++) {
                         if (sizeof($sector) > 1) {
                             # code...
-                            $query = Pdrb::selectRaw('SUM(pdrbs.adhb) AS adhb, SUM(pdrbs.adhk) AS adhk, SUM(adjustments.adhb) AS adjust_adhb, SUM(adjustments.adhk) AS adjust_adhk')
-                                ->leftJoin('adjustments', 'pdrbs.id', '=', 'adjustments.pdrb_id')
-                                ->leftJoin('subsectors as s', 's.id', '=', 'pdrbs.subsector_id')
-                                ->where('pdrbs.dataset_id', $previous_dataset->id)
-                                ->where('pdrbs.quarter', $index)
-                                ->where('s.sector_id', $sector[1])
-                                ->get()->toArray();
+                            if ($sector[0] == 'sector') {
+                                # code...
+                                # if sector = net export-import do this! uhuy
+                                if ($sector[1] == '54') {
+                                    # code...
+                                    $query = Pdrb::selectRaw('subsector_id as identifier, pdrbs.adhb AS adhb, pdrbs.adhk AS adhk, adjustments.adhb AS adjust_adhb, adjustments.adhk AS adjust_adhk')
+                                        ->leftJoin('adjustments', 'pdrbs.id', '=', 'adjustments.pdrb_id')
+                                        ->leftJoin('subsectors as s', 's.id', '=', 'pdrbs.subsector_id')
+                                        ->where('pdrbs.dataset_id', $previous_dataset->id)
+                                        ->where('pdrbs.quarter', $index)
+                                        ->where('s.sector_id', $sector[1])
+                                        ->get()->toArray();
+                                    // dd($query[0]);
+                                    $exports = [];
+                                    $imports = [];
+                                    foreach ($query as $item) {
+                                        if ($item['identifier'] == "68") {
+                                            $exports = $item;
+                                        } elseif ($item['identifier'] == "69") {
+                                            $imports = $item;
+                                        }
+                                    }
+                                    $query[0]['adhb'] = (string)($exports['adhb'] - $imports['adhb']);
+                                    $query[0]['adhk'] = (string)($exports['adhk'] - $imports['adhk']);
+                                    $query[0]['adjust_adhb'] = (string)($exports['adjust_adhb'] - $imports['adjust_adhb']);
+                                    $query[0]['adjust_adhk'] = (string)($exports['adjust_adhb'] - $imports['adjust_adhb']);
+                                } else {
+                                    $query = Pdrb::selectRaw('SUM(pdrbs.adhb) AS adhb, SUM(pdrbs.adhk) AS adhk, SUM(adjustments.adhb) AS adjust_adhb, SUM(adjustments.adhk) AS adjust_adhk')
+                                        ->leftJoin('adjustments', 'pdrbs.id', '=', 'adjustments.pdrb_id')
+                                        ->leftJoin('subsectors as s', 's.id', '=', 'pdrbs.subsector_id')
+                                        ->where('pdrbs.dataset_id', $previous_dataset->id)
+                                        ->where('pdrbs.quarter', $index)
+                                        ->where('s.sector_id', $sector[1])
+                                        ->get()->toArray();
+                                }
+                            } else {
+                                $query = Pdrb::selectRaw('SUM(pdrbs.adhb) AS adhb, SUM(pdrbs.adhk) AS adhk, SUM(adjustments.adhb) AS adjust_adhb, SUM(adjustments.adhk) AS adjust_adhk')
+                                    ->leftJoin('adjustments', 'pdrbs.id', '=', 'adjustments.pdrb_id')
+                                    ->leftJoin('subsectors as s', 's.id', '=', 'pdrbs.subsector_id')
+                                    ->leftJoin('sectors as ss', 'ss.id', '=', 's.sector_id')
+                                    ->where('pdrbs.dataset_id', $previous_dataset->id)
+                                    ->where('pdrbs.quarter', $index)
+                                    ->where('ss.category_id', $sector[1])
+                                    ->get()->toArray();
+                            }
                         } else {
                             $query = $query = Pdrb::selectRaw('SUM(pdrbs.adhb) AS adhb, SUM(pdrbs.adhk) AS adhk, SUM(adjustments.adhb) AS adjust_adhb, SUM(adjustments.adhk) AS adjust_adhk')
                                 ->leftJoin('adjustments', 'pdrbs.id', '=', 'adjustments.pdrb_id')

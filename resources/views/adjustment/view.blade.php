@@ -194,6 +194,18 @@
             });
 
             $(function() {
+                let numberedOptions = document.querySelectorAll('.subsectors');
+                let numericalIndex = 1;
+                numberedOptions.forEach(function(option) {
+                    if (option.classList.contains("ml-4")) {
+                        option.textContent = '\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0' + numericalIndex + '. ' + option.textContent;
+                    } else if(option.classList.contains("ml-2")){
+                        option.textContent = '\u00A0\u00A0\u00A0\u00A0' + numericalIndex + '. ' + option.textContent;
+                    } else {
+                        option.textContent = numericalIndex + '. ' + option.textContent;
+                    }
+                    numericalIndex++;
+                });
                 // $(".test").select2({
                 //     theme: 'bootstrap4',
                 //     templateResult: formatOutput

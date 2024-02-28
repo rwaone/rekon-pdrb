@@ -41,25 +41,53 @@
                     <label class="col-sm-2 col-form-label" for="subsector">
                         {{ $type == 'Pengeluaran' ? 'Komponen' : 'Lapangan Usaha' }}:</label>
                     <select id="subsector" class="form-control col-sm-9 select2bs4" name="subsector" required>
-                        <option value="" selected hidden disabled>-- Pilih {{ $type == 'Pengeluaran' ? 'Komponen' : 'Lapangan Usaha' }}
-                        --</option>
-                        {{-- @foreach ($subsectors as $subsector)
-                            <option value="{{ $subsector->id }}">{{$loop->iteration . '. ' . $subsector->name }}</option>
-                        @endforeach --}}
-                        @foreach ($subsectors as $index => $item)
-                            @if (
-                                ($item->code != null && $item->code == 'a'))
-                                <option class="something" value="sector-{{ $item->sector->id }}">{{ $item->sector->name }}</option>
-                            @endif
-                            @if ($item->code != null)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                            @elseif ($item->code == null && $item->sector->code != null)
-                                <option class="something" value="sector-{{ $item->sector->id }}-">{{ $item->name }}</option>
-                            @elseif ($item->code == null && $item->sector->code == null)
-                                <option value="{{ $item->id }}">{{ $index+1 . '. ' . $item->name }}
+                        <option value="" selected hidden disabled>-- Pilih
+                            {{ $type == 'Pengeluaran' ? 'Komponen' : 'Lapangan Usaha' }}
+                            --</option>
+                        @if ($type == 'Pengeluaran')
+                            @foreach ($subsectors as $index => $item)
+                                @if ($item->code != null && $item->code == 'a')
+                                    <option class="something" value="sector-{{ $item->sector->id }}">
+                                        {{ $item->sector->name }}</option>
+                                @endif
+                                @if ($item->code != null)
+                                    <option class="subsectors ml-4" value="{{ $item->id }}">{{ $item->name }}</option>
+                                @elseif ($item->code == null && $item->sector->code != null)
+                                    <option class="subsectors something" value="{{ $item->id }}">
+                                        {{ $item->name }}</option>
+                                @elseif ($item->code == null && $item->sector->code == null)
+                                    <option value="{{ $item->id }}">{{ $index + 1 . '. ' . $item->name }}
+                                    </option>
+                                @endif
+                            @endforeach
+                        @else
+                            {{-- @foreach ($subsectors as $subsector)
+                                <option value="{{ $subsector->id }}">{{ $loop->iteration . '. ' . $subsector->name }}
                                 </option>
-                            @endif
-                        @endforeach
+                            @endforeach --}}
+                            @foreach ($subsectors as $index => $item)
+                                @if (
+                                    ($item->code != null && $item->code == 'a' && $item->sector->code == '1') ||
+                                        ($item->code == null && $item->sector->code == '1'))
+                                    <option class="something" value="category-{{ $item->sector->category->id }}">
+                                        {{ $item->sector->category->name }}</option>
+                                @endif
+                                @if ($item->code != null && $item->code == 'a')
+                                <option class="" value="sector-{{$item->sector->id}}">&nbsp;&nbsp;&nbsp;&nbsp;{{$item->sector->name}}</option>
+                                @endif
+                                @if ($item->code != null)
+                                    <option class="subsectors ml-4" value="{{ $item->id }}">{{ $item->name }}
+                                    </option>
+                                @elseif ($item->code == null && $item->sector->code != null)
+                                    <option class="subsectors ml-2" value="{{ $item->id }}">{{ $item->name }}
+                                    </option>
+                                @elseif ($item->code == null && $item->sector->code == null)
+                                    <option class="subsectors something" value="{{ $item->id }}">{{ $item->name }}
+                                    </option>
+                                @endif
+                            @endforeach
+                        @endif
+
                         <option value="0">Total PDRB</option>
                     </select>
                     <div class="help-block"></div>
@@ -71,5 +99,4 @@
         </form>
     </div>
 </div>
-<script>
-</script>
+<script></script>
