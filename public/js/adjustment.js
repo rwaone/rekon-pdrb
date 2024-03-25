@@ -124,7 +124,15 @@ $(document).ready(function () {
 
     $('#filter-button').click(function () {
         if (validateFilter()) {
+            // console.log(filterData());
             sessionStorage.setItem("filterData", JSON.stringify(filterData()))
+            let check = filterData();
+            $('#adjustment-save').prop("disabled", check.subsector.split("-").length > 1);
+            if (check.subsector.split("-").length > 1) {
+                $(".input-field").each(function (e) {
+                    $(this).prop("disabled", true);
+                })
+            }
             fetchData()
         } else {
             Toast.fire({

@@ -140,14 +140,14 @@
                             <td class="text-right adhb-inisial" id="adhb-inisial-{{ $region->id }}"></td>
 
                             <td class="adhb-adjust"><input id="adhb-adjust-{{ $region->id }}" type="text"
-                                    class="form-control text-right" name="adhb-adjust-{{ $region->id }}"
+                                    class="form-control text-right input-field" name="adhb-adjust-{{ $region->id }}"
                                     aria-required="true" ></td>
 
                             <td class="text-right adhb-berjalan" id="adhb-berjalan-{{ $region->id }}"></td>
                             <td class="text-right adhk-inisial" id="adhk-inisial-{{ $region->id }}"></td>
 
                             <td class="adhk-adjust"><input id="adhk-adjust-{{ $region->id }}" type="text"
-                                    class="form-control text-right" name="adhk-adjust-{{ $region->id }}"
+                                    class="form-control text-right input-field" name="adhk-adjust-{{ $region->id }}"
                                     aria-required="true" ></td>
                                     
                             <td class="text-right adhk-berjalan" id="adhk-berjalan-{{ $region->id }}"></td>

@@ -52,6 +52,8 @@ class AdjustmentController extends Controller
     public function show(Request $request)
     {
         $filter = (array) json_decode($request->filter);
+        $sector = explode("-", $filter['subsector']);
+        // dd($sector);
         $regions = Region::all();
 
         $current_period = Period::where('id', $filter['period_id'])->first();
@@ -59,14 +61,17 @@ class AdjustmentController extends Controller
         if ($current_period->status == 'Aktif') {
             $previous_period = Period::where('type', $filter['type'])->where('year', $filter['year'] - 1)->where('quarter', 4)->latest('id')->first();
         } else {
-            $previous_period = Period::where('type', $filter['type'])->where('year', $filter['year'] - 1)->where('quarter', 4)->where('status','<>', 'Aktif')->latest('id')->first();
+            $previous_period = Period::where('type', $filter['type'])->where('year', $filter['year'] - 1)->where('quarter', 4)->where('status', '<>', 'Aktif')->latest('id')->first();
         }
+        // dd($current_period);
         $notification = [];
-        if ($filter['subsector'] != 0) {
+        // dd(intval($filter['subsector']));
+        if (intval($filter['subsector']) > 0) {
             foreach ($regions as $region) {
                 $current_dataset = Dataset::where('period_id', $filter['period_id'])->where('region_id', $region->id)->first();
                 $previous_dataset = Dataset::where('period_id', $previous_period->id)->where('region_id', $region->id)->first();
-
+                // dd($current_dataset);
+                // dd($previous_dataset);
                 if (isset($current_dataset)) {
                     for ($index = 1; $index <= 4; $index++) {
                         if ($index <= $filter['quarter']) {
@@ -75,7 +80,6 @@ class AdjustmentController extends Controller
                                 ->where('quarter', $index)
                                 ->where('subsector_id', $filter['subsector'])
                                 ->get()->toArray();
-
                             $data['current'][$region->id][$index] = $query[0];
 
                             $adjustment = Adjustment::select('adhb', 'adhk')
@@ -121,28 +125,27 @@ class AdjustmentController extends Controller
                         $data['previous'][$region->id][$index] = $query[0];
 
                         $adjustment = Adjustment::select('adhb', 'adhk')
-                                ->where('pdrb_id', $query[0]['id'])
-                                ->get()->toArray();
+                            ->where('pdrb_id', $query[0]['id'])
+                            ->get()->toArray();
 
-                            if (sizeof($adjustment) == 0) {
-                                $adjustment = [
-                                    'pdrb_id' => $query[0]['id'],
-                                    'adhb' => '0',
-                                    'adhk' => '0',
-                                    'created_at' => date('Y-m-d H:i:s'),
-                                    'updated_at' => date('Y-m-d H:i:s'),
-                                ];
+                        if (sizeof($adjustment) == 0) {
+                            $adjustment = [
+                                'pdrb_id' => $query[0]['id'],
+                                'adhb' => '0',
+                                'adhk' => '0',
+                                'created_at' => date('Y-m-d H:i:s'),
+                                'updated_at' => date('Y-m-d H:i:s'),
+                            ];
 
-                                Adjustment::insert($adjustment);
+                            Adjustment::insert($adjustment);
 
-                                $data['previous'][$region->id][$index]['adjust_adhb'] = $adjustment['adhb'];
-                                $data['previous'][$region->id][$index]['adjust_adhk'] = $adjustment['adhk'];
-                            } else {
-                                $data['previous'][$region->id][$index]['adjust_adhb'] = $adjustment[0]['adhb'];
-                                $data['previous'][$region->id][$index]['adjust_adhk'] = $adjustment[0]['adhk'];
-                            }
+                            $data['previous'][$region->id][$index]['adjust_adhb'] = $adjustment['adhb'];
+                            $data['previous'][$region->id][$index]['adjust_adhk'] = $adjustment['adhk'];
+                        } else {
+                            $data['previous'][$region->id][$index]['adjust_adhb'] = $adjustment[0]['adhb'];
+                            $data['previous'][$region->id][$index]['adjust_adhk'] = $adjustment[0]['adhk'];
+                        }
                     }
-                    
                 } else {
                     $message = [
                         'type' => 'warning',
@@ -160,27 +163,74 @@ class AdjustmentController extends Controller
                 if (isset($current_dataset)) {
                     for ($index = 1; $index <= 4; $index++) {
                         if ($index <= $filter['quarter']) {
-                            $query = Pdrb::selectRaw('SUM(pdrbs.adhb) AS adhb, SUM(pdrbs.adhk) AS adhk, SUM(adjustments.adhb) AS adjust_adhb, SUM(adjustments.adhk) AS adjust_adhk')
-                                ->leftJoin('adjustments', 'pdrbs.id', '=', 'adjustments.pdrb_id')
-                                ->where('pdrbs.dataset_id', $current_dataset->id)
-                                ->where('pdrbs.quarter', $index)
-                                ->get()->toArray();
-
-                            // return response()->json($query);
+                            if (sizeof($sector) > 1) {
+                                # code...
+                                if ($sector[0] == 'sector') {
+                                    # code...
+                                    # if sector = net export-import do this! uhuy
+                                    if ($sector[1] == '54') {
+                                        # code...
+                                        $query = Pdrb::selectRaw('subsector_id as identifier, pdrbs.adhb AS adhb, pdrbs.adhk AS adhk, adjustments.adhb AS adjust_adhb, adjustments.adhk AS adjust_adhk')
+                                            ->leftJoin('adjustments', 'pdrbs.id', '=', 'adjustments.pdrb_id')
+                                            ->leftJoin('subsectors as s', 's.id', '=', 'pdrbs.subsector_id')
+                                            ->where('pdrbs.dataset_id', $current_dataset->id)
+                                            ->where('pdrbs.quarter', $index)
+                                            ->where('s.sector_id', $sector[1])
+                                            ->get()->toArray();
+                                        // dd($query[0]);
+                                        $exports = [];
+                                        $imports = [];
+                                        foreach ($query as $item) {
+                                            if ($item['identifier'] == "68") {
+                                                $exports = $item;
+                                            } elseif ($item['identifier'] == "69") {
+                                                $imports = $item;
+                                            }
+                                        }
+                                        $query[0]['adhb'] = (string)($exports['adhb'] - $imports['adhb']);
+                                        $query[0]['adhk'] = (string)($exports['adhk'] - $imports['adhk']);
+                                        $query[0]['adjust_adhb'] = (string)($exports['adjust_adhb'] - $imports['adjust_adhb']);
+                                        $query[0]['adjust_adhk'] = (string)($exports['adjust_adhb'] - $imports['adjust_adhb']);
+                                    } else {
+                                        $query = Pdrb::selectRaw('SUM(pdrbs.adhb) AS adhb, SUM(pdrbs.adhk) AS adhk, SUM(adjustments.adhb) AS adjust_adhb, SUM(adjustments.adhk) AS adjust_adhk')
+                                            ->leftJoin('adjustments', 'pdrbs.id', '=', 'adjustments.pdrb_id')
+                                            ->leftJoin('subsectors as s', 's.id', '=', 'pdrbs.subsector_id')
+                                            ->where('pdrbs.dataset_id', $current_dataset->id)
+                                            ->where('pdrbs.quarter', $index)
+                                            ->where('s.sector_id', $sector[1])
+                                            ->get()->toArray();
+                                    }
+                                } else {
+                                    $query = Pdrb::selectRaw('SUM(pdrbs.adhb) AS adhb, SUM(pdrbs.adhk) AS adhk, SUM(adjustments.adhb) AS adjust_adhb, SUM(adjustments.adhk) AS adjust_adhk')
+                                        ->leftJoin('adjustments', 'pdrbs.id', '=', 'adjustments.pdrb_id')
+                                        ->leftJoin('subsectors as s', 's.id', '=', 'pdrbs.subsector_id')
+                                        ->leftJoin('sectors as ss', 'ss.id', '=', 's.sector_id')
+                                        ->where('pdrbs.dataset_id', $current_dataset->id)
+                                        ->where('pdrbs.quarter', $index)
+                                        ->where('ss.category_id', $sector[1])
+                                        ->get()->toArray();
+                                }
+                            } else {
+                                $query = Pdrb::selectRaw('SUM(pdrbs.adhb) AS adhb, SUM(pdrbs.adhk) AS adhk, SUM(adjustments.adhb) AS adjust_adhb, SUM(adjustments.adhk) AS adjust_adhk')
+                                    ->leftJoin('adjustments', 'pdrbs.id', '=', 'adjustments.pdrb_id')
+                                    ->where('pdrbs.dataset_id', $current_dataset->id)
+                                    ->where('pdrbs.quarter', $index)
+                                    ->get()->toArray();
+                            }
                             $data['current'][$region->id][$index] = $query[0];
 
-                            if($filter['type'] == 'Pengeluaran'){
+                            if ($filter['type'] == 'Pengeluaran' && sizeof($sector) == 1) {
                                 $impor = Pdrb::selectRaw('SUM(pdrbs.adhb) AS adhb, SUM(pdrbs.adhk) AS adhk, SUM(adjustments.adhb) AS adjust_adhb, SUM(adjustments.adhk) AS adjust_adhk')
-                                ->leftJoin('adjustments', 'pdrbs.id', '=', 'adjustments.pdrb_id')
-                                ->where('pdrbs.dataset_id', $current_dataset->id)
-                                ->where('pdrbs.quarter', $index)
-                                ->where('subsector_id', 69)
-                                ->get()->toArray();
+                                    ->leftJoin('adjustments', 'pdrbs.id', '=', 'adjustments.pdrb_id')
+                                    ->where('pdrbs.dataset_id', $current_dataset->id)
+                                    ->where('pdrbs.quarter', $index)
+                                    ->where('subsector_id', 69)
+                                    ->get()->toArray();
 
-                                $data['current'][$region->id][$index]['adhb'] = (string)($data['current'][$region->id][$index]['adhb'] - (2*$impor[0]['adhb']));
-                                $data['current'][$region->id][$index]['adhk'] = (string)($data['current'][$region->id][$index]['adhk'] - (2*$impor[0]['adhk']));
-                                $data['current'][$region->id][$index]['adjust_adhb'] = (string)($data['current'][$region->id][$index]['adjust_adhb'] - (2*$impor[0]['adjust_adhb']));
-                                $data['current'][$region->id][$index]['adjust_adhk'] = (string)($data['current'][$region->id][$index]['adjust_adhk'] - (2*$impor[0]['adjust_adhk']));
+                                $data['current'][$region->id][$index]['adhb'] = (string)($data['current'][$region->id][$index]['adhb'] - (2 * $impor[0]['adhb']));
+                                $data['current'][$region->id][$index]['adhk'] = (string)($data['current'][$region->id][$index]['adhk'] - (2 * $impor[0]['adhk']));
+                                $data['current'][$region->id][$index]['adjust_adhb'] = (string)($data['current'][$region->id][$index]['adjust_adhb'] - (2 * $impor[0]['adjust_adhb']));
+                                $data['current'][$region->id][$index]['adjust_adhk'] = (string)($data['current'][$region->id][$index]['adjust_adhk'] - (2 * $impor[0]['adjust_adhk']));
                             }
                         }
                     }
@@ -196,27 +246,75 @@ class AdjustmentController extends Controller
 
                 if (isset($previous_dataset)) {
                     for ($index = 1; $index <= 4; $index++) {
-                        $query = $query = Pdrb::selectRaw('SUM(pdrbs.adhb) AS adhb, SUM(pdrbs.adhk) AS adhk, SUM(adjustments.adhb) AS adjust_adhb, SUM(adjustments.adhk) AS adjust_adhk')
-                            ->leftJoin('adjustments', 'pdrbs.id', '=', 'adjustments.pdrb_id')
-                            ->where('pdrbs.dataset_id', $previous_dataset->id)
-                            ->where('pdrbs.quarter', $index)
-                            ->get()->toArray();
+                        if (sizeof($sector) > 1) {
+                            # code...
+                            if ($sector[0] == 'sector') {
+                                # code...
+                                # if sector = net export-import do this! uhuy
+                                if ($sector[1] == '54') {
+                                    # code...
+                                    $query = Pdrb::selectRaw('subsector_id as identifier, pdrbs.adhb AS adhb, pdrbs.adhk AS adhk, adjustments.adhb AS adjust_adhb, adjustments.adhk AS adjust_adhk')
+                                        ->leftJoin('adjustments', 'pdrbs.id', '=', 'adjustments.pdrb_id')
+                                        ->leftJoin('subsectors as s', 's.id', '=', 'pdrbs.subsector_id')
+                                        ->where('pdrbs.dataset_id', $previous_dataset->id)
+                                        ->where('pdrbs.quarter', $index)
+                                        ->where('s.sector_id', $sector[1])
+                                        ->get()->toArray();
+                                    // dd($query[0]);
+                                    $exports = [];
+                                    $imports = [];
+                                    foreach ($query as $item) {
+                                        if ($item['identifier'] == "68") {
+                                            $exports = $item;
+                                        } elseif ($item['identifier'] == "69") {
+                                            $imports = $item;
+                                        }
+                                    }
+                                    $query[0]['adhb'] = (string)($exports['adhb'] - $imports['adhb']);
+                                    $query[0]['adhk'] = (string)($exports['adhk'] - $imports['adhk']);
+                                    $query[0]['adjust_adhb'] = (string)($exports['adjust_adhb'] - $imports['adjust_adhb']);
+                                    $query[0]['adjust_adhk'] = (string)($exports['adjust_adhb'] - $imports['adjust_adhb']);
+                                } else {
+                                    $query = Pdrb::selectRaw('SUM(pdrbs.adhb) AS adhb, SUM(pdrbs.adhk) AS adhk, SUM(adjustments.adhb) AS adjust_adhb, SUM(adjustments.adhk) AS adjust_adhk')
+                                        ->leftJoin('adjustments', 'pdrbs.id', '=', 'adjustments.pdrb_id')
+                                        ->leftJoin('subsectors as s', 's.id', '=', 'pdrbs.subsector_id')
+                                        ->where('pdrbs.dataset_id', $previous_dataset->id)
+                                        ->where('pdrbs.quarter', $index)
+                                        ->where('s.sector_id', $sector[1])
+                                        ->get()->toArray();
+                                }
+                            } else {
+                                $query = Pdrb::selectRaw('SUM(pdrbs.adhb) AS adhb, SUM(pdrbs.adhk) AS adhk, SUM(adjustments.adhb) AS adjust_adhb, SUM(adjustments.adhk) AS adjust_adhk')
+                                    ->leftJoin('adjustments', 'pdrbs.id', '=', 'adjustments.pdrb_id')
+                                    ->leftJoin('subsectors as s', 's.id', '=', 'pdrbs.subsector_id')
+                                    ->leftJoin('sectors as ss', 'ss.id', '=', 's.sector_id')
+                                    ->where('pdrbs.dataset_id', $previous_dataset->id)
+                                    ->where('pdrbs.quarter', $index)
+                                    ->where('ss.category_id', $sector[1])
+                                    ->get()->toArray();
+                            }
+                        } else {
+                            $query = $query = Pdrb::selectRaw('SUM(pdrbs.adhb) AS adhb, SUM(pdrbs.adhk) AS adhk, SUM(adjustments.adhb) AS adjust_adhb, SUM(adjustments.adhk) AS adjust_adhk')
+                                ->leftJoin('adjustments', 'pdrbs.id', '=', 'adjustments.pdrb_id')
+                                ->where('pdrbs.dataset_id', $previous_dataset->id)
+                                ->where('pdrbs.quarter', $index)
+                                ->get()->toArray();
+                        }
                         $data['previous'][$region->id][$index] = $query[0];
 
-                        if($filter['type'] == 'Pengeluaran'){
+                        if ($filter['type'] == 'Pengeluaran' && sizeof($sector) == 1) {
                             $impor = Pdrb::selectRaw('SUM(pdrbs.adhb) AS adhb, SUM(pdrbs.adhk) AS adhk, SUM(adjustments.adhb) AS adjust_adhb, SUM(adjustments.adhk) AS adjust_adhk')
-                            ->leftJoin('adjustments', 'pdrbs.id', '=', 'adjustments.pdrb_id')
-                            ->where('pdrbs.dataset_id', $previous_dataset->id)
-                            ->where('pdrbs.quarter', $index)
-                            ->where('subsector_id', 69)
-                            ->get()->toArray();
+                                ->leftJoin('adjustments', 'pdrbs.id', '=', 'adjustments.pdrb_id')
+                                ->where('pdrbs.dataset_id', $previous_dataset->id)
+                                ->where('pdrbs.quarter', $index)
+                                ->where('subsector_id', 69)
+                                ->get()->toArray();
 
-                            $data['previous'][$region->id][$index]['adhb'] = (string)($data['previous'][$region->id][$index]['adhb'] - (2*$impor[0]['adhb']));
-                            $data['previous'][$region->id][$index]['adhk'] = (string)($data['previous'][$region->id][$index]['adhk'] - (2*$impor[0]['adhk']));
-                            $data['previous'][$region->id][$index]['adjust_adhb'] = (string)($data['previous'][$region->id][$index]['adjust_adhb'] - (2*$impor[0]['adjust_adhb']));
-                            $data['previous'][$region->id][$index]['adjust_adhk'] = (string)($data['previous'][$region->id][$index]['adjust_adhk'] - (2*$impor[0]['adjust_adhk']));
+                            $data['previous'][$region->id][$index]['adhb'] = (string)($data['previous'][$region->id][$index]['adhb'] - (2 * $impor[0]['adhb']));
+                            $data['previous'][$region->id][$index]['adhk'] = (string)($data['previous'][$region->id][$index]['adhk'] - (2 * $impor[0]['adhk']));
+                            $data['previous'][$region->id][$index]['adjust_adhb'] = (string)($data['previous'][$region->id][$index]['adjust_adhb'] - (2 * $impor[0]['adjust_adhb']));
+                            $data['previous'][$region->id][$index]['adjust_adhk'] = (string)($data['previous'][$region->id][$index]['adjust_adhk'] - (2 * $impor[0]['adjust_adhk']));
                         }
-                        
                     }
                 } else {
                     $message = [
