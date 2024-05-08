@@ -109,7 +109,9 @@
             }
 
             #komponen thead th,
-            #rekon-view thead th {
+            #rekon-view thead th,
+            #rekon-view-laju thead th,            
+            {
                 height: 50px;
                 vertical-align: middle;
                 padding: .1rem;
@@ -118,7 +120,8 @@
                 overflow: hidden;
             }
 
-            #rekon-view tbody tr {
+            #rekon-view tbody tr,
+            #rekon-view-laju tbody tr {
                 height: 100px;
                 padding: 0rem !important;
             }
@@ -189,140 +192,292 @@
         </div>
     </div>
     <span class="loader d-none"></span>
-    <div class="card mb-3 d-none" id="view-body">
+    <div class="container-fluid mb-3 p-2 bg-white" id="view-body">
         {{-- <div class="card mb-3" id="view-body"> --}}
-        <div class="card-body">
-            <nav class="navbar">
-                <ul class="nav-item ml-auto">
-                    <button class="btn btn-success" id="download-all" data-toogle="tooltip" data-placement="bottom"
-                        title="Download All"><i class="bi bi-file-earmark-arrow-down-fill"></i></button>
-                </ul>
-            </nav>
-            <div class="table-container">
-                <div class="row">
-                    <div class="overflow-x-scroll">
-                        <table class="table table-striped table-bordered" id="komponen">
-                            <thead>
-                                <tr>
-                                    <th>Komponen</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($subsectors as $index => $item)
-                                    @if (
-                                        ($item->code != null && $item->code == 'a' && $item->sector->code == '1') ||
-                                            ($item->code == null && $item->sector->code == '1'))
-                                        <tr class="{{ str_replace(' ', '', $item->type) }}">
-                                            <td class="first-columns">
-                                                <label style="margin-bottom:0rem;"
-                                                    for="">{{ $item->sector->category->code . '. ' . $item->sector->category->name }}</label>
-                                            </td>
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-pertumbuhan-tab" data-toggle="tab" href="#nav-pertumbuhan"
+                    role="tab" aria-controls="nav-pertumbuhan" aria-selected="true">Fenomena-Pertumbuhan</a>
+                <a class="nav-item nav-link" id="nav-laju-implisit-tab" data-toggle="tab" href="#nav-laju-implisit"
+                    role="tab" aria-controls="nav-laju-implisit" aria-selected="false">Fenomena-Laju Implisit</a>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            {{-- <div class="card-body"> --}}
+                <div id="nav-pertumbuhan" class="tab-pane fade show active" role="tabpanel"
+                    aria-labelledby="nav-pertumbuhan-tab">
+                    <nav class="navbar">
+                        <ul class="nav-item ml-auto">
+                            <button class="btn btn-success" id="download-pertumbuhan" data-toogle="tooltip"
+                                data-placement="bottom" title="Download All"><i
+                                    class="bi bi-file-earmark-arrow-down-fill"></i></button>
+                        </ul>
+                    </nav>
+                    <div class="table-container p-2">
+                        <div class="row">
+                            <div class="overflow-x-scroll">
+                                <table class="table table-striped table-bordered" id="komponen">
+                                    <thead>
+                                        <tr>
+                                            <th>Komponen</th>
                                         </tr>
-                                    @endif
-                                    @if ($item->code != null && $item->code == 'a')
-                                        <tr class="{{ str_replace(' ', '', $item->type) }}">
-                                            <td class="first-columns">
-                                                <p class="ml-4" style="margin-bottom:0rem;" for="">
-                                                    {{ $item->sector->code . '. ' . $item->sector->name }}
-                                                </p>
-                                            </td>
-                                        </tr>
-                                    @endif
-                                    @if ($item->code != null)
-                                        <tr class="{{ str_replace(' ', '', $item->type) }}">
-                                            <td class="first-columns">
-                                                <p class=" ml-5" style="margin-bottom:0rem;"
-                                                    for="{{ $item->code }}_{{ $item->name }}">
-                                                    {{ $item->code . '. ' . $item->name }}
-                                                </p>
-                                            </td>
-                                        </tr>
-                                    @elseif ($item->code == null && $item->sector->code != null)
-                                        <tr class="{{ str_replace(' ', '', $item->type) }}">
-                                            <td class="first-columns">
-                                                <p class=" ml-4" style="margin-bottom:0rem;"
-                                                    for="{{ $item->sector->code . '_' . $item->sector->name }}">
-                                                    {{ $item->sector->code . '. ' . $item->sector->name }}
-                                                </p>
-                                            </td>
-                                        </tr>
-                                    @elseif ($item->code == null && $item->sector->code == null)
-                                        <tr class="{{ str_replace(' ', '', $item->type) }}">
-                                            <td class="first-columns">
-                                                <label class="" style="margin-bottom:0rem;"
-                                                    for="{{ $item->sector->category->code . '_' . $item->name }}">{{ $item->sector->category->code . '. ' . $item->name }}</label>
-                                            </td>
-                                        </tr>
-                                    @endif
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="table-data-wrapper">
-                        <table class="table table-bordered" id="rekon-view">
-                            <thead class="text-center" style="background-color: steelblue; color:aliceblue;">
-                                <tr>
-                                    @foreach ($regions as $region)
-                                        <th>{{ $region->name }}</th>
-                                    @endforeach
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($subsectors as $index => $item)
-                                    @if (
-                                        ($item->code != null && $item->code == 'a' && $item->sector->code == '1') ||
-                                            ($item->code == null && $item->sector->code == '1'))
-                                        <tr class="{{ str_replace(' ', '', $item->type) }}">
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($subsectors as $index => $item)
+                                            @if (
+                                                ($item->code != null && $item->code == 'a' && $item->sector->code == '1') ||
+                                                    ($item->code == null && $item->sector->code == '1'))
+                                                <tr class="{{ str_replace(' ', '', $item->type) }}">
+                                                    <td class="first-columns">
+                                                        <label style="margin-bottom:0rem;"
+                                                            for="">{{ $item->sector->category->code . '. ' . $item->sector->category->name }}</label>
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                            @if ($item->code != null && $item->code == 'a')
+                                                <tr class="{{ str_replace(' ', '', $item->type) }}">
+                                                    <td class="first-columns">
+                                                        <p class="ml-4" style="margin-bottom:0rem;" for="">
+                                                            {{ $item->sector->code . '. ' . $item->sector->name }}
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                            @if ($item->code != null)
+                                                <tr class="{{ str_replace(' ', '', $item->type) }}">
+                                                    <td class="first-columns">
+                                                        <p class=" ml-5" style="margin-bottom:0rem;"
+                                                            for="{{ $item->code }}_{{ $item->name }}">
+                                                            {{ $item->code . '. ' . $item->name }}
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            @elseif ($item->code == null && $item->sector->code != null)
+                                                <tr class="{{ str_replace(' ', '', $item->type) }}">
+                                                    <td class="first-columns">
+                                                        <p class=" ml-4" style="margin-bottom:0rem;"
+                                                            for="{{ $item->sector->code . '_' . $item->sector->name }}">
+                                                            {{ $item->sector->code . '. ' . $item->sector->name }}
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            @elseif ($item->code == null && $item->sector->code == null)
+                                                <tr class="{{ str_replace(' ', '', $item->type) }}">
+                                                    <td class="first-columns">
+                                                        <label class="" style="margin-bottom:0rem;"
+                                                            for="{{ $item->sector->category->code . '_' . $item->name }}">{{ $item->sector->category->code . '. ' . $item->name }}</label>
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="table-data-wrapper">
+                                <table class="table table-bordered" id="rekon-view">
+                                    <thead class="text-center" style="background-color: steelblue; color:aliceblue;">
+                                        <tr>
                                             @foreach ($regions as $region)
-                                                <td id="categories-{{ $item->sector->category->code . '-' . $region->id }}"
-                                                    class="categories text-left values other-columns"><span></span>
-                                                </td>
+                                                <th>{{ $region->name }}</th>
                                             @endforeach
                                         </tr>
-                                    @endif
-                                    @if ($item->code != null && $item->code == 'a')
-                                        <tr class="{{ str_replace(' ', '', $item->type) }}">
-                                            @foreach ($regions as $region)
-                                                <td id="sector-{{ $index + 1 }}-{{ $region->id }}"
-                                                    class="text-left values other-columns"><span></span>
-                                                </td>
-                                            @endforeach
-                                        </tr>
-                                    @endif
-                                    @if ($item->code != null)
-                                        <tr class="{{ str_replace(' ', '', $item->type) }}">
-                                            @foreach ($regions as $region)
-                                                <td id="{{ 'value-' . $item->id }}-{{ $region->id }}"
-                                                    class="text-left values other-columns {{ 'categories-' . $item->sector->category->code }}-{{ $region->id }}">
-                                                    <span></span>
-                                                </td>
-                                            @endforeach
-                                        </tr>
-                                    @elseif ($item->code == null && $item->sector->code != null)
-                                        <tr class="{{ str_replace(' ', '', $item->type) }}">
-                                            @foreach ($regions as $region)
-                                                <td id="{{ 'value-' . $item->id }}-{{ $region->id }}"
-                                                    class="text-left values other-columns {{ 'categories-' . $item->sector->category->code }}-{{ $region->id }}">
-                                                    <span></span>
-                                                </td>
-                                            @endforeach
-                                        </tr>
-                                    @elseif ($item->code == null && $item->sector->code == null)
-                                        <tr class="{{ str_replace(' ', '', $item->type) }}">
-                                            @foreach ($regions as $region)
-                                                <td id="{{ 'value-' . $item->id }}-{{ $region->id }}"
-                                                    class="text-left values other-columns {{ 'categories-' . $item->sector->category->code }}-{{ $region->id }} text-bold pdrb-total-{{ $region->id }}">
-                                                    <span></span>
-                                                </td>
-                                            @endforeach
-                                        </tr>
-                                    @endif
-                                @endforeach
-                            </tbody>
-                        </table>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($subsectors as $index => $item)
+                                            @if (
+                                                ($item->code != null && $item->code == 'a' && $item->sector->code == '1') ||
+                                                    ($item->code == null && $item->sector->code == '1'))
+                                                <tr class="{{ str_replace(' ', '', $item->type) }}">
+                                                    @foreach ($regions as $region)
+                                                        <td id="categories-{{ $item->sector->category->code . '-' . $region->id }}"
+                                                            class="categories text-left values other-columns">
+                                                            <span></span>
+                                                        </td>
+                                                    @endforeach
+                                                </tr>
+                                            @endif
+                                            @if ($item->code != null && $item->code == 'a')
+                                                <tr class="{{ str_replace(' ', '', $item->type) }}">
+                                                    @foreach ($regions as $region)
+                                                        <td id="sector-{{ $index + 1 }}-{{ $region->id }}"
+                                                            class="text-left values other-columns"><span></span>
+                                                        </td>
+                                                    @endforeach
+                                                </tr>
+                                            @endif
+                                            @if ($item->code != null)
+                                                <tr class="{{ str_replace(' ', '', $item->type) }}">
+                                                    @foreach ($regions as $region)
+                                                        <td id="{{ 'value-' . $item->id }}-{{ $region->id }}"
+                                                            class="text-left values other-columns {{ 'categories-' . $item->sector->category->code }}-{{ $region->id }}">
+                                                            <span></span>
+                                                        </td>
+                                                    @endforeach
+                                                </tr>
+                                            @elseif ($item->code == null && $item->sector->code != null)
+                                                <tr class="{{ str_replace(' ', '', $item->type) }}">
+                                                    @foreach ($regions as $region)
+                                                        <td id="{{ 'value-' . $item->id }}-{{ $region->id }}"
+                                                            class="text-left values other-columns {{ 'categories-' . $item->sector->category->code }}-{{ $region->id }}">
+                                                            <span></span>
+                                                        </td>
+                                                    @endforeach
+                                                </tr>
+                                            @elseif ($item->code == null && $item->sector->code == null)
+                                                <tr class="{{ str_replace(' ', '', $item->type) }}">
+                                                    @foreach ($regions as $region)
+                                                        <td id="{{ 'value-' . $item->id }}-{{ $region->id }}"
+                                                            class="text-left values other-columns {{ 'categories-' . $item->sector->category->code }}-{{ $region->id }} text-bold pdrb-total-{{ $region->id }}">
+                                                            <span></span>
+                                                        </td>
+                                                    @endforeach
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+                {{-- Laju Implisit --}}
+                <div id="nav-laju-implisit" class="tab-pane fade" role="tabpanel"
+                    aria-labelledby="nav-laju-implisit">
+                    <nav class="navbar">
+                        <ul class="nav-item ml-auto">
+                            <button class="btn btn-success" id="download-laju-implisit" data-toogle="tooltip"
+                                data-placement="bottom" title="Download All"><i
+                                    class="bi bi-file-earmark-arrow-down-fill"></i></button>
+                        </ul>
+                    </nav>
+                    <div class="table-container p-2">
+                        <div class="row">
+                            <div class="overflow-x-scroll">
+                                <table class="table table-striped table-bordered" id="komponen">
+                                    <thead>
+                                        <tr>
+                                            <th>Komponen</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($subsectors as $index => $item)
+                                            @if (
+                                                ($item->code != null && $item->code == 'a' && $item->sector->code == '1') ||
+                                                    ($item->code == null && $item->sector->code == '1'))
+                                                <tr class="{{ str_replace(' ', '', $item->type) }}">
+                                                    <td class="first-columns">
+                                                        <label style="margin-bottom:0rem;"
+                                                            for="">{{ $item->sector->category->code . '. ' . $item->sector->category->name }}</label>
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                            @if ($item->code != null && $item->code == 'a')
+                                                <tr class="{{ str_replace(' ', '', $item->type) }}">
+                                                    <td class="first-columns">
+                                                        <p class="ml-4" style="margin-bottom:0rem;" for="">
+                                                            {{ $item->sector->code . '. ' . $item->sector->name }}
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                            @if ($item->code != null)
+                                                <tr class="{{ str_replace(' ', '', $item->type) }}">
+                                                    <td class="first-columns">
+                                                        <p class=" ml-5" style="margin-bottom:0rem;"
+                                                            for="{{ $item->code }}_{{ $item->name }}">
+                                                            {{ $item->code . '. ' . $item->name }}
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            @elseif ($item->code == null && $item->sector->code != null)
+                                                <tr class="{{ str_replace(' ', '', $item->type) }}">
+                                                    <td class="first-columns">
+                                                        <p class=" ml-4" style="margin-bottom:0rem;"
+                                                            for="{{ $item->sector->code . '_' . $item->sector->name }}">
+                                                            {{ $item->sector->code . '. ' . $item->sector->name }}
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            @elseif ($item->code == null && $item->sector->code == null)
+                                                <tr class="{{ str_replace(' ', '', $item->type) }}">
+                                                    <td class="first-columns">
+                                                        <label class="" style="margin-bottom:0rem;"
+                                                            for="{{ $item->sector->category->code . '_' . $item->name }}">{{ $item->sector->category->code . '. ' . $item->name }}</label>
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="table-data-wrapper">
+                                <table class="table table-bordered" id="rekon-view-laju">
+                                    <thead class="text-center" style="background-color: steelblue; color:aliceblue;">
+                                        <tr>
+                                            @foreach ($regions as $region)
+                                                <th>{{ $region->name }}</th>
+                                            @endforeach
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($subsectors as $index => $item)
+                                            @if (
+                                                ($item->code != null && $item->code == 'a' && $item->sector->code == '1') ||
+                                                    ($item->code == null && $item->sector->code == '1'))
+                                                <tr class="{{ str_replace(' ', '', $item->type) }}">
+                                                    @foreach ($regions as $region)
+                                                        <td id="categories-{{ $item->sector->category->code . '-' . $region->id }}"
+                                                            class="categories text-left values other-columns">
+                                                            <span></span>
+                                                        </td>
+                                                    @endforeach
+                                                </tr>
+                                            @endif
+                                            @if ($item->code != null && $item->code == 'a')
+                                                <tr class="{{ str_replace(' ', '', $item->type) }}">
+                                                    @foreach ($regions as $region)
+                                                        <td id="sector-{{ $index + 1 }}-{{ $region->id }}"
+                                                            class="text-left values other-columns"><span></span>
+                                                        </td>
+                                                    @endforeach
+                                                </tr>
+                                            @endif
+                                            @if ($item->code != null)
+                                                <tr class="{{ str_replace(' ', '', $item->type) }}">
+                                                    @foreach ($regions as $region)
+                                                        <td id="{{ 'value-' . $item->id }}-{{ $region->id }}"
+                                                            class="text-left values other-columns {{ 'categories-' . $item->sector->category->code }}-{{ $region->id }}">
+                                                            <span></span>
+                                                        </td>
+                                                    @endforeach
+                                                </tr>
+                                            @elseif ($item->code == null && $item->sector->code != null)
+                                                <tr class="{{ str_replace(' ', '', $item->type) }}">
+                                                    @foreach ($regions as $region)
+                                                        <td id="{{ 'value-' . $item->id }}-{{ $region->id }}"
+                                                            class="text-left values other-columns {{ 'categories-' . $item->sector->category->code }}-{{ $region->id }}">
+                                                            <span></span>
+                                                        </td>
+                                                    @endforeach
+                                                </tr>
+                                            @elseif ($item->code == null && $item->sector->code == null)
+                                                <tr class="{{ str_replace(' ', '', $item->type) }}">
+                                                    @foreach ($regions as $region)
+                                                        <td id="{{ 'value-' . $item->id }}-{{ $region->id }}"
+                                                            class="text-left values other-columns {{ 'categories-' . $item->sector->category->code }}-{{ $region->id }} text-bold pdrb-total-{{ $region->id }}">
+                                                            <span></span>
+                                                        </td>
+                                                    @endforeach
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{-- </div> --}}
         </div>
     </div>
     <x-slot name="script">

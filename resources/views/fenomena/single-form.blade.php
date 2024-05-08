@@ -5,7 +5,8 @@
             <thead class="text-center" style="background-color: #09c140; color:aliceblue;">
                 <tr>
                     <th>Komponen</th>
-                    <th>Fenomena</th>
+                    <th>Fenomena-Pertumbuhan</th>
+                    <th>Fenomena-Laju Implisit</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,6 +27,12 @@
                                     id="fenomena_{{ $subsector->sector->category->id }}" class="form-control" rows="4" cols="50"
                                     aria-required="true"></textarea>
                             </td>
+                            {{-- Laju Implisit --}}
+                            <td class="categories">
+                                <textarea name="laju_{{ $subsector->sector->category->id . '_NULL_NULL' }}"
+                                    id="fenomena_laju_{{ $subsector->sector->category->id }}" class="form-control" rows="4" cols="50"
+                                    aria-required="true"></textarea>
+                            </td>
                         </tr>
                     @endif
                     @if ($subsector->code != null && $subsector->code == 'a')
@@ -42,6 +49,12 @@
                             <td>
                                 <textarea type="text" name="value_{{ $subsector->sector->category->id . '_' . $subsector->sector->id . '_NULL' }}"
                                     id="fenomena_{{ $subsector->sector->category->id . '_' . $subsector->sector->id }}" class="form-control"
+                                    rows="4" cols="50" aria-required="true"></textarea>
+                            </td>
+                            {{-- Laju Implisit --}}
+                            <td>
+                                <textarea type="text" name="laju_{{ $subsector->sector->category->id . '_' . $subsector->sector->id . '_NULL' }}"
+                                    id="fenomena_laju_{{ $subsector->sector->category->id . '_' . $subsector->sector->id }}" class="form-control"
                                     rows="4" cols="50" aria-required="true"></textarea>
                             </td>
                         </tr>
@@ -63,6 +76,12 @@
                                     id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
                                     class="form-control" rows="4" cols="50" aria-required="true"></textarea>
                             </td>
+                            {{-- Laju Implisit --}}
+                            <td>
+                                <textarea name="laju_{{ $subsector->sector->category->id . '_' . $subsector->sector->id . '_' . $subsector->id }}"
+                                    id="adhk_laju_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
+                                    class="form-control" rows="4" cols="50" aria-required="true"></textarea>
+                            </td>
                         </tr>
                     @elseif ($subsector->code == null && $subsector->sector->code != null)
                         <tr>
@@ -79,6 +98,12 @@
                             <td>
                                 <textarea name="value_{{ $subsector->sector->category->id . '_' . $subsector->sector->id . '_' . $subsector->id }}"
                                     id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
+                                    class="form-control" rows="4" cols="50" aria-required="true"></textarea>
+                            </td>
+                            {{-- Laju Implisit --}}
+                            <td>
+                                <textarea name="laju_{{ $subsector->sector->category->id . '_' . $subsector->sector->id . '_' . $subsector->id }}"
+                                    id="adhk_laju_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
                                     class="form-control" rows="4" cols="50" aria-required="true"></textarea>
                             </td>
                         </tr>
@@ -99,6 +124,13 @@
                                     id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
                                     class="form-control" rows="4" cols="50" aria-required="true"></textarea>
                             </td>
+                            {{-- Laju Implisit --}}
+                            <td>
+                                <textarea type="text"
+                                    name="laju_{{ $subsector->sector->category->id . '_' . $subsector->sector->id . '_' . $subsector->id }}"
+                                    id="adhk_laju_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
+                                    class="form-control" rows="4" cols="50" aria-required="true"></textarea>
+                            </td>
                         </tr>
                     @endif
                 @endforeach
@@ -111,6 +143,8 @@
                     <td>
                         <p class="col mt-1 mb-1" id="total-nonmigas" style="margin-bottom:0rem;"></p>
                     </td>
+                    <td>
+                        <p class="col mt-1 mb-1" id="total-nonmigas" style="margin-bottom:0rem;"></p>
                     </td>
                 </tr>
                 <tr class="PDRB-footer text-center"
@@ -118,6 +152,9 @@
                     <td>
                         <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto (PDRB)
                         </p>
+                    </td>
+                    <td>
+                        <p class="col mt-1 mb-1" id="total" style="margin-bottom:0rem;"></p>
                     </td>
                     <td>
                         <p class="col mt-1 mb-1" id="total" style="margin-bottom:0rem;"></p>

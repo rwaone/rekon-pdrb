@@ -2,6 +2,7 @@ var links = window.location.pathname.split("/")[1];
 var paramsLink = window.location.pathname.split("/")[2];
 
 $(document).ready(function () {
+    console.log(links);
     if (links !== "fenomena") {
         $("#type").on("change", function () {
             var pdrb_type = this.value;
@@ -87,6 +88,15 @@ $(document).ready(function () {
                                 subsector_id +
                                 "]"
                         ).val(value.description);
+                        $(
+                            "textarea[name=laju_" +
+                                value.category_id +
+                                "_" +
+                                sector_id +
+                                "_" +
+                                subsector_id +
+                                "]"
+                        ).val(value.fenomena_laju);
                         $(
                             "input[name=id_" +
                                 value.category_id +
@@ -177,7 +187,13 @@ $(document).ready(function () {
                                 obj["cell-" + row + "-" + col] = v3;
                                 $this
                                     .closest("table")
-                                    .find("tr:eq("+ row +") td:eq(" + col + ") textarea")
+                                    .find(
+                                        "tr:eq(" +
+                                            row +
+                                            ") td:eq(" +
+                                            col +
+                                            ") textarea"
+                                    )
                                     .val(v3);
                             });
                         });
@@ -226,7 +242,6 @@ $(document).ready(function () {
                 );
             }
         });
-
         $("#year").on("change", function () {
             var pdrb_type = $("#type").val();
             var pdrb_year = this.value;
@@ -302,7 +317,7 @@ if (paramsLink == "monitoring") {
         e.preventDefault();
         try {
             const data = await fetchData();
-            console.log(data)
+            console.log(data);
             const year_fenomena = Object.keys(data)[0];
             const quarter_fenomena = Object.keys(data[year_fenomena])[0];
             const type_fenomena = $("#type").val();
@@ -368,6 +383,30 @@ $("#download-all").on("click", function (e) {
     }, 200);
 });
 
+$("#download-pertumbuhan").on("click", function (e) {
+    e.preventDefault();
+    $(".loader").removeClass("d-none");
+    setTimeout(function () {
+        let datas = getReadyFenomenas('rekon-view');
+        // const csvData = convertToCSV(datas);
+        $(".loader").addClass("d-none");
+        // downloadCSV(csvData, "download-data.csv");
+        downloadExcel(datas);
+    }, 200);
+});
+$("#download-laju-implisit").on("click", function (e) {
+    e.preventDefault();
+    $(".loader").removeClass("d-none");
+    setTimeout(function () {
+        let datas = getReadyFenomenas('rekon-view-laju');
+        // const csvData = convertToCSV(datas);
+        $(".loader").addClass("d-none");
+        // downloadCSV(csvData, "download-data.csv");
+        downloadExcel(datas);
+    }, 200);
+});
+
+
 $("#showData").click(async function (e) {
     e.preventDefault();
     $(".loader").removeClass("d-none");
@@ -389,6 +428,14 @@ $("#showData").click(async function (e) {
                         .text(data[`fenomena-${i + 1}`][index]["description"]);
                 }
             });
+            $(`#rekon-view-laju tbody tr.${types}`).each(function (index) {
+                if (data[`fenomena-${i + 1}`].length !== 0) {
+                    $(this)
+                        .find("td span")
+                        .eq(i - 1)
+                        .text(data[`fenomena-${i + 1}`][index]["fenomena_laju"]);
+                }
+            });
         }
         $("#komponen tbody tr").each(function (index) {
             if (!$(this).hasClass(`${types}`)) {
@@ -398,6 +445,13 @@ $("#showData").click(async function (e) {
             }
         });
         $("#rekon-view tbody tr").each(function (index) {
+            if (!$(this).hasClass(`${types}`)) {
+                $(this).addClass("d-none");
+            } else {
+                $(this).removeClass("d-none");
+            }
+        });
+        $("#rekon-view-laju tbody tr").each(function (index) {
             if (!$(this).hasClass(`${types}`)) {
                 $(this).addClass("d-none");
             } else {
