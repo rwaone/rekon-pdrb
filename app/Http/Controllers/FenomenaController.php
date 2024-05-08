@@ -164,6 +164,7 @@ class FenomenaController extends Controller
                     $singleData['sector_id'] = NULL;
                     $singleData['subsector_id'] = NULL;
                     $singleData['description'] = '-';
+                    $singleData['fenomena_laju'] = '-';
                     $singleData['created_at'] = $timestamp;
                     $singleData['updated_at'] = $timestamp;
                     array_push($inputData, $singleData);
@@ -178,6 +179,7 @@ class FenomenaController extends Controller
                     $singleData['sector_id'] = $subsector->sector->id;
                     $singleData['subsector_id'] = NULL;
                     $singleData['description'] = '-';
+                    $singleData['fenomena_laju'] = '-';
                     $singleData['created_at'] = $timestamp;
                     $singleData['updated_at'] = $timestamp;
                     array_push($inputData, $singleData);
@@ -191,6 +193,7 @@ class FenomenaController extends Controller
                 $singleData['sector_id'] = $subsector->sector->id;
                 $singleData['subsector_id'] = $subsector->id;
                 $singleData['description'] = '-';
+                $singleData['fenomena_laju'] = '-';
                 $singleData['created_at'] = $timestamp;
                 $singleData['updated_at'] = $timestamp;
                 array_push($inputData, $singleData);
@@ -212,18 +215,21 @@ class FenomenaController extends Controller
             if (($subsector->code != null && $subsector->code == 'a' && $subsector->sector->code == '1') || ($subsector->code == null && $subsector->sector->code == '1')) {
                 $id = $fenomena['id_' . $subsector->sector->category->id . '_NULL_NULL'];
                 $value = $fenomena['value_' . $subsector->sector->category->id . '_NULL_NULL'];
-                Fenomena::where('id', $id)->update(['description' => $value]);
+                $value_laju = $fenomena['laju_' . $subsector->sector->category->id . '_NULL_NULL'];
+                Fenomena::where('id', $id)->update(['description' => $value, 'fenomena_laju' => $value_laju]);
             }
 
             if ($subsector->code != null && $subsector->code == 'a') {
                 $id = $fenomena['id_' . $subsector->sector->category->id . '_' . $subsector->sector->id . '_NULL'];
                 $value = $fenomena['value_' . $subsector->sector->category->id . '_' . $subsector->sector->id . '_NULL'];
-                Fenomena::where('id', $id)->update(['description' => $value]);
+                $value_laju = $fenomena['laju_' . $subsector->sector->category->id . '_' . $subsector->sector->id . '_NULL'];
+                Fenomena::where('id', $id)->update(['description' => $value, 'fenomena_laju' => $value_laju]);
             }
 
             $id = $fenomena['id_' . $subsector->sector->category->id . '_' . $subsector->sector->id . '_' . $subsector->id];
             $value = $fenomena['value_' . $subsector->sector->category->id . '_' . $subsector->sector->id . '_' . $subsector->id];
-            Fenomena::where('id', $id)->update(['description' => $value]);
+            $value_laju = $fenomena['laju_' . $subsector->sector->category->id . '_' . $subsector->sector->id . '_' . $subsector->id];
+            Fenomena::where('id', $id)->update(['description' => $value, 'fenomena_laju' => $value_laju]);
         }
 
         return response()->json();

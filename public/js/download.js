@@ -59,6 +59,63 @@ function getReady() {
     }
 }
 
+function getReadyFenomenas(Object) {
+    let headers = [];
+    $(`#${Object} thead tr th`).each(function () {
+        headers.push($(this).text());
+    });
+    let contents = [];
+    $(`#${Object} tbody tr`).each(function (index) {
+        let data = {};
+        $(this)
+            .find("td")
+            .each(function (indeX) {
+                let value = $(this).text();
+                data[headers[indeX]] = value;
+            });
+        contents.push(data);
+    });
+    let komponens = [];
+    $("#komponen tbody tr").each(function (index) {
+        let data = {};
+        $(this)
+            .find("td")
+            .each(function (indeX) {
+                let value = $(this).text();
+                data["Komponen"] = value;
+            });
+        komponens.push(data);
+    });
+
+    if (komponens.length > 0) {
+        komponens.forEach(function (row, index) {
+            // row.Komponen = row.Komponen.trim();
+            for (let key in row) {
+                row[key] = row[key].trim();
+            }
+        });
+        contents.forEach(function (row, index) {
+            for (let key in row) {
+                row[key] = row[key].trim();
+            }
+        });
+        let merged = [];
+        for (let i = 0; i < komponens.length; i++) {
+            let mergeds = { ...komponens[i], ...contents[i] };
+            merged.push(mergeds);
+        }
+        return merged;
+    } else {
+        contents.forEach(function (row, index) {
+            // row.Komponen = row.Komponen.trim();
+            for (let key in row) {
+                row[key] = row[key].trim();
+            }
+        });
+        return contents;
+    }
+}
+
 function convertToCSV(jsonData) {
     const separator = ";"; // CSV separator character
     const keys = Object.keys(jsonData[0]); // Get the keys from the first object
