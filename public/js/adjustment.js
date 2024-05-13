@@ -320,7 +320,7 @@ $(document).ready(function () {
 
                 let prov = Number(data['current'][1][quarter][price_base])
 
-                let selisih = total - prov
+                let selisih = prov - total
                 $(`#${price_base}-inisial-selisih`).text(formatRupiah(String(selisih.toFixed(2)).replaceAll('.', ','), ''))
 
                 let diskrepansi = (selisih / prov) * 100
@@ -342,7 +342,7 @@ $(document).ready(function () {
                     prov += Number(data['current'][1][q][price_base])
                 }
 
-                let selisih = total - prov
+                let selisih = prov - total
                 $(`#${price_base}-inisial-selisih`).text(formatRupiah(String(selisih.toFixed(2)).replaceAll('.', ','), ''))
 
                 let diskrepansi = (selisih / prov) * 100
@@ -364,7 +364,7 @@ $(document).ready(function () {
 
                 let prov = Number(data['current'][1][quarter][price_base])
 
-                let selisih = total - prov
+                let selisih = prov - total
                 $(`#${price_base}-berjalan-selisih`).text(formatRupiah(String(selisih.toFixed(2)).replaceAll('.', ','), ''))
 
                 let diskrepansi = (selisih / prov) * 100
@@ -388,7 +388,7 @@ $(document).ready(function () {
                     prov += Number(data['current'][1][q][price_base])
                 }
 
-                let selisih = total - prov
+                let selisih = prov - total
                 $(`#${price_base}-berjalan-selisih`).text(formatRupiah(String(selisih.toFixed(2)).replaceAll('.', ','), ''))
 
                 let diskrepansi = (selisih / prov) * 100
