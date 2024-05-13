@@ -58,7 +58,7 @@ Route::get('fenomena/getMonitoring', [FenomenaController::class, 'getMonitoring'
 
 // Route::resource('fenomena', FenomenaController::class)->middleware(['auth', 'verified']);
 
-//Lapangan
+//Lapangan Usaha
 Route::get('lapangan-usaha/rekonsiliasi', [LapanganController::class, 'rekonsiliasi'])->middleware(['auth', 'verified']);
 Route::get('lapangan-usaha/fenomena', [LapanganController::class, 'fenomena'])->middleware(['auth', 'verified']);
 Route::get('lapangan-usaha/diskrepansi', [LapanganController::class, 'konserda'])->middleware(['auth', 'verified']);
