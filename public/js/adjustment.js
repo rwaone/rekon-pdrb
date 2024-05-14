@@ -132,6 +132,10 @@ $(document).ready(function () {
                 $(".input-field").each(function (e) {
                     $(this).prop("disabled", true);
                 })
+            } else {
+                $(".input-field").each(function (e) {
+                    $(this).prop("disabled", false);
+                })
             }
             fetchData()
         } else {
