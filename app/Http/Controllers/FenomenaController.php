@@ -260,15 +260,26 @@ class FenomenaController extends Controller
         $regions = Region::where('id', '>', 1)->get();
         $year_active = Fenomena::distinct()->get('year');
         $monitoring_quarter = [];
-        foreach ($regions as $region) {
+        foreach ($regions as $key => $region) {
             $data = Fenomena::where('region_id', $region->id)
                 ->where('quarter', $quarters)
                 ->where('type', $types)
                 ->where('year', $years)->pluck('description');
+            $data_laju_implisit = Fenomena::where('region_id', $region->id)
+                ->where('quarter', $quarters)
+                ->where('type', $types)
+                ->where('year', $years)->pluck('fenomena_laju');
             $count = 0;
+            $count_laju_implisit = 0;
             foreach ($data as $item) {
                 if ($item === '-') {
                     $count++;
+                }
+            }
+            foreach ($data_laju_implisit as $key => $value) {
+                # code...
+                if ($value === '-') {
+                    $count_laju_implisit++;
                 }
             }
 
@@ -279,8 +290,19 @@ class FenomenaController extends Controller
             } else {
                 $data = 1;
             }
+
+            if ($data_laju_implisit->isEmpty()) {
+                $data_laju_implisit = 0;
+            } elseif ($data_laju_implisit->contains('-')) {
+                $data_laju_implisit = 2;
+            } else {
+                $data_laju_implisit = 1;
+            }
+
             $monitoring_quarter[$years][$quarters][$region->name]['description'] = $data;
             $monitoring_quarter[$years][$quarters][$region->name]['counts'] = $count;
+            $monitoring_quarter[$years][$quarters][$region->name]['laju_implisit'] = $data_laju_implisit;
+            $monitoring_quarter[$years][$quarters][$region->name]['counts_laju_implisit'] = $count_laju_implisit;
         }
 
         return response()->json($monitoring_quarter);
