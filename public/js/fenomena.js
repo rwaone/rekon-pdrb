@@ -317,7 +317,7 @@ if (paramsLink == "monitoring") {
         e.preventDefault();
         try {
             const data = await fetchData();
-            console.log(data);
+            // console.log(data);
             const year_fenomena = Object.keys(data)[0];
             const quarter_fenomena = Object.keys(data[year_fenomena])[0];
             const type_fenomena = $("#type").val();
@@ -337,6 +337,16 @@ if (paramsLink == "monitoring") {
                 $(`#counts-${i}`).text(
                     data[year_fenomena][quarter_fenomena][kotakey[i - 1]][
                         "counts"
+                    ]
+                );
+                $(`#value-laju-${i}`).text(
+                    data[year_fenomena][quarter_fenomena][kotakey[i - 1]][
+                        "laju_implisit"
+                    ]
+                );
+                $(`#counts-laju-${i}`).text(
+                    data[year_fenomena][quarter_fenomena][kotakey[i - 1]][
+                        "counts_laju_implisit"
                     ]
                 );
             }
