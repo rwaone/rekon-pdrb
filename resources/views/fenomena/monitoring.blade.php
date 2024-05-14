@@ -82,7 +82,9 @@
                 <table class="table table-bordered table-striped" id="monitoring-kuarter">
                     <thead>
                         <th>Kabupaten/Kota</th>
-                        <th>Cek</th>
+                        <th>Cek Fenomena Pertumbuhan</th>
+                        <th>Jumlah Kosong ("-")</th>
+                        <th>Cek Fenomena Laju Implisit</th>
                         <th>Jumlah Kosong ("-")</th>
                     </thead>
                     <tbody>
@@ -91,6 +93,8 @@
                                 <td id="region-{{ $region->name }}" class="pl-2">{{ $region->name }}</td>
                                 <td id="value-{{ $index+1 }}" class="values"></td>
                                 <td id="counts-{{ $index+1 }}" class="text-center"></td>
+                                <td id="value-laju-{{ $index+1 }}" class="values"></td>
+                                <td id="counts-laju-{{ $index+1 }}" class="text-center"></td>
                             </tr>
                         @endforeach
                     </tbody>
