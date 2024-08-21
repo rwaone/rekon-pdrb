@@ -1,5 +1,8 @@
 $(document).ready(function () {
 
+    document.getElementById('download-result').addEventListener('click', () => {
+        downloadResult();
+    })
     let cat = JSON.parse($("#my-cat").data('cat'))
     let catArray = cat.split(", ")
 
