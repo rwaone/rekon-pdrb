@@ -39,10 +39,10 @@
     <x-slot name="breadcrumb">
         <li class="breadcrumb-item active">Hasil</li>
     </x-slot>
-    
+
     <div id="my-cat" data-cat="{{ json_encode($cat) }}"></div>
 
-    @include('rekonsiliasi.filter') 
+    @include('rekonsiliasi.filter')
 
     <div class="card save-container d-none" id="navList">
         <ul class="nav nav-pills p-2">
@@ -56,20 +56,24 @@
             <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-lajuQ">Laju Implisit (Q to Q)</a></li>
             <li class="nav-item"><a class="nav-link tab-item" type="button" id="nav-lajuY">Laju Implisit (Y on Y)</a></li>
         </ul>
+        <div class="ml-auto">
+            <button id="download-result" type="button" class="btn btn-success"><i
+                    class="bi bi-file-earmark-arrow-down-fill"></i> Download</button>
+        </div>
     </div>
 
     @if ($type == 'Lapangan Usaha')
-        <div id="adhbFormContainer" class="card form-container d-none"> @include('result.lapangan-adhb-form') </div>
-        <div id="adhkFormContainer" class="card form-container d-none"> @include('result.lapangan-adhk-form') </div>
-        <div id="tableFormContainer" class="card form-container d-none"> @include('result.lapangan-rekon-table') </div>
-        <div id="prevadhbDataContainer" class="card d-none"> @include('result.lapangan-prev-adhb-form') </div>
-        <div id="prevadhkDataContainer" class="card d-none"> @include('result.lapangan-prev-adhk-form' )</div>
+    <div id="adhbFormContainer" class="card form-container d-none"> @include('result.lapangan-adhb-form') </div>
+    <div id="adhkFormContainer" class="card form-container d-none"> @include('result.lapangan-adhk-form') </div>
+    <div id="tableFormContainer" class="card form-container d-none"> @include('result.lapangan-rekon-table') </div>
+    <div id="prevadhbDataContainer" class="card d-none"> @include('result.lapangan-prev-adhb-form') </div>
+    <div id="prevadhkDataContainer" class="card d-none"> @include('result.lapangan-prev-adhk-form' )</div>
     @elseif ($type == 'Pengeluaran')
-        <div id="adhbFormContainer" class="card form-container d-none"> @include('result.pengeluaran-adhb-form') </div>
-        <div id="adhkFormContainer" class="card form-container d-none"> @include('result.pengeluaran-adhk-form') </div>
-        <div id="tableFormContainer" class="card form-container d-none"> @include('result.pengeluaran-rekon-table') </div>
-        <div id="prevadhbDataContainer" class="card d-none"> @include('result.pengeluaran-prev-adhb-form') </div>
-        <div id="prevadhkDataContainer" class="card d-none"> @include('result.pengeluaran-prev-adhk-form') </div>
+    <div id="adhbFormContainer" class="card form-container d-none"> @include('result.pengeluaran-adhb-form') </div>
+    <div id="adhkFormContainer" class="card form-container d-none"> @include('result.pengeluaran-adhk-form') </div>
+    <div id="tableFormContainer" class="card form-container d-none"> @include('result.pengeluaran-rekon-table') </div>
+    <div id="prevadhbDataContainer" class="card d-none"> @include('result.pengeluaran-prev-adhb-form') </div>
+    <div id="prevadhkDataContainer" class="card d-none"> @include('result.pengeluaran-prev-adhk-form') </div>
     @endif
 
     <!-- Back to top button -->
@@ -81,11 +85,13 @@
     <x-slot name="script">
         <!-- Additional JS resources -->
         <script src="{{ url('') }}/plugins/select2/js/select2.full.min.js"></script>
+        <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
         @if ($type == 'Lapangan Usaha')
-            <script src="{{ asset('js/rekon-lapangan-usaha.js') }}"></script>
+        <script src="{{ asset('js/rekon-lapangan-usaha.js') }}"></script>
         @elseif ($type == 'Pengeluaran')
-            <script src="{{ asset('js/rekon-pengeluaran.js') }}"></script>
+        <script src="{{ asset('js/rekon-pengeluaran.js') }}"></script>
         @endif
+        <script src="{{ asset('js/download.js') }}"></script>
         <script src="{{ asset('js/result.js') }}"></script>
         <script>
             const tokens = '{{ csrf_token() }}'

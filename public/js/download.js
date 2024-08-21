@@ -59,6 +59,51 @@ function getReady() {
     }
 }
 
+const getReadyResult = (Object) => {
+    let headers = [];
+    $(`#${Object} thead tr th`)
+        .slice(1)
+        .each(function () {
+            headers.push($(this).text());
+        });
+    let contents = [];
+    $(`#${Object} tbody tr`).each(function (index) {
+        let data = {};
+        $(this)
+            .find("td")
+            .slice(1)
+            .each(function (indeX) {
+                let inputElement = $(this).find("input:visible"); // Select only visible inputs
+
+                if (inputElement.length > 0) {
+                    // If a visible input exists
+                    let value = inputElement.val();
+                    data[headers[indeX]] = value;
+
+                    // Set the input to disabled
+                    inputElement.prop("disabled", true);
+                } else {
+                    // If no input is found, get the text content
+                    let value = $(this).text().trim(); // Get and trim the text
+                    data[headers[indeX]] = value;
+                }
+            });
+        contents.push(data);
+    });
+    let komponen = [];
+    $(`#${Object} tbody tr`).each(function (index) {
+        let data = {};
+        data["Komponen"] = $(this).find("td:first").text().trim();
+        komponen.push(data);
+    });
+    let merged = [];
+    for (let i = 0; i < komponen.length; i++) {
+        let mergeds = { ...komponen[i], ...contents[i] };
+        merged.push(mergeds);
+    }
+    return merged;
+};
+
 function getReadyFenomenas(Object) {
     let headers = [];
     $(`#${Object} thead tr th`).each(function () {
@@ -430,3 +475,59 @@ function s2ab(s) {
     }
     return buf;
 }
+
+const downloadResult = () => {
+    try {
+        let list = [];
+        list["ADHB"] = getReadyResult("adhb-table");
+        $("#nav-adhk").trigger("click");
+        list["ADHK"] = getReadyResult("adhk-table");
+
+        $("#nav-distribusi").trigger("click");
+        list["Distribusi"] = getReadyResult("rekon-table");
+        $("#nav-qtoq").trigger("click");
+        list["QtoQ"] = getReadyResult("rekon-table");
+        $("#nav-ytoy").trigger("click");
+        list["YtoY"] = getReadyResult("rekon-table");
+        $("#nav-ctoc").trigger("click");
+        list["CtoC"] = getReadyResult("rekon-table");
+        $("#nav-indeks").trigger("click");
+        list["Indeks Implisit"] = getReadyResult("rekon-table");
+        $("#nav-lajuQ").trigger("click");
+        list["Laju Implisit QtoQ"] = getReadyResult("rekon-table");
+        $("#nav-lajuY").trigger("click");
+        list["Laju Implisit YtoY"] = getReadyResult("rekon-table");
+
+        var workbook = XLSX.utils.book_new();
+        for (let key in list) {
+            if (list.hasOwnProperty(key)) {
+                let value = list[key];
+                var worksheet = XLSX.utils.json_to_sheet(value);
+                XLSX.utils.book_append_sheet(workbook, worksheet, key);
+            }
+        }
+        // Convert the workbook to a binary Excel file
+        var excelFile = XLSX.write(workbook, { type: "binary" });
+
+        // Convert the binary Excel file to a Blob
+        var blob = new Blob([s2ab(excelFile)], {
+            type: "application/octet-stream",
+        });
+
+        // Create a download link
+        var a = document.createElement("a");
+        var url = URL.createObjectURL(blob);
+        a.href = url;
+        a.download = "result-data.xlsx";
+
+        // Append the link to the document and trigger the download
+        document.body.appendChild(a);
+        a.click();
+
+        // Clean up
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    } catch (error) {
+        console.error(error);
+    }
+};
