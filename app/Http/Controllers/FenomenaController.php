@@ -117,7 +117,7 @@ class FenomenaController extends Controller
             'subsectors' => $subsectors,
             'cat' => $catString,
             'years' => isset($years) ? $years : NULL,
-            'quarters'  => isset($quarters) ? $quarters : NULL,
+            'quarters' => isset($quarters) ? $quarters : NULL,
             'filter' => isset($filter) ? $filter : ['type' => ''],
         ]);
     }
@@ -164,6 +164,7 @@ class FenomenaController extends Controller
                     $singleData['sector_id'] = NULL;
                     $singleData['subsector_id'] = NULL;
                     $singleData['description'] = '-';
+                    $singleData['fenomena_growth_ytoy'] = '-';
                     $singleData['fenomena_laju'] = '-';
                     $singleData['created_at'] = $timestamp;
                     $singleData['updated_at'] = $timestamp;
@@ -179,6 +180,7 @@ class FenomenaController extends Controller
                     $singleData['sector_id'] = $subsector->sector->id;
                     $singleData['subsector_id'] = NULL;
                     $singleData['description'] = '-';
+                    $singleData['fenomena_growth_ytoy'] = '-';
                     $singleData['fenomena_laju'] = '-';
                     $singleData['created_at'] = $timestamp;
                     $singleData['updated_at'] = $timestamp;
@@ -193,6 +195,7 @@ class FenomenaController extends Controller
                 $singleData['sector_id'] = $subsector->sector->id;
                 $singleData['subsector_id'] = $subsector->id;
                 $singleData['description'] = '-';
+                $singleData['fenomena_growth_ytoy'] = '-';
                 $singleData['fenomena_laju'] = '-';
                 $singleData['created_at'] = $timestamp;
                 $singleData['updated_at'] = $timestamp;
@@ -215,21 +218,36 @@ class FenomenaController extends Controller
             if (($subsector->code != null && $subsector->code == 'a' && $subsector->sector->code == '1') || ($subsector->code == null && $subsector->sector->code == '1')) {
                 $id = $fenomena['id_' . $subsector->sector->category->id . '_NULL_NULL'];
                 $value = $fenomena['value_' . $subsector->sector->category->id . '_NULL_NULL'];
+                $value_growth_ytoy = $fenomena['growth_YtoY_' . $subsector->sector->category->id . '_NULL_NULL'];
                 $value_laju = $fenomena['laju_' . $subsector->sector->category->id . '_NULL_NULL'];
-                Fenomena::where('id', $id)->update(['description' => $value, 'fenomena_laju' => $value_laju]);
+                Fenomena::where('id', $id)->update([
+                    'description' => $value,
+                    'fenomena_growth_ytoy' => $value_growth_ytoy,
+                    'fenomena_laju' => $value_laju
+                ]);
             }
 
             if ($subsector->code != null && $subsector->code == 'a') {
                 $id = $fenomena['id_' . $subsector->sector->category->id . '_' . $subsector->sector->id . '_NULL'];
                 $value = $fenomena['value_' . $subsector->sector->category->id . '_' . $subsector->sector->id . '_NULL'];
+                $value_growth_ytoy = $fenomena['growth_YtoY_' . $subsector->sector->category->id . '_' . $subsector->sector->id . '_NULL'];
                 $value_laju = $fenomena['laju_' . $subsector->sector->category->id . '_' . $subsector->sector->id . '_NULL'];
-                Fenomena::where('id', $id)->update(['description' => $value, 'fenomena_laju' => $value_laju]);
+                Fenomena::where('id', $id)->update([
+                    'description' => $value,
+                    'fenomena_growth_ytoy' => $value_growth_ytoy,
+                    'fenomena_laju' => $value_laju
+                ]);
             }
 
             $id = $fenomena['id_' . $subsector->sector->category->id . '_' . $subsector->sector->id . '_' . $subsector->id];
             $value = $fenomena['value_' . $subsector->sector->category->id . '_' . $subsector->sector->id . '_' . $subsector->id];
+            $value_growth_ytoy = $fenomena['growth_YtoY_' . $subsector->sector->category->id . '_' . $subsector->sector->id . '_' . $subsector->id];
             $value_laju = $fenomena['laju_' . $subsector->sector->category->id . '_' . $subsector->sector->id . '_' . $subsector->id];
-            Fenomena::where('id', $id)->update(['description' => $value, 'fenomena_laju' => $value_laju]);
+            Fenomena::where('id', $id)->update([
+                'description' => $value,
+                'fenomena_growth_ytoy' => $value_growth_ytoy,
+                'fenomena_laju' => $value_laju
+            ]);
         }
 
         return response()->json();
@@ -246,7 +264,7 @@ class FenomenaController extends Controller
         return view('fenomena.monitoring', [
             'regions' => $regions,
             'years' => isset($years) ? $years : NULL,
-            'quarters'  => isset($quarters) ? $quarters : NULL,
+            'quarters' => isset($quarters) ? $quarters : NULL,
             'filter' => isset($filter) ? $filter : ['type' => ''],
         ]);
     }
@@ -265,15 +283,26 @@ class FenomenaController extends Controller
                 ->where('quarter', $quarters)
                 ->where('type', $types)
                 ->where('year', $years)->pluck('description');
+            $data_growth_ytoy = Fenomena::where('region_id', $region->id)
+                ->where('quarter', $quarters)
+                ->where('type', $types)
+                ->where('year', $years)->pluck('fenomena_growth_ytoy');
             $data_laju_implisit = Fenomena::where('region_id', $region->id)
                 ->where('quarter', $quarters)
                 ->where('type', $types)
                 ->where('year', $years)->pluck('fenomena_laju');
             $count = 0;
+            $count_growth_ytoy = 0;
             $count_laju_implisit = 0;
             foreach ($data as $item) {
                 if ($item === '-') {
                     $count++;
+                }
+            }
+            foreach ($data_growth_ytoy as $key => $value) {
+                # code...
+                if ($value === '-') {
+                    $count_growth_ytoy++;
                 }
             }
             foreach ($data_laju_implisit as $key => $value) {
@@ -291,6 +320,13 @@ class FenomenaController extends Controller
                 $data = 1;
             }
 
+            if ($data_growth_ytoy->isEmpty()) {
+                $data_growth_ytoy = 0;
+            } elseif ($data_growth_ytoy->contains('-')) {
+                $data_growth_ytoy = 2;
+            } else {
+                $data_growth_ytoy = 1;
+            }
             if ($data_laju_implisit->isEmpty()) {
                 $data_laju_implisit = 0;
             } elseif ($data_laju_implisit->contains('-')) {
@@ -301,6 +337,8 @@ class FenomenaController extends Controller
 
             $monitoring_quarter[$years][$quarters][$region->name]['description'] = $data;
             $monitoring_quarter[$years][$quarters][$region->name]['counts'] = $count;
+            $monitoring_quarter[$years][$quarters][$region->name]['fenomena_growth_ytoy'] = $data_growth_ytoy;
+            $monitoring_quarter[$years][$quarters][$region->name]['counts_growth_ytoy'] = $count_growth_ytoy;
             $monitoring_quarter[$years][$quarters][$region->name]['laju_implisit'] = $data_laju_implisit;
             $monitoring_quarter[$years][$quarters][$region->name]['counts_laju_implisit'] = $count_laju_implisit;
         }

@@ -5,7 +5,8 @@
             <thead class="text-center" style="background-color: #09c140; color:aliceblue;">
                 <tr>
                     <th>Komponen</th>
-                    <th>Fenomena-Pertumbuhan</th>
+                    <th>Fenomena-Pertumbuhan (QtoQ)</th>
+                    <th>Fenomena-Pertumbuhan (YtoY)</th>
                     <th>Fenomena-Laju Implisit</th>
                 </tr>
             </thead>
@@ -25,6 +26,12 @@
                             <td class="categories">
                                 <textarea name="value_{{ $subsector->sector->category->id . '_NULL_NULL' }}"
                                     id="fenomena_{{ $subsector->sector->category->id }}" class="form-control" rows="4" cols="50"
+                                    aria-required="true"></textarea>
+                            </td>
+                            {{-- Pertumbuhan (YtoY) --}}
+                            <td class="categories">
+                                <textarea name="growth_YtoY_{{ $subsector->sector->category->id . '_NULL_NULL' }}"
+                                    id="fenomena_growth_YtoY_{{ $subsector->sector->category->id }}" class="form-control" rows="4" cols="50"
                                     aria-required="true"></textarea>
                             </td>
                             {{-- Laju Implisit --}}
@@ -49,6 +56,12 @@
                             <td>
                                 <textarea type="text" name="value_{{ $subsector->sector->category->id . '_' . $subsector->sector->id . '_NULL' }}"
                                     id="fenomena_{{ $subsector->sector->category->id . '_' . $subsector->sector->id }}" class="form-control"
+                                    rows="4" cols="50" aria-required="true"></textarea>
+                            </td>
+                            {{-- Pertumbuhan (YtoY) --}}
+                            <td>
+                                <textarea type="text" name="growth_YtoY_{{ $subsector->sector->category->id . '_' . $subsector->sector->id . '_NULL' }}"
+                                    id="fenomena_growth_YtoY_{{ $subsector->sector->category->id . '_' . $subsector->sector->id }}" class="form-control"
                                     rows="4" cols="50" aria-required="true"></textarea>
                             </td>
                             {{-- Laju Implisit --}}
@@ -76,6 +89,12 @@
                                     id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
                                     class="form-control" rows="4" cols="50" aria-required="true"></textarea>
                             </td>
+                            {{-- Pertumbuhan (YtoY) --}}
+                            <td>
+                                <textarea name="growth_YtoY_{{ $subsector->sector->category->id . '_' . $subsector->sector->id . '_' . $subsector->id }}"
+                                    id="adhk_growth_YtoY_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
+                                    class="form-control" rows="4" cols="50" aria-required="true"></textarea>
+                            </td>
                             {{-- Laju Implisit --}}
                             <td>
                                 <textarea name="laju_{{ $subsector->sector->category->id . '_' . $subsector->sector->id . '_' . $subsector->id }}"
@@ -98,6 +117,12 @@
                             <td>
                                 <textarea name="value_{{ $subsector->sector->category->id . '_' . $subsector->sector->id . '_' . $subsector->id }}"
                                     id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
+                                    class="form-control" rows="4" cols="50" aria-required="true"></textarea>
+                            </td>
+                            {{-- Pertumbuhan (YtoY) --}}
+                            <td>
+                                <textarea name="growth_YtoY_{{ $subsector->sector->category->id . '_' . $subsector->sector->id . '_' . $subsector->id }}"
+                                    id="adhk_growth_YtoY_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
                                     class="form-control" rows="4" cols="50" aria-required="true"></textarea>
                             </td>
                             {{-- Laju Implisit --}}
@@ -124,6 +149,13 @@
                                     id="adhk_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
                                     class="form-control" rows="4" cols="50" aria-required="true"></textarea>
                             </td>
+                            {{-- Pertumbuhan (YtoY) --}}
+                            <td>
+                                <textarea type="text"
+                                    name="growth_YtoY_{{ $subsector->sector->category->id . '_' . $subsector->sector->id . '_' . $subsector->id }}"
+                                    id="adhk_growth_YtoY_{{ $subsector->code . '_' . $subsector->sector->code . '_' . $subsector->sector->category->code }}"
+                                    class="form-control" rows="4" cols="50" aria-required="true"></textarea>
+                            </td>
                             {{-- Laju Implisit --}}
                             <td>
                                 <textarea type="text"
@@ -146,12 +178,18 @@
                     <td>
                         <p class="col mt-1 mb-1" id="total-nonmigas" style="margin-bottom:0rem;"></p>
                     </td>
+                    <td>
+                        <p class="col mt-1 mb-1" id="total-nonmigas" style="margin-bottom:0rem;"></p>
+                    </td>
                 </tr>
                 <tr class="PDRB-footer text-center"
                     style="background-color: #09c140; color:aliceblue; font-weight: bold;">
                     <td>
                         <p class="col mt-1 mb-1" style="margin-bottom:0rem;"> Produk Domestik Regional Bruto (PDRB)
                         </p>
+                    </td>
+                    <td>
+                        <p class="col mt-1 mb-1" id="total" style="margin-bottom:0rem;"></p>
                     </td>
                     <td>
                         <p class="col mt-1 mb-1" id="total" style="margin-bottom:0rem;"></p>

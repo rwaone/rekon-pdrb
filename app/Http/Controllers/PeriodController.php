@@ -58,7 +58,7 @@ class PeriodController extends Controller
         //dd($validatedData);
 
         if (Period::create($validatedData)) {
-            return redirect('/period')->with('notif',  'Data telah berhasil disimpan!');
+            return redirect('/period')->with('notif', 'Data telah berhasil disimpan!');
         }
     }
 
@@ -111,7 +111,7 @@ class PeriodController extends Controller
         //dd($validatedData);
 
         Period::where('id', $period->id)->update($validatedData);
-        return redirect('/period')->with('notif',  'Data telah berhasil disimpan!');
+        return redirect('/period')->with('notif', 'Data telah berhasil disimpan!');
     }
 
     /**
@@ -181,12 +181,17 @@ class PeriodController extends Controller
     }
     public function fenomenaYear(Request $request)
     {
-        $data['years'] = Fenomena::where('type', $request->type)->distinct()->get('year');
+        $data['years'] = Fenomena::where('type', $request->type)
+            ->select('year')
+            ->distinct()
+            ->orderBy('year', 'desc')
+            ->get();
+
         return response()->json($data);
     }
     public function fenomenaQuarter(Request $request)
     {
-        $data['quarters'] = Fenomena::where('type', $request->type)->where('year', $request->year)->distinct()->get('quarter');
+        $data['quarters'] = Fenomena::where('type', $request->type)->where('year', $request->year)->select('quarter')->distinct()->orderBy('quarter', 'asc')->get();
         return response()->json($data);
     }
 }
