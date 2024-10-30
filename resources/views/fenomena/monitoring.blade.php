@@ -17,6 +17,11 @@
             #monitoring-kuarter td {
                 padding: 2px;
             }
+
+            #monitoring-kuarter td,
+            #monitoring-kuarter th {
+                align-content: center;
+            }
         </style>
     </x-slot>
 
@@ -82,17 +87,21 @@
                 <table class="table table-bordered table-striped" id="monitoring-kuarter">
                     <thead>
                         <th>Kabupaten/Kota</th>
-                        <th>Cek Fenomena Pertumbuhan</th>
-                        <th>Jumlah Kosong ("-")</th>
+                        <th>Cek Fenomena Pertumbuhan<div>(QtoQ)</div></th>
+                        <th>Jumlah Kosong<div>("-")</div></th>
+                        <th>Cek Fenomena Pertumbuhan<div>(YtoY)</div></th>
+                        <th>Jumlah Kosong<div>("-")</div></th>
                         <th>Cek Fenomena Laju Implisit</th>
-                        <th>Jumlah Kosong ("-")</th>
+                        <th>Jumlah Kosong<div>("-")</div></th>
                     </thead>
                     <tbody>
                         @foreach ($regions as $index => $region)
-                            <tr>
+                            <tr class="align-middle">
                                 <td id="region-{{ $region->name }}" class="pl-2">{{ $region->name }}</td>
                                 <td id="value-{{ $index+1 }}" class="values"></td>
                                 <td id="counts-{{ $index+1 }}" class="text-center"></td>
+                                <td id="value-growth-ytoy-{{ $index+1 }}" class="values"></td>
+                                <td id="counts-growth-ytoy-{{ $index+1 }}" class="text-center"></td>
                                 <td id="value-laju-{{ $index+1 }}" class="values"></td>
                                 <td id="counts-laju-{{ $index+1 }}" class="text-center"></td>
                             </tr>
@@ -132,7 +141,7 @@
             const url_fenomena_year = new URL("{{ route('fenomenaYear') }}")
             const url_fenomena_quarter = new URL("{{ route('fenomenaQuarter') }}")
             const tokens = '{{ csrf_token() }}'
-            const url_key = new URL('{{ route('fenomena.getMonitoring') }}')
+            const url_key = new URL("{{ route('fenomena.getMonitoring') }}")
 
 
             $(document).on('select2:open', () => {

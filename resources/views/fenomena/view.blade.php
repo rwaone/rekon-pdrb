@@ -16,10 +16,6 @@
                 padding: 0.25rem;
             }
 
-            .table tr:nth-child(even) {
-                background-color: ;
-            }
-
             #btn-back-to-top {
                 position: fixed;
                 bottom: 20px;

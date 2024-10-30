@@ -24,10 +24,10 @@ $(document).ready(function () {
                     $.each(result.years, function (key, value) {
                         $("#year").append(
                             '<option value="' +
-                                value.year +
-                                '">' +
-                                value.year +
-                                "</option>"
+                            value.year +
+                            '">' +
+                            value.year +
+                            "</option>"
                         );
                     });
                 },
@@ -68,7 +68,7 @@ $(document).ready(function () {
                 },
 
                 success: function (result) {
-                    console.log(result);
+                    // console.log(result);
 
                     $("#fenomenaForm")[0].reset();
 
@@ -81,30 +81,39 @@ $(document).ready(function () {
                                 : "NULL";
                         $(
                             "textarea[name=value_" +
-                                value.category_id +
-                                "_" +
-                                sector_id +
-                                "_" +
-                                subsector_id +
-                                "]"
+                            value.category_id +
+                            "_" +
+                            sector_id +
+                            "_" +
+                            subsector_id +
+                            "]"
                         ).val(value.description);
                         $(
+                            "textarea[name=growth_YtoY_" +
+                            value.category_id +
+                            "_" +
+                            sector_id +
+                            "_" +
+                            subsector_id +
+                            "]"
+                        ).val(value.fenomena_growth_ytoy);
+                        $(
                             "textarea[name=laju_" +
-                                value.category_id +
-                                "_" +
-                                sector_id +
-                                "_" +
-                                subsector_id +
-                                "]"
+                            value.category_id +
+                            "_" +
+                            sector_id +
+                            "_" +
+                            subsector_id +
+                            "]"
                         ).val(value.fenomena_laju);
                         $(
                             "input[name=id_" +
-                                value.category_id +
-                                "_" +
-                                sector_id +
-                                "_" +
-                                subsector_id +
-                                "]"
+                            value.category_id +
+                            "_" +
+                            sector_id +
+                            "_" +
+                            subsector_id +
+                            "]"
                         ).val(value.id);
                     });
 
@@ -134,6 +143,8 @@ $(document).ready(function () {
                     return obj;
                 }, {})),
                 console.log(fenomena);
+            var loader = document.querySelector('.loader');
+            loader.classList.remove('d-none');
             $.ajax({
                 type: "POST",
                 url: saveFenomena,
@@ -152,9 +163,9 @@ $(document).ready(function () {
                         }, {}),
                     _token: tokens,
                 },
-
                 success: function (result) {
-                    console.log(result);
+                    // console.log(result);
+                    loader.classList.add('d-none');
                     const Toast = Swal.mixin({
                         toast: true,
                         position: "top-end",
@@ -168,6 +179,10 @@ $(document).ready(function () {
                         text: "Data berhasil disimpan.",
                     });
                 },
+                error: (result) => {
+                    loader.classList.add('d-none');
+                    console.error(result);
+                }
             });
         });
         $("#fenomena-table").on("paste", "textarea", function (e) {
@@ -189,10 +204,10 @@ $(document).ready(function () {
                                     .closest("table")
                                     .find(
                                         "tr:eq(" +
-                                            row +
-                                            ") td:eq(" +
-                                            col +
-                                            ") textarea"
+                                        row +
+                                        ") td:eq(" +
+                                        col +
+                                        ") textarea"
                                     )
                                     .val(v3);
                             });
@@ -223,10 +238,10 @@ $(document).ready(function () {
                         $.each(result.years, function (key, value) {
                             $("#year").append(
                                 '<option value="' +
-                                    value.year +
-                                    '">' +
-                                    value.year +
-                                    "</option>"
+                                value.year +
+                                '">' +
+                                value.year +
+                                "</option>"
                             );
                         });
                     },
@@ -267,14 +282,14 @@ $(document).ready(function () {
                                 value.quarter == "F"
                                     ? "Lengkap"
                                     : value.quarter == "T"
-                                    ? "Tahunan"
-                                    : "Triwulan " + value.quarter;
+                                        ? "Tahunan"
+                                        : "Triwulan " + value.quarter;
                             $("#quarter").append(
                                 '<option value="' +
-                                    value.quarter +
-                                    '">' +
-                                    description +
-                                    "</option>"
+                                value.quarter +
+                                '">' +
+                                description +
+                                "</option>"
                             );
                         });
                     },
@@ -303,7 +318,7 @@ function fetchData() {
             dataType: "json",
             success: function (data) {
                 //check data
-                console.log(data);
+                // console.log(data);
                 resolve(data);
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -317,7 +332,7 @@ if (paramsLink == "monitoring") {
         e.preventDefault();
         try {
             const data = await fetchData();
-            // console.log(data);
+            console.log(data);
             const year_fenomena = Object.keys(data)[0];
             const quarter_fenomena = Object.keys(data[year_fenomena])[0];
             const type_fenomena = $("#type").val();
@@ -331,22 +346,32 @@ if (paramsLink == "monitoring") {
             for (let i = 1; i <= 15; i++) {
                 $(`#value-${i}`).text(
                     data[year_fenomena][quarter_fenomena][kotakey[i - 1]][
-                        "description"
+                    "description"
                     ]
                 );
                 $(`#counts-${i}`).text(
                     data[year_fenomena][quarter_fenomena][kotakey[i - 1]][
-                        "counts"
+                    "counts"
+                    ]
+                );
+                $(`#value-growth-ytoy-${i}`).text(
+                    data[year_fenomena][quarter_fenomena][kotakey[i - 1]][
+                    "fenomena_growth_ytoy"
+                    ]
+                );
+                $(`#counts-growth-ytoy-${i}`).text(
+                    data[year_fenomena][quarter_fenomena][kotakey[i - 1]][
+                    "counts_growth_ytoy"
                     ]
                 );
                 $(`#value-laju-${i}`).text(
                     data[year_fenomena][quarter_fenomena][kotakey[i - 1]][
-                        "laju_implisit"
+                    "laju_implisit"
                     ]
                 );
                 $(`#counts-laju-${i}`).text(
                     data[year_fenomena][quarter_fenomena][kotakey[i - 1]][
-                        "counts_laju_implisit"
+                    "counts_laju_implisit"
                     ]
                 );
             }
@@ -404,6 +429,17 @@ $("#download-pertumbuhan").on("click", function (e) {
         downloadExcel(datas);
     }, 200);
 });
+$("#download-pertumbuhan-ytoy").on("click", function (e) {
+    e.preventDefault();
+    $(".loader").removeClass("d-none");
+    setTimeout(function () {
+        let datas = getReadyFenomenas('rekon-view-pertumbuhan-ytoy');
+        // const csvData = convertToCSV(datas);
+        $(".loader").addClass("d-none");
+        // downloadCSV(csvData, "download-data.csv");
+        downloadExcel(datas);
+    }, 200);
+});
 $("#download-laju-implisit").on("click", function (e) {
     e.preventDefault();
     $(".loader").removeClass("d-none");
@@ -438,6 +474,14 @@ $("#showData").click(async function (e) {
                         .text(data[`fenomena-${i + 1}`][index]["description"]);
                 }
             });
+            $(`#rekon-view-pertumbuhan-ytoy tbody tr.${types}`).each(function (index) {
+                if (data[`fenomena-${i + 1}`].length !== 0) {
+                    $(this)
+                        .find("td span")
+                        .eq(i - 1)
+                        .text(data[`fenomena-${i + 1}`][index]["fenomena_growth_ytoy"]);
+                }
+            });
             $(`#rekon-view-laju tbody tr.${types}`).each(function (index) {
                 if (data[`fenomena-${i + 1}`].length !== 0) {
                     $(this)
@@ -455,6 +499,13 @@ $("#showData").click(async function (e) {
             }
         });
         $("#rekon-view tbody tr").each(function (index) {
+            if (!$(this).hasClass(`${types}`)) {
+                $(this).addClass("d-none");
+            } else {
+                $(this).removeClass("d-none");
+            }
+        });
+        $("#rekon-view-pertumbuhan-ytoy tbody tr").each(function (index) {
             if (!$(this).hasClass(`${types}`)) {
                 $(this).addClass("d-none");
             } else {
