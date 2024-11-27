@@ -70,6 +70,7 @@ Route::get('lapangan-usaha/getDetail', [LapanganController::class, 'getDetail'])
 Route::get('lapangan-usaha/hasil', [LapanganController::class, 'result'])->middleware(['auth', 'verified']);
 
 Route::get('lapangan-usaha/adjustment', [AdjustmentController::class, 'index'])->middleware(['auth', 'verified']);
+Route::get('lapangan-usaha/release', [LapanganController::class, 'release'])->middleware(['auth', 'verified']);
 
 Route::get('lapangan-usaha/monitoring', [LapanganController::class, 'monitoring'])->middleware(['auth', 'verified']);
 Route::get('lapangan-usaha/getMonitoring', [LapanganController::class, 'getMonitoring'])->middleware(['auth', 'verified'])->name('lapangan-usaha.getMonitoring');

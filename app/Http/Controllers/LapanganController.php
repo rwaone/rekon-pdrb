@@ -7,6 +7,7 @@ use App\Models\Period;
 use App\Models\Region;
 use App\Models\Dataset;
 use App\Models\Category;
+use App\Models\Classification;
 use App\Models\Subsector;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +26,21 @@ class LapanganController extends Controller
             'cat' => $catString,
             'regions' => $regions,
             'subsectors' => $subsectors,
+            'type' => $type,
+        ]);
+    }
+
+    public function release()
+    {
+        $cat = Category::pluck('id')->toArray();
+        $catString = implode(", ", $cat);
+        $regions = Region::getMyRegion();
+        $type = 'Lapangan Usaha';
+        $classifications = Classification::where('type', 'Lapangan Usaha')->get();
+        return view('release.view', [
+            'cat' => $catString,
+            'regions' => $regions,
+            'classifications' => $classifications,
             'type' => $type,
         ]);
     }

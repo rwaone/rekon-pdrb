@@ -76,6 +76,13 @@
                                 <p>Hasil</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ url('lapangan-usaha/release') }}"
+                                class="nav-link {{ Request::is('lapangan-usaha/release') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Tabel Rilis</p>
+                            </a>
+                        </li>
                         @if (auth()->user()->satker_id == 1)
                             <li class="nav-item">
                                 <a href="{{ url('lapangan-usaha/monitoring') }}"

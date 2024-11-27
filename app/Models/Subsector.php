@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Classification;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Subsector extends Model
 {
@@ -14,6 +15,11 @@ class Subsector extends Model
     public function Sector()
     {
         return $this->belongsTo(Sector::class);
+    }
+    
+    public function Classification()
+    {
+        return $this->belongsTo(Classification::class);
     }
     
     public function pdrb()
