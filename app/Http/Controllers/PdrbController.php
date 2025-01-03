@@ -159,7 +159,9 @@ class PdrbController extends Controller
         $subsectors = Subsector::where('type', $filter['type'])->get();
         $notification = [];
 
-        $current_dataset = Dataset::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->first();
+        $current_dataset = Dataset::where('period_id', $filter['period_id'])
+            ->where('region_id', $filter['region_id'])
+            ->first();
 
         $previous_dataset = Dataset::where('type', $filter['type'])
             ->where('region_id', $filter['region_id'])
@@ -172,7 +174,11 @@ class PdrbController extends Controller
         if (isset($previous_dataset)) {
             $previous_data = [];
             for ($index = 1; $index <= 4; $index++) {
-                $previous_data[$index] = Pdrb::where('dataset_id', $previous_dataset->id)->where('quarter', $index)->orderBy('subsector_id')->get();
+                $previous_data[$index] = Pdrb::where('dataset_id', $previous_dataset->id)
+                    ->where('quarter', $index)
+                    ->with('subsector.sector')
+                    ->orderBy('subsector_id')
+                    ->get();
             }
 
             $previous_period = Period::where('id', $previous_dataset->period_id)->first();
@@ -213,7 +219,11 @@ class PdrbController extends Controller
         if (isset($current_dataset)) {
             for ($index = 1; $index <= 4; $index++) {
                 if ($index <= $filter['quarter']) {
-                    $current_data[$index] = Pdrb::where('dataset_id', $current_dataset->id)->where('quarter', $index)->orderBy('subsector_id')->get();
+                    $current_data[$index] = Pdrb::where('dataset_id', $current_dataset->id)
+                        ->where('quarter', $index)
+                        ->orderBy('subsector_id')
+                        ->with('subsector.sector')
+                        ->get();
                 }
             }
 
@@ -249,7 +259,11 @@ class PdrbController extends Controller
                     }
 
                     Pdrb::insert($inputData);
-                    $current_data[$index] = Pdrb::where('dataset_id', $current_dataset->id)->where('quarter', $index)->orderBy('subsector_id')->get();
+                    $current_data[$index] = Pdrb::where('dataset_id', $current_dataset->id)
+                        ->where('quarter', $index)
+                        ->orderBy('subsector_id')
+                        ->with('subsector.sector')
+                        ->get();
                 }
             }
 
@@ -259,7 +273,84 @@ class PdrbController extends Controller
             ]);
         }
 
-        return response()->json(['dataset' => $current_dataset, 'current_data' => $current_data, 'previous_data' => $previous_data, 'messages' => $notification]);
+        $result = [];
+        foreach ($current_data as $outerKey => $quarter) {
+            foreach ($quarter as $innerKey => $lapus) {
+                $quarter[$innerKey] = collect([
+                    'adhb' => $lapus->adhb,
+                    'adhk' => $lapus->adhk,
+                    'adjustment' => [
+                        'adhb' => $lapus->adjustment->adhb ?? null,
+                        'adhk' => $lapus->adjustment->adhk ?? null,
+                    ],
+                    'subsector_id' => $lapus->subsector_id,
+                    'category_id' => $lapus->subsector->sector->category_id ?? null,
+                    'id' => $lapus->id,
+                ]);
+            }
+            // Define category ranges
+            $primer = range(1, 3);
+            $sekunder = range(4, 6);
+            $tersier = range(7, 17);
+
+            // Initialize aggregates for each category group
+            $current_primer = [
+                'adhb' => 0,
+                'adhk' => 0,
+                'adj_adhb' => 0,
+                'adj_adhk' => 0
+            ];
+            $current_sekunder = [
+                'adhb' => 0,
+                'adhk' => 0,
+                'adj_adhb' => 0,
+                'adj_adhk' => 0
+            ];
+            $current_tersier = [
+                'adhb' => 0,
+                'adhk' => 0,
+                'adj_adhb' => 0,
+                'adj_adhk' => 0
+            ];
+
+            foreach ($quarter as $innerKey => $lapus) {
+                // Process each category group
+                if (in_array($lapus['category_id'], $primer)) {
+                    $current_primer['adhb'] += $lapus['adhb'];
+                    $current_primer['adhk'] += $lapus['adhk'];
+                    $current_primer['adj_adhb'] += $lapus['adjustment']['adhb'];
+                    $current_primer['adj_adhk'] += $lapus['adjustment']['adhk'];
+                }
+
+                if (in_array($lapus['category_id'], $sekunder)) {
+                    $current_sekunder['adhb'] += $lapus['adhb'];
+                    $current_sekunder['adhk'] += $lapus['adhk'];
+                    $current_sekunder['adj_adhb'] += $lapus['adjustment']['adhb'];
+                    $current_sekunder['adj_adhk'] += $lapus['adjustment']['adhk'];
+                }
+
+                if (in_array($lapus['category_id'], $tersier)) {
+                    $current_tersier['adhb'] += $lapus['adhb'];
+                    $current_tersier['adhk'] += $lapus['adhk'];
+                    $current_tersier['adj_adhb'] += $lapus['adjustment']['adhb'];
+                    $current_tersier['adj_adhk'] += $lapus['adjustment']['adhk'];
+                }
+            }
+
+            // Store aggregated results for each quarter
+            $result[$outerKey] = collect([
+                'primer' => $current_primer,
+                'sekunder' => $current_sekunder,
+                'tersier' => $current_tersier,
+            ]);
+        }
+        return response()->json([
+            'dataset' => $current_dataset,
+            'current_data' => $current_data,
+            'previous_data' => $previous_data,
+            'messages' => $notification,
+            'result' => $result,
+        ]);
     }
 
     public function getResultForKabkot(Request $request)
@@ -382,6 +473,7 @@ class PdrbController extends Controller
             ]);
         }
 
+        $result = [];
         foreach ($current_data as $outerKey => $quarter) {
             foreach ($quarter as $innerKey => $lapus) {
                 $quarter[$innerKey] = collect([
@@ -396,12 +488,69 @@ class PdrbController extends Controller
                     'id' => $lapus->id,
                 ]);
             }
+            // Define category ranges
+            $primer = range(1, 3);
+            $sekunder = range(4, 6);
+            $tersier = range(7, 17);
+
+            // Initialize aggregates for each category group
+            $current_primer = [
+                'adhb' => 0,
+                'adhk' => 0,
+                'adj_adhb' => 0,
+                'adj_adhk' => 0
+            ];
+            $current_sekunder = [
+                'adhb' => 0,
+                'adhk' => 0,
+                'adj_adhb' => 0,
+                'adj_adhk' => 0
+            ];
+            $current_tersier = [
+                'adhb' => 0,
+                'adhk' => 0,
+                'adj_adhb' => 0,
+                'adj_adhk' => 0
+            ];
+
+            foreach ($quarter as $innerKey => $lapus) {
+                // Process each category group
+                if (in_array($lapus['category_id'], $primer)) {
+                    $current_primer['adhb'] += $lapus['adhb'];
+                    $current_primer['adhk'] += $lapus['adhk'];
+                    $current_primer['adj_adhb'] += $lapus['adjustment']['adhb'];
+                    $current_primer['adj_adhk'] += $lapus['adjustment']['adhk'];
+                }
+
+                if (in_array($lapus['category_id'], $sekunder)) {
+                    $current_sekunder['adhb'] += $lapus['adhb'];
+                    $current_sekunder['adhk'] += $lapus['adhk'];
+                    $current_sekunder['adj_adhb'] += $lapus['adjustment']['adhb'];
+                    $current_sekunder['adj_adhk'] += $lapus['adjustment']['adhk'];
+                }
+
+                if (in_array($lapus['category_id'], $tersier)) {
+                    $current_tersier['adhb'] += $lapus['adhb'];
+                    $current_tersier['adhk'] += $lapus['adhk'];
+                    $current_tersier['adj_adhb'] += $lapus['adjustment']['adhb'];
+                    $current_tersier['adj_adhk'] += $lapus['adjustment']['adhk'];
+                }
+            }
+
+            // Store aggregated results for each quarter
+            $result[$outerKey] = collect([
+                'primer' => $current_primer,
+                'sekunder' => $current_sekunder,
+                'tersier' => $current_tersier,
+            ]);
         }
-        $primer = range(1, 3);
-        $sekunder = range(4, 6);
-        $tersier = range(7, 17);
-        dd($primer, $sekunder, $tersier);
-        return response()->json(['dataset' => $current_dataset, 'current_data' => $current_data, 'previous_data' => $previous_data, 'messages' => $notification]);
+        return response()->json([
+            'dataset' => $current_dataset,
+            'current_data' => $current_data,
+            'previous_data' => $previous_data,
+            'messages' => $notification,
+            'result' => $result,
+        ]);
     }
 
     public function saveFullData(Request $request)
