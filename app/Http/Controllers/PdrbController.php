@@ -264,12 +264,13 @@ class PdrbController extends Controller
 
     public function getResultForKabkot(Request $request)
     {
-        dd($request->filter);
         $filter = $request->filter;
         $subsectors = Subsector::where('type', $filter['type'])->get();
         $notification = [];
 
-        $current_dataset = Dataset::where('period_id', $filter['period_id'])->where('region_id', $filter['region_id'])->first();
+        $current_dataset = Dataset::where('period_id', $filter['period_id'])
+            ->where('region_id', $filter['region_id'])
+            ->first();
 
         $previous_dataset = Dataset::where('type', $filter['type'])
             ->where('region_id', $filter['region_id'])
@@ -284,6 +285,7 @@ class PdrbController extends Controller
             for ($index = 1; $index <= 4; $index++) {
                 $previous_data[$index] = Pdrb::where('dataset_id', $previous_dataset->id)
                     ->where('quarter', $index)
+                    ->with('subsector.sector')
                     ->orderBy('subsector_id')
                     ->get();
             }
@@ -326,7 +328,11 @@ class PdrbController extends Controller
         if (isset($current_dataset)) {
             for ($index = 1; $index <= 4; $index++) {
                 if ($index <= $filter['quarter']) {
-                    $current_data[$index] = Pdrb::where('dataset_id', $current_dataset->id)->where('quarter', $index)->orderBy('subsector_id')->get();
+                    $current_data[$index] = Pdrb::where('dataset_id', $current_dataset->id)
+                        ->where('quarter', $index)
+                        ->orderBy('subsector_id')
+                        ->with('subsector.sector')
+                        ->get();
                 }
             }
 
@@ -362,7 +368,11 @@ class PdrbController extends Controller
                     }
 
                     Pdrb::insert($inputData);
-                    $current_data[$index] = Pdrb::where('dataset_id', $current_dataset->id)->where('quarter', $index)->orderBy('subsector_id')->get();
+                    $current_data[$index] = Pdrb::where('dataset_id', $current_dataset->id)
+                        ->where('quarter', $index)
+                        ->orderBy('subsector_id')
+                        ->with('subsector.sector')
+                        ->get();
                 }
             }
 
@@ -372,6 +382,25 @@ class PdrbController extends Controller
             ]);
         }
 
+        foreach ($current_data as $outerKey => $quarter) {
+            foreach ($quarter as $innerKey => $lapus) {
+                $quarter[$innerKey] = collect([
+                    'adhb' => $lapus->adhb,
+                    'adhk' => $lapus->adhk,
+                    'adjustment' => [
+                        'adhb' => $lapus->adjustment->adhb ?? null,
+                        'adhk' => $lapus->adjustment->adhk ?? null,
+                    ],
+                    'subsector_id' => $lapus->subsector_id,
+                    'category_id' => $lapus->subsector->sector->category_id ?? null,
+                    'id' => $lapus->id,
+                ]);
+            }
+        }
+        $primer = range(1, 3);
+        $sekunder = range(4, 6);
+        $tersier = range(7, 17);
+        dd($primer, $sekunder, $tersier);
         return response()->json(['dataset' => $current_dataset, 'current_data' => $current_data, 'previous_data' => $previous_data, 'messages' => $notification]);
     }
 
