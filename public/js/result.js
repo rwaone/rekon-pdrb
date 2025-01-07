@@ -631,40 +631,132 @@ $(document).ready(function () {
                 let total_row_adhk = {
                     primer: 0, sekunder: 0, tersier: 0,
                 };
-                $.each(result.result, (quarter, value) => {
-                    $.each(value, (key, content) => {
-                        let adhk = 0
-                        if (content.adhk != null) {
-                            adhk = Number(content.adhk)
-                            if (content.adj_adhk != null) adhk += Number(content.adj_adhk)
-                        }
-                        let adhb = 0
-                        if (content.adhb != null) {
-                            adhb = Number(content.adhb)
-                            if (content.adj_adhb != null) adhb += Number(content.adj_adhb)
-                        }
-                        $(`#${key}_adhb_Q${quarter}`).text(adhb)
-                        total_row_adhb[key] += adhb
-                        $(`#${key}_adhk_Q${quarter}`).text(adhk)
-                        total_row_adhk[key] += adhk
+                let current_class = document.querySelectorAll('.current-result-table')
+                current_class.forEach((classfor) => {
+                    $.each(result.current_result, (quarter, value) => {
+                        $.each(value, (key, content) => {
+                            let adhk = 0
+                            if (content.adhk != null) {
+                                adhk = Number(content.adhk)
+                                if (content.adj_adhk != null) adhk += Number(content.adj_adhk)
+                            }
+                            let adhb = 0
+                            if (content.adhb != null) {
+                                adhb = Number(content.adhb)
+                                if (content.adj_adhb != null) adhb += Number(content.adj_adhb)
+                            }
+                            if (classfor.querySelector(`#${key}_adhb_Q${quarter}`))
+                                classfor.querySelector(`#${key}_adhb_Q${quarter}`).textContent = adhb
+                            // $(`#${key}_adhb_Q${quarter}`).text(adhb)
+                            total_row_adhb[key] += adhb
+                            if (classfor.querySelector(`#${key}_adhk_Q${quarter}`))
+                                classfor.querySelector(`#${key}_adhk_Q${quarter}`).textContent = adhk
+                            // $(`#${key}_adhk_Q${quarter}`).text(adhk)
+                            total_row_adhk[key] += adhk
+                        })
                     })
+                    $.each(total_row_adhb, (key, value) => {
+                        // Check if the element exists before trying to update the text
+                        if (classfor.querySelector(`#${key}_adhb_total`)) {
+                            classfor.querySelector(`#${key}_adhb_total`).textContent = value
+                            // if ($(`#${key}_adhb_total`).length) {
+                            // $(`#${key}_adhb_total`).text(value);
+                        }
+                    });
+                    $.each(total_row_adhk, (key, value) => {
+                        // Check if the element exists before trying to update the text
+                        if (classfor.querySelector(`#${key}_adhk_total`)) {
+                            classfor.querySelector(`#${key}_adhk_total`).textContent = value
+                            // if ($(`#${key}_adhk_total`).length) {
+                            // $(`#${key}_adhk_total`).text(value);
+                        }
+                    });
+                    // let table = document.getElementById('current-result-kabkot-table')
+                    let rows = classfor.querySelectorAll('tbody tr')
+                    let totals = []
+                    rows.forEach((row) => {
+                        let cells = row.querySelectorAll('td:not(first-child)')
+                        cells.forEach((cell, index) => {
+                            if (totals[index] === undefined) totals[index] = 0
+                            let value = parseFloat(cell.textContent) || 0
+                            totals[index] += value
+                        })
+                    })
+                    console.log(classfor.id)
+                    totals.forEach((element, index) => {
+                        if (index > 0) {
+                            if (classfor.id == 'result-kabkot-table-adhb')
+                                classfor.querySelector(`#adhb_total-${index}`).textContent = element
+                            else classfor.querySelector(`#adhk_total-${index}`).textContent = element
+                        }
+                    });
                 })
-                $.each(total_row_adhb, (key, value) => {
-                    // Check if the element exists before trying to update the text
-                    if ($(`#${key}_adhb_total`).length) {
-                        $(`#${key}_adhb_total`).text(value);
-                    }
-                });
+
+                let previous_class = document.querySelectorAll('.previous-result-table')
+                previous_class.forEach((classfor) => {
+                    $.each(result.previous_result, (quarter, value) => {
+                        $.each(value, (key, content) => {
+                            let adhk = 0
+                            if (content.adhk != null) {
+                                adhk = Number(content.adhk)
+                                if (content.adj_adhk != null) adhk += Number(content.adj_adhk)
+                            }
+                            let adhb = 0
+                            if (content.adhb != null) {
+                                adhb = Number(content.adhb)
+                                if (content.adj_adhb != null) adhb += Number(content.adj_adhb)
+                            }
+                            if (classfor.querySelector(`#${key}_adhb_Q${quarter}`))
+                                classfor.querySelector(`#${key}_adhb_Q${quarter}`).textContent = adhb
+                            // $(`#${key}_adhb_Q${quarter}`).text(adhb)
+                            total_row_adhb[key] += adhb
+                            if (classfor.querySelector(`#${key}_adhk_Q${quarter}`))
+                                classfor.querySelector(`#${key}_adhk_Q${quarter}`).textContent = adhk
+                            // $(`#${key}_adhk_Q${quarter}`).text(adhk)
+                            total_row_adhk[key] += adhk
+                        })
+                    })
+                    $.each(total_row_adhb, (key, value) => {
+                        // Check if the element exists before trying to update the text
+                        if (classfor.querySelector(`#${key}_adhb_total`)) {
+                            classfor.querySelector(`#${key}_adhb_total`).textContent = value
+                            // if ($(`#${key}_adhb_total`).length) {
+                            // $(`#${key}_adhb_total`).text(value);
+                        }
+                    });
+                    $.each(total_row_adhk, (key, value) => {
+                        // Check if the element exists before trying to update the text
+                        if (classfor.querySelector(`#${key}_adhk_total`)) {
+                            classfor.querySelector(`#${key}_adhk_total`).textContent = value
+                            // if ($(`#${key}_adhk_total`).length) {
+                            // $(`#${key}_adhk_total`).text(value);
+                        }
+                    });
+                    // let table = document.getElementById('current-result-kabkot-table')
+                    let rows = classfor.querySelectorAll('tbody tr')
+                    let totals = []
+                    rows.forEach((row) => {
+                        let cells = row.querySelectorAll('td:not(first-child)')
+                        cells.forEach((cell, index) => {
+                            if (totals[index] === undefined) totals[index] = 0
+                            let value = parseFloat(cell.textContent) || 0
+                            totals[index] += value
+                        })
+                    })
+                    
+                    console.log(classfor.id)
+                    totals.forEach((element, index) => {
+                        if (index > 0) {
+                            if (classfor.id == 'previous-result-kabkot-table-adhb')
+                                classfor.querySelector(`#adhb_total-${index}`).textContent = element
+                            else classfor.querySelector(`#adhk_total-${index}`).textContent = element
+                        }
+                    });
+                })
+
                 document.querySelectorAll('.result-kabkot').forEach((element) => {
                     element.textContent = formatRupiah(String(element.textContent).replace('.', ','), '')
                 })
-
-                $.each(total_row_adhk, (key, value) => {
-                    // Check if the element exists before trying to update the text
-                    if ($(`#${key}_adhk_total`).length) {
-                        $(`#${key}_adhk_total`).text(value);
-                    }
-                });
 
                 if ($('#type').val() == 'Pengeluaran') {
                     allSumPDRBPengeluaran('adhb')

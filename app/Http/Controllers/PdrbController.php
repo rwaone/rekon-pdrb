@@ -273,7 +273,7 @@ class PdrbController extends Controller
             ]);
         }
 
-        $result = [];
+        $current_result = [];
         foreach ($current_data as $outerKey => $quarter) {
             foreach ($quarter as $innerKey => $lapus) {
                 $quarter[$innerKey] = collect([
@@ -338,18 +338,92 @@ class PdrbController extends Controller
             }
 
             // Store aggregated results for each quarter
-            $result[$outerKey] = collect([
+            $current_result[$outerKey] = collect([
                 'primer' => $current_primer,
                 'sekunder' => $current_sekunder,
                 'tersier' => $current_tersier,
             ]);
         }
+
+        $previous_result = [];
+        foreach ($previous_data as $outerKey => $quarter) {
+            foreach ($quarter as $innerKey => $lapus) {
+                $quarter[$innerKey] = collect([
+                    'adhb' => $lapus->adhb,
+                    'adhk' => $lapus->adhk,
+                    'adjustment' => [
+                        'adhb' => $lapus->adjustment->adhb ?? null,
+                        'adhk' => $lapus->adjustment->adhk ?? null,
+                    ],
+                    'subsector_id' => $lapus->subsector_id,
+                    'category_id' => $lapus->subsector->sector->category_id ?? null,
+                    'id' => $lapus->id,
+                ]);
+            }
+            // Define category ranges
+            $primer = range(1, 3);
+            $sekunder = range(4, 6);
+            $tersier = range(7, 17);
+
+            // Initialize aggregates for each category group
+            $previous_primer = [
+                'adhb' => 0,
+                'adhk' => 0,
+                'adj_adhb' => 0,
+                'adj_adhk' => 0
+            ];
+            $previous_sekunder = [
+                'adhb' => 0,
+                'adhk' => 0,
+                'adj_adhb' => 0,
+                'adj_adhk' => 0
+            ];
+            $previous_tersier = [
+                'adhb' => 0,
+                'adhk' => 0,
+                'adj_adhb' => 0,
+                'adj_adhk' => 0
+            ];
+
+            foreach ($quarter as $innerKey => $lapus) {
+                // Process each category group
+                if (in_array($lapus['category_id'], $primer)) {
+                    $previous_primer['adhb'] += $lapus['adhb'];
+                    $previous_primer['adhk'] += $lapus['adhk'];
+                    $previous_primer['adj_adhb'] += $lapus['adjustment']['adhb'];
+                    $previous_primer['adj_adhk'] += $lapus['adjustment']['adhk'];
+                }
+
+                if (in_array($lapus['category_id'], $sekunder)) {
+                    $previous_sekunder['adhb'] += $lapus['adhb'];
+                    $previous_sekunder['adhk'] += $lapus['adhk'];
+                    $previous_sekunder['adj_adhb'] += $lapus['adjustment']['adhb'];
+                    $previous_sekunder['adj_adhk'] += $lapus['adjustment']['adhk'];
+                }
+
+                if (in_array($lapus['category_id'], $tersier)) {
+                    $previous_tersier['adhb'] += $lapus['adhb'];
+                    $previous_tersier['adhk'] += $lapus['adhk'];
+                    $previous_tersier['adj_adhb'] += $lapus['adjustment']['adhb'];
+                    $previous_tersier['adj_adhk'] += $lapus['adjustment']['adhk'];
+                }
+            }
+
+            // Store aggregated results for each quarter
+            $previous_result[$outerKey] = collect([
+                'primer' => $previous_primer,
+                'sekunder' => $previous_sekunder,
+                'tersier' => $previous_tersier,
+            ]);
+        }
+
         return response()->json([
             'dataset' => $current_dataset,
             'current_data' => $current_data,
             'previous_data' => $previous_data,
             'messages' => $notification,
-            'result' => $result,
+            'current_result' => $current_result,
+            'previous_result' => $previous_result,
         ]);
     }
 
