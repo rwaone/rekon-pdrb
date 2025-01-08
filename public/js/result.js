@@ -201,10 +201,38 @@ $(document).ready(function () {
 
     $('#nav-adhb').click(function () {
         showForm('adhb');
+        let rekonTarget = document.getElementById('result-kabkot-table-rekon').querySelector('tbody')
+        let trRekonTarget = rekonTarget.querySelectorAll('tr')
+
+        let resultkabkot = document.getElementById('result-kabkot-table-adhb').querySelector('tbody')
+        let trResultkabkot = resultkabkot.querySelectorAll('tr')
+        let columnlength = trResultkabkot[0].querySelectorAll('td:not(:first-child)').length
+
+        for (let col = 1; col <= columnlength; col++) {
+            for (let row = 0; row < trResultkabkot.length; row++) {
+                let currentCell = trResultkabkot[row].querySelector(`td:nth-child(${col + 1})`)
+                let targetCell = trRekonTarget[row].querySelector(`td:nth-child(${col + 1})`)
+                targetCell.textContent = currentCell.textContent
+            }
+        }
     });
 
     $('#nav-adhk').click(function () {
         showForm('adhk');
+        let rekonTarget = document.getElementById('result-kabkot-table-rekon').querySelector('tbody')
+        let trRekonTarget = rekonTarget.querySelectorAll('tr')
+
+        let resultkabkot = document.getElementById('result-kabkot-table-adhk').querySelector('tbody')
+        let trResultkabkot = resultkabkot.querySelectorAll('tr')
+        let columnlength = trResultkabkot[0].querySelectorAll('td:not(:first-child)').length
+
+        for (let col = 1; col <= columnlength; col++) {
+            for (let row = 0; row < trResultkabkot.length; row++) {
+                let currentCell = trResultkabkot[row].querySelector(`td:nth-child(${col + 1})`)
+                let targetCell = trRekonTarget[row].querySelector(`td:nth-child(${col + 1})`)
+                targetCell.textContent = currentCell.textContent
+            }
+        }
     });
 
     $('#nav-distribusi').click(function () {
@@ -235,6 +263,28 @@ $(document).ready(function () {
                 let Y = Number(X.replaceAll(/[,]/g, '.'))
                 let Z = (Y / totalPDRB) * 100
                 rekonCell.text(String(Z.toFixed(2)).replaceAll(/[.]/g, ','))
+            }
+        }
+        let rekonTarget = document.getElementById('result-kabkot-table-rekon').querySelector('tbody')
+        let trRekonTarget = rekonTarget.querySelectorAll('tr')
+        let resultkabkot = document.getElementById('result-kabkot-table-adhb').querySelector('tbody')
+        let trResultkabkot = resultkabkot.querySelectorAll('tr')
+        let columnlength = trResultkabkot[0].querySelectorAll('td:not(:first-child)').length
+        for (let col = 1; col <= columnlength; col++) {
+            let lastCell = trResultkabkot[trResultkabkot.length - 1].querySelector(`td:nth-child(${col + 1})`)
+            let totalValue = lastCell.textContent
+            let lastRekonCell = trRekonTarget[trResultkabkot.length - 1].querySelector(`td:nth-child(${col + 1})`)
+            lastRekonCell.textContent = 100
+            totalValue = totalValue.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.')
+
+            for (let row = 0; row < trResultkabkot.length - 1; row++) {
+                let cell = trResultkabkot[row].querySelector(`td:nth-child(${col + 1})`)
+                let rekonCell = trRekonTarget[row].querySelector(`td:nth-child(${col + 1})`)
+                let cellValue = cell.textContent
+                cellValue = cellValue.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.')
+                let result = parseFloat(totalValue) != 0 ? (parseFloat(cellValue) / parseFloat(totalValue)) : 0
+                // cell.textContent = String(result.toFixed(2)).replaceAll(/[A-Za-z.]/g, ',')
+                rekonCell.textContent = String(result.toFixed(2)).replaceAll(/[A-Za-z.]/g, ',')
             }
         }
     });
@@ -278,6 +328,35 @@ $(document).ready(function () {
                 rekonCell.text(String(QtoQval).replaceAll(/[.]/g, ','));
             }
         }
+        let rekonTarget = document.getElementById('result-kabkot-table-rekon').querySelector('tbody')
+        let trRekonTarget = rekonTarget.querySelectorAll('tr')
+
+        let resultkabkot = document.getElementById('result-kabkot-table-adhk').querySelector('tbody')
+        let trResultkabkot = resultkabkot.querySelectorAll('tr')
+        let columnlength = trResultkabkot[0].querySelectorAll('td:not(:first-child)').length
+
+        let previousResultkabkot = document.getElementById('previous-result-kabkot-table-adhk').querySelector('tbody')
+        let previousTrResultkabkot = previousResultkabkot.querySelectorAll('tr')
+
+        for (let col = 1; col <= columnlength; col++) {
+            let prev, currentValue, prevValue
+            for (let row = 0; row < trResultkabkot.length; row++) {
+                let currentCell = trResultkabkot[row].querySelector(`td:nth-child(${col + 1})`)
+                let currentRekonCell = trRekonTarget[row].querySelector(`td:nth-child(${col + 1})`)
+
+                if (col == 1) prev = previousTrResultkabkot[row].querySelector(`td:nth-child(${col + 4})`)
+                else if (col == 5) prev = previousTrResultkabkot[row].querySelector(`td:nth-child(${col + 1})`)
+                else prev = trResultkabkot[row].querySelector(`td:nth-child(${col})`)
+
+                // console.log(col, row, currentCell, prev)
+                currentValue = parseFloat(currentCell.textContent.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                prevValue = parseFloat(prev.textContent.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+
+                let QtoQ = ((currentValue / prevValue) * 100) - 100
+                // currentCell.textContent = QtoQ
+                currentRekonCell.textContent = String(QtoQ.toFixed(2)).replaceAll(/[A-Za-z.]/g, ',')
+            }
+        }
     });
 
     $('#nav-ytoy').click(function () {
@@ -308,6 +387,32 @@ $(document).ready(function () {
                 let YtoY = ((currentValue / previousValue) * 100) - 100
                 let YtoYval = !isFinite(YtoY) ? '-' : YtoY.toFixed(2)
                 rekonCell.text(String(YtoYval).replaceAll(/[.]/g, ','));
+            }
+        }
+        let rekonTarget = document.getElementById('result-kabkot-table-rekon').querySelector('tbody')
+        let trRekonTarget = rekonTarget.querySelectorAll('tr')
+
+        let resultkabkot = document.getElementById('result-kabkot-table-adhk').querySelector('tbody')
+        let trResultkabkot = resultkabkot.querySelectorAll('tr')
+        let columnlength = trResultkabkot[0].querySelectorAll('td:not(:first-child)').length
+
+        let previousResultkabkot = document.getElementById('previous-result-kabkot-table-adhk').querySelector('tbody')
+        let previousTrResultkabkot = previousResultkabkot.querySelectorAll('tr')
+
+        for (let col = 1; col <= columnlength; col++) {
+            let prev, currentValue, prevValue
+            for (let row = 0; row < trResultkabkot.length; row++) {
+                let currentCell = trResultkabkot[row].querySelector(`td:nth-child(${col + 1})`)
+                let currentRekonCell = trRekonTarget[row].querySelector(`td:nth-child(${col + 1})`)
+
+                prev = previousTrResultkabkot[row].querySelector(`td:nth-child(${col + 1})`)
+                currentValue = parseFloat(currentCell.textContent.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                prevValue = parseFloat(prev.textContent.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+
+                let YtoY = ((currentValue / prevValue) * 100) - 100
+                // console.log(col, row, currentValue, prevValue, YtoY)
+                // currentCell.textContent = QtoQ
+                currentRekonCell.textContent = String(YtoY.toFixed(2)).replaceAll(/[A-Za-z.]/g, ',')
             }
         }
     });
@@ -348,6 +453,36 @@ $(document).ready(function () {
                 rekonCell.text(String(CtoCval).replaceAll(/[.]/g, ','))
             }
         }
+        let rekonTarget = document.getElementById('result-kabkot-table-rekon').querySelector('tbody')
+        let trRekonTarget = rekonTarget.querySelectorAll('tr')
+
+        let resultkabkot = document.getElementById('result-kabkot-table-adhk').querySelector('tbody')
+        let trResultkabkot = resultkabkot.querySelectorAll('tr')
+        let columnlength = trResultkabkot[0].querySelectorAll('td:not(:first-child)').length
+
+        let previousResultkabkot = document.getElementById('previous-result-kabkot-table-adhk').querySelector('tbody')
+        let previousTrResultkabkot = previousResultkabkot.querySelectorAll('tr')
+
+        for (let col = 1; col <= columnlength; col++) {
+            let prev, currentValue, prevValue, currentCell, currentRekonCell, cCurrent, cPrevious
+            for (let row = 0; row < trResultkabkot.length; row++) {
+                currentRekonCell = trRekonTarget[row].querySelector(`td:nth-child(${col + 1})`)
+                cCurrent = 0
+                cPrevious = 0
+                for (let i = 1; i <= col; i++) {
+                    currentCell = trResultkabkot[row].querySelector(`td:nth-child(${i + 1})`)
+                    prev = previousTrResultkabkot[row].querySelector(`td:nth-child(${i + 1})`)
+                    currentValue = parseFloat(currentCell.textContent.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    prevValue = parseFloat(prev.textContent.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+
+                    cCurrent += currentValue
+                    cPrevious += prevValue
+                }
+                let CtoC = ((cCurrent / cPrevious) * 100) - 100
+                // currentCell.textContent = QtoQ
+                currentRekonCell.textContent = String(CtoC.toFixed(2)).replaceAll(/[A-Za-z.]/g, ',')
+            }
+        }
     });
 
     $('#nav-indeks').click(function () {
@@ -378,6 +513,29 @@ $(document).ready(function () {
                 let implisit = ((adhbValue / adhkValue) * 100)
                 let indeks = !isFinite(implisit) ? '-' : implisit.toFixed(2)
                 rekonCell.text(String(indeks).replaceAll(/[.]/g, ','))
+            }
+        }
+        let rekonTarget = document.getElementById('result-kabkot-table-rekon').querySelector('tbody')
+        let trRekonTarget = rekonTarget.querySelectorAll('tr')
+
+        let resultkabkot = document.getElementById('result-kabkot-table-adhb').querySelector('tbody')
+        let trResultkabkot = resultkabkot.querySelectorAll('tr')
+        let columnlength = trResultkabkot[0].querySelectorAll('td:not(:first-child)').length
+
+        let previousResultkabkot = document.getElementById('result-kabkot-table-adhk').querySelector('tbody')
+        let previousTrResultkabkot = previousResultkabkot.querySelectorAll('tr')
+
+        for (let col = 1; col <= columnlength; col++) {
+            let prev, currentValue, prevValue, currentCell, currentRekonCell
+            for (let row = 0; row < trResultkabkot.length; row++) {
+                currentRekonCell = trRekonTarget[row].querySelector(`td:nth-child(${col + 1})`)
+                currentCell = trResultkabkot[row].querySelector(`td:nth-child(${col + 1})`)
+                prev = previousTrResultkabkot[row].querySelector(`td:nth-child(${col + 1})`)
+                currentValue = parseFloat(currentCell.textContent.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                prevValue = parseFloat(prev.textContent.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+
+                let idx = ((currentValue / prevValue) * 100)
+                currentRekonCell.textContent = String(idx.toFixed(2)).replaceAll(/[A-Za-z.]/g, ',')
             }
         }
     });
@@ -428,6 +586,58 @@ $(document).ready(function () {
                 rekonCell.text(String(value).replaceAll(/[.]/g, ','))
             }
         }
+        let rekonTarget = document.getElementById('result-kabkot-table-rekon').querySelector('tbody')
+        let trRekonTarget = rekonTarget.querySelectorAll('tr')
+
+        let resultkabkotUp = document.getElementById('result-kabkot-table-adhb').querySelector('tbody')
+        let trResultkabkotUp = resultkabkotUp.querySelectorAll('tr')
+        let columnlength = trResultkabkotUp[0].querySelectorAll('td:not(:first-child)').length
+
+        let resultkabkotDown = document.getElementById('result-kabkot-table-adhk').querySelector('tbody')
+        let trResultkabkotDown = resultkabkotDown.querySelectorAll('tr')
+
+
+        let previousResultkabkotUp = document.getElementById('previous-result-kabkot-table-adhb').querySelector('tbody')
+        let previousTrResultkabkotUp = previousResultkabkotUp.querySelectorAll('tr')
+
+        let previousResultkabkotDown = document.getElementById('previous-result-kabkot-table-adhk').querySelector('tbody')
+        let previousTrResultkabkotDown = previousResultkabkotDown.querySelectorAll('tr')
+
+
+        for (let col = 1; col <= columnlength; col++) {
+            let prevUp, prevDown, cellUp, cellDown, currentValueUp, currentValueDown, prevValueUp, prevValueDown
+            for (let row = 0; row < trResultkabkotUp.length; row++) {
+                let currentRekonCell = trRekonTarget[row].querySelector(`td:nth-child(${col + 1})`)
+                cellUp = trResultkabkotUp[row].querySelector(`td:nth-child(${col + 1})`)
+                cellDown = trResultkabkotDown[row].querySelector(`td:nth-child(${col + 1})`)
+
+                if (col == 1) {
+                    prevUp = previousTrResultkabkotUp[row].querySelector(`td:nth-child(${col + 4})`)
+                    prevDown = previousTrResultkabkotDown[row].querySelector(`td:nth-child(${col + 4})`)
+                }
+                else if (col == 5) {
+                    prevUp = previousTrResultkabkotUp[row].querySelector(`td:nth-child(${col + 1})`)
+                    prevDown = previousTrResultkabkotDown[row].querySelector(`td:nth-child(${col + 1})`)
+                }
+                else {
+                    prevUp = trResultkabkotUp[row].querySelector(`td:nth-child(${col})`)
+                    prevDown = trResultkabkotDown[row].querySelector(`td:nth-child(${col})`)
+                }
+
+                // console.log(col, row, cellUp, prev)
+                currentValueUp = parseFloat(cellUp.textContent.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                currentValueDown = parseFloat(cellDown.textContent.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+
+                prevValueUp = parseFloat(prevUp.textContent.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                prevValueDown = parseFloat(prevDown.textContent.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+
+                let currentValue = (currentValueUp / currentValueDown) * 100
+                let prevValue = (prevValueUp / prevValueDown) * 100
+                let result = ((currentValue / prevValue) * 100) - 100
+                // currentCell.textContent = QtoQ
+                currentRekonCell.textContent = String(result.toFixed(2)).replaceAll(/[A-Za-z.]/g, ',')
+            }
+        }
     });
 
     $('#nav-lajuY').click(function () {
@@ -468,6 +678,49 @@ $(document).ready(function () {
                 let laju = ((currentImplisit / previousImplisit) * 100) - 100
                 let value = !isFinite(laju) ? '-' : laju.toFixed(2)
                 rekonCell.text(String(value).replaceAll(/[.]/g, ','))
+            }
+        }
+        let rekonTarget = document.getElementById('result-kabkot-table-rekon').querySelector('tbody')
+        let trRekonTarget = rekonTarget.querySelectorAll('tr')
+
+        let resultkabkotUp = document.getElementById('result-kabkot-table-adhb').querySelector('tbody')
+        let trResultkabkotUp = resultkabkotUp.querySelectorAll('tr')
+        let columnlength = trResultkabkotUp[0].querySelectorAll('td:not(:first-child)').length
+
+        let resultkabkotDown = document.getElementById('result-kabkot-table-adhk').querySelector('tbody')
+        let trResultkabkotDown = resultkabkotDown.querySelectorAll('tr')
+
+
+        let previousResultkabkotUp = document.getElementById('previous-result-kabkot-table-adhb').querySelector('tbody')
+        let previousTrResultkabkotUp = previousResultkabkotUp.querySelectorAll('tr')
+
+        let previousResultkabkotDown = document.getElementById('previous-result-kabkot-table-adhk').querySelector('tbody')
+        let previousTrResultkabkotDown = previousResultkabkotDown.querySelectorAll('tr')
+
+
+        for (let col = 1; col <= columnlength; col++) {
+            let prevUp, prevDown, cellUp, cellDown, currentValueUp, currentValueDown, prevValueUp, prevValueDown
+            for (let row = 0; row < trResultkabkotUp.length; row++) {
+                let currentRekonCell = trRekonTarget[row].querySelector(`td:nth-child(${col + 1})`)
+                cellUp = trResultkabkotUp[row].querySelector(`td:nth-child(${col + 1})`)
+                cellDown = trResultkabkotDown[row].querySelector(`td:nth-child(${col + 1})`)
+
+                prevUp = previousTrResultkabkotUp[row].querySelector(`td:nth-child(${col + 1})`)
+                prevDown = previousTrResultkabkotDown[row].querySelector(`td:nth-child(${col + 1})`)
+
+
+                // console.log(col, row, cellUp, prev)
+                currentValueUp = parseFloat(cellUp.textContent.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                currentValueDown = parseFloat(cellDown.textContent.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+
+                prevValueUp = parseFloat(prevUp.textContent.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                prevValueDown = parseFloat(prevDown.textContent.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+
+                let currentValue = (currentValueUp / currentValueDown) * 100
+                let prevValue = (prevValueUp / prevValueDown) * 100
+                let result = ((currentValue / prevValue) * 100) - 100
+                // currentCell.textContent = QtoQ
+                currentRekonCell.textContent = String(result.toFixed(2)).replaceAll(/[A-Za-z.]/g, ',')
             }
         }
     });
@@ -543,7 +796,7 @@ $(document).ready(function () {
             },
 
             success: function (result) {
-                console.log(result)
+                document.getElementById('result-kabkot-show').classList.remove('d-none')
                 $.each(result.current_data, function (quarter, value) {
                     $.each(value, function (key, value) {
 
@@ -632,7 +885,7 @@ $(document).ready(function () {
                     primer: 0, sekunder: 0, tersier: 0,
                 };
                 let current_class = document.querySelectorAll('.current-result-table')
-                current_class.forEach((classfor) => {
+                current_class.forEach((classfor, superIndex) => {
                     $.each(result.current_result, (quarter, value) => {
                         $.each(value, (key, content) => {
                             let adhk = 0
@@ -671,6 +924,12 @@ $(document).ready(function () {
                             // $(`#${key}_adhk_total`).text(value);
                         }
                     });
+                    total_row_adhb = {
+                        primer: 0, sekunder: 0, tersier: 0,
+                    };
+                    total_row_adhk = {
+                        primer: 0, sekunder: 0, tersier: 0,
+                    };
                     // let table = document.getElementById('current-result-kabkot-table')
                     let rows = classfor.querySelectorAll('tbody tr')
                     let totals = []
@@ -682,7 +941,6 @@ $(document).ready(function () {
                             totals[index] += value
                         })
                     })
-                    console.log(classfor.id)
                     totals.forEach((element, index) => {
                         if (index > 0) {
                             if (classfor.id == 'result-kabkot-table-adhb')
@@ -693,7 +951,7 @@ $(document).ready(function () {
                 })
 
                 let previous_class = document.querySelectorAll('.previous-result-table')
-                previous_class.forEach((classfor) => {
+                previous_class.forEach((classfor, superIndex) => {
                     $.each(result.previous_result, (quarter, value) => {
                         $.each(value, (key, content) => {
                             let adhk = 0
@@ -732,6 +990,12 @@ $(document).ready(function () {
                             // $(`#${key}_adhk_total`).text(value);
                         }
                     });
+                    total_row_adhb = {
+                        primer: 0, sekunder: 0, tersier: 0,
+                    };
+                    total_row_adhk = {
+                        primer: 0, sekunder: 0, tersier: 0,
+                    };
                     // let table = document.getElementById('current-result-kabkot-table')
                     let rows = classfor.querySelectorAll('tbody tr')
                     let totals = []
@@ -743,7 +1007,7 @@ $(document).ready(function () {
                             totals[index] += value
                         })
                     })
-                    
+
                     console.log(classfor.id)
                     totals.forEach((element, index) => {
                         if (index > 0) {
@@ -757,6 +1021,21 @@ $(document).ready(function () {
                 document.querySelectorAll('.result-kabkot').forEach((element) => {
                     element.textContent = formatRupiah(String(element.textContent).replace('.', ','), '')
                 })
+
+                let rekonTarget = document.getElementById('result-kabkot-table-rekon').querySelector('tbody')
+                let trRekonTarget = rekonTarget.querySelectorAll('tr')
+
+                let resultkabkot = document.getElementById('result-kabkot-table-adhb').querySelector('tbody')
+                let trResultkabkot = resultkabkot.querySelectorAll('tr')
+                let columnlength = trResultkabkot[0].querySelectorAll('td:not(:first-child)').length
+
+                for (let col = 1; col <= columnlength; col++) {
+                    for (let row = 0; row < trResultkabkot.length; row++) {
+                        let currentCell = trResultkabkot[row].querySelector(`td:nth-child(${col + 1})`)
+                        let targetCell = trRekonTarget[row].querySelector(`td:nth-child(${col + 1})`)
+                        targetCell.textContent = currentCell.textContent
+                    }
+                }
 
                 if ($('#type').val() == 'Pengeluaran') {
                     allSumPDRBPengeluaran('adhb')
