@@ -3,6 +3,9 @@ $(document).ready(function () {
     document.getElementById('download-result').addEventListener('click', () => {
         downloadResult();
     })
+    document.getElementById('download-result-kabkot').addEventListener('click', () => {
+        downloadKabkotResult();
+    })
     let cat = JSON.parse($("#my-cat").data('cat'))
     let catArray = cat.split(", ")
 
@@ -878,11 +881,15 @@ $(document).ready(function () {
                                 adhbbValue);
                     });
                 });
-                let total_row_adhb = {
+                let total_row_adhb = (result.type == 'Lapangan Usaha') ? {
                     primer: 0, sekunder: 0, tersier: 0,
+                } : {
+                    kanp: 0, kap: 0, pai: 0, lainnya: 0
                 };
-                let total_row_adhk = {
+                let total_row_adhk = (result.type == 'Lapangan Usaha') ? {
                     primer: 0, sekunder: 0, tersier: 0,
+                } : {
+                    kanp: 0, kap: 0, pai: 0, lainnya: 0
                 };
                 let current_class = document.querySelectorAll('.current-result-table')
                 current_class.forEach((classfor, superIndex) => {
@@ -924,11 +931,15 @@ $(document).ready(function () {
                             // $(`#${key}_adhk_total`).text(value);
                         }
                     });
-                    total_row_adhb = {
+                    total_row_adhb = (result.type == 'Lapangan Usaha') ? {
                         primer: 0, sekunder: 0, tersier: 0,
+                    } : {
+                        kanp: 0, kap: 0, pai: 0, lainnya: 0
                     };
-                    total_row_adhk = {
+                    total_row_adhk = (result.type == 'Lapangan Usaha') ? {
                         primer: 0, sekunder: 0, tersier: 0,
+                    } : {
+                        kanp: 0, kap: 0, pai: 0, lainnya: 0
                     };
                     // let table = document.getElementById('current-result-kabkot-table')
                     let rows = classfor.querySelectorAll('tbody tr')
@@ -990,11 +1001,15 @@ $(document).ready(function () {
                             // $(`#${key}_adhk_total`).text(value);
                         }
                     });
-                    total_row_adhb = {
+                    total_row_adhb = (result.type == 'Lapangan Usaha') ? {
                         primer: 0, sekunder: 0, tersier: 0,
+                    } : {
+                        kanp: 0, kap: 0, pai: 0, lainnya: 0
                     };
-                    total_row_adhk = {
+                    total_row_adhk = (result.type == 'Lapangan Usaha') ? {
                         primer: 0, sekunder: 0, tersier: 0,
+                    } : {
+                        kanp: 0, kap: 0, pai: 0, lainnya: 0
                     };
                     // let table = document.getElementById('current-result-kabkot-table')
                     let rows = classfor.querySelectorAll('tbody tr')
@@ -1008,7 +1023,6 @@ $(document).ready(function () {
                         })
                     })
 
-                    console.log(classfor.id)
                     totals.forEach((element, index) => {
                         if (index > 0) {
                             if (classfor.id == 'previous-result-kabkot-table-adhb')

@@ -62,7 +62,9 @@
         </ul>
         <div class="ml-auto">
             <button id="download-result" type="button" class="btn btn-success"><i
-                    class="bi bi-file-earmark-arrow-down-fill"></i> Download</button>
+                    class="bi bi-file-earmark-arrow-down-fill"></i> Download Tabel II</button>
+            <button id="download-result-kabkot" type="button" class="btn btn-success"><i
+                    class="bi bi-file-earmark-arrow-down-fill"></i> Download Tabel I</button>
         </div>
     </div>
     @if ($type == 'Lapangan Usaha')
@@ -73,7 +75,7 @@
     <div id="prevadhbDataContainer" class="card d-none"> @include('result.lapangan-prev-adhb-form') </div>
     <div id="prevadhkDataContainer" class="card d-none"> @include('result.lapangan-prev-adhk-form' )</div>
     @elseif ($type == 'Pengeluaran')
-    @include('result.result-kabkot-peng')
+    <!-- @include('result.result-kabkot-peng') -->
     <div id="adhbFormContainer" class="card form-container d-none"> @include('result.pengeluaran-adhb-form') </div>
     <div id="adhkFormContainer" class="card form-container d-none"> @include('result.pengeluaran-adhk-form') </div>
     <div id="tableFormContainer" class="card form-container d-none"> @include('result.pengeluaran-rekon-table') </div>

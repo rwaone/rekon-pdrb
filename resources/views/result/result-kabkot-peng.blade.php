@@ -1,4 +1,7 @@
-<div class="card" id="result-kabkot-show">
+<div class="card d-none" id="result-kabkot-show">
+    <div class="card-header">
+        <div class="h4 text-bold">Tabel I</div>
+    </div>
     <div class="card-body p-3">
         <table class="table table-bordered" id="result-kabkot-table-rekon">
             <thead class="text-center" style="background-color: #09c140; color:aliceblue;">
@@ -80,7 +83,7 @@
         </table>
     </div>
 </div>
-<div class="card">
+<div class="card d-none">
     <div class="card-body p-3">
         <table class="table table-bordered current-result-table" id="result-kabkot-table-adhb">
             <thead class="text-center" style="background-color: #09c140; color:aliceblue;">
@@ -162,7 +165,7 @@
         </table>
     </div>
 </div>
-<div class="card">
+<div class="card d-none">
     <div class="card-body p-3">
         <table class="table table-bordered current-result-table" id="result-kabkot-table-adhk">
             <thead class="text-center" style="background-color: #09c140; color:aliceblue;">
@@ -244,7 +247,7 @@
         </table>
     </div>
 </div>
-<div class="card">
+<div class="card d-none">
     <div class="card-body p-3">
         <table class="table table-bordered previous-result-table" id="previous-result-kabkot-table-adhb">
             <thead class="text-center" style="background-color: #09c140; color:aliceblue;">
@@ -326,7 +329,7 @@
         </table>
     </div>
 </div>
-<div class="card">
+<div class="card d-none">
     <div class="card-body p-3">
         <table class="table table-bordered previous-result-table" id="previous-result-kabkot-table-adhk">
             <thead class="text-center" style="background-color: #09c140; color:aliceblue;">
