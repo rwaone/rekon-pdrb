@@ -354,8 +354,10 @@ $(document).ready(function () {
                 // console.log(col, row, currentCell, prev)
                 currentValue = parseFloat(currentCell.textContent.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                 prevValue = parseFloat(prev.textContent.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
-
+                currentValue = isNaN(currentValue) ? 0 : currentValue
+                prevValue = isNaN(prevValue) ? 0 : prevValue
                 let QtoQ = ((currentValue / prevValue) * 100) - 100
+                QtoQ = isNaN(QtoQ) ? 0 : QtoQ
                 // currentCell.textContent = QtoQ
                 currentRekonCell.textContent = String(QtoQ.toFixed(2)).replaceAll(/[A-Za-z.]/g, ',')
             }
@@ -411,8 +413,11 @@ $(document).ready(function () {
                 prev = previousTrResultkabkot[row].querySelector(`td:nth-child(${col + 1})`)
                 currentValue = parseFloat(currentCell.textContent.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                 prevValue = parseFloat(prev.textContent.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                currentValue = isNaN(currentValue) ? 0 : currentValue
+                prevValue = isNaN(prevValue) ? 0 : prevValue
 
                 let YtoY = ((currentValue / prevValue) * 100) - 100
+                YtoY = isNaN(YtoY) ? 0 : YtoY
                 // console.log(col, row, currentValue, prevValue, YtoY)
                 // currentCell.textContent = QtoQ
                 currentRekonCell.textContent = String(YtoY.toFixed(2)).replaceAll(/[A-Za-z.]/g, ',')
@@ -477,11 +482,14 @@ $(document).ready(function () {
                     prev = previousTrResultkabkot[row].querySelector(`td:nth-child(${i + 1})`)
                     currentValue = parseFloat(currentCell.textContent.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                     prevValue = parseFloat(prev.textContent.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                    currentValue = isNaN(currentValue) ? 0 : currentValue
+                    prevValue = isNaN(prevValue) ? 0 : prevValue
 
                     cCurrent += currentValue
                     cPrevious += prevValue
                 }
                 let CtoC = ((cCurrent / cPrevious) * 100) - 100
+                CtoC = isNaN(CtoC) ? 0 : CtoC
                 // currentCell.textContent = QtoQ
                 currentRekonCell.textContent = String(CtoC.toFixed(2)).replaceAll(/[A-Za-z.]/g, ',')
             }
@@ -536,8 +544,11 @@ $(document).ready(function () {
                 prev = previousTrResultkabkot[row].querySelector(`td:nth-child(${col + 1})`)
                 currentValue = parseFloat(currentCell.textContent.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                 prevValue = parseFloat(prev.textContent.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
+                currentValue = isNaN(currentValue) ? 0 : currentValue
+                prevValue = isNaN(prevValue) ? 0 : prevValue
 
                 let idx = ((currentValue / prevValue) * 100)
+                idx = isNaN(idx) ? 0 : idx
                 currentRekonCell.textContent = String(idx.toFixed(2)).replaceAll(/[A-Za-z.]/g, ',')
             }
         }
@@ -634,9 +645,15 @@ $(document).ready(function () {
                 prevValueUp = parseFloat(prevUp.textContent.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                 prevValueDown = parseFloat(prevDown.textContent.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
 
+                currentValueUp = isNaN(currentValueUp) ? 0 : currentValueUp
+                currentValueDown = isNaN(currentValueDown) ? 0 : currentValueDown
+                prevValueUp = isNaN(prevValueUp) ? 0 : prevValueUp
+                prevValueDown = isNaN(prevValueDown) ? 0 : prevValueDown
+
                 let currentValue = (currentValueUp / currentValueDown) * 100
                 let prevValue = (prevValueUp / prevValueDown) * 100
                 let result = ((currentValue / prevValue) * 100) - 100
+                result = isNaN(result) ? 0 : result
                 // currentCell.textContent = QtoQ
                 currentRekonCell.textContent = String(result.toFixed(2)).replaceAll(/[A-Za-z.]/g, ',')
             }
@@ -719,9 +736,15 @@ $(document).ready(function () {
                 prevValueUp = parseFloat(prevUp.textContent.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
                 prevValueDown = parseFloat(prevDown.textContent.replaceAll(/[A-Za-z.]/g, '').replaceAll(/[,]/g, '.'))
 
+                currentValueUp = isNaN(currentValueUp) ? 0 : currentValueUp
+                currentValueDown = isNaN(currentValueDown) ? 0 : currentValueDown
+                prevValueUp = isNaN(prevValueUp) ? 0 : prevValueUp
+                prevValueDown = isNaN(prevValueDown) ? 0 : prevValueDown
+
                 let currentValue = (currentValueUp / currentValueDown) * 100
                 let prevValue = (prevValueUp / prevValueDown) * 100
                 let result = ((currentValue / prevValue) * 100) - 100
+                result = isNaN(result) ? 0 : result
                 // currentCell.textContent = QtoQ
                 currentRekonCell.textContent = String(result.toFixed(2)).replaceAll(/[A-Za-z.]/g, ',')
             }

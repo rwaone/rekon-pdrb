@@ -4,7 +4,7 @@
 </div> --}}
 <div class="card-body p-3">
     <div class="card-header">
-        <div class="h4 text-bold">Tabel I</div>
+        <div class="h4 text-bold">Tabel II</div>
     </div>
     <table class="table table-bordered" id="rekon-table">
         <thead class="text-center" style="background-color: #09c140; color:aliceblue;">
