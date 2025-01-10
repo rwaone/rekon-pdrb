@@ -479,6 +479,7 @@ function s2ab(s) {
 const downloadResult = () => {
     try {
         let list = [];
+        $("#nav-adhb").trigger("click");
         list["ADHB"] = getReadyResult("adhb-table");
         $("#nav-adhk").trigger("click");
         list["ADHK"] = getReadyResult("adhk-table");
@@ -519,6 +520,62 @@ const downloadResult = () => {
         var url = URL.createObjectURL(blob);
         a.href = url;
         a.download = "result-data.xlsx";
+
+        // Append the link to the document and trigger the download
+        document.body.appendChild(a);
+        a.click();
+
+        // Clean up
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    } catch (error) {
+        console.error(error);
+    }
+};
+const downloadKabkotResult = () => {
+    try {
+        let list = [];
+        $("#nav-adhb").trigger("click");
+        list["ADHB"] = getReadyResult("result-kabkot-show");
+        $("#nav-adhk").trigger("click");
+        list["ADHK"] = getReadyResult("result-kabkot-show");
+
+        $("#nav-distribusi").trigger("click");
+        list["Distribusi"] = getReadyResult("result-kabkot-show");
+        $("#nav-qtoq").trigger("click");
+        list["QtoQ"] = getReadyResult("result-kabkot-show");
+        $("#nav-ytoy").trigger("click");
+        list["YtoY"] = getReadyResult("result-kabkot-show");
+        $("#nav-ctoc").trigger("click");
+        list["CtoC"] = getReadyResult("result-kabkot-show");
+        $("#nav-indeks").trigger("click");
+        list["Indeks Implisit"] = getReadyResult("result-kabkot-show");
+        $("#nav-lajuQ").trigger("click");
+        list["Laju Implisit QtoQ"] = getReadyResult("result-kabkot-show");
+        $("#nav-lajuY").trigger("click");
+        list["Laju Implisit YtoY"] = getReadyResult("result-kabkot-show");
+
+        var workbook = XLSX.utils.book_new();
+        for (let key in list) {
+            if (list.hasOwnProperty(key)) {
+                let value = list[key];
+                var worksheet = XLSX.utils.json_to_sheet(value);
+                XLSX.utils.book_append_sheet(workbook, worksheet, key);
+            }
+        }
+        // Convert the workbook to a binary Excel file
+        var excelFile = XLSX.write(workbook, { type: "binary" });
+
+        // Convert the binary Excel file to a Blob
+        var blob = new Blob([s2ab(excelFile)], {
+            type: "application/octet-stream",
+        });
+
+        // Create a download link
+        var a = document.createElement("a");
+        var url = URL.createObjectURL(blob);
+        a.href = url;
+        a.download = "result-data-lvl-kabkot.xlsx";
 
         // Append the link to the document and trigger the download
         document.body.appendChild(a);

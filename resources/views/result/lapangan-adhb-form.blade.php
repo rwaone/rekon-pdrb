@@ -1,4 +1,7 @@
 <form id="adhbForm" method="post" class="form-horizontal">
+    <div class="card-header">
+        <div class="h4 text-bold">Tabel II</div>
+    </div>
     <div class="card-body p-3">
         <table class="table table-bordered table-responsive" id="adhb-table">
             <thead class="text-center" style="background-color: #09c140; color:aliceblue;">
@@ -13,216 +16,219 @@
             </thead>
             <tbody>
                 @foreach ($subsectors as $subsector)
-                    @if (
-                        ($subsector->code != null &&
-                            $subsector->code == 'a' &&
-                            $subsector->sector->code == '1' &&
-                            $subsector->sector->category->type == 'Lapangan Usaha') ||
-                            ($subsector->code == null &&
-                                $subsector->sector->code == '1' &&
-                                $subsector->sector->category->type == 'Lapangan Usaha'))
-                        <tr>
-                            <td class="desc-col">
-                                <label class="col" style="margin-bottom:0rem;"
-                                    for="">{{ $subsector->sector->category->code . '. ' . $subsector->sector->category->name }}</label>
-                            </td>
-                            <td class="categories">
-                                <input disabled type="text"
-                                    id="adhb_{{ $subsector->sector->category->id . '_Q1' }}"
-                                    class="form-control text-right" aria-required="true">
-                            </td>
-                            <td class="categories">
-                                <input disabled type="text"
-                                    id="adhb_{{ $subsector->sector->category->id . '_Q2' }}"
-                                    class="form-control text-right" aria-required="true">
-                            </td>
-                            <td class="categories">
-                                <input disabled type="text"
-                                    id="adhb_{{ $subsector->sector->category->id . '_Q3' }}"
-                                    class="form-control text-right" aria-required="true">
-                            </td>
-                            <td class="categories">
-                                <input disabled type="text"
-                                    id="adhb_{{ $subsector->sector->category->id . '_Q4' }}"
-                                    class="form-control text-right" aria-required="true">
-                            </td>
-                            <td class="categories">
-                                <input disabled type="text" id="adhb_{{ $subsector->sector->category->id . '_T' }}"
-                                    class="form-control text-right" aria-required="true">
-                            </td>
+                @if (
+                ($subsector->code != null &&
+                $subsector->code == 'a' &&
+                $subsector->sector->code == '1' &&
+                $subsector->sector->category->type == 'Lapangan Usaha') ||
+                ($subsector->code == null &&
+                $subsector->sector->code == '1' &&
+                $subsector->sector->category->type == 'Lapangan Usaha'))
+                <tr>
+                    <td class="desc-col">
+                        <label class="col" style="margin-bottom:0rem;"
+                            for="">{{ $subsector->sector->category->code . '. ' . $subsector->sector->category->name }}</label>
+                    </td>
+                    <td class="categories">
+                        <input disabled type="text"
+                            id="adhb_{{ $subsector->sector->category->id . '_Q1' }}"
+                            class="form-control text-right" aria-required="true">
+                    </td>
+                    <td class="categories">
+                        <input disabled type="text"
+                            id="adhb_{{ $subsector->sector->category->id . '_Q2' }}"
+                            class="form-control text-right" aria-required="true">
+                    </td>
+                    <td class="categories">
+                        <input disabled type="text"
+                            id="adhb_{{ $subsector->sector->category->id . '_Q3' }}"
+                            class="form-control text-right" aria-required="true">
+                    </td>
+                    <td class="categories">
+                        <input disabled type="text"
+                            id="adhb_{{ $subsector->sector->category->id . '_Q4' }}"
+                            class="form-control text-right" aria-required="true">
+                    </td>
+                    <td class="categories">
+                        <input disabled type="text" id="adhb_{{ $subsector->sector->category->id . '_T' }}"
+                            class="form-control text-right" aria-required="true">
+                    </td>
 
-                        </tr>
-                    @endif
-                    @if ($subsector->code != null && $subsector->code == 'a' && $subsector->sector->category->type == 'Lapangan Usaha')
-                        <tr>
-                            <td class="desc-col">
-                                <p class="col ml-4" style="margin-bottom:0rem;" for="">
-                                    {{ $subsector->sector->code . '. ' . $subsector->sector->name }}</p>
-                            </td>
-                            <td>
-                                <input disabled type="text"
-                                    id="adhb_{{ $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q1' }}"
-                                    class="form-control text-right {{ 'adhb-category-Q1-' . $subsector->sector->category->code }}"
-                                    aria-required="true">
-                            </td>
-                            <td>
-                                <input disabled type="text"
-                                    id="adhb_{{ $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q2' }}"
-                                    class="form-control text-right {{ 'adhb-category-Q2-' . $subsector->sector->category->code }}"
-                                    aria-required="true">
-                            </td>
-                            <td>
-                                <input disabled type="text"
-                                    id="adhb_{{ $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q3' }}"
-                                    class="form-control text-right {{ 'adhb-category-Q3-' . $subsector->sector->category->code }}"
-                                    aria-required="true">
-                            </td>
-                            <td>
-                                <input disabled type="text"
-                                    id="adhb_{{ $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q4' }}"
-                                    class="form-control text-right {{ 'adhb-category-Q4-' . $subsector->sector->category->code }}"
-                                    aria-required="true">
-                            </td>
-                            <td>
-                                <input disabled type="text" name="adhb_sum_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->sector->id . '_' . $subsector->sector->category->id . '_T' }}"
-                                    class="form-control text-right {{ 'adhb-category-T-' . $subsector->sector->category->code }}"
-                                    aria-required="true">
-                            </td>
-                        </tr>
-                    @endif
-                    @if ($subsector->code != null && $subsector->sector->category->type == 'Lapangan Usaha')
-                        <tr>
-                            <td class="desc-col">
-                                <p class="col ml-5 mr-4" style="margin-bottom:0rem;"
-                                    for="{{ $subsector->code }}_{{ $subsector->name }}">
-                                    {{ $subsector->code . '. ' . $subsector->name }}</p>
-                            </td>
-                            <td>
-                                <input type="hidden" name="id_1_{{ $subsector->id }}">
-                                <input type="text" name="adhb_value_1_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q1' }}"
-                                    class="form-control text-right {{  'adhb-sector-Q1-' . $subsector->sector_id }} {{ 'adhb-category-Q1-' . $subsector->sector->category_id }} "
-                                    aria-required="true" tabindex="{{ $subsector->id }}">
-                            </td>
-                            <td>
-                                <input type="hidden" name="id_2_{{ $subsector->id }}">
-                                <input type="text" name="adhb_value_2_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q2' }}"
-                                    class="form-control text-right {{  'adhb-sector-Q2-' . $subsector->sector_id }} {{ 'adhb-category-Q2-' . $subsector->sector->category_id }}"
-                                    aria-required="true" tabindex="{{ $subsector->id + 55 }}">
-                            </td>
-                            <td>
-                                <input type="hidden" name="id_3_{{ $subsector->id }}">
-                                <input type="text" name="adhb_value_3_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q3' }}"
-                                    class="form-control text-right {{  'adhb-sector-Q3-' . $subsector->sector_id }} {{ 'adhb-category-Q3-' . $subsector->sector->category_id }}"
-                                    aria-required="true" tabindex="{{ $subsector->id + 110 }}">
-                            </td>
-                            <td>
-                                <input type="hidden" name="id_4_{{ $subsector->id }}">
-                                <input type="text" name="adhb_value_4_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q4' }}"
-                                    class="form-control text-right {{  'adhb-sector-Q4-' . $subsector->sector_id }} {{ 'adhb-category-Q4-' . $subsector->sector->category_id }}"
-                                    aria-required="true" tabindex="{{ $subsector->id + 165 }}">
-                            </td>
-                            <td>
-                                <input disabled type="text" name="adhb_sum_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_T' }}"
-                                    class="form-control text-right {{  'adhb-sector-T-' . $subsector->sector_id }} {{ 'adhb-category-T-' . $subsector->sector->category_id }}"
-                                    aria-required="true" tabindex="{{ $subsector->id + 220 }}">
-                            </td>
-                        </tr>
-                    @elseif (
-                        $subsector->code == null &&
-                            $subsector->sector->code != null &&
-                            $subsector->sector->category->type == 'Lapangan Usaha')
-                        <tr>
-                            <td class="desc-col">
-                                <p class="col ml-4 mr-4" style="margin-bottom:0rem;"
-                                    for="{{ $subsector->sector->code . '_' . $subsector->sector->name }}">
-                                    {{ $subsector->sector->code . '. ' . $subsector->sector->name }}</p>
-                            </td>
-                            <td>
-                                <input type="hidden" name="id_1_{{ $subsector->id }}">
-                                <input type="text" name="adhb_value_1_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q1' }}"
-                                    class="form-control text-right {{  'adhb-sector-Q1-' . $subsector->sector_id }} {{ 'adhb-category-Q1-' . $subsector->sector->category_id }}"
-                                    aria-required="true" tabindex="{{ $subsector->id }}">
-                            </td>
-                            <td>
-                                <input type="hidden" name="id_2_{{ $subsector->id }}">
-                                <input type="text" name="adhb_value_2_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q2' }}"
-                                    class="form-control text-right {{  'adhb-sector-Q2-' . $subsector->sector_id }} {{ 'adhb-category-Q2-' . $subsector->sector->category_id }}"
-                                    aria-required="true" tabindex="{{ $subsector->id + 55 }}">
-                            </td>
-                            <td>
-                                <input type="hidden" name="id_3_{{ $subsector->id }}">
-                                <input type="text" name="adhb_value_3_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q3' }}"
-                                    class="form-control text-right {{  'adhb-sector-Q3-' . $subsector->sector_id }} {{ 'adhb-category-Q3-' . $subsector->sector->category_id }}"
-                                    aria-required="true" tabindex="{{ $subsector->id + 110 }}">
-                            </td>
-                            <td>
-                                <input type="hidden" name="id_4_{{ $subsector->id }}">
-                                <input type="text" name="adhb_value_4_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q4' }}"
-                                    class="form-control text-right {{  'adhb-sector-Q4-' . $subsector->sector_id }} {{ 'adhb-category-Q4-' . $subsector->sector->category_id }}"
-                                    aria-required="true" tabindex="{{ $subsector->id + 165 }}">
-                            </td>
-                            <td>
-                                <input disabled type="text" name="adhb_sum_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_T' }}"
-                                    class="form-control text-right {{  'adhb-sector-T-' . $subsector->sector_id }} {{ 'adhb-category-T-' . $subsector->sector->category_id }}"
-                                    aria-required="true" tabindex="{{ $subsector->id + 220 }}">
-                            </td>
-                        </tr>
-                    @elseif (
-                        $subsector->code == null &&
-                            $subsector->sector->code == null &&
-                            $subsector->sector->category->type == 'Lapangan Usaha')
-                        <tr>
-                            <td class="desc-col">
-                                <label class="col" style="margin-bottom:0rem;"
-                                    for="{{ $subsector->sector->category->code . '_' . $subsector->name }}">{{ $subsector->sector->category->code . '. ' . $subsector->name }}</label>
-                            </td>
-                            <td class="categories">
-                                <input type="hidden" name="id_1_{{ $subsector->id }}">
-                                <input type="text" name="adhb_value_1_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q1' }}"
-                                    class="form-control text-right {{  'adhb-sector-Q1-' . $subsector->sector_id }} {{ 'adhb-category-Q1-' . $subsector->sector->category_id }}"
-                                    aria-required="true" tabindex="{{ $subsector->id }}">
-                            </td>
-                            <td class="categories">
-                                <input type="hidden" name="id_2_{{ $subsector->id }}">
-                                <input type="text" name="adhb_value_2_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q2' }}"
-                                    class="form-control text-right {{  'adhb-sector-Q2-' . $subsector->sector_id }} {{ 'adhb-category-Q2-' . $subsector->sector->category_id }}"
-                                    aria-required="true" tabindex="{{ $subsector->id + 55 }}">
-                            </td>
-                            <td class="categories">
-                                <input type="hidden" name="id_3_{{ $subsector->id }}">
-                                <input type="text" name="adhb_value_3_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q3' }}"
-                                    class="form-control text-right {{  'adhb-sector-Q3-' . $subsector->sector_id }} {{ 'adhb-category-Q3-' . $subsector->sector->category_id }}"
-                                    aria-required="true" tabindex="{{ $subsector->id + 110 }}">
-                            </td>
-                            <td class="categories">
-                                <input type="hidden" name="id_4_{{ $subsector->id }}">
-                                <input type="text" name="adhb_value_4_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q4' }}"
-                                    class="form-control text-right {{  'adhb-sector-Q4-' . $subsector->sector_id }} {{ 'adhb-category-Q4-' . $subsector->sector->category_id }}"
-                                    aria-required="true" tabindex="{{ $subsector->id + 165 }}">
-                            </td>
-                            <td class="categories">
-                                <input disabled type="text" name="adhb_sum_{{ $subsector->id }}"
-                                    id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_T' }}"
-                                    class="form-control text-right {{  'adhb-sector-T-' . $subsector->sector->id }} {{ 'adhb-category-T-' . $subsector->sector->category_id }}"
-                                    aria-required="true" tabindex="{{ $subsector->id + 220 }}">
-                            </td>
-                        </tr>
-                    @endif
+                </tr>
+                @endif
+                @if ($subsector->code != null && $subsector->code == 'a' && $subsector->sector->category->type == 'Lapangan Usaha')
+                <tr>
+                    <td class="desc-col">
+                        <p class="col ml-4" style="margin-bottom:0rem;" for="">
+                            {{ $subsector->sector->code . '. ' . $subsector->sector->name }}
+                        </p>
+                    </td>
+                    <td>
+                        <input disabled type="text"
+                            id="adhb_{{ $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q1' }}"
+                            class="form-control text-right {{ 'adhb-category-Q1-' . $subsector->sector->category->code }}"
+                            aria-required="true">
+                    </td>
+                    <td>
+                        <input disabled type="text"
+                            id="adhb_{{ $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q2' }}"
+                            class="form-control text-right {{ 'adhb-category-Q2-' . $subsector->sector->category->code }}"
+                            aria-required="true">
+                    </td>
+                    <td>
+                        <input disabled type="text"
+                            id="adhb_{{ $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q3' }}"
+                            class="form-control text-right {{ 'adhb-category-Q3-' . $subsector->sector->category->code }}"
+                            aria-required="true">
+                    </td>
+                    <td>
+                        <input disabled type="text"
+                            id="adhb_{{ $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q4' }}"
+                            class="form-control text-right {{ 'adhb-category-Q4-' . $subsector->sector->category->code }}"
+                            aria-required="true">
+                    </td>
+                    <td>
+                        <input disabled type="text" name="adhb_sum_{{ $subsector->id }}"
+                            id="adhb_{{ $subsector->sector->id . '_' . $subsector->sector->category->id . '_T' }}"
+                            class="form-control text-right {{ 'adhb-category-T-' . $subsector->sector->category->code }}"
+                            aria-required="true">
+                    </td>
+                </tr>
+                @endif
+                @if ($subsector->code != null && $subsector->sector->category->type == 'Lapangan Usaha')
+                <tr>
+                    <td class="desc-col">
+                        <p class="col ml-5 mr-4" style="margin-bottom:0rem;"
+                            for="{{ $subsector->code }}_{{ $subsector->name }}">
+                            {{ $subsector->code . '. ' . $subsector->name }}
+                        </p>
+                    </td>
+                    <td>
+                        <input type="hidden" name="id_1_{{ $subsector->id }}">
+                        <input type="text" name="adhb_value_1_{{ $subsector->id }}"
+                            id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q1' }}"
+                            class="form-control text-right {{  'adhb-sector-Q1-' . $subsector->sector_id }} {{ 'adhb-category-Q1-' . $subsector->sector->category_id }} "
+                            aria-required="true" tabindex="{{ $subsector->id }}">
+                    </td>
+                    <td>
+                        <input type="hidden" name="id_2_{{ $subsector->id }}">
+                        <input type="text" name="adhb_value_2_{{ $subsector->id }}"
+                            id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q2' }}"
+                            class="form-control text-right {{  'adhb-sector-Q2-' . $subsector->sector_id }} {{ 'adhb-category-Q2-' . $subsector->sector->category_id }}"
+                            aria-required="true" tabindex="{{ $subsector->id + 55 }}">
+                    </td>
+                    <td>
+                        <input type="hidden" name="id_3_{{ $subsector->id }}">
+                        <input type="text" name="adhb_value_3_{{ $subsector->id }}"
+                            id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q3' }}"
+                            class="form-control text-right {{  'adhb-sector-Q3-' . $subsector->sector_id }} {{ 'adhb-category-Q3-' . $subsector->sector->category_id }}"
+                            aria-required="true" tabindex="{{ $subsector->id + 110 }}">
+                    </td>
+                    <td>
+                        <input type="hidden" name="id_4_{{ $subsector->id }}">
+                        <input type="text" name="adhb_value_4_{{ $subsector->id }}"
+                            id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q4' }}"
+                            class="form-control text-right {{  'adhb-sector-Q4-' . $subsector->sector_id }} {{ 'adhb-category-Q4-' . $subsector->sector->category_id }}"
+                            aria-required="true" tabindex="{{ $subsector->id + 165 }}">
+                    </td>
+                    <td>
+                        <input disabled type="text" name="adhb_sum_{{ $subsector->id }}"
+                            id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_T' }}"
+                            class="form-control text-right {{  'adhb-sector-T-' . $subsector->sector_id }} {{ 'adhb-category-T-' . $subsector->sector->category_id }}"
+                            aria-required="true" tabindex="{{ $subsector->id + 220 }}">
+                    </td>
+                </tr>
+                @elseif (
+                $subsector->code == null &&
+                $subsector->sector->code != null &&
+                $subsector->sector->category->type == 'Lapangan Usaha')
+                <tr>
+                    <td class="desc-col">
+                        <p class="col ml-4 mr-4" style="margin-bottom:0rem;"
+                            for="{{ $subsector->sector->code . '_' . $subsector->sector->name }}">
+                            {{ $subsector->sector->code . '. ' . $subsector->sector->name }}
+                        </p>
+                    </td>
+                    <td>
+                        <input type="hidden" name="id_1_{{ $subsector->id }}">
+                        <input type="text" name="adhb_value_1_{{ $subsector->id }}"
+                            id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q1' }}"
+                            class="form-control text-right {{  'adhb-sector-Q1-' . $subsector->sector_id }} {{ 'adhb-category-Q1-' . $subsector->sector->category_id }}"
+                            aria-required="true" tabindex="{{ $subsector->id }}">
+                    </td>
+                    <td>
+                        <input type="hidden" name="id_2_{{ $subsector->id }}">
+                        <input type="text" name="adhb_value_2_{{ $subsector->id }}"
+                            id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q2' }}"
+                            class="form-control text-right {{  'adhb-sector-Q2-' . $subsector->sector_id }} {{ 'adhb-category-Q2-' . $subsector->sector->category_id }}"
+                            aria-required="true" tabindex="{{ $subsector->id + 55 }}">
+                    </td>
+                    <td>
+                        <input type="hidden" name="id_3_{{ $subsector->id }}">
+                        <input type="text" name="adhb_value_3_{{ $subsector->id }}"
+                            id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q3' }}"
+                            class="form-control text-right {{  'adhb-sector-Q3-' . $subsector->sector_id }} {{ 'adhb-category-Q3-' . $subsector->sector->category_id }}"
+                            aria-required="true" tabindex="{{ $subsector->id + 110 }}">
+                    </td>
+                    <td>
+                        <input type="hidden" name="id_4_{{ $subsector->id }}">
+                        <input type="text" name="adhb_value_4_{{ $subsector->id }}"
+                            id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q4' }}"
+                            class="form-control text-right {{  'adhb-sector-Q4-' . $subsector->sector_id }} {{ 'adhb-category-Q4-' . $subsector->sector->category_id }}"
+                            aria-required="true" tabindex="{{ $subsector->id + 165 }}">
+                    </td>
+                    <td>
+                        <input disabled type="text" name="adhb_sum_{{ $subsector->id }}"
+                            id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_T' }}"
+                            class="form-control text-right {{  'adhb-sector-T-' . $subsector->sector_id }} {{ 'adhb-category-T-' . $subsector->sector->category_id }}"
+                            aria-required="true" tabindex="{{ $subsector->id + 220 }}">
+                    </td>
+                </tr>
+                @elseif (
+                $subsector->code == null &&
+                $subsector->sector->code == null &&
+                $subsector->sector->category->type == 'Lapangan Usaha')
+                <tr>
+                    <td class="desc-col">
+                        <label class="col" style="margin-bottom:0rem;"
+                            for="{{ $subsector->sector->category->code . '_' . $subsector->name }}">{{ $subsector->sector->category->code . '. ' . $subsector->name }}</label>
+                    </td>
+                    <td class="categories">
+                        <input type="hidden" name="id_1_{{ $subsector->id }}">
+                        <input type="text" name="adhb_value_1_{{ $subsector->id }}"
+                            id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q1' }}"
+                            class="form-control text-right {{  'adhb-sector-Q1-' . $subsector->sector_id }} {{ 'adhb-category-Q1-' . $subsector->sector->category_id }}"
+                            aria-required="true" tabindex="{{ $subsector->id }}">
+                    </td>
+                    <td class="categories">
+                        <input type="hidden" name="id_2_{{ $subsector->id }}">
+                        <input type="text" name="adhb_value_2_{{ $subsector->id }}"
+                            id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q2' }}"
+                            class="form-control text-right {{  'adhb-sector-Q2-' . $subsector->sector_id }} {{ 'adhb-category-Q2-' . $subsector->sector->category_id }}"
+                            aria-required="true" tabindex="{{ $subsector->id + 55 }}">
+                    </td>
+                    <td class="categories">
+                        <input type="hidden" name="id_3_{{ $subsector->id }}">
+                        <input type="text" name="adhb_value_3_{{ $subsector->id }}"
+                            id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q3' }}"
+                            class="form-control text-right {{  'adhb-sector-Q3-' . $subsector->sector_id }} {{ 'adhb-category-Q3-' . $subsector->sector->category_id }}"
+                            aria-required="true" tabindex="{{ $subsector->id + 110 }}">
+                    </td>
+                    <td class="categories">
+                        <input type="hidden" name="id_4_{{ $subsector->id }}">
+                        <input type="text" name="adhb_value_4_{{ $subsector->id }}"
+                            id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_Q4' }}"
+                            class="form-control text-right {{  'adhb-sector-Q4-' . $subsector->sector_id }} {{ 'adhb-category-Q4-' . $subsector->sector->category_id }}"
+                            aria-required="true" tabindex="{{ $subsector->id + 165 }}">
+                    </td>
+                    <td class="categories">
+                        <input disabled type="text" name="adhb_sum_{{ $subsector->id }}"
+                            id="adhb_{{ $subsector->id . '_' . $subsector->sector->id . '_' . $subsector->sector->category->id . '_T' }}"
+                            class="form-control text-right {{  'adhb-sector-T-' . $subsector->sector->id }} {{ 'adhb-category-T-' . $subsector->sector->category_id }}"
+                            aria-required="true" tabindex="{{ $subsector->id + 220 }}">
+                    </td>
+                </tr>
+                @endif
                 @endforeach
                 <tr class="PDRB-footer text-center"
                     style="background-color: #09c140; color:aliceblue; font-weight: bold;">

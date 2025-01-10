@@ -8,13 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Pdrb extends Model
 {
     use HasFactory;
- 
+
     protected $guarded = ['id'];
 
     protected $with = ['dataset', 'subsector', 'adjustment'];
     protected $load = ['adjustment'];
-   
-    
+
+
     public function dataset()
     {
         return $this->belongsTo(Dataset::class);
@@ -28,5 +28,9 @@ class Pdrb extends Model
     public function adjustment()
     {
         return $this->hasOne(Adjustment::class);
+    }
+
+    public function category() {
+        return $this->subsector->sector->category_id ?? null;
     }
 }
