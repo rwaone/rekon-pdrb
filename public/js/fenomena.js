@@ -422,7 +422,7 @@ $("#download-pertumbuhan").on("click", function (e) {
     e.preventDefault();
     $(".loader").removeClass("d-none");
     setTimeout(function () {
-        let datas = getReadyFenomenas('rekon-view');
+        let datas = getReadyFenomenas('rekon-view', 'komponen-rekon-view');
         // const csvData = convertToCSV(datas);
         $(".loader").addClass("d-none");
         // downloadCSV(csvData, "download-data.csv");
@@ -433,7 +433,7 @@ $("#download-pertumbuhan-ytoy").on("click", function (e) {
     e.preventDefault();
     $(".loader").removeClass("d-none");
     setTimeout(function () {
-        let datas = getReadyFenomenas('rekon-view-pertumbuhan-ytoy');
+        let datas = getReadyFenomenas('rekon-view-pertumbuhan-ytoy', 'komponen-rekon-view-pertumbuhan-ytoy');
         // const csvData = convertToCSV(datas);
         $(".loader").addClass("d-none");
         // downloadCSV(csvData, "download-data.csv");
@@ -444,7 +444,7 @@ $("#download-laju-implisit").on("click", function (e) {
     e.preventDefault();
     $(".loader").removeClass("d-none");
     setTimeout(function () {
-        let datas = getReadyFenomenas('rekon-view-laju');
+        let datas = getReadyFenomenas('rekon-view-laju', 'komponen-rekon-view-laju');
         // const csvData = convertToCSV(datas);
         $(".loader").addClass("d-none");
         // downloadCSV(csvData, "download-data.csv");

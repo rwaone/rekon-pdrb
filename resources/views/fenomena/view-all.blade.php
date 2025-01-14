@@ -15,7 +15,7 @@
                 background: #fff;
             }
 
-            #komponen tbody tr {
+            .komponen tbody tr {
                 /* max-height: 48px !important;
                 min-height: 48px !important; */
                 /* max-height: 100px !important; */
@@ -27,7 +27,7 @@
                 padding: 0rem !important;
             }
 
-            #komponen {
+            .komponen {
                 table-layout: fixed;
                 width: 300px;
                 /* display: inline-block; */
@@ -39,7 +39,7 @@
                 overflow: hidden;
             }
 
-            #komponen th {
+            .komponen th {
                 background-color: steelblue !important;
                 color: aliceblue !important;
                 text-align: center;
@@ -220,7 +220,7 @@
                     <div class="table-container p-2">
                         <div class="row">
                             <div class="overflow-x-scroll">
-                                <table class="table table-striped table-bordered" id="komponen">
+                                <table class="table table-striped table-bordered komponen" id="komponen-rekon-view">
                                     <thead>
                                         <tr>
                                             <th>Komponen</th>
@@ -357,7 +357,7 @@
                     <div class="table-container p-2">
                         <div class="row">
                             <div class="overflow-x-scroll">
-                                <table class="table table-striped table-bordered" id="komponen">
+                                <table class="table table-striped table-bordered komponen" id="komponen-rekon-view-pertumbuhan-ytoy">
                                     <thead>
                                         <tr>
                                             <th>Komponen</th>
@@ -494,7 +494,7 @@
                     <div class="table-container p-2">
                         <div class="row">
                             <div class="overflow-x-scroll">
-                                <table class="table table-striped table-bordered" id="komponen">
+                                <table class="table table-striped table-bordered komponen" id="komponen-rekon-view-laju">
                                     <thead>
                                         <tr>
                                             <th>Komponen</th>

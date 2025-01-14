@@ -104,13 +104,13 @@ const getReadyResult = (Object) => {
     return merged;
 };
 
-function getReadyFenomenas(Object) {
+function getReadyFenomenas(Object, component) {
     let headers = [];
     $(`#${Object} thead tr th`).each(function () {
         headers.push($(this).text());
     });
     let contents = [];
-    $(`#${Object} tbody tr`).each(function (index) {
+    $(`#${Object} tbody tr:not(.d-none)`).each(function (index) {
         let data = {};
         $(this)
             .find("td")
@@ -121,7 +121,7 @@ function getReadyFenomenas(Object) {
         contents.push(data);
     });
     let komponens = [];
-    $("#komponen tbody tr").each(function (index) {
+    $(`#${component} tbody tr:not(.d-none)`).each(function (index) {
         let data = {};
         $(this)
             .find("td")
