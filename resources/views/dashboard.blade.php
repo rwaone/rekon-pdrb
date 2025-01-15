@@ -26,7 +26,7 @@
             </div>
         </div> --}}
         <div class="card-body">
-            Hai! Selamat datang di <b>Karlota-Apps</b>, Aplikasi Peningkatan Kualitas Rekonsiliasi PDRB Kabupaten / Kota Triwulanan Badan Pusat Statistik Provinsi Sulawesi Utara
+            Hai! Selamat datang di <b>Karlota-Apps</b>, Aplikasi Peningkatan Kualitas Rekonsiliasi PDRB Kabupaten / Kota Triwulanan Badan Pusat Statistik Provinsi Sulawesi Utara!
         </div>
         <!-- /.card-body -->
     </div>
