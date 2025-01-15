@@ -141,8 +141,7 @@ $(document).ready(function () {
                 .reduce(function (obj, item) {
                     obj[item.name] = item.value;
                     return obj;
-                }, {})),
-                console.log(fenomena);
+                }, {}))
             var loader = document.querySelector('.loader');
             loader.classList.remove('d-none');
             $.ajax({
@@ -272,7 +271,6 @@ $(document).ready(function () {
                     dataType: "json",
 
                     success: function (result) {
-                        console.log(result);
                         $("#quarter").empty();
                         $("#quarter").append(
                             '<option value="" selected>-- Pilih Triwulan --</option>'
@@ -332,7 +330,6 @@ if (paramsLink == "monitoring") {
         e.preventDefault();
         try {
             const data = await fetchData();
-            console.log(data);
             const year_fenomena = Object.keys(data)[0];
             const quarter_fenomena = Object.keys(data[year_fenomena])[0];
             const type_fenomena = $("#type").val();
@@ -414,7 +411,7 @@ $("#download-all").on("click", function (e) {
         // const csvData = convertToCSV(datas);
         $(".loader").addClass("d-none");
         // downloadCSV(csvData, "download-data.csv");
-        downloadExcel(datas);
+        downloadExcel(datas, true);
     }, 200);
 });
 
@@ -422,36 +419,43 @@ $("#download-pertumbuhan").on("click", function (e) {
     e.preventDefault();
     $(".loader").removeClass("d-none");
     setTimeout(function () {
-        let datas = getReadyFenomenas('rekon-view');
+        let datas = getReadyFenomenas('rekon-view', 'komponen-rekon-view');
         // const csvData = convertToCSV(datas);
         $(".loader").addClass("d-none");
         // downloadCSV(csvData, "download-data.csv");
-        downloadExcel(datas);
+        downloadExcel(datas, true);
     }, 200);
 });
 $("#download-pertumbuhan-ytoy").on("click", function (e) {
     e.preventDefault();
     $(".loader").removeClass("d-none");
     setTimeout(function () {
-        let datas = getReadyFenomenas('rekon-view-pertumbuhan-ytoy');
+        let datas = getReadyFenomenas('rekon-view-pertumbuhan-ytoy', 'komponen-rekon-view-pertumbuhan-ytoy');
         // const csvData = convertToCSV(datas);
         $(".loader").addClass("d-none");
         // downloadCSV(csvData, "download-data.csv");
-        downloadExcel(datas);
+        downloadExcel(datas, true);
     }, 200);
 });
 $("#download-laju-implisit").on("click", function (e) {
     e.preventDefault();
     $(".loader").removeClass("d-none");
     setTimeout(function () {
-        let datas = getReadyFenomenas('rekon-view-laju');
+        let datas = getReadyFenomenas('rekon-view-laju', 'komponen-rekon-view-laju');
         // const csvData = convertToCSV(datas);
         $(".loader").addClass("d-none");
         // downloadCSV(csvData, "download-data.csv");
-        downloadExcel(datas);
+        downloadExcel(datas, true);
     }, 200);
 });
-
+document.getElementById('download-fenomena').addEventListener('click', (e) => {
+    e.preventDefault()
+    document.querySelector('.loader').classList.remove('d-none')
+    setTimeout(() => {
+        downloadFenomena()
+        document.querySelector('.loader').classList.add('d-none')
+    }, 200)
+})
 
 $("#showData").click(async function (e) {
     e.preventDefault();
@@ -498,6 +502,15 @@ $("#showData").click(async function (e) {
                 $(this).removeClass("d-none");
             }
         });
+        document.querySelectorAll('.komponen').forEach((element) => {
+            element.querySelector('tbody').querySelectorAll('tr').forEach((row) => {
+                if (!row.classList.contains(`${types}`)) {
+                    row.classList.add('d-none');
+                } else {
+                    row.classList.remove('d-none');
+                }
+            })
+        })
         $("#rekon-view tbody tr").each(function (index) {
             if (!$(this).hasClass(`${types}`)) {
                 $(this).addClass("d-none");

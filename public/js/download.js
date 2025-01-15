@@ -104,13 +104,13 @@ const getReadyResult = (Object) => {
     return merged;
 };
 
-function getReadyFenomenas(Object) {
+function getReadyFenomenas(Object, component) {
     let headers = [];
     $(`#${Object} thead tr th`).each(function () {
         headers.push($(this).text());
     });
     let contents = [];
-    $(`#${Object} tbody tr`).each(function (index) {
+    $(`#${Object} tbody tr:not(.d-none)`).each(function (index) {
         let data = {};
         $(this)
             .find("td")
@@ -121,7 +121,7 @@ function getReadyFenomenas(Object) {
         contents.push(data);
     });
     let komponens = [];
-    $("#komponen tbody tr").each(function (index) {
+    $(`#${component} tbody tr:not(.d-none)`).each(function (index) {
         let data = {};
         $(this)
             .find("td")
@@ -208,7 +208,7 @@ function fetchDownload(type) {
     });
 }
 
-function downloadExcel(data) {
+function downloadExcel(data, option = false) {
     var workbook = XLSX.utils.book_new();
     var worksheet = XLSX.utils.json_to_sheet(data);
     XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet 1");
@@ -231,21 +231,23 @@ function downloadExcel(data) {
     const periods = $("#select2-period-container").html();
     const datas = $("#select2-data_quarter-container").html();
     const rincian = $("#select2-select-cat-container").html();
-    a.download =
-        rincian +
-        "-" +
-        types +
-        "-" +
-        years +
-        "-" +
-        "Periode " +
-        quarters +
-        " " +
-        periods +
-        "-" +
-        "Data " +
-        datas +
-        ".xlsx";
+    if (!option) {
+        a.download =
+            rincian +
+            "-" +
+            types +
+            "-" +
+            years +
+            "-" +
+            "Periode " +
+            quarters +
+            " " +
+            periods +
+            "-" +
+            "Data " +
+            datas +
+            ".xlsx";
+    } else a.download = 'Fenomena ' + quarters + ' Tahun ' + years + '.xlsx'
 
     // Append the link to the document and trigger the download
     document.body.appendChild(a);
@@ -474,6 +476,52 @@ function s2ab(s) {
         view[i] = s.charCodeAt(i) & 0xff;
     }
     return buf;
+}
+const downloadFenomena = () => {
+    try {
+        let list = []
+        document.getElementById('nav-pertumbuhan-tab').click()
+        list['Pertumbuhan (QtoQ)'] = getReadyFenomenas('rekon-view', 'komponen-rekon-view');
+        document.getElementById('nav-pertumbuhan-ytoy-tab').click()
+        list['Pertumbuhan (YtoY)'] = getReadyFenomenas('rekon-view-pertumbuhan-ytoy', 'komponen-rekon-view-pertumbuhan-ytoy');
+        document.getElementById('nav-laju-implisit-tab').click()
+        list['Pertumbuhan (implisit)'] = getReadyFenomenas('rekon-view-laju', 'komponen-rekon-view-laju');
+
+        const years = $("#select2-year-container").html();
+        const quarters = $("#select2-quarter-container").html();
+
+        var workbook = XLSX.utils.book_new();
+        for (let key in list) {
+            if (list.hasOwnProperty(key)) {
+                let value = list[key];
+                var worksheet = XLSX.utils.json_to_sheet(value);
+                XLSX.utils.book_append_sheet(workbook, worksheet, key);
+            }
+        }
+        // Convert the workbook to a binary Excel file
+        var excelFile = XLSX.write(workbook, { type: "binary" });
+
+        // Convert the binary Excel file to a Blob
+        var blob = new Blob([s2ab(excelFile)], {
+            type: "application/octet-stream",
+        });
+
+        // Create a download link
+        var a = document.createElement("a");
+        var url = URL.createObjectURL(blob);
+        a.href = url;
+        a.download = 'Fenomena ' + quarters + ' Tahun ' + years + '.xlsx'
+
+        // Append the link to the document and trigger the download
+        document.body.appendChild(a);
+        a.click();
+
+        // Clean up
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    } catch (error) {
+        console.error(error)
+    }
 }
 
 const downloadResult = () => {
