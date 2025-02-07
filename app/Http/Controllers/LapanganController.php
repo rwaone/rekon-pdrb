@@ -355,10 +355,29 @@ class LapanganController extends Controller
 
     public function monitoring()
     {
+        // $period_now = Period::where('type', 'Lapangan Usaha')->latest('year')->latest('id')->first();
+        // $datasets = Dataset::where('period_id', $period_now->id)
+        //     ->orderBy('region_id')
+        //     ->get();
+
         $period_now = Period::where('type', 'Lapangan Usaha')->latest('year')->latest('id')->first();
-        $datasets = Dataset::where('period_id', $period_now->id)
-            ->orderBy('region_id')
-            ->get();
+
+        while ($period_now) {
+            $datasets = Dataset::where('period_id', $period_now->id)
+                ->orderBy('region_id')
+                ->get();
+
+            if ($datasets->isNotEmpty()) {
+                break; // Exit loop if datasets are found
+            }
+
+            // Find the previous period
+            $period_now = Period::where('type', 'Lapangan Usaha')
+                ->where('year', '<', $period_now->year) // Get an older period
+                ->latest('year')
+                ->latest('id')
+                ->first();
+        }
 
         $regions = Region::all();
         $this_monitoring = [];
@@ -387,6 +406,7 @@ class LapanganController extends Controller
         $cat = Category::pluck('code')->toArray();
         $catString = implode(", ", $cat);
         $subsectors = Subsector::where('type', 'Lapangan Usaha')->get();
+        // dd($datasets);
         return view('lapangan.monitoring', [
             'regions' => $regions,
             'subsectors' => $subsectors,
