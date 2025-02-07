@@ -9,7 +9,7 @@
     </x-slot>
 
     <x-slot name="breadcrumb">
-        <li class="breadcrumb-item active">Dashboard</li>
+        <li class="breadcrumb-item active">DASHBOARD</li>
     </x-slot>
 
     <!-- Default box -->
