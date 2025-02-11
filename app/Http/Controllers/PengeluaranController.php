@@ -354,10 +354,29 @@ class PengeluaranController extends Controller
 
     public function monitoring()
     {
+        // $period_now = Period::where('type', 'Pengeluaran')->latest('year')->latest('id')->first();
+        // $datasets = Dataset::where('period_id', $period_now->id)
+        //     ->orderBy('region_id')
+        //     ->get();
+
         $period_now = Period::where('type', 'Pengeluaran')->latest('year')->latest('id')->first();
-        $datasets = Dataset::where('period_id', $period_now->id)
-            ->orderBy('region_id')
-            ->get();
+
+        while ($period_now) {
+            $datasets = Dataset::where('period_id', $period_now->id)
+                ->orderBy('region_id')
+                ->get();
+
+            if ($datasets->isNotEmpty()) {
+                break; // Exit loop if datasets are found
+            }
+
+            // Find the previous period
+            $period_now = Period::where('type', 'Pengeluaran')
+                ->where('year', '<', $period_now->year) // Get an older period
+                ->latest('year')
+                ->latest('id')
+                ->first();
+        }
 
         $regions = Region::all();
         $this_monitoring = [];
