@@ -326,9 +326,21 @@ $(document).ready(function () {
 
                 let selisih = prov - total
                 $(`#${price_base}-inisial-selisih`).text(formatRupiah(String(selisih.toFixed(2)).replaceAll('.', ','), ''))
+                //reset
+                $(`#${price_base}-inisial-diskrepansi`).css("background-color", "white");
+                $(`#${price_base}-inisial-diskrepansi`).css("color", "black");
 
                 let diskrepansi = (selisih / prov) * 100
+                let score = diskrepansi
                 $(`#${price_base}-inisial-diskrepansi`).text(String(diskrepansi.toFixed(2)).replaceAll('.', ','))
+                if (score > 5 || score < -5) {
+                    $(`#${price_base}-inisial-diskrepansi`).css("background-color", "#DB3131");
+                    $(`#${price_base}-inisial-diskrepansi`).css("color", "aliceblue");
+                    // console.log(score, "merah")
+                } else if ((score > 2 && score < 6) || (score < -2 && score > -6)) {
+                    $(`#${price_base}-inisial-diskrepansi`).css("background-color", "#E6ED18");
+                    $(`#${price_base}-inisial-diskrepansi`).css("color", "black");
+                }
 
             } else {
 
@@ -348,9 +360,21 @@ $(document).ready(function () {
 
                 let selisih = prov - total
                 $(`#${price_base}-inisial-selisih`).text(formatRupiah(String(selisih.toFixed(2)).replaceAll('.', ','), ''))
+                //reset
+                $(`#${price_base}-inisial-diskrepansi`).css("background-color", "white");
+                $(`#${price_base}-inisial-diskrepansi`).css("color", "black");
 
                 let diskrepansi = (selisih / prov) * 100
+                let score = diskrepansi
                 $(`#${price_base}-inisial-diskrepansi`).text(String(diskrepansi.toFixed(2)).replaceAll('.', ','))
+                if (score > 5 || score < -5) {
+                    $(`#${price_base}-inisial-diskrepansi`).css("background-color", "#DB3131");
+                    $(`#${price_base}-inisial-diskrepansi`).css("color", "aliceblue");
+                    // console.log(score, "merah")
+                } else if ((score > 2 && score < 6) || (score < -2 && score > -6)) {
+                    $(`#${price_base}-inisial-diskrepansi`).css("background-color", "#E6ED18");
+                    $(`#${price_base}-inisial-diskrepansi`).css("color", "black");
+                }
             }
         })
     }
@@ -371,8 +395,21 @@ $(document).ready(function () {
                 let selisih = prov - total
                 $(`#${price_base}-berjalan-selisih`).text(formatRupiah(String(selisih.toFixed(2)).replaceAll('.', ','), ''))
 
+                //reset
+                $(`#${price_base}-berjalan-diskrepansi`).css("background-color", "white");
+                $(`#${price_base}-berjalan-diskrepansi`).css("color", "black");
+
                 let diskrepansi = (selisih / prov) * 100
+                let score = diskrepansi
                 $(`#${price_base}-berjalan-diskrepansi`).text(String(diskrepansi.toFixed(2)).replaceAll('.', ','))
+                if (score > 5 || score < -5) {
+                    $(`#${price_base}-berjalan-diskrepansi`).css("background-color", "#DB3131");
+                    $(`#${price_base}-berjalan-diskrepansi`).css("color", "aliceblue");
+                    // console.log(score, "merah")
+                } else if ((score > 2 && score < 6) || (score < -2 && score > -6)) {
+                    $(`#${price_base}-berjalan-diskrepansi`).css("background-color", "#E6ED18");
+                    $(`#${price_base}-berjalan-diskrepansi`).css("color", "black");
+                }
             } else {
                 for (let i = 2; i <= 16; i++) {
                     let adjust = Number($(`#${price_base}-adjust-${i}`).val().replaceAll('.', '').replaceAll(',', '.'))
@@ -396,7 +433,16 @@ $(document).ready(function () {
                 $(`#${price_base}-berjalan-selisih`).text(formatRupiah(String(selisih.toFixed(2)).replaceAll('.', ','), ''))
 
                 let diskrepansi = (selisih / prov) * 100
+                let score = diskrepansi
                 $(`#${price_base}-berjalan-diskrepansi`).text(String(diskrepansi.toFixed(2)).replaceAll('.', ','))
+                if (score > 5 || score < -5) {
+                    $(`#${price_base}-berjalan-diskrepansi`).css("background-color", "#DB3131");
+                    $(`#${price_base}-berjalan-diskrepansi`).css("color", "aliceblue");
+                    // console.log(score, "merah")
+                } else if ((score > 2 && score < 6) || (score < -2 && score > -6)) {
+                    $(`#${price_base}-berjalan-diskrepansi`).css("background-color", "#E6ED18");
+                    $(`#${price_base}-berjalan-diskrepansi`).css("color", "black");
+                }
             }
         })
     }
