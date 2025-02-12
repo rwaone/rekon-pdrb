@@ -234,8 +234,11 @@ class LapanganController extends Controller
     {
         // dd(Region::getMyRegionId());
         $number = 1;
+        $period_exists = Period::where('type', 'Lapangan Usaha')->pluck('id');
+        // dd($period_exists);
         $daftar = Dataset::select('region_id', 'period_id', 'year')
             ->where('type', 'Lapangan Usaha')
+            ->whereIn('period_id', $period_exists)
             ->whereIn('region_id', Region::getMyRegionId())
             ->groupBy('region_id', 'period_id', 'year')
             ->orderBy('year', 'desc')
@@ -247,6 +250,7 @@ class LapanganController extends Controller
             $number++;
         }
 
+        // dd($daftar);
         return view('lapangan.tabel-pokok', [
             'daftar_2' => $daftar,
         ]);
