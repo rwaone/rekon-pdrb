@@ -257,12 +257,12 @@ $(document).ready(function () {
         var data = JSON.parse(sessionStorage.getItem("adjustmentData"))
         if (quarter < 5) {
             $.each(data['current'], function (index, data) {
-                $(`#adhb-inisial-${index}`).text(formatRupiah(data[quarter]['adhb'].replaceAll('.', ','), ''))
-                $(`#adhk-inisial-${index}`).text(formatRupiah(data[quarter]['adhk'].replaceAll('.', ','), ''))
-                $(`#adhb-berjalan-${index}`).text(formatRupiah(data[quarter]['adhb'].replaceAll('.', ','), ''))
-                $(`#adhk-berjalan-${index}`).text(formatRupiah(data[quarter]['adhk'].replaceAll('.', ','), ''))
-                $(`#adhb-adjust-${index}`).val(formatRupiah(data[quarter]['adjust_adhb'].replaceAll('.', ','), ''))
-                $(`#adhk-adjust-${index}`).val(formatRupiah(data[quarter]['adjust_adhk'].replaceAll('.', ','), ''))
+                $(`#adhb-inisial-${index}`).text(formatRupiah((data[quarter]['adhb'] ?? '0').replaceAll('.', ','), ''));
+                $(`#adhk-inisial-${index}`).text(formatRupiah((data[quarter]['adhk'] ?? '0').replaceAll('.', ','), ''));
+                $(`#adhb-berjalan-${index}`).text(formatRupiah((data[quarter]['adhb'] ?? '0').replaceAll('.', ','), ''));
+                $(`#adhk-berjalan-${index}`).text(formatRupiah((data[quarter]['adhk'] ?? '0').replaceAll('.', ','), ''));
+                $(`#adhb-adjust-${index}`).val(formatRupiah((data[quarter]['adjust_adhb'] ?? '0').replaceAll('.', ','), ''));
+                $(`#adhk-adjust-${index}`).val(formatRupiah((data[quarter]['adjust_adhk'] ?? '0').replaceAll('.', ','), ''));                
             })
 
             for (let indeks = 2; indeks <= 16; indeks++) {
