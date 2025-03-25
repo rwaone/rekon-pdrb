@@ -41,7 +41,12 @@
                                     class="img-fluid">
                                 {{-- <h4>Sign In</h4> --}}
                             </div>
-                            <form method="POST" action="{{ route('login') }}">
+                            <div>
+                                Karlota sudah berpindah domain ke webhosting.bps.go.id, dan harus menggunakan VPN
+                            </div>
+                            <div>Berikut adalah tautannya:</div>
+                            <a href="https://karlota.web.bps.go.id" target="_blank">karlota.web.bps.go.id</a>
+                            <!-- <form method="POST" action="{{ route('login') }}">
                               @csrf
                                 <div class="form-group first">
                                     <label for="username">Username</label>
@@ -79,7 +84,7 @@
                                         <span class="icon-google mr-3"></span>
                                     </a> --}}
                                 </div>
-                            </form>
+                            </form> -->
                         </div>
                     </div>
 
